@@ -1,0 +1,17 @@
+{
+  "name": "piqtionary-api",
+  "version": "1.0.0",
+  "description": "create and share hairpiqs",
+  "main": "index.js",
+  "dependencies": {
+    "clarifai": "^2.0.13",
+    "express": "^4.14.0",
+    "live-server": "^1.1.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jackson Gabriel",
+  "license": "ISC"
+}
