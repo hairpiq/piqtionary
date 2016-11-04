@@ -6,15 +6,15 @@ node {
 
 	if (BRANCH_NAME == "DEV") {
 
-		console.log("A");
+		echo "A";
 
 	} else if (BRANCH_NAME == "TEST") {
 
-		console.log("B");
+		echo "B";
 
 	} else if (BRANCH_NAME == "master") {
 
-		console.log("C");
+		echo "C";
 
 	}
 
