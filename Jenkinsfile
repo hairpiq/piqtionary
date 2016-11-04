@@ -1,33 +1,30 @@
-node {
+echo "BRANCH_NAME = ${BRANCH_NAME}"
+echo "env.BRANCH_NAME = ${env.BRANCH_NAME}"
 
-	echo "BRANCH_NAME = ${BRANCH_NAME}"
-	echo "env.BRANCH_NAME = ${env.BRANCH_NAME}"
+if (BRANCH_NAME == "DEV") {
 
-	if (BRANCH_NAME == "DEV") {
+	stage("Stage 1") {
 
-		stage("Stage 1") {
+		echo "A";
 
-			echo "A";
+	}
 
-		}
+} else if (BRANCH_NAME == "TEST") {
 
-	} else if (BRANCH_NAME == "TEST") {
+	stage("Stage 1") {
 
-		stage("Stage 1") {
+		echo "B";
+	
+	}
 
-			echo "B";
-		
-		}
+} else if (BRANCH_NAME == "master") {
 
-	} else if (BRANCH_NAME == "master") {
+	stage("Stage 1") {
 
-		stage("Stage 1") {
-
-			echo "C";
-		
-		}
-
+		echo "C";
+	
 	}
 
 }
 
+build 'piqtionary'
