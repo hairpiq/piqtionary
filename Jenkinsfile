@@ -1,3 +1,5 @@
+#!groovy
+# Jenkinsfile
 properties([pipelineTriggers([[$class: 'GitHubPushTrigger']])]) 
 
 if (BRANCH_NAME == "DEV") {
