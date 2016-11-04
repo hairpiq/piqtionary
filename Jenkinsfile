@@ -27,4 +27,4 @@ if (BRANCH_NAME == "DEV") {
 
 }
 
-build 'piqtionary'
+build ''
