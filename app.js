@@ -1,71 +1,99 @@
 /**
  * Created by jackman79 on 10/31/16.
  */
-var Clarifai = require("./clarifai_node.js"),
-    express = require("express"),
-    app = express(),
-    server = require("http").Server(app),
-    bodyParser = require("body-parser"),
-    port = process.env.PORT || 5000;
-
-app.use(bodyParser.json());
 
 
-// This is the API call using the credentials for piqtionary Clarifi application.
+// module.exports = {
+//   getTopRatedTag: function(imagePath) {
+    var Clarifai = require("clarifai");
 
-Clarifai.initAPI("wONTOYtXMLE9KUXNK5KanWepLay8Etw7tSuuuNt2", "2RENXai2iC2VYPYEuGaZBJ-oodCmrmzD0tfos98D");
+    var http = require('http'),
+        express = require('express'),
+        path = require('path');
 
-function identifyClarifaiError(err) {
-  // Default error function from Clarifai we won't go into but you can find it in the GitHub download of this code!
-}
+    var api = new Clarifai.App(
+        'wONTOYtXMLE9KUXNK5KanWepLay8Etw7tSuuuNt2',
+        '2RENXai2iC2VYPYEuGaZBJ-oodCmrmzD0tfos98D'
+    );
 
-app.post("/analyzeImage", function(req, resp) {
-  var imageURL = req.body.imageRequested;
-  console.log("Response was ", imageURL);
 
-  Clarifai.tagURL(imageURL, "Image from browser", commonResultHandler);
 
-  function commonResultHandler(err, res) {
-    if (err != null) {
-      identifyClarifaiError(err);
-    }
-    else {
-      if (typeof res["status_code"] === "string" &&
-        (res["status_code"] === "OK" || res["status_code"] === "PARTIAL_ERROR")) {
+   var imagePath = "http://www.outfittrends.com/wp-content/uploads/2014/10/cute-black-girls-hairstyles.jpg";
+   var results;
+   api.models.predict(Clarifai.GENERAL_MODEL, imagePath).then(
+     function(response){
+            if(response)
+                results=resultHandler(response);
+                //console.log(response);
 
-        if (res["results"][0]["status_code"] === "OK") {
-          var tags = res["results"];
-          console.log("Tags found were: ", tags);
-          // Here is where I would send back to JSON response of the tags results.
-          //resp.send(tags);
+         },
+         function (err) {
+          identifyClarifaiError(err);
         }
-        else {
-          console.log("We had an error... Details: " +
-            " docid=" + res.results[0].docid +
-            " local_id=" + res.results[0].local_id +
-            " status_code="+res.results[0].status_code +
-            " error = " + res.results[0]["result"]["error"]);
+    );
 
-          resp.send("Error: " + res.results[0]["result"]["error"]);
-        }
+    //console.log(results);
+      // if(results)
+      // console.log(results);
+
+
+// app.inputs.create({
+//   url: "http://www.outfittrends.com/wp-content/uploads/2014/10/cute-black-girls-hairstyles.jpg"
+// }).then(
+//   function(response) {
+//     console.log(response);
+//   },
+//   function(err) {
+//     //console.log(err);
+//   }
+// );
+//
+// app.inputs.get('f35c4cfca8a44dcaaa7bd75427272cf9').then(
+//   function(response) {
+//     console.log(response._rawData);
+//   },
+//   function(err) {
+//     // there was an error
+//   }
+// );
+
+    var resultHandler = function(response) {
+      var maxValue = 0;
+      var maxRecord = {};
+      response.data.outputs.forEach(function (output) {
+            //console.log(output.data.concepts);
+            output.data.concepts.forEach(function (tag) {
+              tag.value = Math.ceil(tag.value * 100);
+              if (tag.value > maxValue) {
+                maxValue = tag.value;
+                maxRecord = tag;
+              }
+
+            });
+
+      });
+      return maxRecord;
+    };
+
+
+    var identifyClarifaiError = function(err) {
+      if (typeof err["status_code"] === "string" && err["status_code"] === "TIMEOUT") {
+        console.log("TAG request timed out");
       }
-    }
-  }
-});
+      else if (typeof err["status_code"] === "string" && err["status_code"] === "ALL_ERROR") {
+        console.log("TAG request received ALL_ERROR. Contact Clarifai support if it continues.");
+      }
+      else if (typeof err["status_code"] === "string" && err["status_code"] === "TOKEN_FAILURE") {
+        console.log("TAG request received TOKEN_FAILURE. Contact Clarifai support if it continues.");
+      }
+      else if (typeof err["status_code"] === "string" && err["status_code"] === "ERROR_THROTTLED") {
+        console.log("Clarifai host is throttling this application.");
+      }
+      else {
+        console.log("TAG request encountered an unexpected error: ");
+        console.log(err);
+      }
+    };
 
-app.get("/", function(request, response) {
-  response.sendFile(__dirname + "/public/index.html");
-});
-
-app.get(/^(.+)$/, function(req, res) {
-  res.sendFile(__dirname + "/public/" + req.params[0]);
-});
-
-app.use(function(err, req, res, next) {
-  console.error(err.stack);
-  res.status(500).send("Something broke!");
-});
-
-server.listen(port, function() {
-  console.log("Listening on " + port);
-});
+//   }
+// }
