@@ -39,6 +39,6 @@ node {
 
 	}
 
-}
+	archiveArtifacts ''
 
-archiveArtifacts ''
+}
