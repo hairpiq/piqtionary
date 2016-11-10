@@ -9,14 +9,7 @@ module.exports = function(app) {
 	console.log('hairpiq service started');
 
 	app.get('/', function(req, res) {
-
-		// send quick message
-
-		var to = '+14433102161';
-		var message = "test message";
-
-		twilio.send(to, message);
-		
+		res.send('hairpiq service started');
 	});
 
 	// consume mms from Twilio
@@ -25,11 +18,32 @@ module.exports = function(app) {
 
 		console.log('mms received from Twilio...');
 
+		var msg = "";
 		var photo_url = "";
+
 		if (req.body.MediaUrl0 !== undefined)
 			photo_url = req.body.MediaUrl0;
+		else {
 
-		//console.log(req.body);
+			console.log("no selfie attached...");
+			
+			msg  = "Hi there!";
+			msg += "\n\n";
+			msg += "In order to create a hairpiq, text us a selfie with the name of the hairstyle and your IG username in the following format: ";
+			msg += "\n\n";
+			msg += "Style Name @username";
+			msg += "\n\n";
+			msg += "to 'auto-detect' the name of the style, type: ";
+			msg += "\n\n";
+			msg += "auto @username";
+
+			console.log(msg);
+ 
+			twilio.send(req.body.From, msg);
+
+			return false;
+
+		}
 
 		var stylename = "Style Name";
 
@@ -47,14 +61,8 @@ module.exports = function(app) {
 		};
 
 		// send quick message
-
-		/*
-
-		var to = req.body.From;
-		var message = "we're working on it...";
-
-		twilio.send(to, message);
-		*/
+		msg = "we're working on it...";
+		twilio.send(req.body.From, msg);
 
 		execute(photo_url, stylename, ig_username, options).then(function(result) {
 

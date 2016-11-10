@@ -20,8 +20,9 @@ module.exports = {
 		    to: to, 
 		    from: config.twilio.phone_number, 
 		    body: msg,
+		    mediaUrl: config.twilio.logo,
 		}, function(err, message) { 
-		    console.log(message); 
+		    console.log('message.sid: ' + message.sid); 
 		});
 
 	}
