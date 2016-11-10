@@ -12,7 +12,7 @@ node {
 
 		echo "AA"
 
-		sh 'sudo /home/ci/bin/on_jenkins_complete'
+		sh 'sh /home/ci/bin/on_jenkins_complete'
 
 		echo "BB"
 
