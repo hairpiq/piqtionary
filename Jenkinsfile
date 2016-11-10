@@ -1,29 +1,40 @@
 #!groovy
 
-properties([pipelineTriggers([[$class: 'GitHubPushTrigger']])]) 
+properties([pipelineTriggers([[$class: 'GitHubPushTrigger']])])
 
-if (BRANCH_NAME == "DEV") {
+node {
 
-	stage("Stage 1") {
+	git url: 'https://github.com/hairpiq/piqtionary.git', branch: BRANCH_NAME
+	def _pwd = pwd();
 
-		echo "A";
+	echo "_pwd: ${_pwd}"
 
-	}
+	echo "WORKSPACE: ${WORKSPACE}"
 
-} else if (BRANCH_NAME == "TEST") {
+	if (BRANCH_NAME == "DEV") {
 
-	stage("Stage 1") {
+		stage("Stage 1") {
 
-		echo "B";
-	
-	}
+			echo "A";
 
-} else if (BRANCH_NAME == "master") {
+		}
 
-	stage("Stage 1") {
+	} else if (BRANCH_NAME == "TEST") {
 
-		echo "C";
-	
+		stage("Stage 1") {
+
+			echo "B";
+		
+		}
+
+	} else if (BRANCH_NAME == "master") {
+
+		stage("Stage 1") {
+
+			echo "C";
+		
+		}
+
 	}
 
 }
