@@ -41,4 +41,4 @@ node {
 
 }
 
-archiveArtifacts
+archiveArtifacts ''
