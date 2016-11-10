@@ -10,7 +10,8 @@ node {
 
 		echo "${WORKSPACE}"
 
-		sh 'on_jenkins_complete'
+		sh './on_jenkins_complete'
+		sh '~/bin/on_jenkins_complete'
 
 	} else if (BRANCH_NAME == "DEV") {
 
