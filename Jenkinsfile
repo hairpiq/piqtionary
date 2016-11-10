@@ -16,7 +16,7 @@ node {
 		echo "DEV_HOST: ${DEV_HOST}"
 		echo "PIQTIONARY_FOLDER_PATH: ${PIQTIONARY_FOLDER_PATH}"
 
-		#sh "sh ./bin/deploy.sh"
+		#!sh "sh ./bin/deploy.sh"
 
 		echo "BB"
 
