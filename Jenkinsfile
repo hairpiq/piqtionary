@@ -10,7 +10,11 @@ node {
 
 		echo "${WORKSPACE}"
 
-		sh 'echo $USER'
+		echo "AA"
+
+		sh 'sudo /home/ci/bin/on_jenkins_complete'
+
+		echo "BB"
 
 	} else if (BRANCH_NAME == "DEV") {
 
