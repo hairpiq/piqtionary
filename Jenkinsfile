@@ -40,3 +40,5 @@ node {
 	}
 
 }
+
+archiveArtifacts
