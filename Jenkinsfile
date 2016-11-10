@@ -12,7 +12,11 @@ node {
 
 		echo "AA"
 
-		sh 'sh ./bin/on_jenkins_complete.sh'
+		echo "DEV_USER: ${DEV_USER}"
+		echo "DEV_HOST: ${DEV_HOST}"
+		echo "PIQTIONARY_FOLDER_PATH: ${PIQTIONARY_FOLDER_PATH}"
+
+		#sh "sh ./bin/deploy.sh"
 
 		echo "BB"
 
