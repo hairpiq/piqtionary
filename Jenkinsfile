@@ -8,17 +8,11 @@ node {
 
 	if (BRANCH_NAME == "jenkinsfile") {
 
-		echo "${WORKSPACE}"
+		echo "A"
 
-		echo "AA"
+		sh "sh ./bin/deploy.sh ${DEV_USER} ${DEV_HOST} ${PIQTIONARY_FOLDER_PATH}"
 
-		echo "DEV_USER: ${DEV_USER}"
-		echo "DEV_HOST: ${DEV_HOST}"
-		echo "PIQTIONARY_FOLDER_PATH: ${PIQTIONARY_FOLDER_PATH}"
-
-		//sh "sh ./bin/deploy.sh"
-
-		echo "BB"
+		echo "B"
 
 	} else if (BRANCH_NAME == "DEV") {
 
