@@ -10,7 +10,7 @@ node {
 
 		echo "A"
 
-		sh "sh ./bin/deploy.sh ${DEV_USER} ${DEV_HOST} ${PIQTIONARY_FOLDER_PATH}"
+		sh "sudo sh ./bin/deploy.sh ${DEV_USER} ${DEV_HOST}"
 
 		echo "B"
 
