@@ -4,4 +4,3 @@ bin
 config
 Jenkinsfile
 README.md
-restart.txt
