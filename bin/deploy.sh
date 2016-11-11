@@ -7,4 +7,4 @@ FOLDER_PATH=$4
 
 #ssh ${USER}@${HOST}
 
-rsync -azP --delete --exclude='bin,config,node_modules,Jenkinsfile,READE.md,restart.txt' ${WORKSPACE} ${USER}@${HOST}:${FOLDER_PATH}
+rsync -azP --delete --exclude='bin,config,node_modules,Jenkinsfile,READE.md,restart.txt' ${WORKSPACE}/* ${USER}@${HOST}:${FOLDER_PATH}
