@@ -10,7 +10,9 @@ node {
 
 		echo "A"
 
-		sh "sh ./bin/deploy.sh"
+		def FOLDER_PATH = ${PIQTIONARY_FOLDER_PATH};
+
+		sh "sh ./bin/deploy.sh ${DEV_USER} ${DEV_HOST} ${WORKSPACE} ${FOLDER_PATH}"
 
 		echo "B"
 
