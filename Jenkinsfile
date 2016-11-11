@@ -32,7 +32,7 @@ node {
 
 		}
 
-		if (HOST !== "")
+		if (HOST != "")
 			sh "sh ./bin/deploy.sh ${CI_USER} ${HOST} ${WORKSPACE} ${PIQTIONARY_FOLDER_PATH}"
 
 	}
