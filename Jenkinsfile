@@ -6,11 +6,13 @@ node {
 
 	checkout poll: false, scm: [$class: 'GitSCM', branches: [[name: '${BRANCH_NAME}']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'af1f0aaa-94f7-460a-a119-d5f914065022', url: 'https://github.com/hairpiq/piqtionary.git']]]
 
+	def FOLDER_PATH = '';
+
 	if (BRANCH_NAME == "jenkinsfile") {
 
 		echo "A"
 
-		def FOLDER_PATH = ${PIQTIONARY_FOLDER_PATH};
+		FOLDER_PATH = PIQTIONARY_FOLDER_PATH;
 
 		sh "sh ./bin/deploy.sh ${DEV_USER} ${DEV_HOST} ${WORKSPACE} ${FOLDER_PATH}"
 
