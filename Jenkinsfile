@@ -14,6 +14,10 @@ node {
 
 		FOLDER_PATH = PIQTIONARY_FOLDER_PATH;
 
+		echo "WORKSPACE: ${WORKSPACE}";
+
+		echo "BUILD_URL: ${BUILD_URL}"
+
 		sh "sh ./bin/deploy.sh ${DEV_USER} ${DEV_HOST} ${WORKSPACE} ${FOLDER_PATH}"
 
 		echo "B"
