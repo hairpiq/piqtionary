@@ -1,7 +1,7 @@
+.git
 bin
 config
 node_modules
 Jenkinsfile
-READE.md
+README.md
 restart.txt
-.git
