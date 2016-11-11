@@ -19,15 +19,15 @@ node {
 
 		if (BRANCH_NAME == "DEV") {
 
-			HOST = DEV_HOST;
+			HOST = "${DEV_HOST}";
 
 		} else if (BRANCH_NAME == "TEST") {
 
-			HOST = TEST_HOST;
+			HOST = "${TEST_HOST}";
 
 		} else if (BRANCH_NAME == "master") {
 
-			HOST = STAGING_HOST;
+			HOST = "${STAGING_HOST}";
 
 		}
 
