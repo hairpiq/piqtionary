@@ -1,53 +1,49 @@
 #!groovy
 
+// tell Jenkins code was pushed into a branch
 properties([pipelineTriggers([[$class: 'GitHubPushTrigger']])])
 
 node {
 
-	checkout poll: false, scm: [$class: 'GitSCM', branches: [[name: '${BRANCH_NAME}']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'af1f0aaa-94f7-460a-a119-d5f914065022', url: 'https://github.com/hairpiq/piqtionary.git']]]
+	// checkout that branch from github in this node's local workspace
+	stage("Stage 1") {
 
-	def FOLDER_PATH = '';
+		checkout poll: false, scm: [$class: 'GitSCM', branches: [[name: '${BRANCH_NAME}']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'af1f0aaa-94f7-460a-a119-d5f914065022', url: 'https://github.com/hairpiq/piqtionary.git']]]
 
-	if (BRANCH_NAME == "jenkinsfile") {
+	}
 
-		echo "A"
+	// assign the correct server address based on the branch that was updated
+	stage("Stage 2") {
 
-		FOLDER_PATH = PIQTIONARY_FOLDER_PATH;
+		def HOST = "";
 
-		echo "WORKSPACE: ${WORKSPACE}";
+		if (BRANCH_NAME == "DEV") {
 
-		echo "BUILD_URL: ${BUILD_URL}"
+			HOST = DEV_HOST;
 
-		sh "sh ./bin/deploy.sh ${DEV_USER} ${DEV_HOST} ${WORKSPACE} ${FOLDER_PATH}"
+		} else if (BRANCH_NAME == "TEST") {
 
-		echo "B"
+			HOST = TEST_HOST;
 
-	} else if (BRANCH_NAME == "DEV") {
+		} else if (BRANCH_NAME == "master") {
 
-		stage("Stage 1") {
+			HOST = STAGING_HOST;
 
-			echo "A";
-
-		}
-
-	} else if (BRANCH_NAME == "TEST") {
-
-		stage("Stage 1") {
-
-			echo "B";
-		
-		}
-
-	} else if (BRANCH_NAME == "master") {
-
-		stage("Stage 1") {
-
-			echo "C";
-		
 		}
 
 	}
 
-	archiveArtifacts '**'
+	// deploy the checkedout code to it's corresponding server
+	stage("Stage 3") {
+
+		sh "sh ./bin/deploy.sh ${CI_USER} ${HOST} ${WORKSPACE} ${PIQTIONARY_FOLDER_PATH}"
+
+	}
+
+	// archive this workspace
+	stage("Stage 4") {
+
+		archiveArtifacts '**'
+	}
 
 }
