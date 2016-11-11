@@ -10,7 +10,7 @@ node {
 
 		echo "A"
 
-		sh "sh ./bin/deploy.sh ${DEV_USER} ${DEV_HOST}"
+		sh "sh ./bin/deploy.sh"
 
 		echo "B"
 
