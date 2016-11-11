@@ -5,6 +5,6 @@ HOST=$2
 WORKSPACE=$3
 FOLDER_PATH=$4
 
-#ssh ${USER}@${HOST}
-
 rsync -azP --delete --exclude-from='bin/rysncignore.txt' ${WORKSPACE}/ ${USER}@${HOST}:${FOLDER_PATH}
+
+ssh ${USER}@${HOST} pm2 restart piqtionary
