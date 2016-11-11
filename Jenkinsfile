@@ -12,7 +12,8 @@ node {
 
 	}
 
-	// assign the correct server address based on the branch that was updated
+	// deploy the checkedout code to it's corresponding server
+	
 	stage("Stage 2") {
 
 		def HOST = "";
@@ -31,17 +32,12 @@ node {
 
 		}
 
-	}
-
-	// deploy the checkedout code to it's corresponding server
-	stage("Stage 3") {
-
 		sh "sh ./bin/deploy.sh ${CI_USER} ${HOST} ${WORKSPACE} ${PIQTIONARY_FOLDER_PATH}"
 
 	}
 
 	// archive this workspace
-	stage("Stage 4") {
+	stage("Stage 3") {
 
 		archiveArtifacts '**'
 	}
