@@ -1,0 +1,7 @@
+.git
+bin
+config
+node_modules
+Jenkinsfile
+README.md
+restart.txt

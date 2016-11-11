@@ -1,29 +1,49 @@
 #!groovy
 
-properties([pipelineTriggers([[$class: 'GitHubPushTrigger']])]) 
+// tell Jenkins code was pushed into a branch
+properties([pipelineTriggers([[$class: 'GitHubPushTrigger']])])
 
-if (BRANCH_NAME == "DEV") {
+node {
 
+	// checkout that branch from github in this node's local workspace
 	stage("Stage 1") {
 
-		echo "A";
+		checkout poll: false, scm: [$class: 'GitSCM', branches: [[name: '${BRANCH_NAME}']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'af1f0aaa-94f7-460a-a119-d5f914065022', url: 'https://github.com/hairpiq/piqtionary.git']]]
 
 	}
 
-} else if (BRANCH_NAME == "TEST") {
+	// assign the correct server address based on the branch that was updated
+	stage("Stage 2") {
 
-	stage("Stage 1") {
+		def HOST = "";
 
-		echo "B";
-	
+		if (BRANCH_NAME == "DEV") {
+
+			HOST = DEV_HOST;
+
+		} else if (BRANCH_NAME == "TEST") {
+
+			HOST = TEST_HOST;
+
+		} else if (BRANCH_NAME == "master") {
+
+			HOST = STAGING_HOST;
+
+		}
+
 	}
 
-} else if (BRANCH_NAME == "master") {
+	// deploy the checkedout code to it's corresponding server
+	stage("Stage 3") {
 
-	stage("Stage 1") {
+		sh "sh ./bin/deploy.sh ${CI_USER} ${HOST} ${WORKSPACE} ${PIQTIONARY_FOLDER_PATH}"
 
-		echo "C";
-	
+	}
+
+	// archive this workspace
+	stage("Stage 4") {
+
+		archiveArtifacts '**'
 	}
 
 }
