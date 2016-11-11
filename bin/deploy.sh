@@ -7,4 +7,4 @@ FOLDER_PATH=$4
 
 #ssh ${USER}@${HOST}
 
-rsync -azP --delete --exclude-from='bin/exclude-list.txt' ${WORKSPACE}/ ${USER}@${HOST}:${FOLDER_PATH}
+rsync -azP --delete --exclude-from='bin/rysncignore.txt' ${WORKSPACE}/ ${USER}@${HOST}:${FOLDER_PATH}
