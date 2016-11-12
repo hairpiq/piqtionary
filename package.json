@@ -1,5 +1,5 @@
 {
-  "name": "piqtionary-api",
+  "name": "piqtionary",
   "version": "1.0.0",
   "description": "create and share hairpiqs",
   "main": "app.js",
@@ -18,6 +18,15 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hairpiq/piqtionary.git"
+  },
   "author": "",
-  "license": ""
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hairpiq/piqtionary/issues"
+  },
+  "homepage": "https://github.com/hairpiq/piqtionary#readme"
 }
+
