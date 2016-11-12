@@ -3,5 +3,5 @@ bin
 config
 node_modules
 Jenkinsfile
+node_modules
 README.md
-restart.txt
