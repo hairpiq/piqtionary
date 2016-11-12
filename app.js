@@ -2,7 +2,11 @@ var express = require('express');
 var app = express();
 
 // identify static folder
-app.use(express.static( __dirname + '/hairpiq/s3-queue'));
+var fs = require('fs');
+var dir = __dirname + '/hairpiq/s3-queue';
+if (!fs.existsSync(dir))
+    fs.mkdirSync(dir);
+app.use(express.static(dir));
 
 // allow nodejs to access get and post variables
 var bodyParser = require('body-parser');
