@@ -10,7 +10,7 @@ if (!fs.existsSync(dir))
 app.use(express.static(dir));
 
 
-    var config = require('./config/clarifai');
+    var config = require('./config/hairpiq');
 
     var api = new Clarifai.App(
         config.clarifai.client_id,
