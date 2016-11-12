@@ -4,6 +4,7 @@
   "description": "create and share hairpiqs",
   "main": "app.js",
   "dependencies": {
+    "bluebird": "^3.4.6",
     "clarifai": "^2.0.14",
     "express": "^4.14.0",
     "live-server": "^1.1.0"
