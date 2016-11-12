@@ -1,8 +1,14 @@
-/**
- * Created by jackman79 on 10/31/16.
- */
+/* Clarifai code needs to be refactored into another script */
 
     var Clarifai = require("clarifai");
+
+// identify static folder
+var fs = require('fs');
+var dir = __dirname + '/hairpiq/s3-queue';
+if (!fs.existsSync(dir))
+    fs.mkdirSync(dir);
+app.use(express.static(dir));
+
 
     var config = require('./config/clarifai');
 
