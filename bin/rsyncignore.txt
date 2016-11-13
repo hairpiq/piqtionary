@@ -2,6 +2,7 @@
 .gitignore
 bin
 config
-node_modules
+hairpiq/s3-queue
 Jenkinsfile
+node_modules
 README.md
