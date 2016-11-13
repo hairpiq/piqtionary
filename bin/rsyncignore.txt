@@ -2,6 +2,6 @@
 .gitignore
 bin
 config
-Jenkinsfile
 node_modules
+Jenkinsfile
 README.md
