@@ -1,7 +1,0 @@
-.git
-.gitignore
-bin
-config
-Jenkinsfile
-node_modules
-README.md
