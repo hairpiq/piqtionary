@@ -39,7 +39,7 @@ module.exports = function(app) {
 
 			console.log(msg);
  
-			twilio.send(req.body.From, msg);
+			twilio.send(req.body.From, msg, config.twilio.logo);
 
 			return false;
 
@@ -62,7 +62,7 @@ module.exports = function(app) {
 
 		// send quick message
 		msg = "we're working on it...";
-		twilio.send(req.body.From, msg);
+		twilio.send(req.body.From, msg, config.twilio.logo);
 
 		execute(photo_url, stylename, ig_username, options).then(function(result) {
 
