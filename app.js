@@ -6,6 +6,33 @@
 // Code to run if we're in the master process
 var cluster = require('cluster');
 
+function init() {
+	
+	var express = require('express');
+	var app = express();
+
+	// identify static folder
+	var fs = require('fs');
+	var dir = __dirname + '/hairpiq/s3-queue';
+	if (!fs.existsSync(dir))
+	    fs.mkdirSync(dir);
+	app.use(express.static(dir));
+
+	// allow nodejs to access get and post variables
+	var bodyParser = require('body-parser');
+	app.use(bodyParser.urlencoded({extended: false}));
+
+	// instantiate hairpiq module
+	var hairpiq = require('./hairpiq/hairpiq')(app);
+
+	app.listen(3000, function() {
+	    
+	    // show which worker is running
+	    console.log('Worker %d running!', cluster.worker.id);
+	    
+	});
+}
+
 if (cluster.isMaster) {
 
 	 // Count the machine's CPUs
@@ -31,28 +58,6 @@ if (cluster.isMaster) {
 
 } else {
 
-	var express = require('express');
-	var app = express();
-
-	// identify static folder
-	var fs = require('fs');
-	var dir = __dirname + '/hairpiq/s3-queue';
-	if (!fs.existsSync(dir))
-	    fs.mkdirSync(dir);
-	app.use(express.static(dir));
-
-	// allow nodejs to access get and post variables
-	var bodyParser = require('body-parser');
-	app.use(bodyParser.urlencoded({extended: false}));
-
-	// instantiate hairpiq module
-	var hairpiq = require('./hairpiq/hairpiq')(app);
-
-	app.listen(3000, function() {
-	    
-	    // show which worker is running
-	    console.log('Worker %d running!', cluster.worker.id);
-	    
-	});
+	init();
 
 }
