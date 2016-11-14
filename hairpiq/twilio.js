@@ -11,17 +11,21 @@ module.exports = {
 		});
 		
 	},
-	send: function(to, msg) {
+	send: function(to, msg, mediaUrl) {
 
 		//require the Twilio module and create a REST client 
 		var client = require('twilio')(config.twilio.account_sid, config.twilio.auth_token);
 
-		client.messages.create({ 
+		var obj = { 
 		    to: to, 
 		    from: config.twilio.phone_number, 
-		    body: msg,
-		    mediaUrl: config.twilio.logo,
-		}, function(err, message) { 
+		    body: msg
+		}
+
+		if (mediaUrl !== undefined)
+			obj.mediaUrl = mediaUrl;
+
+		client.messages.create(obj, function(err, message) { 
 		    console.log('message.sid: ' + message.sid); 
 		});
 
