@@ -24,14 +24,15 @@ function init() {
 	app.listen(3000, function() {
 	    
 	    // show which worker is running
-	    if (config.isProd())
-	    	console.log('Worker %d running!', cluster.worker.id);
+	    //if (config.isProd())
+	    //	console.log('Worker %d running!', cluster.worker.id);
 	    
 	});
 }
 
-if (!config.isProd()) 
+//if (!config.isProd()) 
 	init();
+	/*
 else {
 
 	/*
@@ -40,7 +41,7 @@ else {
 	*/
 
 	// Code to run if we're in the master process
-	
+/*	
 	var cluster = require('cluster');
 
 
@@ -74,3 +75,5 @@ else {
 	}
 
 }
+
+*/
