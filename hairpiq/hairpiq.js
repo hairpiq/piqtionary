@@ -21,6 +21,8 @@ module.exports = function(app) {
 		var msg = "";
 		var photo_url = "";
 
+		console.log(req.body.MediaUrl0);
+
 		if (req.body.MediaUrl0 !== undefined)
 			photo_url = req.body.MediaUrl0;
 		else {
