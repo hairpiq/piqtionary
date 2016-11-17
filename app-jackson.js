@@ -12,7 +12,7 @@ app.listen(3000, function() {
     //
 });
 
-clarifai.predict('http://www.outfittrends.com/wp-content/uploads/2014/10/cute-black-girls-hairstyles.jpg');
+//clarifai.predict('http://www.outfittrends.com/wp-content/uploads/2014/10/cute-black-girls-hairstyles.jpg');
 
 app.get('/', function(req, res) {
     res.send('Clarifai test.')
