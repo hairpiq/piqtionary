@@ -17,7 +17,7 @@ module.exports = {
             // return false
         // if so
             // return true
-    }
+    },
     predict: function(photo_url) {
 
         return new Promise(function(resolve, reject) {
