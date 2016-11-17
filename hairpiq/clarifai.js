@@ -7,6 +7,17 @@ var api = new Clarifai.App(
 );
 
 module.exports = {
+    validate: function(photo_url) {
+        // check if safe for work
+        // if not
+            // return false
+        // if so
+        // check if man or woman
+        // if not
+            // return false
+        // if so
+            // return true
+    }
     predict: function(photo_url) {
 
         return new Promise(function(resolve, reject) {
