@@ -15,8 +15,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 // allow nodejs to utilize session storage
 var config = require('./config/hairpiq');
 var session = require('express-session');
-app.use(session({ secret: config.session.secret, resave: true, saveUninitialized: true, cookie: { maxAge: config.session.cookie.max_age }}));
-
+app.use(session({ secret: config.session.secret, resave: true, saveUninitialized: true}));
 // instantiate hairpiq module
 var hairpiq = require('./hairpiq/hairpiq')(app);
 
