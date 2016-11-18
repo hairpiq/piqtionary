@@ -2,5 +2,6 @@
 node_modules
 config
 ngrok
+ngrok.exe
 test
 hairpiq/s3-queue
