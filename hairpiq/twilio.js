@@ -2,12 +2,13 @@ var config = require('../config/hairpiq');
 var twilio = require('twilio');
 
 module.exports = {
-	creatReplyMessage: function (url) {
+	creatReplyMessage: function (msg, mediaUrl) {
 				
 		var twiml = new twilio.TwimlResponse();
 		return twiml.message(function() {
-			this.body('your hairpiq');
-			this.media(url);
+			this.body(msg);
+			if (mediaUrl !== undefined)
+				this.media(mediaUrl);
 		});
 		
 	},
@@ -25,8 +26,11 @@ module.exports = {
 		if (mediaUrl !== undefined)
 			obj.mediaUrl = mediaUrl;
 
-		client.messages.create(obj, function(err, message) { 
-		    console.log('message.sid: ' + message.sid); 
+		client.messages.create(obj, function(err, message) {
+			if (err)
+				console.log(err);
+			else
+		    	console.log('message.sid: ' + message.sid); 
 		});
 
 	}
