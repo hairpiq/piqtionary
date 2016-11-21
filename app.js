@@ -16,9 +16,13 @@ app.use(bodyParser.urlencoded({extended: false}));
 var config = require('./config/hairpiq');
 var session = require('express-session');
 app.use(session({ secret: config.session.secret, resave: true, saveUninitialized: true}));
+
 // instantiate hairpiq module
 var hairpiq = require('./hairpiq/hairpiq')(app);
 
+// bind this app to this port
+// (on the server, make sure Nginx listens to a different port than
+// what is specified here and Passenger will take care of the rest)
 app.listen(3000, function() {
     //
 });
