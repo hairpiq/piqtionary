@@ -40,9 +40,11 @@ module.exports = function(app) {
 			var photo_url = req.body.MediaUrl0;
 			var pieces = req.body.Body.split(" @");
 			var stylename = pieces[0];
-			var more_pieces = pieces[1].split(" ");
-			var ig_username = more_pieces[0];
-			var gravity = more_pieces[1];
+			if (pieces[1] !== undefined) {
+				var more_pieces = pieces[1].split(" ");
+				var ig_username = more_pieces[0];
+				var gravity = more_pieces[1];
+			}
 
 			// if media supplied AND the body has text
 				// if media validates
@@ -110,7 +112,7 @@ module.exports = function(app) {
 
 			if (gravity !== undefined && gravity.toLowerCase() === "north")
 				options.gravity = gravity;
-			
+
 			// send quick message
 			twilio.send(req.body.From, messages.b.one, config.twilio.logo);
 
