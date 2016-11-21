@@ -8,7 +8,7 @@ module.exports = {
 		two: "your hairpiq.\n\nWould you like it to be featured on hairpiq.com, to include our IG and FB?\n\nreply YES or NO"
 	},
 	c: {
-		one: "Cool! We are excited to review your Hairpiq and if approved, it will be featured in our hairpiq.com, the world's largest database of hairstyles.",
+		one: "Cool! We are excited to review your Hairpiq and if approved, it will be featured on Hairpiq, the world's largest database of hairstyles.",
 		two: "np. Have fun!",
 		three: "We'll take that non-yes as a no :-). np. Have fun!"
 	}
