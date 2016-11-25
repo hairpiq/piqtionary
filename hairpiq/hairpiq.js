@@ -20,7 +20,7 @@ module.exports = function(app) {
 
 		console.log('mms received from Twilio...');
 
-		console.log("req.session.hairpiqUrl: " + req.session.hairpiqUrl);
+		console.log("req.session.hairpiq_url: " + req.session.hairpiq_url);
 
 		// if hairpiq url is NOT set
 			// create hairpiq
@@ -34,7 +34,7 @@ module.exports = function(app) {
 					// send message of declination acceptance
 							
 
-		if (req.session.hairpiqUrl === undefined) {
+		if (req.session.hairpiq_url === undefined) {
 
 			var msg = "";
 			var photo_url = req.body.MediaUrl0;
@@ -111,7 +111,12 @@ module.exports = function(app) {
 
 			execute(photo_url, stylename, ig_username, options).then(function(result) {
 
-				req.session.hairpiqUrl = result.url;
+				// store values in session
+				req.session.hairpiq_url = result.url;
+				req.session.photo_url = photo_url;
+				req.session.s3_url = result.s3_url;
+				req.session.stylename = stylename;
+				req.session.ig_username = ig_username;
 
 				// generate Twilio reply
 
@@ -141,6 +146,8 @@ module.exports = function(app) {
 				
 				// save to piqtionary-review-queue
 				msg = messages.c.one;
+
+				submitForApproval(req.session);
 
 			} else if (answer === "NO")
 				msg = messages.c.two;
@@ -191,6 +198,8 @@ function execute(photo_url, stylename, ig_username, options) {
 
 				bitly.shortenLink(s3_url).then(function(result) {
 					
+					result.s3_url = s3_url;
+
 					console.log("Bitly responded...");
 
 					console.log(result.url);
@@ -204,5 +213,16 @@ function execute(photo_url, stylename, ig_username, options) {
 		});
 
 	});
+
+}
+
+function submitForApproval(session) {
+	
+	// store values in session
+	console.log("session.hairpiq_url: " + session.hairpiq_url);
+	console.log("session.photo_url: " + session.photo_url);
+	console.log("session.s3_url: " + session.s3_url);
+	console.log("session.stylename: " + session.stylename);
+	console.log("session.ig_username: " + session.ig_username);
 
 }
