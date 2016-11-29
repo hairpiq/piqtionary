@@ -1,24 +1,16 @@
 var express = require('express');
 var app = express();
 
-// identify static folder
-var fs = require('fs');
-var dir = __dirname + '/hairpiq/s3-queue';
-if (!fs.existsSync(dir))
-    fs.mkdirSync(dir);
-app.use(express.static(dir));
-
 // allow nodejs to access get and post variables
 var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({extended: false}));
-
-// allow nodejs to utilize session storage
-var config = require('./config/hairpiq');
-var session = require('express-session');
-app.use(session({ secret: config.session.secret, resave: true, saveUninitialized: true}));
+app.use(bodyParser.json());
 
 // instantiate hairpiq module
-var hairpiq = require('./hairpiq/hairpiq')(app);
+var hairpiq = require('./hairpiq')(app);
+
+//instantiate piqtionary web app module
+var piqtionary = require('./piqtionary')(app);
 
 // bind this app to this port
 // (on the server, make sure Nginx listens to a different port than
