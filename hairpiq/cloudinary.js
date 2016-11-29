@@ -37,9 +37,10 @@ module.exports = {
 			cloudinary.uploader.upload(photo_url, function(result) { 
 
 				var public_id = result.public_id;
+
 				_options.theme.color = result.predominant.google[1][0];
 
-				var url = addMeta({
+				var rendered_url = addMeta({
 					id: public_id,
 					stylename: stylename,
 					ig_username: ig_username,
@@ -47,7 +48,8 @@ module.exports = {
 				});
 
 				var result = {
-					url: url
+					rendered_url: rendered_url,
+					orig_photo_url: result.secure_url
 				}
 
 				resolve(result);
