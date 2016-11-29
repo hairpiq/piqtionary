@@ -4,6 +4,8 @@
 <ul>
 {{#each items}}
 	<li>
+		_id: {{ this._id }}
+		<br />
 		{{ @key }}: {{ this.stylename }}
 		<br />{{ this.ig_username }}
 		<br /><a href="{{ this.rendered_url }}" target="_blank"><img src="{{ this.rendered_url }}" width="200px" /></a>
