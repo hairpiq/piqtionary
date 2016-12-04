@@ -1,0 +1,29 @@
+var React = require('react');
+var ReactRouter = require('react-router');
+
+// Router keeps the ui and url in sync
+// Route maps the url path to the specific Component
+// IndexRoute is default Route that displays
+// browserHistory uses html5 history (if found)
+
+var Router = ReactRouter.Router;
+var Route = ReactRouter.Route;
+var IndexRoute = ReactRouter.IndexRoute;
+var browserHistory= ReactRouter.browserHistory;
+
+// site container and page components
+import Main from '../containers/Main';
+import Index from '../pages/Index';
+import About from '../pages/About';
+import Blog from '../pages/Blog';
+
+// match routes to components
+module.exports = (
+    <Router history={browserHistory}>
+		<Route path="/" component={Main}>
+			<IndexRoute component={Index}/>
+			<Route path="about" component={About}/>
+			<Route path="blog" component={Blog}/>
+		</Route>
+    </Router>
+)
