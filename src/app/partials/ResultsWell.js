@@ -62,7 +62,8 @@ class ResultsWell extends Component {
         return (
           <div className="uk-width-small-1-3 uk-width-medium-1-4 hairpiq-paper-container">
             <Paper key={i} className="hairpiq-paper">
-              <a href={listItem.rendered_url} target="_blank"><img src={listItem.rendered_url} /></a>
+              {/*listItem.rendered_url*/}
+              <a href="/p/"><img src={listItem.rendered_url} /></a>
               <div className="hairpiq-data">
                 <div className="title">
                   Style Name
