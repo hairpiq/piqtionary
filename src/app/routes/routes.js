@@ -14,7 +14,7 @@ var browserHistory= ReactRouter.browserHistory;
 // site container and page components
 import Main from '../containers/Main';
 import Index from '../pages/Index';
-import PhotoDetail from '../pages/PhotoDetail';
+import Photo from '../pages/Photo';
 import About from '../pages/About';
 import Blog from '../pages/Blog';
 
@@ -25,7 +25,7 @@ module.exports = (
 			<IndexRoute component={Index}/>
 			<Route path="about" component={About}/>
 			<Route path="blog" component={Blog}/>
-			<Route path="p" component={PhotoDetail}/>
+			<Route path="p" component={Photo}/>
 		</Route>
     </Router>
 )

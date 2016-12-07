@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { render } from 'react-dom';
 import SearchBar from '../partials/SearchBar';
 import ResultsWell from '../partials/ResultsWell';
+import Helmet from "react-helmet";
 
 const styles = {
   autoComplete: {
@@ -26,7 +27,11 @@ class Index extends Component {
     return (
       <div>
 
-        <div className="uk-grid uk-grid-margin">
+        <Helmet
+          defaultTitle="Hairpiq"
+        />
+
+        <div className="uk-grid uk-grid-margin uk-grid-collapse">
             <div className="uk-width-medium-6-10 uk-push-2-10 margin-top-20">
               
               <SearchBar />

@@ -5,6 +5,7 @@ import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import {orange700} from 'material-ui/styles/colors';
 import Divider from 'material-ui/Divider';
+import { Link } from 'react-router';
 
 const styles = {
   
@@ -63,7 +64,7 @@ class ResultsWell extends Component {
           <div className="uk-width-small-1-3 uk-width-medium-1-4 hairpiq-paper-container">
             <Paper key={i} className="hairpiq-paper">
               {/*listItem.rendered_url*/}
-              <a href="/p/"><img src={listItem.rendered_url} /></a>
+              <Link to="/p/"><img src={listItem.rendered_url} /></Link>
               <div className="hairpiq-data">
                 <div className="title">
                   Style Name
