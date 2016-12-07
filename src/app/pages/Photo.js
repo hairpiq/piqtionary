@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { render } from 'react-dom';
 import SearchBar from '../partials/SearchBar';
 import DetailCard from '../partials/DetailCard';
-import Helmet from "react-helmet";
+import Helmet from 'react-helmet';
+import CreateAHairpiqButton from '../partials/CreateAHairpiqButton';
 
 const styles = {
   autoComplete: {
@@ -38,7 +39,7 @@ class Photo extends Component {
 
     return (
       <div>
-      
+
         <Helmet
           title={params.stylename}
           titleTemplate="%s - Hairpiq"
@@ -74,6 +75,8 @@ class Photo extends Component {
           <DetailCard />
           
         </div>
+
+        <CreateAHairpiqButton />
 
       </div>
     );

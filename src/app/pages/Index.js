@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import { render } from 'react-dom';
 import SearchBar from '../partials/SearchBar';
 import ResultsWell from '../partials/ResultsWell';
-import Helmet from "react-helmet";
+import Helmet from 'react-helmet';
+import CreateAHairpiqButton from '../partials/CreateAHairpiqButton';
+
 
 const styles = {
   autoComplete: {
@@ -49,6 +51,8 @@ class Index extends Component {
           </div>
         
         </div>
+
+        <CreateAHairpiqButton />
 
       </div>
     );

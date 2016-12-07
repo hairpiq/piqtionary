@@ -57,6 +57,15 @@
 	margin-right: 0 !important;
 }
 
+.button.download {
+	background: #F57C00;
+}
+
+.button.download svg {
+	height: 100% !important;
+    width: 100% !important;
+}
+
 .button.tumblr {
 	padding: 10px 13px 0 !important;
 }
@@ -84,6 +93,7 @@
 
 @media (min-width:960px) {
 	.detail-card .button {
+		width: 60px !important;
     	height: 60px !important;
 	}
 

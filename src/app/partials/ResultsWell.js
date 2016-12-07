@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
 import Paper from 'material-ui/Paper';
-import FloatingActionButton from 'material-ui/FloatingActionButton';
-import ContentAdd from 'material-ui/svg-icons/content/add';
-import {orange700} from 'material-ui/styles/colors';
 import Divider from 'material-ui/Divider';
 import { Link } from 'react-router';
 
@@ -96,10 +93,6 @@ class ResultsWell extends Component {
       <div>
 
         <div className="results-well-container">
-
-          <FloatingActionButton backgroundColor={orange700} className="button-create-a-hairpiq">
-            <ContentAdd />
-          </FloatingActionButton>
 
            <div className="uk-grid uk-grid-margin" data-uk-grid-match data-uk-grid-margin>
 
