@@ -2,7 +2,7 @@ var express = require('express');
 var app = express();
 
 var config = require('./config/hairpiq');
-var clarifai = require('./hairpiq/clarifai');
+var clarifai = require('./src/api/hairpiq_creator/clarifai');
 
 // allow nodejs to access get and post variables
 var bodyParser = require('body-parser');
@@ -26,6 +26,22 @@ app.post('/test', function(req, res) {
     clarifai.predict(req.body.MediaUrl0).then(function(result) {
         console.log(result);
         res.send(result.name);
+    });
+
+});
+
+app.post('/insert', function(req, res) {
+    
+	console.log(req.body.s3_url);
+	console.log(req.body.stylename);
+	console.log(req.body.ig_username);
+
+    // predict name of hairstyle
+    console.log('AA');
+    clarifai.insert(req.body.s3_url, req.body.stylename, req.body.ig_username).then(function(result) {
+    	console.log('BB');
+        res.send(result);
+        console.log('CC');
     });
 
 });

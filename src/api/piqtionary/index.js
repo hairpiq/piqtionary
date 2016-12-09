@@ -3,15 +3,15 @@ var assert = require('assert');
 
 module.exports = function(app, db) {
 
+	console.log('piqtionary api started');
+
 	/*
 		submit a hairpiq to the review queue
 	*/
 
-	console.log('piqtionary api started');
-
 	app.post('/piqtionary/submit', function(req, res, next) {
 
-		console.log('A - called: /piqtionary/submit');
+		console.log('B - called: /piqtionary/submit');
 
 		var item = {
 			rendered_url: req.body.rendered_url,
@@ -24,7 +24,7 @@ module.exports = function(app, db) {
 		db.collection('pending_hairpiqs').insertOne(item, function(err, result) {
 						
 			assert.equal(null, err);
-			console.log('B - Item inserted into pending_hairpiqs: ' + result.insertedId);
+			console.log('C - Item inserted into pending_hairpiqs: ' + result.insertedId);
 
 			res.end();
 		
@@ -37,7 +37,7 @@ module.exports = function(app, db) {
 
 	app.post('/piqtionary/approve', function(req, res, next) {
 
-		console.log('A - called: /piqtionary/approve');
+		console.log('B - called: /piqtionary/approve');
 
 		// if hairpiq is approved
 			// insert new into mongodb hairpiqs collection
@@ -68,7 +68,7 @@ module.exports = function(app, db) {
 			db.collection('approved_hairpiqs').insertOne(item, function(err, result) {
 							
 				assert.equal(null, err);
-				console.log('B.A - Item inserted into approved_hairpiqs: ' + result.insertedId);
+				console.log('C.A - Item inserted into approved_hairpiqs: ' + result.insertedId);
 				removePendingHairpiq(pending_id);
 
 			});
@@ -80,7 +80,7 @@ module.exports = function(app, db) {
 			db.collection('removed_hairpiqs').insertOne(item, function(err, result) {
 							
 				assert.equal(null, err);
-				console.log('B.B - Item inserted into removed_hairpiqs: ' + result.insertedId);
+				console.log('C.B - Item inserted into removed_hairpiqs: ' + result.insertedId);
 				removePendingHairpiq(pending_id);
 
 			});
@@ -92,7 +92,7 @@ module.exports = function(app, db) {
 			db.collection('pending_hairpiqs').remove(pending_id, function(err, result) {
 							
 				assert.equal(null, err);
-				console.log('C - Item removed from pending_hairpiqs: ' + pending_id._id);
+				console.log('D - Item removed from pending_hairpiqs: ' + pending_id._id);
 
 				res.end();
 			
@@ -108,7 +108,7 @@ module.exports = function(app, db) {
 
 	app.post('/piqtionary/set_status', function(req, res, next) {
 
-		console.log('A - called: /piqtionary/set_status');
+		console.log('B - called: /piqtionary/set_status');
 
 		// set hairpiq status 
 			// find hairpiq in approved_hairpiqs collection
@@ -129,7 +129,7 @@ module.exports = function(app, db) {
 		db.collection('approved_hairpiqs').update(id, { $set: item }, function(err, result) {
 					
 			assert.equal(null, err);
-			console.log('B - Updated document in approved_hairpiqs: ' + id._id);
+			console.log('C - Updated document in approved_hairpiqs: ' + id._id);
 
 			res.end();
 		
@@ -143,7 +143,7 @@ module.exports = function(app, db) {
 
 	app.post('/piqtionary/delete', function(req, res, next) {
 
-		console.log('A - called: /piqtionary/delete');
+		console.log('B - called: /piqtionary/delete');
 
 		// delete a hairpiq 
 			// find hairpiq in removed_hairpiqs collection
@@ -159,13 +159,52 @@ module.exports = function(app, db) {
 		db.collection('pending_hairpiqs').remove(id, function(err, result) {
 					
 			assert.equal(null, err);
-			console.log('B - Deleted document from removed_hairpiqs: ' + id._id);
+			console.log('C - Deleted document from removed_hairpiqs: ' + id._id);
 
 			res.end();
 		
 		});
 
-		
+	});
+
+	/*
+		retrieve a list of hairpiqs
+	*/
+
+	app.post('/piqtionary/list', function(req, res, next) {
+
+		console.log('B - called: /piqtionary/list');
+
+		// find a collection of hairpiqs
+		// limit - the amount of docs to return
+		// page_num - the index of the set of docs to return
+
+		var resultArray = [];
+		var query = {'publish_status': 'published'};
+
+		if (req.body.limit !== undefined && req.body.limit.length > 0) {
+			var limit = Number(req.body.limit);
+			var skip = Number(req.body.page_num) * Number(req.body.limit)
+
+			var cursor = db.collection('approved_hairpiqs').find(query).skip(skip).sort({ _id : -1}).limit(limit);
+
+			cursor.forEach(function(doc, err) {
+					
+				console.log('C.A - Retrieved document in approved_hairpiqs: ' + doc._id);
+				assert.equal(null, err);
+				resultArray.push(doc);
+
+			}, function() {
+								
+				res.setHeader('Content-Type', 'application/json');
+				res.send(JSON.stringify(resultArray));
+
+			});
+
+		} else {
+			console.log('C.B - No limit supplied.');
+			res.send('No limit supplied.');
+		}
 
 	});
 }

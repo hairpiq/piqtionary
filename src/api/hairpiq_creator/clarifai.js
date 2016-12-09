@@ -20,25 +20,70 @@ module.exports = {
     },
     predict: function(photo_url) {
 
+        console.log('Clarifai - A: predict hairstyle based off of submitted image');
+
         return new Promise(function(resolve, reject) {
 
-            api.models.predict(config.model_id, photo_url).then(function (response) {
-                    var results =  getTopRatedTagHandler(response);
-                    resolve(results);
+            api.models.predict(config.model_id, photo_url).then(function (result) {
+                    
+                    console.log('Clarifai - B: predicted...');
+                    
+                    result =  getTopRatedTagHandler(result);
+                    console.log(result);
+
+                    resolve(result);
+
                 },
                 function (err) {
+                    
                     identifyClarifaiError(err);
                     reject(new Error(err));
+
                 }
             );
         });
 
     },
-    insert: function(photo_url, stylename) {
-        // insert photo_url and stylename in clarifai database
-        // return id to be associated submitter ig_username stored in some
-        // sort of nosql db of some kind
-    }
+    insert: function(photo_url, stylename, ig_username) {
+
+        console.log('Clarifai - A: insert hairpiq and stylename concept into clarifai');
+        
+        return new Promise(function(resolve, reject) {
+
+            var concept = stylename.replace(/ /g,'').toLowerCase();
+
+            api.inputs.create({
+                url: photo_url,
+                concepts: [{id: concept, value: true }]
+            }).then(function(result) {
+
+                console.log('Clarifai - B: inserted. Now train model: ' + config.model_id);
+                
+                console.log(result);
+
+                api.models.train(config.model_id).then(function(result) {
+
+                    console.log('Clarifai - C: trained.');
+                    
+                    resolve(response);
+
+                },function(err) {
+                    
+                    console.error(err);
+                    reject(new Error(err));
+
+                });
+
+            },
+            function(err) {
+                
+                console.error(err);
+                reject(new Error(err));
+
+            });
+
+        });
+    },
 }
 
 

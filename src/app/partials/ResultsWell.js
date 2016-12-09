@@ -3,65 +3,64 @@ import { render } from 'react-dom';
 import Paper from 'material-ui/Paper';
 import Divider from 'material-ui/Divider';
 import { Link } from 'react-router';
-
-const styles = {
-  
-}
+import InfiniteScroll from 'react-infinite-scroller';
 
 class ResultsWell extends Component {
 
   constructor(props) {
-    super(props);
+      
+      super(props);
 
-    this.state = {
-      dataSource: [],
-    };
+      this.state = {
+          hairpiqs: [],
+          page_num: 0,
+          hasMoreItems: true,
+      };
+      
   }
 
-  handleUpdateInput = (value) => {
-    this.setState({
-      dataSource: [
-        value,
-        value + value,
-        value + value + value,
-      ],
+  loadHairpiqs(page) {
+
+    var self = this;
+
+    var result  = {
+      hostname: 'hairpiq.ngrok.io'
+    }
+
+    var hairpiqs = self.state.hairpiqs;
+
+    $.post('http://' + result.hostname + '/piqtionary/list', {limit: 10, page_num: this.state.page_num }, function(result) {
+      
+      if(result.length > 0) {
+        result.map((hairpiq) => {
+          
+            hairpiqs.push(hairpiq);
+          
+          });
+
+        self.setState({
+          hairpiqs: hairpiqs,
+          page_num: self.state.page_num + 1
+        });
+      } else {
+        self.setState({
+            hasMoreItems: false
+        });
+      }
+
     });
-  }
-
-  componentDidMount() {
-   
-    
   }
 
   render() {
 
-    const itemHTML = () => {
-    
-    //test data
-    var params = {
-      rendered_url: 'http://res.cloudinary.com/hairpiq/image/upload/co_black,e_colorize,g_north_west,l_logo,o_40,w_372,x_74,y_77/co_black,e_colorize,g_south_west,l_plate,o_25,x_360,y_148/co_white,g_south_west,l_text:Montserrat_62_bold:Test,x_390,y_234/co_white,g_south_west,l_text:Montserrat_50_letter_spacing_1:@averygoodidea,x_390,y_168/x5v2vimxvdejiqizhd69',
-      orig_photo_url: 'https://res.cloudinary.com/hairpiq/image/upload/v1480200843/x5v2vimxvdejiqizhd69.jpg',
-      s3_url: 'https://dev-piqtionary.s3.amazonaws.com/x5v2vimxvdejiqizhd69.jpg',
-      stylename: 'Test',
-      ig_username: '@averygoodidea'
-    }
+    const loader = <div className="loader">Loading ...</div>;
 
-    // test populate items
     var items = [];
-    for (var i = 0; i < 10; i++) {
-      items.push(params);
-      console.log(items[i]);
-    }
-
-    var _itemHtml = items.map(function (listItem, i) {
-      console.log('i: ' + i);
-      console.log(listItem);
-      console.log(listItem._id);
-        return (
-          <div className="uk-width-small-1-3 uk-width-medium-1-4 hairpiq-paper-container">
+      this.state.hairpiqs.map((listItem, i) => {
+        items.push(
+            <div className="uk-width-small-1-3 uk-width-medium-1-4 hairpiq-paper-container">
             <Paper key={i} className="hairpiq-paper">
-              {/*listItem.rendered_url*/}
-              <Link to="/p/"><img src={listItem.rendered_url} /></Link>
+              <Link to={"/p/?id=" + listItem._id}><img src={listItem.s3_url} /></Link>
               <div className="hairpiq-data">
                 <div className="title">
                   Style Name
@@ -82,11 +81,7 @@ class ResultsWell extends Component {
             </Paper>
           </div>
         );
-      });
-
-      return _itemHtml;
-
-    }
+    });
 
     return (
       
@@ -94,11 +89,16 @@ class ResultsWell extends Component {
 
         <div className="results-well-container">
 
-           <div className="uk-grid uk-grid-margin" data-uk-grid-match data-uk-grid-margin>
+          <InfiniteScroll
+              pageStart={0}
+              loadMore={this.loadHairpiqs.bind(this)}
+              hasMore={this.state.hasMoreItems}
+              loader={loader}>
 
-            {itemHTML()}
-
-          </div>
+              <div className="uk-grid uk-grid-margin" data-uk-grid-match data-uk-grid-margin>
+                  {items}
+              </div>
+          </InfiniteScroll>
         
         </div>
 
