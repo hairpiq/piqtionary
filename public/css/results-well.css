@@ -5,7 +5,7 @@
 	position: relative;
 }
 
-.results-well-container > .uk-grid {
+.results-well-container .uk-grid {
 	padding: 0 25px 0;
 }
 

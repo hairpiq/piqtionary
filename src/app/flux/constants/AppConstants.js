@@ -1,5 +1,0 @@
-module.exports = {
-	GET_NEXT_LIST: 'GET_NEXT_LIST',
- 	ADD_ITEM: 'ADD_ITEM',
-	REMOVE_ITEM: 'REMOVE_ITEM'
-};

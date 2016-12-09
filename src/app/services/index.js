@@ -4,11 +4,11 @@ var result  = {
 	hostname: 'hairpiq.ngrok.io'
 }
 
-var AppServices = {
-	getList: function(limit, page_num) {
+module.exports = {
+	getList: function(page_num) {
 
 		var params = {
-			limit: limit,
+			limit: 10,
 			page_num: page_num
 		}
 
@@ -22,5 +22,3 @@ var AppServices = {
 
 	}
 };
-
-module.exports = AppServices;
