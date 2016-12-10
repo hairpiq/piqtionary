@@ -19,7 +19,7 @@ class SearchBar extends Component {
     var _this = this;
 
     Services.getKeywords().then(function(result) {
-      
+
       _this.setState({ dataSource: result });
 
     });
@@ -31,11 +31,26 @@ class SearchBar extends Component {
 
   componentDidMount() {
    
-    $(".search-bar input").focus(function() {
-      $(".search-bar").addClass("focused");
+    var _this = this;
+    var input = $(".search-bar input");
+    var search_bar = $(".search-bar");
+    
+    input.focus(function() {
+    
+      search_bar.addClass("focused");
+    
     });
-    $(".search-bar input").blur(function() {
-      $(".search-bar").removeClass("focused");
+    
+    input.blur(function() {
+    
+      search_bar.removeClass("focused");
+    
+    });
+
+    $(".search-button").click(function() {
+
+      _this.props.updateKeyword(input.attr('value'));
+
     });
     
   }

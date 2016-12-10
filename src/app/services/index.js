@@ -5,15 +5,9 @@ var result  = {
 }
 
 module.exports = {
-	getList: function(page_num, keyword) {
+	getList: function(params) {
 
-		var params = {
-			limit: 10,
-			page_num: page_num
-		}
-
-		if (keyword)
-			params.keyword = keyword;
+		params.limit = 10;
 
 		return new Promise(function(resolve, reject) {
 

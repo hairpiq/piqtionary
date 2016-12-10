@@ -14,15 +14,22 @@ const styles = {
 
 class Index extends Component {
 
-  handleUpdateInput = (value) => {
+  constructor() {
+    super();
+
+    this.state = {
+      keyword : ''
+    }
+
+  }
+
+  updateKeyword(keyword) {
+
     this.setState({
-      dataSource: [
-        value,
-        value + value,
-        value + value + value,
-      ],
-    });
-  };
+      keyword: keyword
+    })
+
+  }
 
   render() {
 
@@ -36,7 +43,9 @@ class Index extends Component {
         <div className="uk-grid uk-grid-margin uk-grid-collapse">
             <div className="uk-width-medium-6-10 uk-push-2-10 margin-top-20">
               
-              <SearchBar />
+              <SearchBar
+                updateKeyword={this.updateKeyword.bind(this)}
+              />
 
             </div>
 
@@ -46,7 +55,9 @@ class Index extends Component {
 
           <div className="uk-width-medium-10-10 margin-top-20">
         
-            <ResultsWell />
+            <ResultsWell
+              keyword={this.state.keyword}
+            />
 
           </div>
         
