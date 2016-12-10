@@ -184,7 +184,11 @@ module.exports = function(app, db) {
 
 		if (req.body.limit !== undefined && req.body.limit.length > 0) {
 			var limit = Number(req.body.limit);
-			var skip = Number(req.body.page_num) * Number(req.body.limit)
+			var skip = Number(req.body.page_num) * Number(req.body.limit);
+
+			// if a keyword is included, add it to the query
+			if (req.body.keyword)
+				query.stylename = new RegExp('^'+ req.body.keyword + '$', "i");
 
 			var cursor = db.collection('approved_hairpiqs').find(query).skip(skip).sort({ _id : -1}).limit(limit);
 
@@ -207,4 +211,32 @@ module.exports = function(app, db) {
 		}
 
 	});
+
+	/*
+		create database keyword json for AutoComplete module
+	*/
+
+	app.post('/piqtionary/keywords', function(req, res, next) {
+
+		console.log('B - called: /piqtionary/keywords');
+
+		var resultArray = [];
+
+		var cursor = db.collection('word_count').find().sort({ value: -1 });
+		cursor.forEach(function(doc, err) {
+					
+			console.log('C - Retrieved document in word_count: ' + doc._id);
+			assert.equal(null, err);
+			resultArray.push(doc._id);
+
+		}, function() {
+							
+			res.setHeader('Content-Type', 'application/json');
+			res.send(JSON.stringify(resultArray));
+
+		});
+
+	});
+
+
 }

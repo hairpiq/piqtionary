@@ -3,6 +3,7 @@ import { render } from 'react-dom';
 import AutoComplete from 'material-ui/AutoComplete';
 import FlatButton from 'material-ui/FlatButton';
 import {orange700} from 'material-ui/styles/colors';
+import Services from '../services/'
 
 const styles = {
   autoComplete: {
@@ -15,20 +16,18 @@ class SearchBar extends Component {
   constructor(props) {
     super(props);
 
+    var _this = this;
+
+    Services.getKeywords().then(function(result) {
+      
+      _this.setState({ dataSource: result });
+
+    });
+
     this.state = {
       dataSource: [],
     };
   }
-
-  handleUpdateInput = (value) => {
-    this.setState({
-      dataSource: [
-        value,
-        value + value,
-        value + value + value,
-      ],
-    });
-  };
 
   componentDidMount() {
    
@@ -57,7 +56,7 @@ class SearchBar extends Component {
 	        style={styles.autoComplete}
 	        className="search-bar"
 	        dataSource={this.state.dataSource}
-	        onUpdateInput={this.handleUpdateInput}
+	        filter={AutoComplete.caseInsensitiveFilter}
 	        fullWidth={true}
 	      />
 	      <FlatButton
