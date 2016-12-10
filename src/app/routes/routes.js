@@ -9,7 +9,8 @@ var ReactRouter = require('react-router');
 var Router = ReactRouter.Router;
 var Route = ReactRouter.Route;
 var IndexRoute = ReactRouter.IndexRoute;
-var browserHistory= ReactRouter.browserHistory;
+var browserHistory = ReactRouter.browserHistory;
+var Redirect = ReactRouter.Redirect;
 
 // site container and page components
 import Main from '../containers/Main';
@@ -25,7 +26,8 @@ module.exports = (
 			<IndexRoute component={Index}/>
 			<Route path="about" component={About}/>
 			<Route path="blog" component={Blog}/>
-			<Route path="p" component={Photo}/>
+			<Route path="p/:id" component={Photo}/>
+			<Redirect from="p/:id/" to="p/:id" />
 		</Route>
     </Router>
 )

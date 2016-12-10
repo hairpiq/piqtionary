@@ -16,14 +16,6 @@ class SearchBar extends Component {
   constructor(props) {
     super(props);
 
-    var _this = this;
-
-    Services.getKeywords().then(function(result) {
-
-      _this.setState({ dataSource: result });
-
-    });
-
     this.state = {
       dataSource: [],
     };
@@ -32,6 +24,25 @@ class SearchBar extends Component {
   componentDidMount() {
    
     var _this = this;
+
+    // get keywords for AutoComplete
+    Services.getKeywords().then(function(result) {
+
+      _this.setState({ dataSource: result });
+
+    }).catch(function(error) {
+      console.log(error);
+      reject(new Error(error));
+    });
+
+    // update keyword state in parent container
+    $(".search-button").click(function() {
+
+      _this.props.updateKeyword(input.attr('value'));
+
+    });
+
+    // on focus, highlight the search field
     var input = $(".search-bar input");
     var search_bar = $(".search-bar");
     
@@ -45,12 +56,6 @@ class SearchBar extends Component {
     
       search_bar.removeClass("focused");
     
-    });
-
-    $(".search-button").click(function() {
-
-      _this.props.updateKeyword(input.attr('value'));
-
     });
     
   }
@@ -69,6 +74,7 @@ class SearchBar extends Component {
 
 	       <AutoComplete
 	        style={styles.autoComplete}
+          floatingLabelText="what are you looking for?"
 	        className="search-bar"
 	        dataSource={this.state.dataSource}
 	        filter={AutoComplete.caseInsensitiveFilter}
@@ -76,7 +82,6 @@ class SearchBar extends Component {
 	      />
 	      <FlatButton
 	        className="search-button"
-	        styles={styles.button}
 	        backgroundColor={orange700}
 	        hoverColor="#faba79"
 	        icon={icon}

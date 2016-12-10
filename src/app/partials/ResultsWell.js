@@ -25,14 +25,18 @@ class ResultsWell extends Component {
 
     var _this = this;
 
+    // get list of hairpiqs
     var hairpiqs = _this.state.hairpiqs;
 
+    // add page_num
     var params = {
       page_num: this.state.page_num
     }
 
+    // if the keyword state has changed, include it
     if(this.state.keyword.length > 0)
       params.keyword = this.state.keyword;
+
 
     Services.getList(params).then(function(result) {
       
@@ -53,6 +57,9 @@ class ResultsWell extends Component {
         });
       }
 
+    }).catch(function(error) {
+      console.log(error);
+      reject(new Error(error));
     });
   }
 
@@ -83,7 +90,7 @@ class ResultsWell extends Component {
             
             <div className="hairpiq-paper-container uk-width-small-1-3 uk-width-medium-1-4">
               <Paper key={i} className="hairpiq-paper">
-                <Link to={"/p/?id=" + listItem._id}><img src={listItem.s3_url} /></Link>
+                <Link to={"/p/" + listItem._id + '/'}><img src={listItem.s3_url} /></Link>
                 <div className="hairpiq-data">
                   <div className="title">
                     Style Name

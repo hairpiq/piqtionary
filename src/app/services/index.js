@@ -13,6 +13,9 @@ module.exports = {
 
 			$.post('http://' + result.hostname + '/piqtionary/list', params, function(result) {
 				resolve(result);
+			}).fail(function(error) {
+				console.log(error);
+				reject(new Error(error));
 			});
 
 		});
@@ -24,6 +27,9 @@ module.exports = {
 
 			$.post('http://' + result.hostname + '/piqtionary/keywords', function(result) {
 				resolve(result);
+			}).fail(function(error) {
+				console.log(error);
+				reject(new Error(error));
 			});
 
 		});
