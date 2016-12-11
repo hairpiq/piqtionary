@@ -1,15 +1,19 @@
-var router = require('express').Router();
-var React = require('react');
-var ReactDOMServer = require('react-dom/server');
-var Main = require('../containers/Main.js');
+import React from 'react';
+import ReactDOMServer from 'react-dom/server';
+var ExpressRouter = require('express').Router();
 var ReactRouter = require('react-router');
 
-import injectTapEventPlugin from 'react-tap-event-plugin';
+// site containers
+import HTML from '../containers/HTML';
+import Main from '../containers/Main';
+
 // Needed for onTouchTap
 // http://stackoverflow.com/a/34015469/988941
+import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();
 
-router.get('*', function(req, res) {
+ExpressRouter.get('*', function(req, res) {
+	
 	var props = {}
 
 	ReactRouter.match({
@@ -24,26 +28,14 @@ router.get('*', function(req, res) {
 					}} />
 			);
 
-			let html = [
-		    '<!DOCTYPE html>',
-		    '<html>',
-		      '<head>',
-		        '<meta charset="utf-8"/>',
-		        '<link rel="stylesheet" href="/css/styles.css"></link>',
-		      '</head>',
-		      '<body>',
-		        '<div id="app">' + markup + '</div>',
-		      '</body>',
-		      '<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>',
-		      '<script type="text/javascript" src="/app.js"></script>',
-		    '</html>'
-		  ].join('');
+		  var html = HTML(markup);
 
 			res.send(html);
 		} else {
 			res.status(404).send('Not Found');
 		}
 	});
+	
 });
 
-module.exports = router;
+module.exports = ExpressRouter;

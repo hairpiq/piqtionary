@@ -1,4 +1,4 @@
-var React = require('react');
+import React from 'react';
 var ReactRouter = require('react-router');
 
 // Router keeps the ui and url in sync
