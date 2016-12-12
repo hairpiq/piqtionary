@@ -2,7 +2,8 @@
 .gitignore
 bin
 .env
-hairpiq/s3-queue
+src/api/hairpiq_creator/s3-queue
 Jenkinsfile
 node_modules
 README.md
+public
