@@ -19,7 +19,8 @@ const config = {
     new webpack.DefinePlugin({
       'process.env':{
         'NODE_ENV': JSON.stringify('production'),
-        'HOSTNAME': JSON.stringify(process.env.HOSTNAME)
+        'HOSTNAME': JSON.stringify(process.env.HOSTNAME),
+        'API_BASIC_AUTH': JSON.stringify(process.env.API_BASIC_AUTH)
       }
     }),
     // Minify the bundle
