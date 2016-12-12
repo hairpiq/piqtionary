@@ -1,10 +1,10 @@
-var config = require('../config/hairpiq');
-
+require('dotenv').config();
+var config = process.env;
 var cloudinary = require('cloudinary');
 cloudinary.config({ 
-  cloud_name: config.cloudinary.cloud_name, 
-  api_key: config.cloudinary.api_key, 
-  api_secret: config.cloudinary.api_secret
+  cloud_name: config.CLOUDINARY_CLOUD_NAME, 
+  api_key: config.CLOUDINARY_API_KEY, 
+  api_secret: config.CLOUDINARY_API_SECRET
 });
 
 module.exports = {
@@ -37,9 +37,10 @@ module.exports = {
 			cloudinary.uploader.upload(photo_url, function(result) { 
 
 				var public_id = result.public_id;
+
 				_options.theme.color = result.predominant.google[1][0];
 
-				var url = addMeta({
+				var rendered_url = addMeta({
 					id: public_id,
 					stylename: stylename,
 					ig_username: ig_username,
@@ -47,7 +48,8 @@ module.exports = {
 				});
 
 				var result = {
-					url: url
+					rendered_url: rendered_url,
+					orig_photo_url: result.secure_url
 				}
 
 				resolve(result);
@@ -61,6 +63,7 @@ module.exports = {
 
 function addMeta(obj) {
 
+	var config = {};
 	config.meta = {};
 
 	// Apply Logo Customizations
