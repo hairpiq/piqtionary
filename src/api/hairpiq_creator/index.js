@@ -252,6 +252,9 @@ function submitForReview(obj) {
 			    url: 'http://' + config.HOSTNAME + '/piqtionary/submit', //URL to hit
 			    qs: {time: +new Date()}, //Query string data
 			    method: 'POST',
+			    headers : {
+		            "Authorization" : config.API_BASIC_AUTH
+		        },
 			    //Lets post the following key/values as form
 			    json: params
 			}, function(error, response, body){
