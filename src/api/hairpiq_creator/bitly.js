@@ -1,10 +1,11 @@
-var config = require('../config/hairpiq');
+require('dotenv').config();
+var config = process.env;
 var BitlyAPI = require("node-bitlyapi");
 var bitly = new BitlyAPI({
-	client_id: config.bitly.client_id,
-	client_secret: config.bitly.client_secret
+	client_id: config.BITLY_CLIENT_ID,
+	client_secret: config.BITLY_CLIENT_SECRET
 });
-bitly.setAccessToken(config.bitly.access_token);
+bitly.setAccessToken(config.BITLY_ACCESS_TOKEN);
 
 module.exports = {
 	shortenLink: function(url) {
