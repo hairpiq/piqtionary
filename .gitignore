@@ -5,3 +5,5 @@ ngrok
 ngrok.exe
 test
 hairpiq/s3-queue
+.env
+public
