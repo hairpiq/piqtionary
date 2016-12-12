@@ -5,11 +5,17 @@ module.exports = {
 
 		return new Promise(function(resolve, reject) {
 
-			$.post('//' + process.env.HOSTNAME + '/piqtionary/list', params, function(result) {
-				resolve(result);
-			}).fail(function(error) {
-				console.log(error);
-				reject(new Error(error));
+			$.ajax({
+			  	type: "POST",
+			  	url: '//' + process.env.HOSTNAME + '/piqtionary/list',
+			  	data: params,
+			  	success: function(result) {
+					resolve(result);
+				},
+			 	dataType: 'json',
+			 	beforeSend: function (xhr) {
+				    xhr.setRequestHeader ("Authorization", process.env.API_BASIC_AUTH);
+				}
 			});
 
 		});
@@ -19,11 +25,16 @@ module.exports = {
 
 		return new Promise(function(resolve, reject) {
 
-			$.post('//' + process.env.HOSTNAME + '/piqtionary/keywords', function(result) {
-				resolve(result);
-			}).fail(function(error) {
-				console.log(error);
-				reject(new Error(error));
+			$.ajax({
+			  	type: "POST",
+			  	url: '//' + process.env.HOSTNAME + '/piqtionary/keywords',
+			  	success: function(result) {
+					resolve(result);
+				},
+			 	dataType: 'json',
+			 	beforeSend: function (xhr) {
+				    xhr.setRequestHeader ("Authorization", process.env.API_BASIC_AUTH);
+				}
 			});
 
 		});
