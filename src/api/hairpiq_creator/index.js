@@ -1,6 +1,5 @@
-var config = {};
-config.twilio = require('../../../config/twilio');
-config.utils = require('../../../config/utils')
+require('dotenv').config();
+var config = process.env;
 var cloudinary = require('./cloudinary');
 var s3 = require('./s3');
 var bitly = require('./bitly');
@@ -23,7 +22,7 @@ module.exports = function(app) {
 	app.use(express.static(dir));
 
 	// allow nodejs to utilize session storage
-	app.use(session({ secret: config.utils.session.secret, resave: true, saveUninitialized: true}));
+	app.use(session({ secret: config.SESSION_SECRET, resave: true, saveUninitialized: true}));
 
 	// consume mms from Twilio
 
@@ -88,11 +87,11 @@ module.exports = function(app) {
 				
 				console.log(msg);
 	 
-				//twilio.send(req.body.From, msg, config.twilio.logo);
+				//twilio.send(req.body.From, msg, config.TWILIO_LOGO);
 
 				console.log('generating Twilio reply...');
 
-				var reply = twilio.creatReplyMessage(msg, config.twilio.logo).toString();
+				var reply = twilio.creatReplyMessage(msg, config.TWILIO_LOGO).toString();
 
 				console.log(reply);
 
@@ -116,7 +115,7 @@ module.exports = function(app) {
 			};
 
 			// send quick message
-			twilio.send(req.body.From, messages.b.one, config.twilio.logo);
+			twilio.send(req.body.From, messages.b.one, config.TWILIO_LOGO);
 
 			execute(photo_url, stylename, ig_username, options).then(function(result) {
 
@@ -247,14 +246,10 @@ function submitForReview(obj) {
 		ig_username: obj.ig_username
 	}
 
-	//Lets configure and request
+	//submit object into piqtionary pending queue
 
-	config.utils.getHostname().then(function(result) {
-		
-		console.log(result.hostname);
-
-		request({
-			    url: 'http://' + result.hostname + '/piqtionary/submit', //URL to hit
+	request({
+			    url: 'http://' + config.HOSTNAME + '/piqtionary/submit', //URL to hit
 			    qs: {time: +new Date()}, //Query string data
 			    method: 'POST',
 			    //Lets post the following key/values as form
@@ -266,9 +261,6 @@ function submitForReview(obj) {
 			        console.log(response.statusCode, body);
 			}
 		});
-
-
-	});
 
 }
 

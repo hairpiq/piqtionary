@@ -1,10 +1,10 @@
-var config = require('../../../config/cloudinary');
-
+require('dotenv').config();
+var config = process.env;
 var cloudinary = require('cloudinary');
 cloudinary.config({ 
-  cloud_name: config.cloud_name, 
-  api_key: config.api_key, 
-  api_secret: config.api_secret
+  cloud_name: config.CLOUDINARY_CLOUD_NAME, 
+  api_key: config.CLOUDINARY_API_KEY, 
+  api_secret: config.CLOUDINARY_API_SECRET
 });
 
 module.exports = {
@@ -63,6 +63,7 @@ module.exports = {
 
 function addMeta(obj) {
 
+	var config = {};
 	config.meta = {};
 
 	// Apply Logo Customizations

@@ -1,7 +1,5 @@
 var express = require('express');
 var app = express();
-
-var config = require('./config/hairpiq');
 var clarifai = require('./src/api/hairpiq_creator/clarifai');
 
 // allow nodejs to access get and post variables

@@ -1,4 +1,5 @@
-var config = require('../../../config/twilio');
+require('dotenv').config();
+var config = process.env;
 var twilio = require('twilio');
 
 module.exports = {
@@ -15,11 +16,11 @@ module.exports = {
 	send: function(to, msg, mediaUrl) {
 
 		//require the Twilio module and create a REST client 
-		var client = require('twilio')(config.account_sid, config.auth_token);
+		var client = require('twilio')(config.TWILIO_ACCOUNT_SID, config.TWILIO_AUTH_TOKEN);
 
 		var obj = { 
 		    to: to, 
-		    from: config.phone_number, 
+		    from: config.TWILIO_PHONE_NUMBER, 
 		    body: msg
 		}
 

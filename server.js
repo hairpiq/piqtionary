@@ -1,10 +1,11 @@
+require('dotenv').config();
+
 // connect to db
 
-var config = require('./config/mongodb');
 var mongo = require('mongodb');
 var assert = require('assert');
 
-mongo.connect(config.url, function(err, db) {
+mongo.connect(process.env.DB_URL, function(err, db) {
 		
 	assert.equal(null, err);
 
@@ -37,7 +38,7 @@ mongo.connect(config.url, function(err, db) {
 	// (on the server, make sure Nginx listens to a different port than
 	// what is specified here and Passenger will take care of the rest)
 	app.listen(3000, function() {
-	    //
+	   //
 	});
 
 });

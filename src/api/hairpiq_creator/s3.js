@@ -1,10 +1,11 @@
-var config = require('../../../config/s3');
+require('dotenv').config();
+var config = process.env;
 var request = require('request');
 var fs = require('fs');
 var S3FS = require('s3fs');
-var s3fsImpl = new S3FS(config.bucket_name, {
-	accessKeyId: config.access_key_id,
-	secretAccessKey: config.secret_access_key
+var s3fsImpl = new S3FS(config.S3_BUCKET_NAME, {
+	accessKeyId: config.S3_ACCESS_KEY_ID,
+	secretAccessKey: config.S3_SECRET_ACCESS_KEY
 });
 
 module.exports = {
@@ -17,7 +18,7 @@ module.exports = {
 		var pieces = long_url.split('/');
 		var filename = pieces[pieces.length - 1] + '.jpg';
 		var filepath = __dirname + '/s3-queue/' + filename;
-		var endpoint_url = 'https://' + config.bucket_name + '.s3.amazonaws.com/';
+		var endpoint_url = 'https://' + config.S3_BUCKET_NAME + '.s3.amazonaws.com/';
 
 		return new Promise(function(resolve, reject) {
 

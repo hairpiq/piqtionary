@@ -1,10 +1,11 @@
-var config = require('../../../config/bitly');
+require('dotenv').config();
+var config = process.env;
 var BitlyAPI = require("node-bitlyapi");
 var bitly = new BitlyAPI({
-	client_id: config.client_id,
-	client_secret: config.client_secret
+	client_id: config.BITLY_CLIENT_ID,
+	client_secret: config.BITLY_CLIENT_SECRET
 });
-bitly.setAccessToken(config.access_token);
+bitly.setAccessToken(config.BITLY_ACCESS_TOKEN);
 
 module.exports = {
 	shortenLink: function(url) {

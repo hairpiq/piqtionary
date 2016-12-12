@@ -1,9 +1,3 @@
-/* CHANGE THE REQUEST HOSTNAME TO BE AN ENVIRONMENTAL VARIABLE!! */
-
-var result  = {
-	hostname: 'hairpiq.ngrok.io'
-}
-
 module.exports = {
 	getList: function(params) {
 
@@ -11,7 +5,7 @@ module.exports = {
 
 		return new Promise(function(resolve, reject) {
 
-			$.post('http://' + result.hostname + '/piqtionary/list', params, function(result) {
+			$.post('//' + process.env.HOSTNAME + '/piqtionary/list', params, function(result) {
 				resolve(result);
 			}).fail(function(error) {
 				console.log(error);
@@ -25,7 +19,7 @@ module.exports = {
 
 		return new Promise(function(resolve, reject) {
 
-			$.post('http://' + result.hostname + '/piqtionary/keywords', function(result) {
+			$.post('//' + process.env.HOSTNAME + '/piqtionary/keywords', function(result) {
 				resolve(result);
 			}).fail(function(error) {
 				console.log(error);

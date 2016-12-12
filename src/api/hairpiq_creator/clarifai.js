@@ -1,9 +1,9 @@
-var config = require('../../../config/clarifai');
+require('dotenv').config();
+var config = process.env;
 var Clarifai = require("clarifai");
-
 var api = new Clarifai.App(
-    config.client_id,
-    config.client_secret
+    config.CLARIFAI_CLIENT_ID,
+    config.CLARIFAI_CLIENT_SECRET
 );
 
 module.exports = {
@@ -24,7 +24,7 @@ module.exports = {
 
         return new Promise(function(resolve, reject) {
 
-            api.models.predict(config.model_id, photo_url).then(function (result) {
+            api.models.predict(config.CLARIFAI_MODEL_ID, photo_url).then(function (result) {
                     
                     console.log('Clarifai - B: predicted...');
                     
