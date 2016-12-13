@@ -29,6 +29,7 @@ class SearchBar extends Component {
     super(props);
 
     this.state = {
+      term: '',
       value: '',
       suggestions: []
     };
@@ -98,12 +99,25 @@ class SearchBar extends Component {
     
     });
 
-        
+    // set the state here so that the term is loaded on page refresh
+    this.setState({value: this.props.term});
+
+  }
+
+  resetStateForTerm(term) {
+    this.setState({
+      term: term,
+      value: term
+    });
   }
 
   render() {
 
     const { value, suggestions } = this.state;
+
+    if (this.state.term !== this.props.term)
+      this.resetStateForTerm(this.props.term);
+
     const inputProps = {
       placeholder: "what hair style would you like to see?",
       value,
