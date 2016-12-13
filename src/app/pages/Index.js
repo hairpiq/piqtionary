@@ -41,19 +41,14 @@ class Index extends Component {
         />
 
         <div className="uk-grid uk-grid-margin uk-grid-collapse">
-            <div className="uk-width-medium-6-10 uk-push-2-10 margin-top-20">
-              
-              <SearchBar
+            <SearchBar
                 updateKeyword={this.updateKeyword.bind(this)}
               />
-
-            </div>
-
         </div>
 
         <div className="uk-grid uk-grid-margin">
 
-          <div className="uk-width-medium-10-10 margin-top-20">
+          <div className="uk-width-medium-10-10">
         
             <ResultsWell
               keyword={this.state.keyword}

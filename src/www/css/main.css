@@ -2,9 +2,15 @@ body {
 	margin:0;
 }
 
-.logo {
+.app_bar {
+	position: fixed !important;
+	top:0;
+}
+
+.app_bar .logo {
 	width:90px;
 	height:26px;
+	margin-top: -4px;
 }
 
 .margin-top-20 {
