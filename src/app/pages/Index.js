@@ -3,7 +3,7 @@ import { render } from 'react-dom';
 import SearchBar from '../partials/SearchBar';
 import ResultsWell from '../partials/ResultsWell';
 import Helmet from 'react-helmet';
-import CreateAHairpiqButton from '../partials/CreateAHairpiqButton';
+import CreateButton from '../partials/CreateButton';
 
 class Index extends Component {
 
@@ -25,9 +25,6 @@ class Index extends Component {
   }
 
   render() {
-
-    console.log('A');
-    console.log(this.props.params.term);
 
     var term = '';
     if(this.props.params.term !== undefined)
@@ -63,7 +60,7 @@ class Index extends Component {
         
         </div>
 
-        <CreateAHairpiqButton />
+        <CreateButton />
 
       </div>
     );

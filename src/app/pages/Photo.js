@@ -3,7 +3,6 @@ import { render } from 'react-dom';
 import SearchBar from '../partials/SearchBar';
 import DetailCard from '../partials/DetailCard';
 import Helmet from 'react-helmet';
-import CreateAHairpiqButton from '../partials/CreateAHairpiqButton';
 
 const styles = {
   autoComplete: {
@@ -64,7 +63,9 @@ class Photo extends Component {
         <div className="uk-grid uk-grid-margin uk-grid-collapse">
             <div className="uk-width-medium-6-10 uk-push-2-10">
               
-              <SearchBar />
+              <SearchBar
+                term={''}
+              />
 
             </div>
 
@@ -75,8 +76,6 @@ class Photo extends Component {
           <DetailCard />
           
         </div>
-
-        <CreateAHairpiqButton />
 
       </div>
     );

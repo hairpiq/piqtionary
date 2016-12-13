@@ -11,7 +11,7 @@
 
 
 
-.button-create-a-hairpiq {
+.create-button {
 	position: fixed;
 	right: 20px;
 	bottom: 15px;
@@ -19,7 +19,7 @@
 
 @media (min-width: 768px) {
 
-	.button-create-a-hairpiq {
+	.create-button {
 		right: 50px;
 		bottom: 50px;
 	}
