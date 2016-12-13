@@ -24,10 +24,10 @@ module.exports = (
     <Router history={browserHistory}>
 		<Route path="/" component={Main}>
 			<IndexRoute component={Index}/>
+			<Route path="q/:term" component={Index}/>
 			<Route path="blog" component={Blog}/>
 			<Route path="p/:id" component={Photo}/>
 			<Redirect from="p/:id/" to="p/:id" />
 		</Route>
-		<Route path="/about" component={About}/>
     </Router>
 )

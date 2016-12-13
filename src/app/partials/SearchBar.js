@@ -6,6 +6,7 @@ import {orange700} from 'material-ui/styles/colors';
 import Services from '../services/';
 import SearchIcon from 'material-ui/svg-icons/action/search';
 import Autosuggest from 'react-autosuggest';
+import { Link } from 'react-router';
 
 // https://developer.mozilla.org/en/docs/Web/JavaScript/Guide/Regular_Expressions#Using_Special_Characters
 function escapeRegexCharacters(str) {
@@ -80,13 +81,6 @@ class SearchBar extends Component {
       console.log(error);
       reject(new Error(error));
     });
-   
-    // update keyword state in parent container
-    $(".search-button").click(function() {
-
-      _this.props.updateKeyword(_this.state.value);
-
-    });
 
     // on focus, highlight the search field
     var input = $(".react-autosuggest__input");
@@ -116,6 +110,10 @@ class SearchBar extends Component {
       onChange: this.onChange
     };
 
+    const destination = () => {
+      return (this.state.value.length > 0 ? '/q/' + this.state.value : '/');
+    }
+
     return (
       
       <div className="search-bar-container">
@@ -128,6 +126,7 @@ class SearchBar extends Component {
           renderSuggestion={renderSuggestion}
           inputProps={inputProps}
         />
+        <Link className="search-button-link" to={destination}>
 	      <FlatButton
 	        className="search-button"
 	        backgroundColor={orange700}
@@ -135,6 +134,7 @@ class SearchBar extends Component {
           rippleColor="#ffffff"
 	        icon={<SearchIcon className='icon' />}
 	        />
+        </Link>
 
       </div>
     );
