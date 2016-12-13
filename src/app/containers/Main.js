@@ -3,7 +3,7 @@
  * which incorporates components provided by Material-UI.
  */
 import React, {Component} from 'react';
-import {deepOrange500, grey300, grey900} from 'material-ui/styles/colors';
+import {deepOrange500, grey700} from 'material-ui/styles/colors';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
@@ -23,13 +23,13 @@ const styles = {
     padding: '20px'
   },
   appBarIconButton : {
-    color: grey300
+    color: grey700
   }
 };
 
 const muiTheme = getMuiTheme({
   palette: {
-    primary1Color: grey900,
+    primary1Color: '#ffffff',
     accent1Color: deepOrange500
   }
 });
@@ -85,6 +85,7 @@ class Main extends Component {
           <div>
 
             <AppBar
+              className="app_bar"
               title={logo}
               showMenuIconButton={false}
               iconElementRight={standardActions}

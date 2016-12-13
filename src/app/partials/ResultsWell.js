@@ -34,7 +34,7 @@ class ResultsWell extends Component {
     }
 
     // if the keyword state has changed, include it
-    if(this.state.keyword.length > 0)
+    if(this.state.keyword !== undefined && this.state.keyword.length > 0)
       params.keyword = this.state.keyword;
 
 
