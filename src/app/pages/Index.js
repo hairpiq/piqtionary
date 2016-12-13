@@ -5,7 +5,6 @@ import ResultsWell from '../partials/ResultsWell';
 import Helmet from 'react-helmet';
 import CreateAHairpiqButton from '../partials/CreateAHairpiqButton';
 
-
 const styles = {
   autoComplete: {
     width: '90%'
@@ -41,9 +40,14 @@ class Index extends Component {
         />
 
         <div className="uk-grid uk-grid-margin uk-grid-collapse">
-            <SearchBar
+            <div className="uk-width-medium-6-10 uk-push-2-10">
+              
+              <SearchBar
                 updateKeyword={this.updateKeyword.bind(this)}
               />
+
+            </div>
+
         </div>
 
         <div className="uk-grid uk-grid-margin">
