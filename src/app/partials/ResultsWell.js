@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { render } from 'react-dom';
 import Paper from 'material-ui/Paper';
 import Divider from 'material-ui/Divider';
-import { Link } from 'react-router';
 import InfiniteScroll from 'react-infinite-scroller';
 import Services from '../services/'
 
