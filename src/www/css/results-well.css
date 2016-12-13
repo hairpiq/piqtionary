@@ -10,23 +10,6 @@
 }
 
 
-
-.create-button {
-	position: fixed;
-	right: 20px;
-	bottom: 15px;
-}
-
-@media (min-width: 768px) {
-
-	.create-button {
-		right: 50px;
-		bottom: 50px;
-	}
-
-}
-
-
 .hairpiq-paper-container {
 	margin-bottom: 25px;
 }
