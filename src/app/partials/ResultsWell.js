@@ -16,7 +16,7 @@ class ResultsWell extends Component {
           hairpiqs: [],
           page_num: 0,
           hasMoreItems: true,
-          keyword: ''
+          term: this.props.term
       };
 
   }
@@ -33,9 +33,9 @@ class ResultsWell extends Component {
       page_num: this.state.page_num
     }
 
-    // if the keyword state has changed, include it
-    if(this.state.keyword !== undefined && this.state.keyword.length > 0)
-      params.keyword = this.state.keyword;
+    // if the term state has changed, include it
+    if(this.state.term !== undefined && this.state.term.length > 0)
+      params.term = this.state.term;
 
 
     Services.getList(params).then(function(result) {
@@ -66,21 +66,21 @@ class ResultsWell extends Component {
   // resetting the state forces the InfiniteScroll Component to re-render
   // with the below values
   
-  resetStateForKeyword(keyword) {
+  resetStateForTerm(term) {
     this.setState({
       hairpiqs: [],
       page_num: 0,
       hasMoreItems: true,
-      keyword: keyword
+      term: term
     });
   }
 
   render() {
 
-    // if the keyword that is passed as a prop is DIFFERENT than the keyword in this component state
-      // reset this component state with this new keyword.
-    if (this.state.keyword !== this.props.keyword)
-      this.resetStateForKeyword(this.props.keyword);
+    // if the term that is passed as a prop is DIFFERENT than the term in this component state
+      // reset this component state with this new ter,.
+    if (this.state.term !== this.props.term)
+      this.resetStateForTerm(this.props.term);
 
     const loader = <div className="loader">Loading ...</div>;
 
