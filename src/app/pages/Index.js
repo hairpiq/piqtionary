@@ -5,13 +5,6 @@ import ResultsWell from '../partials/ResultsWell';
 import Helmet from 'react-helmet';
 import CreateAHairpiqButton from '../partials/CreateAHairpiqButton';
 
-
-const styles = {
-  autoComplete: {
-    width: '90%'
-  }
-}
-
 class Index extends Component {
 
   constructor() {
@@ -33,6 +26,10 @@ class Index extends Component {
 
   render() {
 
+      // if the keyword state has changed, include it
+      if(this.props.params !== undefined && this.state.keyword !== this.props.params.term)
+        this.updateKeyword(this.props.params.term);
+
     return (
       <div>
 
@@ -41,11 +38,9 @@ class Index extends Component {
         />
 
         <div className="uk-grid uk-grid-margin uk-grid-collapse">
-            <div className="uk-width-medium-6-10 uk-push-2-10 margin-top-20">
+            <div className="uk-width-medium-6-10 uk-push-2-10">
               
-              <SearchBar
-                updateKeyword={this.updateKeyword.bind(this)}
-              />
+              <SearchBar />
 
             </div>
 
@@ -53,7 +48,7 @@ class Index extends Component {
 
         <div className="uk-grid uk-grid-margin">
 
-          <div className="uk-width-medium-10-10 margin-top-20">
+          <div className="uk-width-medium-10-10">
         
             <ResultsWell
               keyword={this.state.keyword}

@@ -13,8 +13,7 @@ mongo.connect(process.env.DB_URL, function(err, db) {
 
 	// start app
 
-	require('babel-register')(
-	{
+	require('babel-register')({
 		presets:['react']
 	});
 
