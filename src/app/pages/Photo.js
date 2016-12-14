@@ -4,23 +4,13 @@ import SearchBar from '../partials/SearchBar';
 import DetailCard from '../partials/DetailCard';
 import Helmet from 'react-helmet';
 
-const styles = {
-  autoComplete: {
-    width: '90%'
-  }
-}
-
 class Photo extends Component {
 
-  handleUpdateInput = (value) => {
-    this.setState({
-      dataSource: [
-        value,
-        value + value,
-        value + value + value,
-      ],
-    });
-  };
+  constructor() {
+    super();
+
+    console.log('A');
+  }
 
   render() {
 

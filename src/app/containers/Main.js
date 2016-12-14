@@ -1,17 +1,15 @@
-/**
- * In this file, we create a React component
- * which incorporates components provided by Material-UI.
- */
 import React, {Component} from 'react';
+import { render } from 'react-dom';
 import {deepOrange500, grey700} from 'material-ui/styles/colors';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
-import IconButton from 'material-ui/IconButton';
 import { Link } from 'react-router';
+import IconButton from 'material-ui/IconButton';
 import PhotoLibraryIcon from 'material-ui/svg-icons/image/photo-library';
 import VideoLibraryIcon from 'material-ui/svg-icons/av/video-library';
 import InfoIcon from 'material-ui/svg-icons/action/info';
+import Modal from '../partials/Modal';
 
 var RetinaImage = require('react-retina-image');
 
@@ -35,27 +33,27 @@ const muiTheme = getMuiTheme({
 });
 
 class Main extends Component {
-  constructor(props, context) {
-    super(props, context);
 
-    this.state = {
-      open: false,
-    };
-  }
-
-  handleRequestClose = () => {
-    this.setState({
-      open: false,
-    });
-  }
-
-  handleTouchTap = () => {
-    this.setState({
-      open: true,
-    });
+  componentWillReceiveProps(nextProps) {
+    // if we changed routes...
+    if ((
+      nextProps.location.key !== this.props.location.key &&
+      nextProps.location.state &&
+      nextProps.location.state.modal
+    )) {
+      // save the old children (just like animation)
+      this.previousChildren = this.props.children
+    }
   }
 
   render() {
+    let { location } = this.props
+
+    let isModal = (
+      location.state &&
+      location.state.modal &&
+      this.previousChildren
+    )
 
     const logo = (
       <Link to="/"><RetinaImage className="logo" src={["/assets/images/hairpiq-site-logo.png", "/assets/images/2x/hairpiq-site-logo.png"]} /></Link>
@@ -71,35 +69,36 @@ class Main extends Component {
       </div>
     )
 
-    function handleActive() {
-      alert();
-    }
-
-
     return (
+      <div>        
+          <MuiThemeProvider muiTheme={muiTheme}>
 
-      <div>
-        
-        <MuiThemeProvider muiTheme={muiTheme}>
+            <div>
 
-          <div>
+              <AppBar
+                className="app_bar"
+                title={logo}
+                showMenuIconButton={false}
+                iconElementRight={standardActions}
+              />
 
-            <AppBar
-              className="app_bar"
-              title={logo}
-              showMenuIconButton={false}
-              iconElementRight={standardActions}
-            />
+              {isModal ?
+                this.previousChildren :
+                this.props.children
+              }
 
-            {this.props.children}
+              {isModal && (
+                <Modal isOpen={true} returnTo={location.state.returnTo}>
+                  {this.props.children}
+                </Modal>
+              )}
 
-          </div>
+            </div>
 
-        </MuiThemeProvider>
-
+          </MuiThemeProvider>
       </div>
-    );
+    )
   }
-}
+};
 
 export default Main;
