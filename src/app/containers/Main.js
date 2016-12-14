@@ -10,6 +10,7 @@ import PhotoLibraryIcon from 'material-ui/svg-icons/image/photo-library';
 import VideoLibraryIcon from 'material-ui/svg-icons/av/video-library';
 import InfoIcon from 'material-ui/svg-icons/action/info';
 import Modal from '../partials/Modal';
+import SearchBar from '../partials/SearchBar';
 
 var RetinaImage = require('react-retina-image');
 
@@ -47,6 +48,7 @@ class Main extends Component {
   }
 
   render() {
+
     let { location } = this.props
 
     let isModal = (
@@ -59,7 +61,11 @@ class Main extends Component {
       <Link to="/"><RetinaImage className="logo" src={["/assets/images/hairpiq-site-logo.png", "/assets/images/2x/hairpiq-site-logo.png"]} /></Link>
     );
 
-    const standardActions = (
+    const search_bar = (
+      <SearchBar term={this.props.params.term ? this.props.params.term : ''} />
+    );
+
+    const standard_actions = (
       <div>
         {/*
         <IconButton iconStyle={styles.appBarIconButton} tooltip="Photos"><PhotoLibraryIcon /></IconButton>
@@ -77,9 +83,10 @@ class Main extends Component {
 
               <AppBar
                 className="app_bar"
-                title={logo}
                 showMenuIconButton={false}
-                iconElementRight={standardActions}
+                title={logo}
+                children={search_bar}
+                iconElementRight={standard_actions}
               />
 
               {isModal ?

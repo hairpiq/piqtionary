@@ -93,7 +93,7 @@ class ResultsWell extends Component {
                   <Link
                     key={listItem._id}
                     to={{
-                      pathname: `/h/${listItem._id}`,
+                      pathname: `/p/${listItem._id}`,
                       state: { modal: true, returnTo: this.props.location.pathname }
                     }}
                   >

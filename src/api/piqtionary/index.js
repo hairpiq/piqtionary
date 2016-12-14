@@ -187,8 +187,8 @@ module.exports = function(app, db) {
 			var skip = Number(req.body.page_num) * Number(req.body.limit);
 
 			// if a keyword is included, add it to the query
-			if (req.body.keyword)
-				query.stylename = new RegExp('^'+ req.body.keyword + '$', "i");
+			if (req.body.term)
+				query.stylename = new RegExp('^'+ req.body.term + '$', "i");
 
 			var cursor = db.collection('approved_hairpiqs').find(query).skip(skip).sort({ _id : -1}).limit(limit);
 
