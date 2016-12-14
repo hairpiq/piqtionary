@@ -90,13 +90,10 @@ class ResultsWell extends Component {
             <div className="hairpiq-paper-container uk-width-small-1-3 uk-width-medium-1-4">
               <Paper key={i} className="hairpiq-paper">
                 <div>
-                  {/*<Link to={{ pathname: '/h'}}>
-                    <img src={listItem.s3_url} />
-                  </Link>*/}
                   <Link
                     key={listItem._id}
                     to={{
-                      pathname: `/pictures/${listItem._id}`,
+                      pathname: `/h/${listItem._id}`,
                       state: { modal: true, returnTo: this.props.location.pathname }
                     }}
                   >
