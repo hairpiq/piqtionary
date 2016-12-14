@@ -7,7 +7,9 @@ class Modal extends Component {
   render() {
     return (
       <div className='modal'>
-        <p><Link to={this.props.returnTo}>Back</Link></p>
+      	<div className="close-modal-container">
+        	<p className="close-modal"><Link to={this.props.returnTo}>Back</Link></p>
+        </div>
         {this.props.children}
       </div>
     )
