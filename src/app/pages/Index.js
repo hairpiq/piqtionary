@@ -4,25 +4,9 @@ import SearchBar from '../partials/SearchBar';
 import ResultsWell from '../partials/ResultsWell';
 import Helmet from 'react-helmet';
 import CreateButton from '../partials/CreateButton';
+import { Link } from 'react-router';
 
 class Index extends Component {
-
-  constructor() {
-    super();
-
-    this.state = {
-      keyword : ''
-    }
-
-  }
-
-  updateKeyword(keyword) {
-
-    this.setState({
-      keyword: keyword
-    })
-
-  }
 
   render() {
 
@@ -54,6 +38,7 @@ class Index extends Component {
         
             <ResultsWell
               term={term}
+              location={this.props.location}
             />
 
           </div>
