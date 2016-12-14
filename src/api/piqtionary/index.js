@@ -238,5 +238,42 @@ module.exports = function(app, db) {
 
 	});
 
+	/*
+		get a hairpiq document by id
+	*/
+
+	app.post('/piqtionary/get_by_id', function(req, res, next) {
+
+		console.log('B - called: /piqtionary/get_by_id');
+
+		// get a hairpiq by id
+			// find hairpiq in approved_hairpiqs collection
+
+			// data needed
+			// - _id
+
+		var id = {
+			_id: ObjectID(req.body._id)
+		};
+
+		var resultArray = [];
+
+		var cursor = db.collection('approved_hairpiqs').find(id);
+
+		cursor.forEach(function(doc, err) {
+				
+			console.log('C - Retrieved document in approved_hairpiqs: ' + doc._id);
+			assert.equal(null, err);
+			resultArray.push(doc);
+
+		}, function() {
+							
+			res.setHeader('Content-Type', 'application/json');
+			res.send(JSON.stringify(resultArray));
+
+		});
+
+	});
+
 
 }

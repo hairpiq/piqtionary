@@ -13,11 +13,14 @@ var browserHistory = ReactRouter.browserHistory;
 var Redirect = ReactRouter.Redirect;
 
 // site container and page components
+import Picture from '../partials/Picture';
+
 import Main from '../containers/Main';
 import Index from '../pages/Index';
 import Photo from '../pages/Photo';
 import About from '../pages/About';
 import Blog from '../pages/Blog';
+
 
 // match routes to components
 module.exports = (
@@ -26,8 +29,8 @@ module.exports = (
 			<IndexRoute component={Index}/>
 			<Route path="q/:term" component={Index}/>
 			<Route path="blog" component={Blog}/>
-			<Route path="p/:id" component={Photo}/>
-			<Redirect from="p/:id/" to="p/:id" />
+			<Route path="p" component={Photo}/>
+			<Route path="/h/:id" component={Picture}/>
 		</Route>
     </Router>
 )

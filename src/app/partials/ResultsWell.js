@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
+import { Link } from 'react-router';
 import Paper from 'material-ui/Paper';
 import Divider from 'material-ui/Divider';
-import { Link } from 'react-router';
 import InfiniteScroll from 'react-infinite-scroller';
-import Services from '../services/'
+import Services from '../services/';
 
 class ResultsWell extends Component {
 
@@ -59,7 +59,6 @@ class ResultsWell extends Component {
 
     }).catch(function(error) {
       console.log(error);
-      reject(new Error(error));
     });
   }
 
@@ -90,7 +89,20 @@ class ResultsWell extends Component {
             
             <div className="hairpiq-paper-container uk-width-small-1-3 uk-width-medium-1-4">
               <Paper key={i} className="hairpiq-paper">
-                <Link to={"/p/" + listItem._id + '/'}><img src={listItem.s3_url} /></Link>
+                <div>
+                  {/*<Link to={{ pathname: '/h'}}>
+                    <img src={listItem.s3_url} />
+                  </Link>*/}
+                  <Link
+                    key={listItem._id}
+                    to={{
+                      pathname: `/pictures/${listItem._id}`,
+                      state: { modal: true, returnTo: this.props.location.pathname }
+                    }}
+                  >
+                    <img src={listItem.s3_url} />
+                  </Link>
+                </div>
                 <div className="hairpiq-data">
                   <div className="title">
                     Style Name

@@ -5,11 +5,11 @@ import ContentAdd from 'material-ui/svg-icons/content/add';
 import {orange700} from 'material-ui/styles/colors';
 
 
-class CreateAHairpiqButton extends Component {
+class CreateButton extends Component {
 	render() {
 		return (
 			<div>
-				<FloatingActionButton backgroundColor={orange700} className="button-create-a-hairpiq">
+				<FloatingActionButton backgroundColor={orange700} className="create-button">
 		          <ContentAdd />
 		        </FloatingActionButton>
 			</div>
@@ -17,4 +17,4 @@ class CreateAHairpiqButton extends Component {
 	}
 }
 
-export default CreateAHairpiqButton;
+export default CreateButton;

@@ -3,31 +3,12 @@ import { render } from 'react-dom';
 import SearchBar from '../partials/SearchBar';
 import ResultsWell from '../partials/ResultsWell';
 import Helmet from 'react-helmet';
-import CreateAHairpiqButton from '../partials/CreateAHairpiqButton';
+import CreateButton from '../partials/CreateButton';
+import { Link } from 'react-router';
 
 class Index extends Component {
 
-  constructor() {
-    super();
-
-    this.state = {
-      keyword : ''
-    }
-
-  }
-
-  updateKeyword(keyword) {
-
-    this.setState({
-      keyword: keyword
-    })
-
-  }
-
   render() {
-
-    console.log('A');
-    console.log(this.props.params.term);
 
     var term = '';
     if(this.props.params.term !== undefined)
@@ -57,13 +38,14 @@ class Index extends Component {
         
             <ResultsWell
               term={term}
+              location={this.props.location}
             />
 
           </div>
         
         </div>
 
-        <CreateAHairpiqButton />
+        <CreateButton />
 
       </div>
     );

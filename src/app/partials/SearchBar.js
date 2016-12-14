@@ -115,7 +115,8 @@ class SearchBar extends Component {
 
     const { value, suggestions } = this.state;
 
-    if (this.state.term !== this.props.term)
+    // an anti-pattern to include this here? Well how else am I gonna populate the text field on refresh, huh?
+    if (this.state.term !== undefined && this.state.term !== this.props.term)
       this.resetStateForTerm(this.props.term);
 
     const inputProps = {
