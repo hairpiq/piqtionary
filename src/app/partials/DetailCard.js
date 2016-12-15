@@ -13,6 +13,8 @@ import RelatedItems from './RelatedItems';
 class DetailCard extends Component {
 
 	render() {
+
+		const params = this.props.data;
 		
 		return (
 
@@ -21,7 +23,7 @@ class DetailCard extends Component {
 				<div className="parent left-col">
 					<div className="child photo">
 						<Paper className="paper" zDepth={4}>
-							<img src="https://dev-piqtionary.s3.amazonaws.com/x5v2vimxvdejiqizhd69.jpg" />
+							<img src={params.s3_url} />
 						</Paper>
 					</div>
 				</div>
@@ -32,13 +34,13 @@ class DetailCard extends Component {
 			                  Style Name
 			                </div>
 			                <div className="text">
-			                  Afro Puffs
+			                  {params.stylename}
 			                </div>
 			                <div className="title">
 			                  IG Profile
 			                </div>
 			                <div className="text">
-			                  @_wassupyaya
+			                  {params.ig_username}
 			                </div>
 						</div>
 						<Divider />
@@ -55,7 +57,7 @@ class DetailCard extends Component {
 			                  Share with Friends
 			                </div>
 			                <ShareMenu
-			                	data={this.props.data}
+			                	data={params}
 			                />
 			            </div>
 			            <Divider />
@@ -64,7 +66,7 @@ class DetailCard extends Component {
 			                  Related Hairpiqs
 			                </div>
 			                <RelatedItems
-			                	data={this.props.data}
+			                	data={params}
 			                />
 			            </div>
 					</div>
