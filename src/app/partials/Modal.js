@@ -1,18 +1,20 @@
 import React, {Component} from 'react';
 import { render } from 'react-dom';
 import { Link } from 'react-router';
+import IconButton from 'material-ui/IconButton';
+import NavigationClose from 'material-ui/svg-icons/navigation/close';
 
 class Modal extends Component {
 
   componentDidMount() {
 
-    $('.results-well-container, .create-button').addClass('modal-open');
+    $('body, .create-button').addClass('modal-open');
 
   }
 
   componentWillUnmount() {
 
-     $('.results-well-container, .create-button').removeClass('modal-open');
+     $('body, .create-button').removeClass('modal-open');
 
   }
 
@@ -20,7 +22,12 @@ class Modal extends Component {
     return (
       <div className='modal'>
       	<div className="close-modal-container">
-        	<p className="close-modal"><Link to={this.props.returnTo}>Back</Link></p>
+        	<Link to={this.props.returnTo}>
+            <IconButton className="close-modal">
+              <NavigationClose />
+            </IconButton>
+          </Link>
+
         </div>
         {this.props.children}
       </div>
