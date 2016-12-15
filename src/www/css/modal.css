@@ -1,15 +1,36 @@
 .modal {
-	position: fixed;
-	top: 20%;
-	right: 20%;
-	bottom: 20%;
-	left: 20%;
-	padding: 20px;
-	box-shadow: 0px 0px 150px 130px rgba(0, 0, 0, 0.5);
+	position: absolute;
+	top: 0;
+	right: 5%;
+	left: 5%;
+    bottom: 0;
+	-webkit-box-shadow: 0px 0px 0px 145px rgba(0,0,0,0.5);
+    -moz-box-shadow: 0px 0px 0px 145px rgba(0,0,0,0.5);
+    box-shadow: 0px 0px 0px 145px rgba(0,0,0,0.5);
 	overflow: auto;
 	background: #ffffff;
+	z-index:1200;
 }
 
-.modal img {
-	height: auto !important;
+.modal .uk-grid-margin {
+	margin-top:0;
 }
+
+.close-modal-container {
+	position: relative;
+    z-index:1;
+}
+
+.close-modal {
+	position: absolute;
+	right: 0;
+}
+
+.modal-open.create-button,
+.modal-open.results-well-container {
+
+    display: none !important;
+}
+
+
+

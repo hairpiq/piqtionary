@@ -1,103 +1,72 @@
-.detail-card-container {
-	margin-top:75px;
+.parent {
+    width:50%;
+    position:absolute;
+    top:0;
+    bottom:0;
+
+    display: flex;
+    display: -webkit-flex;
+    display: -moz-flex;
+    display: -ms-flex;
+    display: -o-flex;
+
+    justify-content: center;
+    align-items: center;
+
+}
+
+.left-col {
+	background: #f5f5f5;
+}
+
+.right-col {
+	left:50%;
+}
+
+.child {
+    width: 50px;
+    height: 50px;
+    outline: 1px solid #eaeaea;
+}
+
+.photo {
+	text-align: center;
 	width:100%;
-	background:#f5f5f5;
-	border-top:1px solid #e0e0e0;
-	position: relative;
-	padding-bottom:50px;
+	height: auto;
+	outline: none;
 }
 
-
-.detail-card {
-	margin-top:-70px;
+.photo .paper {
+	margin: 0 auto;
+	width:90%;
 }
 
-.data-column {
-	position: relative;
+.detail-info {
+	margin: 0 auto;
+	width:100%;
+	height: auto;
+	outline: none;
 }
 
-.detail-card .data {
-	padding: 20px 20px 0;
+.data-container {
+	padding:15px 25px;
 }
 
-.detail-card .title {
+.data-container .title {
 	color: #9E9E9E;
-	font-size:85%;
-}
-
-.detail-card .text {
-	margin-bottom:10px;
 	font-size: 90%;
 }
 
-.detail-card .text:last-child {
+.data-container .text {
+	margin-bottom:10px;
+}
+
+.data-container .text:last-child {
 	margin-bottom:0;
 }
 
-.detail-card .chip {
+.data-container .chip {
 	display: inline-block !important;
 	margin-right: 5px !important;
 	margin-bottom: 5px !important;
-}
-
-.detail-card .tertiary {
-	background: #F5F5F5;
-	padding-bottom:20px;
-}
-
-.detail-card .button {
-	min-width: auto !important;
-	width: 21% !important;
-    height: 60px !important;
-    padding: 10px 10px 0 !important;
-    margin-right:10px !important;
-}
-
-.detail-card .button:last-child {
-	margin-right: 0 !important;
-}
-
-.button.download {
-	background: #F57C00;
-}
-
-.button.download svg {
-	height: 100% !important;
-    width: 100% !important;
-}
-
-.button.tumblr {
-	padding: 10px 13px 0 !important;
-}
-
-@media (min-width:768px) {
-	.detail-card .tertiary {
-		position: absolute;
-	    left: 0;
-	    right: 0;
-	    bottom: 0;
-	}
-}
-
-@media (min-width:768px) and (max-width:959px) {
-	.detail-card .button {
-		width: 21% !important;
-    	height: 45px !important;
-    	padding: 3px 8px 0 !important;
-	}
-
-	.button.tumblr {
-		padding: 3px 10px 0 !important;
-	}
-}
-
-@media (min-width:960px) {
-	.detail-card .button {
-		width: 60px !important;
-    	height: 60px !important;
-	}
-
-	.button.tumblr {
-		padding: 12px 13px 0 !important;
-	}
 }

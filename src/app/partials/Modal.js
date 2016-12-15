@@ -4,10 +4,24 @@ import { Link } from 'react-router';
 
 class Modal extends Component {
 
+  componentDidMount() {
+
+    $('.results-well-container, .create-button').addClass('modal-open');
+
+  }
+
+  componentWillUnmount() {
+
+     $('.results-well-container, .create-button').removeClass('modal-open');
+
+  }
+
   render() {
     return (
       <div className='modal'>
-        <p><Link to={this.props.returnTo}>Back</Link></p>
+      	<div className="close-modal-container">
+        	<p className="close-modal"><Link to={this.props.returnTo}>Back</Link></p>
+        </div>
         {this.props.children}
       </div>
     )

@@ -10,10 +10,6 @@ class Index extends Component {
 
   render() {
 
-    var term = '';
-    if(this.props.params.term !== undefined)
-      term = this.props.params.term;
-
     return (
       <div>
 
@@ -21,23 +17,12 @@ class Index extends Component {
           defaultTitle="Hairpiq"
         />
 
-        <div className="uk-grid uk-grid-margin uk-grid-collapse">
-            <div className="uk-width-medium-6-10 uk-push-2-10">
-              
-              <SearchBar
-                term={term}
-              />
-
-            </div>
-
-        </div>
-
         <div className="uk-grid uk-grid-margin">
 
           <div className="uk-width-medium-10-10">
         
             <ResultsWell
-              term={term}
+              term={this.props.params.term ? this.props.params.term : ''}
               location={this.props.location}
             />
 
