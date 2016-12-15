@@ -4,6 +4,7 @@ import Services from '../services';
 import SearchBar from '../partials/SearchBar';
 import Helmet from 'react-helmet';
 import DetailCard from '../partials/DetailCard';
+import CreateButton from '../partials/CreateButton';
 
 class Photo extends Component {
 
@@ -73,6 +74,8 @@ class Photo extends Component {
           <DetailCard
             data={this.state.data}
           />
+
+          <CreateButton />
 
       </div>
     )
