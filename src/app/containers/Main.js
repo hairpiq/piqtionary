@@ -89,10 +89,14 @@ class Main extends Component {
                 iconElementRight={standard_actions}
               />
 
+              <div className="main-container">
+
               {isModal ?
                 this.previousChildren :
                 this.props.children
               }
+
+              </div>
 
               {isModal && (
                 <Modal isOpen={true} returnTo={location.state.returnTo}>

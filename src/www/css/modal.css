@@ -1,15 +1,42 @@
+.modal-backdrop {
+	position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #212121;
+    z-index: 1100;
+    opacity: 0.5;
+}
+
 .modal {
 	position: fixed;
 	top: 4%;
 	right: 5%;
 	left: 5%;
     bottom: 4%;
-	-webkit-box-shadow: 0px 0px 0px 145px rgba(0,0,0,0.5);
-    -moz-box-shadow: 0px 0px 0px 145px rgba(0,0,0,0.5);
-    box-shadow: 0px 0px 0px 145px rgba(0,0,0,0.5);
-	overflow: auto;
 	background: #ffffff;
 	z-index:1200;
+	pointer-events:auto;
+}
+
+.modal > .button {
+	width: 6%;
+    height: 40px !important;
+    position: absolute !important;
+    z-index: 1;
+    min-width: auto !important;
+    border-radius: 0 !important;
+    margin-top:-20px !important;
+    top:50%;
+}
+
+.button.before {
+	left: -6%;
+}
+
+.button.next {
+	right:-6%;
 }
 
 .modal .uk-grid-margin {
@@ -29,11 +56,11 @@
 .modal-open {
 
     overflow-y: hidden;
+    pointer-events: none;
 }
 
 .modal-open.create-button {
 
     display: none !important;
 }
-
 
