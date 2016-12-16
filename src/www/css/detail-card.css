@@ -1,25 +1,38 @@
 .parent {
-    width:50%;
-    position:absolute;
-    top:0;
-    bottom:0;
+	float: left;
+    padding: 70px 0 30px;
+}
 
-    display: flex;
+.modal .parent {
+	float: none;
+	padding: 0;
+	position: absolute;
+    top: 0;
+    bottom: 0;
+	display: flex;
     display: -webkit-flex;
     display: -moz-flex;
     display: -ms-flex;
     display: -o-flex;
-
 }
 
 .left-col {
 	background: #f5f5f5;
+	width: 60%;
+}
+
+.modal .left-col {
 	justify-content: center;
     align-items: center;
 }
 
 .right-col {
-	left:50%;
+	width: 40%;
+}
+
+.modal .right-col {
+	left:60%;
+	overflow-y: scroll;
 }
 
 .child {
@@ -37,7 +50,7 @@
 
 .photo .paper {
 	margin: 0 auto;
-	width:90%;
+	width:80%;
 }
 
 .detail-info {
