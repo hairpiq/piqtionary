@@ -94,7 +94,7 @@ class ResultsWell extends Component {
                     key={listItem._id}
                     to={{
                       pathname: `/p/${listItem._id}`,
-                      state: { modal: true, returnTo: this.props.location.pathname }
+                      state: { modal: true, returnTo: this.props.location.pathname, hairpiqs: this.state.hairpiqs }
                     }}
                   >
                     <img src={listItem.s3_url} />
