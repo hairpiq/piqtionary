@@ -35,6 +35,14 @@ const muiTheme = getMuiTheme({
 
 class Main extends Component {
 
+  constructor() {
+    super();
+
+    this.state = {
+      indexChildren: {}
+    }
+  }
+
   componentWillReceiveProps(nextProps) {
     // if we changed routes...
     if ((
@@ -42,8 +50,11 @@ class Main extends Component {
       nextProps.location.state &&
       nextProps.location.state.modal
     )) {
-      // save the old children (just like animation)
-      this.previousChildren = this.props.children
+
+      if (this.state.indexChildren.props === undefined)
+          this.setState({
+            indexChildren: this.props.children
+          });
     }
   }
 
@@ -54,7 +65,7 @@ class Main extends Component {
     let isModal = (
       location.state &&
       location.state.modal &&
-      this.previousChildren
+      (this.state.indexChildren.props !== undefined)
     )
 
     const logo = (
@@ -92,14 +103,14 @@ class Main extends Component {
               <div className="main-container">
 
               {isModal ?
-                this.previousChildren :
+                this.state.indexChildren :
                 this.props.children
               }
 
               </div>
 
               {isModal && (
-                <Modal isOpen={true} returnTo={location.state.returnTo}>
+                <Modal isOpen={true} returnTo={location.state.returnTo} pathname={location.pathname} hairpiqs={location.state.hairpiqs}>
                   {this.props.children}
                 </Modal>
               )}
