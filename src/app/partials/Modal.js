@@ -23,6 +23,68 @@ class Modal extends Component {
   }
 
   render() {
+
+    const curent_id = this.props.pathname.split('/')[2];
+
+    var current_hairpiq = {}
+    var before_id = '';
+    var next_id = '';
+
+    for (var i = 0; i < this.props.hairpiqs.length; i++) {
+      if (curent_id  === this.props.hairpiqs[i]._id) {
+
+        current_hairpiq = this.props.hairpiqs[i];
+
+        if (this.props.hairpiqs[i - 1] !== undefined)
+          before_id = this.props.hairpiqs[i - 1]._id;
+
+        if (this.props.hairpiqs[i + 1] !== undefined)
+          next_id = this.props.hairpiqs[i + 1]._id;
+
+        break;
+      }
+    }
+
+    const state = { modal: true, returnTo: '/', hairpiqs: this.props.hairpiqs };
+
+    function renderBeforeLink() {
+      if (before_id.length > 0)
+        return (
+
+          <Link to={{
+                pathname: `/p/${before_id}`,
+                state: state
+          }}>
+            <FlatButton
+              className="button before"
+              backgroundColor={grey300}
+              hoverColor={grey100}
+              icon={<ImageNavigateBefore />}
+            />
+          </Link>
+
+        );
+    }
+
+    function renderNextLink() {
+      if (next_id.length > 0)
+        return (
+
+          <Link to={{
+                pathname: `/p/${next_id}`,
+                state: state
+          }}>
+            <FlatButton
+              className="button next"
+              backgroundColor={grey300}
+              hoverColor={grey100}
+              icon={<ImageNavigateNext />}
+            />
+          </Link>
+
+        );
+    }
+
     return (
       <div>
         <div className="modal-backdrop">
@@ -35,19 +97,11 @@ class Modal extends Component {
               </IconButton>
             </Link>
           </div>
-          <FlatButton
-            className="button before"
-            backgroundColor={grey300}
-            hoverColor={grey100}
-            icon={<ImageNavigateBefore />}
-          />
-          <FlatButton
-            className="button next"
-            backgroundColor={grey300}
-            hoverColor={grey100}
-            icon={<ImageNavigateNext />}
-          />
-          {this.props.children}
+          <div className='nav'>
+            {renderBeforeLink()}
+            {renderNextLink()}
+          </div>
+          {React.cloneElement(this.props.children, { hairpiq: current_hairpiq })}
         </div>
       </div>
     )

@@ -18,21 +18,31 @@ class Photo extends Component {
 
   componentDidMount() {
 
-      var _this = this;
+      if (this.props.hairpiq !== undefined) {
+        
+        this.setState({
+          data: this.props.hairpiq
+        });
 
-      // add id
-      var params = {
-        _id: this.props.params.id
+      } else {
+
+        var _this = this;
+
+        // add id
+        var params = {
+          _id: this.props.params.id
+        }
+
+        // get keywords for AutoComplete
+        Services.getById(params).then(function(result) {
+
+          _this.setState({ data: result[0]});
+
+        }).catch(function(error) {
+          console.log(error);
+        });
+
       }
-
-      // get keywords for AutoComplete
-      Services.getById(params).then(function(result) {
-
-        _this.setState({ data: result[0]});
-
-      }).catch(function(error) {
-        console.log(error);
-      });
   }
 
   renderMetaData() {
