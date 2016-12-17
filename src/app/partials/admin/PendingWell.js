@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import { render } from 'react-dom';
 import { Link } from 'react-router';
 import InfiniteScroll from 'react-infinite-scroller';
-import Services from '../services/';
-import ResultItem from './ResultItem';
+import Services from '../../services/admin/';
+import PendingItem from './PendingItem';
+import Dialog from 'material-ui/Dialog';
 
-class ResultsWell extends Component {
+class PendingWell extends Component {
 
   constructor(props) {
       
@@ -14,8 +15,7 @@ class ResultsWell extends Component {
       this.state = {
           hairpiqs: [],
           page_num: 0,
-          hasMoreItems: true,
-          term: this.props.term
+          hasMoreItems: true
       };
 
   }
@@ -32,12 +32,7 @@ class ResultsWell extends Component {
       page_num: this.state.page_num
     }
 
-    // if the term state has changed, include it
-    if(this.state.term !== undefined && this.state.term.length > 0)
-      params.term = this.state.term;
-
-
-    Services.getList(params).then(function(result) {
+    Services.getPendingList(params).then(function(result) {
       
       if(result.length > 0) {
         result.map((hairpiq) => {
@@ -61,24 +56,7 @@ class ResultsWell extends Component {
     });
   }
 
-  // resetting the state forces the InfiniteScroll Component to re-render
-  // with the below values
-  
-  resetStateForTerm(term) {
-    this.setState({
-      hairpiqs: [],
-      page_num: 0,
-      hasMoreItems: true,
-      term: term
-    });
-  }
-
   render() {
-
-    // if the term that is passed as a prop is DIFFERENT than the term in this component state
-      // reset this component state with this new ter,.
-    if (this.state.term !== this.props.term)
-      this.resetStateForTerm(this.props.term);
 
     const loader = <div className="loader">Loading ...</div>;
 
@@ -86,8 +64,8 @@ class ResultsWell extends Component {
       this.state.hairpiqs.map((listItem, i) => {
         items.push(
             
-            <div className="hairpiq-paper-container uk-width-small-1-3 uk-width-medium-1-4">
-              <ResultItem
+            <div className="uk-width-medium-6-10 uk-push-2-10">
+              <PendingItem
                 key={i}
                 listItem={listItem}
                 location={this.props.location}
@@ -102,7 +80,7 @@ class ResultsWell extends Component {
       
       <div>
 
-        <div className="results-well-container">
+        <div className="pending-request-container">
 
           <InfiniteScroll
               pageStart={0}
@@ -110,7 +88,7 @@ class ResultsWell extends Component {
               hasMore={this.state.hasMoreItems}
               loader={loader}>
 
-              <div className="uk-grid uk-grid-margin" data-uk-grid-match data-uk-grid-margin>
+              <div className="uk-grid" data-uk-grid-match data-uk-grid-margin>
                   {items}
               </div>
           </InfiniteScroll>
@@ -122,4 +100,4 @@ class ResultsWell extends Component {
   }
 }
 
-export default ResultsWell;
+export default PendingWell;

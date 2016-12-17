@@ -20,7 +20,7 @@ import About from '../pages/About';
 
 // admin container and page components
 import AdminMain from '../containers/admin/Main';
-import Review from '../pages/admin/Review';
+import Pending from '../pages/admin/Pending';
 import Unpublished from '../pages/admin/Unpublished';
 import Published from '../pages/admin/Published';
 import Trash from '../pages/admin/Trash';
@@ -38,7 +38,7 @@ module.exports = (
 			</Route>
 
 			<Route path="admin" component={AdminMain}>
-				<IndexRoute component={Review}/>
+				<IndexRoute component={Pending}/>
 				<Route path="unpublished" component={Unpublished}/>
 				<Route path="published" component={Published}/>
 				<Route path="trash" component={Trash}/>
