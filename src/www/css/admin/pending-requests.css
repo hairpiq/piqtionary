@@ -22,7 +22,7 @@
 
 .pending-request {
 	position: relative;
-	margin-bottom:50px !important;
+	margin-bottom:30px !important;
 }
 
 .pending-request:after {
@@ -42,6 +42,10 @@
 	right: 0;
 }
 
+.pending-request .delete-request-button {
+	display: block;
+}
+
 .pending-request .toolbar {
 	width:55%;
 	display:inline-block;
@@ -52,14 +56,19 @@
     bottom: 0;
 }
 
-.pending-request .button {
-	margin: 10px 10px;
+.pending-request .toolbar .button {
+	margin: 10px 5px;
+	min-width: auto !important;
 }
 
-.pending-request .button.udpate {
+.pending-request .toolbar .button span {
+	padding: 0 6px !important;
+}
+
+.pending-request .toolbar .button.udpate {
 	margin-right:20px;
 }
 
-.pending-request .button.approve {
+.pending-request .toolbar .button.approve {
 	margin-left:20px;
 }

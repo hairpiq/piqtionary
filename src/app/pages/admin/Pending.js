@@ -3,7 +3,7 @@ import { render } from 'react-dom';
 import Helmet from 'react-helmet';
 import PendingWell from '../../partials/admin/PendingWell';
 import NotificationMMS from 'material-ui/svg-icons/notification/mms';
-import {orange700, green600, grey900} from 'material-ui/styles/colors';
+import {orange700, green600} from 'material-ui/styles/colors';
 
 class Pending extends Component {
 
@@ -22,7 +22,7 @@ class Pending extends Component {
 
           <div className="uk-width-medium-6-10 uk-push-2-10">
 
-            <h1><NotificationMMS color={grey900} /> Pending Requests</h1>
+            <h1>Pending Requests</h1>
 
           </div>
           
