@@ -1,17 +1,16 @@
-/**
- * In this file, we create a React component
- * which incorporates components provided by Material-UI.
- */
 import React, {Component} from 'react';
-import {deepOrange500, grey300, grey900} from 'material-ui/styles/colors';
+import { render } from 'react-dom';
+import {deepOrange500, grey700} from 'material-ui/styles/colors';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
-import IconButton from 'material-ui/IconButton';
 import { Link } from 'react-router';
+import IconButton from 'material-ui/IconButton';
 import PhotoLibraryIcon from 'material-ui/svg-icons/image/photo-library';
 import VideoLibraryIcon from 'material-ui/svg-icons/av/video-library';
 import InfoIcon from 'material-ui/svg-icons/action/info';
+import Modal from '../partials/Modal';
+import SearchBar from '../partials/SearchBar';
 
 var RetinaImage = require('react-retina-image');
 
@@ -23,45 +22,61 @@ const styles = {
     padding: '20px'
   },
   appBarIconButton : {
-    color: grey300
+    color: grey700
   }
 };
 
 const muiTheme = getMuiTheme({
   palette: {
-    primary1Color: grey900,
+    primary1Color: '#ffffff',
     accent1Color: deepOrange500
   }
 });
 
 class Main extends Component {
-  constructor(props, context) {
-    super(props, context);
+
+  constructor() {
+    super();
 
     this.state = {
-      open: false,
-    };
+      indexChildren: {}
+    }
   }
 
-  handleRequestClose = () => {
-    this.setState({
-      open: false,
-    });
-  }
+  componentWillReceiveProps(nextProps) {
+    // if we changed routes...
+    if ((
+      nextProps.location.key !== this.props.location.key &&
+      nextProps.location.state &&
+      nextProps.location.state.modal
+    )) {
 
-  handleTouchTap = () => {
-    this.setState({
-      open: true,
-    });
+      if (this.state.indexChildren.props === undefined)
+          this.setState({
+            indexChildren: this.props.children
+          });
+    }
   }
 
   render() {
+
+    let { location } = this.props
+
+    let isModal = (
+      location.state &&
+      location.state.modal &&
+      (this.state.indexChildren.props !== undefined)
+    )
 
     const logo = (
       <Link to="/"><RetinaImage className="logo" src={["/assets/images/hairpiq-site-logo.png", "/assets/images/2x/hairpiq-site-logo.png"]} /></Link>
     );
 
-    const standardActions = (
+    const search_bar = (
+      <SearchBar term={this.props.params.term ? this.props.params.term : ''} />
+    );
+
+    const standard_actions = (
       <div>
         {/*
         <IconButton iconStyle={styles.appBarIconButton} tooltip="Photos"><PhotoLibraryIcon /></IconButton>
@@ -71,34 +86,41 @@ class Main extends Component {
       </div>
     )
 
-    function handleActive() {
-      alert();
-    }
-
-
     return (
+      <div>        
+          <MuiThemeProvider muiTheme={muiTheme}>
 
-      <div>
-        
-        <MuiThemeProvider muiTheme={muiTheme}>
+            <div>
 
-          <div>
+              <AppBar
+                className="app_bar"
+                showMenuIconButton={false}
+                title={logo}
+                children={search_bar}
+                iconElementRight={standard_actions}
+              />
 
-            <AppBar
-              title={logo}
-              showMenuIconButton={false}
-              iconElementRight={standardActions}
-            />
+              <div className="main-container">
 
-            {this.props.children}
+              {isModal ?
+                this.state.indexChildren :
+                this.props.children
+              }
 
-          </div>
+              </div>
 
-        </MuiThemeProvider>
+              {isModal && (
+                <Modal isOpen={true} returnTo={location.state.returnTo} pathname={location.pathname} hairpiqs={location.state.hairpiqs}>
+                  {this.props.children}
+                </Modal>
+              )}
 
+            </div>
+
+          </MuiThemeProvider>
       </div>
-    );
+    )
   }
-}
+};
 
 export default Main;

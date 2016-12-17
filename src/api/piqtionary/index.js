@@ -187,8 +187,8 @@ module.exports = function(app, db) {
 			var skip = Number(req.body.page_num) * Number(req.body.limit);
 
 			// if a keyword is included, add it to the query
-			if (req.body.keyword)
-				query.stylename = new RegExp('^'+ req.body.keyword + '$', "i");
+			if (req.body.term)
+				query.stylename = new RegExp('^'+ req.body.term + '$', "i");
 
 			var cursor = db.collection('approved_hairpiqs').find(query).skip(skip).sort({ _id : -1}).limit(limit);
 
@@ -235,6 +235,83 @@ module.exports = function(app, db) {
 			res.send(JSON.stringify(resultArray));
 
 		});
+
+	});
+
+	/*
+		get a hairpiq document by id
+	*/
+
+	app.post('/piqtionary/get_by_id', function(req, res, next) {
+
+		console.log('B - called: /piqtionary/get_by_id');
+
+		// get a hairpiq by id
+			// find hairpiq in approved_hairpiqs collection
+
+			// data needed
+			// - _id
+
+		var id = {
+			_id: ObjectID(req.body._id)
+		};
+
+		var resultArray = [];
+
+		var cursor = db.collection('approved_hairpiqs').find(id);
+
+		cursor.forEach(function(doc, err) {
+				
+			console.log('C - Retrieved document in approved_hairpiqs: ' + doc._id);
+			assert.equal(null, err);
+			resultArray.push(doc);
+
+		}, function() {
+							
+			res.setHeader('Content-Type', 'application/json');
+			res.send(JSON.stringify(resultArray));
+
+		});
+
+	});
+
+	/*
+		retrieve a list of pending hairpiqs
+	*/
+
+	app.post('/piqtionary/pending_list', function(req, res, next) {
+
+		console.log('B - called: /piqtionary/pending_list');
+
+		// find a collection of pending hairpiqs
+		// limit - the amount of docs to return
+		// page_num - the index of the set of docs to return
+
+		var resultArray = [];
+
+		if (req.body.limit !== undefined && req.body.limit.length > 0) {
+			var limit = Number(req.body.limit);
+			var skip = Number(req.body.page_num) * Number(req.body.limit);
+
+			var cursor = db.collection('pending_hairpiqs').find().skip(skip).sort({ _id : -1}).limit(limit);
+
+			cursor.forEach(function(doc, err) {
+					
+				console.log('C.A - Retrieved document in pending_hairpiqs: ' + doc._id);
+				assert.equal(null, err);
+				resultArray.push(doc);
+
+			}, function() {
+								
+				res.setHeader('Content-Type', 'application/json');
+				res.send(JSON.stringify(resultArray));
+
+			});
+
+		} else {
+			console.log('C.B - No limit supplied.');
+			res.send('No limit supplied.');
+		}
 
 	});
 

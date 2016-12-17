@@ -3,64 +3,75 @@ import { render } from 'react-dom';
 import { Link } from 'react-router';
 import Paper from 'material-ui/Paper';
 import Chip from 'material-ui/Chip';
+import Divider from 'material-ui/Divider';
+import FlatButton from 'material-ui/FlatButton';
+import FileDownloadIcon from 'material-ui/svg-icons/file/file-download';
+import {orange700} from 'material-ui/styles/colors';
 import ShareMenu from './ShareMenu';
+import RelatedItems from './RelatedItems';
 
 class DetailCard extends Component {
 
 	render() {
+
+		const params = this.props.data;
 		
 		return (
 
-			<div className="detail-card-container">
+			<div className="detail-card">
 
-	            <div className="uk-width-medium-8-10 uk-push-1-10">
-	                
-	                <Paper className="detail-card">
-	            		
-	            		<div className="uk-grid uk-grid-margin uk-grid-collapse">
-							<div className="uk-width-medium-4-10 data-column">
-								<div className="data">
-									<div className="title">
-					                  Style Name
-					                </div>
-					                <div className="text">
-					                  Afro Puffs
-					                </div>
-					                <div className="title">
-					                  IG Profile
-					                </div>
-					                <div className="text">
-					                  @_wassupyaya
-					                </div>
-								</div>
-								<div className="data">
-									<Link to="#"><Chip className="chip">tag</Chip></Link>
-									<Link to="#"><Chip className="chip">tagtag</Chip></Link>
-									<Link to="#"><Chip className="chip">tag</Chip></Link>
-									<Link to="#"><Chip className="chip">tagtagtagtag</Chip></Link>
-									<Link to="#"><Chip className="chip">tag</Chip></Link>
-								</div>
-								<div className="data tertiary">
-									<div className="title">
-					                  Share with Friends
-					                </div>
-									<ShareMenu />
-									<div className="title margin-top-20">
-					                  Related Images
-					                </div>
-					                <div className="related-images margin-top-10">A, B, C</div>
-			            		</div>
-							</div>
-							<div className="uk-width-medium-6-10">
-								<div className="photo">
-									<img src="https://dev-piqtionary.s3.amazonaws.com/x5v2vimxvdejiqizhd69.jpg" />
-								</div>
-							</div>
-	            		</div>
+				<div className="parent left-col">
+					<div className="child photo">
+						<Paper className="paper" zDepth={4}>
+							<img src={params.s3_url} />
+						</Paper>
+					</div>
+				</div>
+				<div className="parent right-col">
+					<div className="child detail-info">
+						<div className="data-container">
+							<div className="title">
+			                  Style Name
+			                </div>
+			                <div className="text">
+			                  {params.stylename}
+			                </div>
+			                <div className="title">
+			                  IG Profile
+			                </div>
+			                <div className="text">
+			                  {params.ig_username}
+			                </div>
+						</div>
+						<Divider />
+						<div className="data-container">
+							<Link to="/q/test"><Chip className="chip">test</Chip></Link>
+							<Link to="/q/tagtag"><Chip className="chip">tagtag</Chip></Link>
+							<Link to="/q/tag"><Chip className="chip">tag</Chip></Link>
+							<Link to="/q/tagtagtagtag"><Chip className="chip">tagtagtagtag</Chip></Link>
+							<Link to="/q/tagtagtag"><Chip className="chip">tagtagtag</Chip></Link>
+						</div>
+						<Divider />
+						<div className="data-container">
+							<div className="title">
+			                  Share with Friends
+			                </div>
+			                <ShareMenu
+			                	data={params}
+			                />
+			            </div>
+			            <Divider />
+			            <div className="data-container">
+							<div className="title">
+			                  Related Hairpiqs
+			                </div>
+			                <RelatedItems
+			                	data={params}
+			                />
+			            </div>
+					</div>
+				</div>
 
-	            	</Paper>
-
-	            </div>
 
         	</div>
 

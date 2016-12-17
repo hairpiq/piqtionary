@@ -1,15 +1,54 @@
-.search-bar {
+.search-bar-container {
+	border-radius: 5px;
+}
+
+.search-bar-container.focused {
+    box-shadow: rgba(0, 0, 0, 0.156863) 0px 3px 10px, rgba(0, 0, 0, 0.227451) 0px 3px 10px;
+}
+
+.react-autosuggest__container {
 	height: 43px !important;
-	border:1px solid #9E9E9E !important;
+	background: #eeeeee !important;
+	border-radius: 5px;
 }
 
-.search-bar.focused {
-    border: 1px solid #212121 !important;
-}
-
-.search-bar input {
+.react-autosuggest__input {
 	width:90% !important;
 	padding-left:25px !important;
+	background: transparent;
+	border: none;
+	font-size: 16px;
+    line-height: 24px;
+    font-family: Roboto, sans-serif;
+    padding: 8px 20px;
+}
+
+.react-autosuggest__input:focus {
+	outline: 0;
+}
+
+.react-autosuggest__suggestions-list {
+  margin: 3px 0 0;
+  padding: 0;
+  list-style-type: none;
+  box-shadow: rgba(0, 0, 0, 0.156863) 0px 3px 10px, rgba(0, 0, 0, 0.227451) 0px 3px 10px;
+  border-radius: 5px;
+}
+
+.react-autosuggest__suggestion {
+  cursor: pointer;
+  padding: 10px 20px;
+  background: #ffffff;
+}
+
+.react-autosuggest__suggestion:last-child {
+	border-bottom-left-radius: 5px !important;
+	border-bottom-right-radius: 5px !important;
+}
+
+
+.react-autosuggest__suggestion--focused {
+  background-color: #E0E0E0;
 }
 
 @media (max-width: 767px) {
@@ -18,22 +57,29 @@
   	position: relative;
   }
 
-  .search-bar input {
+  .react-autosuggest__input  {
   	width: 65%;
   }
 
 }
 
-.search-bar label,
-.search-bar hr {
-	display: none;
+@media (min-width: 768px) {
+	.search-bar-container {
+	  	position: fixed;
+	  	z-index: 1100;
+	  	top: 11px;
+	    left: 150px;
+	    right: 150px;
+  	}
 }
 
 .search-button {
 	position: absolute !important;
     top: 0;
 	right: 20px;
-    height: 45px !important;
+    height: 43px !important;
+    border-top-right-radius: 5px !important;
+    border-bottom-right-radius: 5px !important;
 }
 
 @media (min-width: 768px) {
@@ -42,6 +88,8 @@
 	}
 }
 
-.search-button svg {
-	height:38px;
+.search-button .icon {
+	width:35px !important;
+	height:35px !important;
+	fill: #ffffff !important;
 }

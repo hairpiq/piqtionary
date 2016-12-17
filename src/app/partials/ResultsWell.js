@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
-import Paper from 'material-ui/Paper';
-import Divider from 'material-ui/Divider';
 import { Link } from 'react-router';
 import InfiniteScroll from 'react-infinite-scroller';
-import Services from '../services/'
+import Services from '../services/';
+import ResultItem from './ResultItem';
 
 class ResultsWell extends Component {
 
@@ -16,7 +15,7 @@ class ResultsWell extends Component {
           hairpiqs: [],
           page_num: 0,
           hasMoreItems: true,
-          keyword: ''
+          term: this.props.term
       };
 
   }
@@ -33,9 +32,9 @@ class ResultsWell extends Component {
       page_num: this.state.page_num
     }
 
-    // if the keyword state has changed, include it
-    if(this.state.keyword.length > 0)
-      params.keyword = this.state.keyword;
+    // if the term state has changed, include it
+    if(this.state.term !== undefined && this.state.term.length > 0)
+      params.term = this.state.term;
 
 
     Services.getList(params).then(function(result) {
@@ -59,28 +58,27 @@ class ResultsWell extends Component {
 
     }).catch(function(error) {
       console.log(error);
-      reject(new Error(error));
     });
   }
 
   // resetting the state forces the InfiniteScroll Component to re-render
   // with the below values
   
-  resetStateForKeyword(keyword) {
+  resetStateForTerm(term) {
     this.setState({
       hairpiqs: [],
       page_num: 0,
       hasMoreItems: true,
-      keyword: keyword
+      term: term
     });
   }
 
   render() {
 
-    // if the keyword that is passed as a prop is DIFFERENT than the keyword in this component state
-      // reset this component state with this new keyword.
-    if (this.state.keyword !== this.props.keyword)
-      this.resetStateForKeyword(this.props.keyword);
+    // if the term that is passed as a prop is DIFFERENT than the term in this component state
+      // reset this component state with this new ter,.
+    if (this.state.term !== this.props.term)
+      this.resetStateForTerm(this.props.term);
 
     const loader = <div className="loader">Loading ...</div>;
 
@@ -89,26 +87,12 @@ class ResultsWell extends Component {
         items.push(
             
             <div className="hairpiq-paper-container uk-width-small-1-3 uk-width-medium-1-4">
-              <Paper key={i} className="hairpiq-paper">
-                <Link to={"/p/" + listItem._id + '/'}><img src={listItem.s3_url} /></Link>
-                <div className="hairpiq-data">
-                  <div className="title">
-                    Style Name
-                  </div>
-                  <div className="text">
-                    {listItem.stylename}
-                  </div>
-                </div>
-                <Divider />
-                <div className="hairpiq-data">
-                  <div className="title">
-                    IG Profile
-                  </div>
-                  <div className="text">
-                    {listItem.ig_username}
-                  </div>
-                </div>            
-              </Paper>
+              <ResultItem
+                key={i}
+                listItem={listItem}
+                location={this.props.location}
+                hairpiqs={this.state.hairpiqs}
+              />
             </div>
 
         );

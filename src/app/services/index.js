@@ -39,5 +39,25 @@ module.exports = {
 
 		});
 
+	},
+	getById: function(params) {
+
+		return new Promise(function(resolve, reject) {
+
+			$.ajax({
+			  	type: "POST",
+			  	url: '//' + process.env.HOSTNAME + '/piqtionary/get_by_id',
+			  	data: params,
+			  	success: function(result) {
+					resolve(result);
+				},
+			 	dataType: 'json',
+			 	beforeSend: function (xhr) {
+				    xhr.setRequestHeader ("Authorization", process.env.API_BASIC_AUTH);
+				}
+			});
+
+		});
+
 	}
 };

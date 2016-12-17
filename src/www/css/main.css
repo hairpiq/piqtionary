@@ -1,10 +1,21 @@
+html, h1, h2, h3, h4, h5, h6 {
+  font-family: 'Roboto', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
 body {
 	margin:0;
 }
 
-.logo {
+.app_bar {
+	position: fixed !important;
+	top:0;
+}
+
+.app_bar .logo {
 	width:90px;
 	height:26px;
+	margin-top: -4px;
 }
 
 .margin-top-20 {
@@ -13,4 +24,23 @@ body {
 
 .margin-top-10 {
 	margin-top:10px;
+}
+
+.main-container {
+	padding-top:25px;
+}
+
+.create-button {
+	position: fixed;
+	right: 20px;
+	bottom: 15px;
+}
+
+@media (min-width: 768px) {
+
+	.create-button {
+		right: 50px;
+		bottom: 50px;
+	}
+
 }
