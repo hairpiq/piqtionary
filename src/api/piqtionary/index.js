@@ -275,5 +275,45 @@ module.exports = function(app, db) {
 
 	});
 
+	/*
+		retrieve a list of pending hairpiqs
+	*/
+
+	app.post('/piqtionary/pending_list', function(req, res, next) {
+
+		console.log('B - called: /piqtionary/pending_list');
+
+		// find a collection of pending hairpiqs
+		// limit - the amount of docs to return
+		// page_num - the index of the set of docs to return
+
+		var resultArray = [];
+
+		if (req.body.limit !== undefined && req.body.limit.length > 0) {
+			var limit = Number(req.body.limit);
+			var skip = Number(req.body.page_num) * Number(req.body.limit);
+
+			var cursor = db.collection('pending_hairpiqs').find().skip(skip).sort({ _id : -1}).limit(limit);
+
+			cursor.forEach(function(doc, err) {
+					
+				console.log('C.A - Retrieved document in pending_hairpiqs: ' + doc._id);
+				assert.equal(null, err);
+				resultArray.push(doc);
+
+			}, function() {
+								
+				res.setHeader('Content-Type', 'application/json');
+				res.send(JSON.stringify(resultArray));
+
+			});
+
+		} else {
+			console.log('C.B - No limit supplied.');
+			res.send('No limit supplied.');
+		}
+
+	});
+
 
 }

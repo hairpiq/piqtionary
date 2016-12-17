@@ -18,7 +18,7 @@ class DetailCard extends Component {
 		
 		return (
 
-			<div>
+			<div className="detail-card">
 
 				<div className="parent left-col">
 					<div className="child photo">

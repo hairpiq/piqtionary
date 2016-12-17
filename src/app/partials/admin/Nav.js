@@ -4,6 +4,7 @@ import Drawer from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';
 import { Link } from 'react-router';
 
+import Subheader from 'material-ui/Subheader';
 import NotificationMMS from 'material-ui/svg-icons/notification/mms';
 import FileCloudOff from 'material-ui/svg-icons/file/cloud-off';
 import FileCloudDone from 'material-ui/svg-icons/file/cloud-done';
@@ -23,6 +24,7 @@ class Nav extends Component {
 			        docked={false}
 			        onRequestChange={this.props.onRequestChange}
 			    >
+ 					<Subheader>Manage Hairpiqs</Subheader>
 			        <MenuItem
 			          onTouchTap={this.props.handleClose}
 			          onClick={this.props.handleClose}
