@@ -79,3 +79,7 @@
 .pending-request .toolbar .button.approve {
 	margin-left:20px;
 }
+
+.pending-request-dialog.disabled {
+	pointer-events: none;
+}
