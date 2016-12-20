@@ -58,6 +58,37 @@ module.exports = {
 
 		});
 
+	},
+	update: function(public_id, stylename, ig_username, options) {
+
+		var _options = {
+			gravity: "south",
+			theme: {
+				logo: "white",
+				plate: "dark",
+				color: ""
+			}
+		}
+
+		for (var k in options)
+			_options[k] = options[k];
+		
+		return new Promise(function(resolve, reject) {
+
+			var rendered_url = addMeta({
+					id: public_id,
+					stylename: stylename,
+					ig_username: ig_username,
+					theme: _options.theme
+				});
+
+			var result = {
+				rendered_url: rendered_url
+			}
+
+			resolve(result);
+
+		});
 	}
 };
 
