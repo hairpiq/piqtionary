@@ -12,7 +12,11 @@ import AVVideoLibrary from 'material-ui/svg-icons/av/video-library';
 import ActionLaunch from 'material-ui/svg-icons/action/launch';
 import NavigationMenu from 'material-ui/svg-icons/navigation/menu';
 
-import Nav from '../../partials/admin/Nav';
+import {browserHistory} from 'react-router';
+import NavTabs from '../../partials/admin/NavTabs';
+
+import CreateButton from '../../partials/CreateButton';
+
 
 var RetinaImage = require('react-retina-image');
 
@@ -39,28 +43,41 @@ class Main extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {open: false};
 
-    this.handleToggle = this.handleToggle.bind(this);
-    this.handleClose = this.handleClose.bind(this);
+    var initialSelectedIndex = 0;
+
+    switch (this.props.location.pathname) {
+      case '/admin':
+        initialSelectedIndex = 0;
+        break;
+      case '/admin/unpublished':
+        initialSelectedIndex = 1;
+        break;
+      case '/admin/published':
+        initialSelectedIndex = 2;
+        break;
+      case '/admin/trash':
+        initialSelectedIndex = 3;
+        break;
+    }
+    
+    this.state = {
+      initialSelectedIndex: initialSelectedIndex
+    };
+
+    this.linkTo = this.linkTo.bind(this);
   }
 
-  handleToggle = () => this.setState({open: !this.state.open});
-  handleClose = () => this.setState({open: false});
+  linkTo(route) {
+
+    browserHistory.push(route);
+    
+  }
 
   render() {
 
     const logo = (
       <Link to="/admin/"><RetinaImage className="logo" src={["/assets/images/hairpiq-site-logo.png", "/assets/images/2x/hairpiq-site-logo.png"]} /></Link>
-    );
-
-    const menu_icon = (
-      <IconButton
-        onTouchTap={this.handleToggle}
-        onClick={this.handleToggle}
-      >
-        <NavigationMenu />
-      </IconButton>
     );
 
     const standard_actions = (
@@ -80,9 +97,15 @@ class Main extends Component {
             <div>
 
               <AppBar
+                className="app_bar"
                 title={logo}
-                iconElementLeft={menu_icon}
+                showMenuIconButton={false}
                 iconElementRight={standard_actions}
+              />
+
+              <NavTabs
+                initialSelectedIndex={this.state.initialSelectedIndex}
+                onActive={this.linkTo}
               />
 
               <div className="main-container">
@@ -91,11 +114,7 @@ class Main extends Component {
 
               </div>
 
-              <Nav
-                open={this.state.open}
-                onRequestChange={this.handleClose}
-                handleClose={this.handleClose}
-              />
+              <CreateButton />
 
             </div>
 
