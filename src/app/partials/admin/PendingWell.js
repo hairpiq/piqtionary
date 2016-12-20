@@ -39,7 +39,7 @@ class PendingWell extends Component {
   };
 
   handleClose = () => {
-    this.setState({dialog: {open: false}});
+    this.setState({dialog: {open: false }});
   };
 
   handleDialog(obj) {
@@ -86,11 +86,14 @@ class PendingWell extends Component {
     const action = this.state.dialog.action;
     const hairpiq = this.state.hairpiq;
     const _this = this;
+
+    $('.pending-request-dialog').addClass('disabled');
     
     switch (action) {
       case 'REJECT':
 
         Services.moveToTrash(hairpiq).then(function(result) {
+           $('.pending-request-dialog').removeClass('disabled');
           _this.resetStateForWell();
         });
 
@@ -99,6 +102,7 @@ class PendingWell extends Component {
       case 'UPDATE':
 
         Services.update(hairpiq).then(function(result) {
+          $('.pending-request-dialog').removeClass('disabled');
           _this.resetStateForWell();
         });
 
@@ -107,11 +111,13 @@ class PendingWell extends Component {
       case 'APPROVE':
 
         Services.approve(hairpiq).then(function(result) {
+          $('.pending-request-dialog').removeClass('disabled');
           _this.resetStateForWell();
         });
 
         break;
     }
+
   }
 
   loadItems(page) {
@@ -127,8 +133,6 @@ class PendingWell extends Component {
     }
 
     Services.getPendingList(params).then(function(result) {
-
-      console.log(result);
       
       if(result.length > 0) {
         result.map((hairpiq) => {
@@ -228,7 +232,8 @@ class PendingWell extends Component {
             actions={actions}
             modal={false}
             open={this.state.dialog.open}
-            onRequestClose={this.handleClose}>
+            onRequestClose={this.handleClose}
+            actionsContainerClassName="pending-request-dialog">
             {this.state.dialog.message}
           </Dialog>
         </div>

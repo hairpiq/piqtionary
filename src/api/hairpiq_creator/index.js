@@ -194,7 +194,7 @@ module.exports = function(app) {
 		var ig_username = req.body.ig_username;
 
 		update(public_id, stylename, ig_username, options).then(function(result) {
-			res.send(JSON.stringify('success'));
+			res.send(JSON.stringify(result));
 		});
 
 	});
@@ -298,6 +298,7 @@ function submitForReview(obj) {
 	*/
 
 	var params = {
+		rendered_url: obj.rendered_url,
 		orig_photo_url: obj.orig_photo_url,
 		s3_url: obj.s3_url,
 		stylename: obj.stylename,
