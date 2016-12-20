@@ -32,9 +32,15 @@
     clear: both;
 }
 
-.pending-request .delete-request-container {
+.pending-request .delete-request-container,
+.pending-request .reset-text-container {
 	position: relative;
     z-index:1;
+}
+
+.pending-request .delete-request-button,
+.pending-request .reset-text-button {
+	display: block;
 }
 
 .pending-request .delete-request {
@@ -42,8 +48,9 @@
 	right: 0;
 }
 
-.pending-request .delete-request-button {
-	display: block;
+.pending-request .reset-text {
+	position: absolute !important;
+	right: 50px;
 }
 
 .pending-request .toolbar {

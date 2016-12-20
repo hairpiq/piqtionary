@@ -22,13 +22,15 @@ class PendingWell extends Component {
             title: '',
             message: '',
             action: ''
-          }
+          },
+          hairpiq: {}
       };
 
       this.handleOpen = this.handleOpen.bind(this);
       this.handleClose = this.handleClose.bind(this);
       this.handleDialog = this.handleDialog.bind(this);
       this.handleSubmit = this.handleSubmit.bind(this);
+      this.resetStateForWell = this.resetStateForWell.bind(this);
 
   }
 
@@ -41,8 +43,6 @@ class PendingWell extends Component {
   };
 
   handleDialog(obj) {
-    
-    console.log(obj);
 
     var title;
     var message;
@@ -76,35 +76,42 @@ class PendingWell extends Component {
         title: title,
         message: message,
         action: obj.action
-      }
+      },
+      hairpiq: obj.hairpiq
     });
   }
 
   handleSubmit() {
 
     const action = this.state.dialog.action;
+    const hairpiq = this.state.hairpiq;
+    const _this = this;
     
     switch (action) {
       case 'REJECT':
 
-        console.log('rejection submitted');
+        Services.moveToTrash(hairpiq).then(function(result) {
+          _this.resetStateForWell();
+        });
 
         break;
 
       case 'UPDATE':
 
-        console.log('update submitted');
+        Services.update(hairpiq).then(function(result) {
+          _this.resetStateForWell();
+        });
 
         break;
 
       case 'APPROVE':
 
-        console.log('approval submitted');
+        Services.approve(hairpiq).then(function(result) {
+          _this.resetStateForWell();
+        });
 
         break;
     }
-
-    this.handleClose();
   }
 
   loadItems(page) {
@@ -120,6 +127,8 @@ class PendingWell extends Component {
     }
 
     Services.getPendingList(params).then(function(result) {
+
+      console.log(result);
       
       if(result.length > 0) {
         result.map((hairpiq) => {
@@ -140,6 +149,20 @@ class PendingWell extends Component {
 
     }).catch(function(error) {
       console.log(error);
+    });
+  }
+
+  // resetting the state forces the InfiniteScroll Component to re-render
+  // with the below values
+  
+  resetStateForWell() {
+    this.setState({
+      hairpiqs: [],
+      page_num: 0,
+      hasMoreItems: true,
+      dialog: {
+        open: false
+      }
     });
   }
 

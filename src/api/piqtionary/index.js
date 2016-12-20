@@ -1,5 +1,7 @@
 var ObjectID = require("mongodb").ObjectID;
 var assert = require('assert');
+var config = process.env;
+var request = require('request');
 
 module.exports = function(app, db) {
 
@@ -14,19 +16,19 @@ module.exports = function(app, db) {
 		console.log('B - called: /piqtionary/submit');
 
 		var item = {
-			rendered_url: req.body.rendered_url,
 			orig_photo_url: req.body.orig_photo_url,
 			s3_url: req.body.s3_url,
 			stylename: req.body.stylename,
 			ig_username: req.body.ig_username
 		};
 
+
 		db.collection('pending_hairpiqs').insertOne(item, function(err, result) {
 						
 			assert.equal(null, err);
 			console.log('C - Item inserted into pending_hairpiqs: ' + result.insertedId);
 
-			res.end();
+			res.send(JSON.stringify('success'));
 		
 		});
 	});
@@ -69,19 +71,21 @@ module.exports = function(app, db) {
 							
 				assert.equal(null, err);
 				console.log('C.A - Item inserted into approved_hairpiqs: ' + result.insertedId);
-				removePendingHairpiq(pending_id);
+				removePendingHairpiq();
 
 			});
 
 		} else {
 
+			item.orig_photo_url = req.body.orig_photo_url;
+
 			console.log('Item is rejected');
 
-			db.collection('removed_hairpiqs').insertOne(item, function(err, result) {
+			db.collection('removed_xhairpiqs').insertOne(item, function(err, result) {
 							
 				assert.equal(null, err);
 				console.log('C.B - Item inserted into removed_hairpiqs: ' + result.insertedId);
-				removePendingHairpiq(pending_id);
+				removePendingHairpiq();
 
 			});
 
@@ -94,7 +98,7 @@ module.exports = function(app, db) {
 				assert.equal(null, err);
 				console.log('D - Item removed from pending_hairpiqs: ' + pending_id._id);
 
-				res.end();
+				res.send(JSON.stringify('success'));
 			
 			});
 
@@ -131,7 +135,7 @@ module.exports = function(app, db) {
 			assert.equal(null, err);
 			console.log('C - Updated document in approved_hairpiqs: ' + id._id);
 
-			res.end();
+			res.send(JSON.stringify('success'));
 		
 		});
 
@@ -311,6 +315,72 @@ module.exports = function(app, db) {
 		} else {
 			console.log('C.B - No limit supplied.');
 			res.send('No limit supplied.');
+		}
+
+	});
+
+	/*
+		update a hairpiq
+	*/
+
+	app.post('/piqtionary/update', function(req, res, next) {
+
+		// re-render hairpiq via hairpiq creator api
+		// update the hairpiq document
+		// - s3_url
+		// - stylename
+		// - ig_username
+		// return as success
+
+		console.log('B - called: /piqtionary/update');
+
+		var pieces = req.body.orig_photo_url.split('/');
+		var filename = pieces[pieces.length - 1];
+
+		var params = {
+			public_id: filename,
+			stylename: req.body.updated_stylename,
+			ig_username: req.body.updated_ig_username
+		}
+
+		// recomposite hairpiq
+
+		request({
+		    url: 'http://' + config.HOSTNAME + '/hairpiq_creator/update', //URL to hit
+		    qs: {time: +new Date()}, //Query string data
+		    method: 'POST',
+		    headers : {
+		        "Authorization" : config.API_BASIC_AUTH
+			},
+		    //Lets post the following key/values as form
+		    json: params
+			}, function(error, response, body){
+			    if(error) {
+			        console.log(error);
+			    } else {
+			        updateDoc();
+			}
+		});
+
+		// update hairpiq in database
+		function updateDoc() {
+
+			var id = {
+				_id: ObjectID(req.body._id)
+			};
+
+			var item = {
+				stylename: req.body.updated_stylename,
+				ig_username: req.body.updated_ig_username
+			}
+					
+			db.collection('pending_hairpiqs').update(id, { $set: params }, function(err, result) {
+						
+				assert.equal(null, err);
+				console.log('C - Updated document in approved_hairpiqs: ' + id._id);
+				res.send(JSON.stringify('success'));
+			
+			});
 		}
 
 	});
