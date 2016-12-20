@@ -376,7 +376,7 @@ module.exports = function(app, db) {
 				ig_username: req.body.updated_ig_username
 			}
 					
-			db.collection('pending_hairpiqs').update(id, { $set: item }, function(err, result) {
+			db.collection('pending_hairpiqs').update(id, { $set: params }, function(err, result) {
 						
 				assert.equal(null, err);
 				console.log('C - Updated document in approved_hairpiqs: ' + id._id);
