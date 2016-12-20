@@ -91,9 +91,6 @@ class PendingItem extends Component {
     const listItem = this.props.listItem;
     const isTextBeingEdited = (this.state.stylename !== listItem.stylename || this.state.ig_username !== listItem.ig_username)
 
-    console.log('A');
-    console.log(listItem);
-
     const renderResetTextButton = () => {
       if (isTextBeingEdited) {
         return (
