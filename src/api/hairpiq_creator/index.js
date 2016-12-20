@@ -24,9 +24,11 @@ module.exports = function(app) {
 	// allow nodejs to utilize session storage
 	app.use(session({ secret: config.SESSION_SECRET, resave: true, saveUninitialized: true}));
 
-	// consume mms from Twilio
+	/*
+		consume mms from Twilio
+	*/
 
-	app.post('/mms', function(req, res) {
+	app.post('/hairpiq_creator/mms', function(req, res) {
 
 		console.log('mms received from Twilio...');
 
@@ -117,7 +119,7 @@ module.exports = function(app) {
 			// send quick message
 			twilio.send(req.body.From, messages.b.one, config.TWILIO_LOGO);
 
-			execute(photo_url, stylename, ig_username, options).then(function(result) {
+			create(photo_url, stylename, ig_username, options).then(function(result) {
 
 				// store values in session
 				req.session.rendered_url = result.rendered_url;
@@ -172,9 +174,33 @@ module.exports = function(app) {
 		}
 
 	});
+
+	/*
+		update hairpiq data
+	*/
+
+	app.post('/hairpiq_creator/update', function(req, res) {
+
+		var options = {
+				gravity: "south",
+				theme: {
+					logo: "dark",
+					plate: "dark"
+				}
+			};
+
+		var public_id = req.body.public_id;
+		var stylename = req.body.stylename;
+		var ig_username = req.body.ig_username;
+
+		update(public_id, stylename, ig_username, options).then(function(result) {
+			res.send(JSON.stringify('success'));
+		});
+
+	});
 }
 
-function execute(photo_url, stylename, ig_username, options) {
+function create(photo_url, stylename, ig_username, options) {
 
 	// composite hairpiq in Cloudinary
 
@@ -226,6 +252,39 @@ function execute(photo_url, stylename, ig_username, options) {
 
 }
 
+function update(public_id, stylename, ig_username, options) {
+
+	return new Promise(function(resolve, reject) {
+
+		cloudinary.update(public_id, stylename, ig_username, options).then(function(result){
+			
+			console.log("Cloudinary responded...");
+
+			var _result = result;
+
+			console.log(_result.rendered_url);
+
+			// save to S3
+
+			console.log('requesting S3...');
+
+			s3.update(_result.rendered_url).then(function(result) {
+				
+				console.log("S3 responded...");
+
+				_result.s3_url = result.url;
+				
+				console.log(_result.s3_url);
+
+				resolve(_result);
+			});
+
+		});
+
+	});
+
+}
+
 function submitForReview(obj) {
 
 	/* test data
@@ -239,7 +298,6 @@ function submitForReview(obj) {
 	*/
 
 	var params = {
-		rendered_url: obj.rendered_url,
 		orig_photo_url: obj.orig_photo_url,
 		s3_url: obj.s3_url,
 		stylename: obj.stylename,
@@ -249,21 +307,21 @@ function submitForReview(obj) {
 	//submit object into piqtionary pending queue
 
 	request({
-			    url: 'http://' + config.HOSTNAME + '/piqtionary/submit', //URL to hit
-			    qs: {time: +new Date()}, //Query string data
-			    method: 'POST',
-			    headers : {
-		            "Authorization" : config.API_BASIC_AUTH
-		        },
-			    //Lets post the following key/values as form
-			    json: params
-			}, function(error, response, body){
-			    if(error) {
-			        console.log(error);
-			    } else {
-			        console.log(response.statusCode, body);
-			}
-		});
+	    url: 'http://' + config.HOSTNAME + '/piqtionary/submit', //URL to hit
+	    qs: {time: +new Date()}, //Query string data
+	    method: 'POST',
+	    headers : {
+	        "Authorization" : config.API_BASIC_AUTH
+		},
+	    //Lets post the following key/values as form
+	    json: params
+		}, function(error, response, body){
+		    if(error) {
+		        console.log(error);
+		    } else {
+		        console.log(response.statusCode, body);
+		}
+	});
 
 }
 
