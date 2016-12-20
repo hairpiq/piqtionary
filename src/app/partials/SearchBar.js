@@ -120,7 +120,7 @@ class SearchBar extends Component {
       this.resetStateForTerm(this.props.term);
 
     const inputProps = {
-      placeholder: "what hair style would you like to see?",
+      placeholder: "what hairstyle would you like to see?",
       value,
       onChange: this.onChange
     };
