@@ -71,9 +71,6 @@ module.exports = {
 	},
 	update: function(params) {
 
-		console.log('B');
-		console.log(params);
-
 		return new Promise(function(resolve, reject) {
 
 			$.ajax({

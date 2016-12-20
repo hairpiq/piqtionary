@@ -16,6 +16,7 @@ module.exports = function(app, db) {
 		console.log('B - called: /piqtionary/submit');
 
 		var item = {
+			rendered_url: req.body.rendered_url,
 			orig_photo_url: req.body.orig_photo_url,
 			s3_url: req.body.s3_url,
 			stylename: req.body.stylename,
@@ -78,10 +79,11 @@ module.exports = function(app, db) {
 		} else {
 
 			item.orig_photo_url = req.body.orig_photo_url;
+			item.rendered_url = req.body.rendered_url;
 
 			console.log('Item is rejected');
 
-			db.collection('removed_xhairpiqs').insertOne(item, function(err, result) {
+			db.collection('removed_hairpiqs').insertOne(item, function(err, result) {
 							
 				assert.equal(null, err);
 				console.log('C.B - Item inserted into removed_hairpiqs: ' + result.insertedId);
@@ -374,7 +376,7 @@ module.exports = function(app, db) {
 				ig_username: req.body.updated_ig_username
 			}
 					
-			db.collection('pending_hairpiqs').update(id, { $set: params }, function(err, result) {
+			db.collection('pending_hairpiqs').update(id, { $set: item }, function(err, result) {
 						
 				assert.equal(null, err);
 				console.log('C - Updated document in approved_hairpiqs: ' + id._id);
