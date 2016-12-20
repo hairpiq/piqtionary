@@ -1,3 +1,8 @@
+.admin .app_bar {
+	position: relative !important;
+    box-shadow: none !important;
+}
+
 .admin .main-container {
 	padding-top:40px;
 }
