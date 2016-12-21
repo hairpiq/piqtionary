@@ -182,19 +182,19 @@ class PendingWell extends Component {
     switch (this.state.dialog.action) {
       case 'REJECT':
 
-        message = 'the hairpiq has been moved to the "Trash" Section';
+        message = 'trashed!';
 
         break;
 
       case 'UPDATE':
 
-        message = 'the hairpiq has been updated';
+        message = 'updated!';
         
         break;
 
       case 'APPROVE':
 
-        message = 'the hairpiq has been approved and moved to "Unpublished" Section';
+        message = 'approved!';
 
         break;
     }

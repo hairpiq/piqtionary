@@ -5,6 +5,7 @@ import IconButton from 'material-ui/IconButton';
 import ActionDelete from 'material-ui/svg-icons/action/delete';
 import FileCloudOff from 'material-ui/svg-icons/file/cloud-off';
 import {grey600} from 'material-ui/styles/colors';
+import LazyLoad from 'react-lazyload';
 
 class PublishedItem extends Component {
 
@@ -40,7 +41,11 @@ class PublishedItem extends Component {
 
       <Paper className="approved-hairpiq">
         <div className="photo">
-          <a href={listItem.s3_url} target="_blank"><img src={listItem.s3_url} /></a>
+          <a href={listItem.s3_url} target="_blank">
+            <LazyLoad height={200} offset={100} once>
+              <img src={listItem.s3_url} />
+            </LazyLoad>
+          </a>
         </div>
         <div className="detail-info">
           <div className="publish-hairpiq-container">
@@ -50,13 +55,13 @@ class PublishedItem extends Component {
               </IconButton>
             </a>
           </div>
-          <div className="delete-hairpiq-container">
+          {/*<div className="delete-hairpiq-container">
             <a className="delete-hairpiq-button" onClick={this.rejectItem}>
               <IconButton className="delete-hairpiq">
                 <ActionDelete color={grey600} />
               </IconButton>
             </a>
-          </div>
+          </div>*/}
         </div>
       </Paper>
     )
