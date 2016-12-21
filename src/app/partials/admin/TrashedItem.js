@@ -4,7 +4,9 @@ import Paper from 'material-ui/Paper';
 import IconButton from 'material-ui/IconButton';
 import ActionDeleteForever from 'material-ui/svg-icons/action/delete-forever';
 import FileCloudOff from 'material-ui/svg-icons/file/cloud-off';
+import ActionRestore from 'material-ui/svg-icons/action/restore';
 import {grey600} from 'material-ui/styles/colors';
+import LazyLoad from 'react-lazyload';
 
 class TrashedItem extends Component {
 
@@ -40,13 +42,17 @@ class TrashedItem extends Component {
 
       <Paper className="approved-hairpiq">
         <div className="photo">
-          <a href={listItem.s3_url} target="_blank"><img src={listItem.s3_url} /></a>
+          <a href={listItem.s3_url} target="_blank">
+          <LazyLoad height={200} offset={100} once>
+            <img src={listItem.s3_url} />
+          </LazyLoad>
+          </a>
         </div>
         <div className="detail-info">
           <div className="publish-hairpiq-container">
             <a className="publish-hairpiq-button">
               <IconButton className="publish-hairpiq" onClick={this.restoreItem}>
-                <FileCloudOff color={grey600} />
+                <ActionRestore color={grey600} />
               </IconButton>
             </a>
           </div>

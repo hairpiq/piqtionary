@@ -7,6 +7,7 @@ import ActionDelete from 'material-ui/svg-icons/action/delete';
 import ContentBackspace from 'material-ui/svg-icons/content/backspace';
 import {orange700, green600, grey100, grey600} from 'material-ui/styles/colors';
 import RaisedButton from 'material-ui/RaisedButton';
+import LazyLoad from 'react-lazyload';
 
 class PendingItem extends Component {
 
@@ -153,7 +154,11 @@ class PendingItem extends Component {
 
       <Paper className="pending-request">
         <div className="photo">
-          <a href={listItem.s3_url} target="_blank"><img src={listItem.s3_url + '?' + new Date().getTime().toString()} /></a>
+          <a href={listItem.s3_url} target="_blank">
+            <LazyLoad height={200} offset={100} once>
+              <img src={listItem.s3_url + '?' + new Date().getTime().toString()} />
+            </LazyLoad>
+          </a>
         </div>
         <div className="detail-info">
           <div className="reset-text-container">

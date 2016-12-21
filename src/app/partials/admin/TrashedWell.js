@@ -167,13 +167,13 @@ class TrashedWell extends Component {
     switch (this.state.dialog.action) {
       case 'DELETE':
 
-        message = 'the hairpiq has been deleted forever';
+        message = 'deleted!';
 
         break;
 
       case 'RESTORE':
 
-        message = 'the hairpiq has been restored and moved back to Pending Requests, or the Unpublished Section';
+        message = 'restored! check "Pending Requests" or "Unpublished"';
 
         break;
     }
