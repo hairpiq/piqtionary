@@ -1,0 +1,38 @@
+.approved-hairpiq-container {
+	
+	margin-top: 25px;
+	padding:25px;
+
+}
+
+.approved-hairpiq-container .loader {
+	position: relative;
+	width: 40px;
+    height: 40px;
+    margin: 20px auto 0;
+}
+
+.approved-hairpiq {
+	position: relative;
+	margin-bottom:30px !important;
+}
+
+.approved-hairpiq:after {
+
+	content: "";
+    display: block;
+    clear: both;
+}
+
+.approved-hairpiq .publish-hairpiq-container {
+	float: left;
+}
+
+.approved-hairpiq .delete-hairpiq-container {
+	float: right;
+}
+
+.approved-hairpiq .delete-hairpiq-button,
+.approved-hairpiq .publish-hairpiq-button {
+	display: block;
+}

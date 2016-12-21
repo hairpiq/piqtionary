@@ -2,14 +2,14 @@ import React, { Component } from 'react';
 import { render } from 'react-dom';
 import InfiniteScroll from 'react-infinite-scroller';
 import Services from '../../services/admin/';
-import PendingItem from './PendingItem';
+import PublishedItem from './PublishedItem';
 import FlatButton from 'material-ui/FlatButton';
 import Dialog from 'material-ui/Dialog';
 import CircularProgress from 'material-ui/CircularProgress';
 import {grey400} from 'material-ui/styles/colors';
 import Snackbar from 'material-ui/Snackbar';
 
-class PendingWell extends Component {
+class PublishedWell extends Component {
 
   constructor(props) {
       
@@ -56,22 +56,15 @@ class PendingWell extends Component {
     switch (obj.action) {
       case 'REJECT':
 
-        title = 'REJECT HAIRPIQ';
-        message = 'Are you sure you want to reject this hairpiq? Doing so will send it to the Trash Section.';
+        title = 'REMOVE HAIRPIQ';
+        message = 'Are you sure you want to move this hairpiq to the trash?';
 
         break;
 
-      case 'UPDATE':
+      case 'UNPUBLISH':
 
-        title = 'UPDATE HAIRPIQ';
-        message = 'Are you sure you want to update this hairpiq? This will allow you to modify the text in the image.';
-
-        break;
-
-      case 'APPROVE':
-
-        title = 'APPROVE HAIRPIQ';
-        message = 'Are you sure you want to approve this hairpiq? Doing so will send it to the Unpublished Section.';
+        title = 'UNPUBLISH HAIRPIQ';
+        message = 'Unpublish this hairpiq from the live site? You can republish it by going to the "Unpublished" Section and clicking this hairpiq\'s "Publish" button.';
 
         break;
     }
@@ -93,35 +86,27 @@ class PendingWell extends Component {
     const hairpiq = this.state.hairpiq;
     const _this = this;
 
-    $('.pending-request-dialog').addClass('disabled');
+    $('.approved-hairpiq-dialog').addClass('disabled');
     
     switch (action) {
       case 'REJECT':
 
-        Services.reject(hairpiq).then(function(result) {
-           $('.pending-request-dialog').removeClass('disabled');
+        Services.moveToTrash(hairpiq).then(function(result) {
+           $('.approved-hairpiq-dialog').removeClass('disabled');
           _this.resetStateForWell();
         });
 
         break;
 
-      case 'UPDATE':
+      case 'UNPUBLISH':
 
-        Services.update(hairpiq).then(function(result) {
-          $('.pending-request-dialog').removeClass('disabled');
+        Services.unpublish(hairpiq).then(function(result) {
+          $('.approved-hairpiq-dialog').removeClass('disabled');
           _this.resetStateForWell();
         });
 
         break;
 
-      case 'APPROVE':
-
-        Services.approve(hairpiq).then(function(result) {
-          $('.pending-request-dialog').removeClass('disabled');
-          _this.resetStateForWell();
-        });
-
-        break;
     }
 
   }
@@ -138,7 +123,7 @@ class PendingWell extends Component {
       page_num: this.state.page_num
     }
 
-    Services.getPendingList(params).then(function(result) {
+    Services.getList(params).then(function(result) {
       
       if(result.length > 0) {
         result.map((hairpiq) => {
@@ -182,19 +167,13 @@ class PendingWell extends Component {
     switch (this.state.dialog.action) {
       case 'REJECT':
 
-        message = 'the hairpiq has been moved to the "Trash" Section';
+        message = 'the hairpiq has been moved to the Trash Section';
 
         break;
 
-      case 'UPDATE':
+      case 'UNPUBLISH':
 
-        message = 'the hairpiq has been updated';
-        
-        break;
-
-      case 'APPROVE':
-
-        message = 'the hairpiq has been approved and moved to "Unpublished" Section';
+        message = 'the hairpiq has been unpublished and moved to the Unpublished Section';
 
         break;
     }
@@ -225,8 +204,8 @@ class PendingWell extends Component {
       this.state.hairpiqs.map((listItem, i) => {
         items.push(
             
-            <div className="uk-width-medium-1-2">
-              <PendingItem
+            <div className="uk-width-medium-1-3 uk-width-large-1-4">
+              <PublishedItem
                 key={i}
                 listItem={listItem}
                 hairpiqs={this.state.hairpiqs}
@@ -257,7 +236,7 @@ class PendingWell extends Component {
       
       <div>
 
-        <div className="pending-request-container">
+        <div className="approved-hairpiq-container">
 
           <InfiniteScroll
               pageStart={0}
@@ -279,7 +258,7 @@ class PendingWell extends Component {
             modal={false}
             open={this.state.dialog.open}
             onRequestClose={this.handleClose}
-            actionsContainerClassName="pending-request-dialog">
+            actionsContainerClassName="approved-hairpiq-dialog">
             {this.state.dialog.message}
           </Dialog>
         </div>
@@ -297,4 +276,4 @@ class PendingWell extends Component {
   }
 }
 
-export default PendingWell;
+export default PublishedWell;
