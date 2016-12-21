@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { render } from 'react-dom';
 import Helmet from 'react-helmet';
 import PublishedWell from '../../partials/admin/PublishedWell';
-import FileCloudOff from 'material-ui/svg-icons/file/cloud-done';
+import FileCloudOff from 'material-ui/svg-icons/file/cloud-off';
 
 class Published extends Component {
 
