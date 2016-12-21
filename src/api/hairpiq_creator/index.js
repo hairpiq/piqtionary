@@ -198,6 +198,16 @@ module.exports = function(app) {
 		});
 
 	});
+
+	app.post('/hairpiq_creator/delete', function(req, res) {
+
+		var public_id = req.body.public_id;
+
+		deleteHairpiqFromS3(public_id).then(function(result) {
+			res.send(JSON.stringify(result));
+		});
+
+	});
 }
 
 function create(photo_url, stylename, ig_username, options) {
@@ -283,6 +293,22 @@ function update(public_id, stylename, ig_username, options) {
 
 	});
 
+}
+
+function deleteHairpiqFromS3(s3_url) {
+
+	return new Promise(function(resolve, reject) {
+
+		s3.delete(s3_url).then(function(result) {
+				
+			console.log("S3 responded...");
+
+			console.log(result);
+
+			resolve(result);
+		});
+
+	});
 }
 
 function submitForReview(obj) {

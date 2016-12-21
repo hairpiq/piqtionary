@@ -197,6 +197,8 @@ module.exports = function(app, db) {
 			assert.equal(null, err);
 			console.log('C - Deleted document from removed_hairpiqs: ' + id._id);
 
+			// delete file from S3
+
 			res.send(JSON.stringify('success'));
 		
 		});
