@@ -5,6 +5,13 @@
 
 }
 
+.pending-request-container .loader {
+	position: relative;
+	width: 40px;
+    height: 40px;
+    margin: 20px auto 0;
+}
+
 .pending-request .photo {
 	width: 45%;
 	float:left;
@@ -16,6 +23,7 @@
 }
 
 .pending-request .data-container {
+	position: relative;
 	padding:30px 25px 0;
 }
 
@@ -76,6 +84,21 @@
 }
 
 @media (max-width: 480px) {
+
+	.pending-request .data-container {
+		padding:20px 25px 30px;
+	}
+
+
+	.pending-request .photo {
+		width: 100%;
+		float: none;
+	}
+
+	.pending-request .detail-info {
+		width: 100%;
+		float: none;
+	}
 
 	.pending-request .toolbar {
 		position: relative;		

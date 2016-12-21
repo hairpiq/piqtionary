@@ -6,6 +6,9 @@ import Services from '../../services/admin/';
 import PendingItem from './PendingItem';
 import FlatButton from 'material-ui/FlatButton';
 import Dialog from 'material-ui/Dialog';
+import CircularProgress from 'material-ui/CircularProgress';
+import {grey400} from 'material-ui/styles/colors';
+import Snackbar from 'material-ui/Snackbar';
 
 class PendingWell extends Component {
 
@@ -23,7 +26,10 @@ class PendingWell extends Component {
             message: '',
             action: ''
           },
-          hairpiq: {}
+          hairpiq: {},
+          snackbar: {
+            open: false
+          }
       };
 
       this.handleOpen = this.handleOpen.bind(this);
@@ -31,7 +37,7 @@ class PendingWell extends Component {
       this.handleDialog = this.handleDialog.bind(this);
       this.handleSubmit = this.handleSubmit.bind(this);
       this.resetStateForWell = this.resetStateForWell.bind(this);
-
+      this.closeSnackbar = this.closeSnackbar.bind(this);
   }
 
   handleOpen = () => {
@@ -156,23 +162,64 @@ class PendingWell extends Component {
     });
   }
 
+  closeSnackbar = () => {
+    this.setState({
+      snackbar: { 
+        open: false
+      }
+    });
+  };
+
+
   // resetting the state forces the InfiniteScroll Component to re-render
   // with the below values
   
   resetStateForWell() {
+
+    // determine snackbar message
+    var message = '';
+
+    switch (this.state.dialog.action) {
+      case 'REJECT':
+
+        message = 'the hairpiq has been moved to the "Trash" Section';
+
+        break;
+
+      case 'UPDATE':
+
+        message = 'the hairpiq has been updated';
+        
+        break;
+
+      case 'APPROVE':
+
+        message = 'the hairpiq has been approved and moved to "Unpublished" Section';
+
+        break;
+    }
+
     this.setState({
       hairpiqs: [],
       page_num: 0,
       hasMoreItems: true,
       dialog: {
         open: false
+      },
+      snackbar: {
+        open: true,
+        message: message
       }
     });
   }
 
   render() {
 
-    const loader = <div className="loader">Loading ...</div>;
+    const loader = (
+      <div className="loader">
+        <CircularProgress color={grey400} />
+      </div>
+    );
 
     var items = [];
       this.state.hairpiqs.map((listItem, i) => {
@@ -237,6 +284,14 @@ class PendingWell extends Component {
             {this.state.dialog.message}
           </Dialog>
         </div>
+
+        <Snackbar
+          className="snackbar"
+          open={this.state.snackbar.open}
+          message={this.state.snackbar.message}
+          autoHideDuration={4000}
+          onRequestClose={this.closeSnackbar}
+        />
 
       </div>
     );
