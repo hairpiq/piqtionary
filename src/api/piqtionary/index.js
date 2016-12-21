@@ -192,12 +192,12 @@ module.exports = function(app, db) {
 			_id: ObjectID(req.body._id)
 		};
 					
-		db.collection('pending_hairpiqs').remove(id, function(err, result) {
+		db.collection('removed_hairpiqs').remove(id, function(err, result) {
 					
 			assert.equal(null, err);
 			console.log('C - Deleted document from removed_hairpiqs: ' + id._id);
 
-			res.end();
+			res.send(JSON.stringify('success'));
 		
 		});
 
@@ -315,9 +315,9 @@ module.exports = function(app, db) {
 		retrieve a list of pending hairpiqs
 	*/
 
-	app.post('/piqtionary/pending_list', function(req, res, next) {
+	app.post('/piqtionary/pending', function(req, res, next) {
 
-		console.log('B - called: /piqtionary/pending_list');
+		console.log('B - called: /piqtionary/pending');
 
 		// find a collection of pending hairpiqs
 		// limit - the amount of docs to return
@@ -441,6 +441,46 @@ module.exports = function(app, db) {
 			cursor.forEach(function(doc, err) {
 					
 				console.log('C.A - Retrieved unpublished document in approved_hairpiqs: ' + doc._id);
+				assert.equal(null, err);
+				resultArray.push(doc);
+
+			}, function() {
+								
+				res.setHeader('Content-Type', 'application/json');
+				res.send(JSON.stringify(resultArray));
+
+			});
+
+		} else {
+			console.log('C.B - No limit supplied.');
+			res.send('No limit supplied.');
+		}
+
+	});
+
+	/*
+		retrieve a list of hairpiqs by publish status
+	*/
+
+	app.post('/piqtionary/trashed', function(req, res, next) {
+
+		console.log('B - called: /piqtionary/trashed');
+
+		// find a collection of hairpiqs that are in trash
+		// limit - the amount of docs to return
+		// page_num - the index of the set of docs to return
+
+		var resultArray = [];
+
+		if (req.body.limit !== undefined && req.body.limit.length > 0) {
+			var limit = Number(req.body.limit);
+			var skip = Number(req.body.page_num) * Number(req.body.limit);
+
+			var cursor = db.collection('removed_hairpiqs').find().skip(skip).sort({ _id : -1}).limit(limit);
+
+			cursor.forEach(function(doc, err) {
+					
+				console.log('C.A - Retrieved trashed document in removed_hairpiqs: ' + doc._id);
 				assert.equal(null, err);
 				resultArray.push(doc);
 

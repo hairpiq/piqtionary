@@ -5,7 +5,7 @@ module.exports = {
 
 		params.limit = 10;
 
-		return get('//' + config.HOSTNAME + '/piqtionary/pending_list', params);
+		return get('//' + config.HOSTNAME + '/piqtionary/pending', params);
 		
 	},
 	reject: function(params) {
@@ -64,6 +64,18 @@ module.exports = {
 	moveToTrash: function(params) {
 
 		return get('//' + config.HOSTNAME + '/piqtionary/move_to_trash', params);
+		
+	},
+	getTrashedList: function(params) {
+
+		params.limit = 10;
+
+		return get('//' + config.HOSTNAME + '/piqtionary/trashed', params);
+
+	},
+	delete: function(params) {
+
+		return get('//' + config.HOSTNAME + '/piqtionary/delete', params);
 		
 	}
 }
