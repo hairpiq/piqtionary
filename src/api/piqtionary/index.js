@@ -144,6 +144,36 @@ module.exports = function(app, db) {
 	});
 
 	/*
+		move hairpiq to trash
+	*/
+
+	app.post('/piqtionary/move_to_trash', function(req, res, next) {
+
+		console.log('B - called: /piqtionary/move_to_trash');
+
+		// delete a hairpiq 
+			// find hairpiq in removed_hairpiqs collection
+			// delete
+
+			// data needed
+			// - _id
+
+		var id = {
+			_id: ObjectID(req.body._id)
+		};
+					
+		db.collection('approved_hairpiqs').remove(id, function(err, result) {
+					
+			assert.equal(null, err);
+			console.log('C - Deleted document from removed_hairpiqs: ' + id._id);
+
+			res.send(JSON.stringify('success'));
+		
+		});
+
+	});
+
+	/*
 		delete a hairpiq
 	*/
 
@@ -383,6 +413,47 @@ module.exports = function(app, db) {
 				res.send(JSON.stringify('success'));
 			
 			});
+		}
+
+	});
+
+	/*
+		retrieve a list of hairpiqs by publish status
+	*/
+
+	app.post('/piqtionary/unpublished', function(req, res, next) {
+
+		console.log('B - called: /piqtionary/unpublished');
+
+		// find a collection of hairpiqs that are unpublished
+		// limit - the amount of docs to return
+		// page_num - the index of the set of docs to return
+
+		var resultArray = [];
+		var query = {'publish_status': 'unpublished'};
+
+		if (req.body.limit !== undefined && req.body.limit.length > 0) {
+			var limit = Number(req.body.limit);
+			var skip = Number(req.body.page_num) * Number(req.body.limit);
+
+			var cursor = db.collection('approved_hairpiqs').find(query).skip(skip).sort({ _id : -1}).limit(limit);
+
+			cursor.forEach(function(doc, err) {
+					
+				console.log('C.A - Retrieved unpublished document in approved_hairpiqs: ' + doc._id);
+				assert.equal(null, err);
+				resultArray.push(doc);
+
+			}, function() {
+								
+				res.setHeader('Content-Type', 'application/json');
+				res.send(JSON.stringify(resultArray));
+
+			});
+
+		} else {
+			console.log('C.B - No limit supplied.');
+			res.send('No limit supplied.');
 		}
 
 	});
