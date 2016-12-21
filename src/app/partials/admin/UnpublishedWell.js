@@ -167,13 +167,13 @@ class UnpublishedWell extends Component {
     switch (this.state.dialog.action) {
       case 'REJECT':
 
-        message = 'the hairpiq has been moved to the Trash Section';
+        message = 'trashed!';
 
         break;
 
       case 'PUBLISH':
 
-        message = 'the hairpiq has been published and moved to the Published Section';
+        message = 'published!';
 
         break;
     }

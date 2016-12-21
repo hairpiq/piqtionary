@@ -3,6 +3,7 @@ import { render } from 'react-dom';
 import { Link } from 'react-router';
 import Paper from 'material-ui/Paper';
 import Divider from 'material-ui/Divider';
+import LazyLoad from 'react-lazyload';
 
 class ResultItem extends Component {
   render() {
@@ -18,7 +19,9 @@ class ResultItem extends Component {
               state: { modal: true, returnTo: this.props.location.pathname, hairpiqs: this.props.hairpiqs }
             }}
           >
-            <img src={listItem.s3_url} />
+            <LazyLoad height={200} offset={100} once>
+              <img src={listItem.s3_url} />
+            </LazyLoad>
           </Link>
         </div>
         <div className="hairpiq-data">
