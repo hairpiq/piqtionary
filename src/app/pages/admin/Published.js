@@ -16,15 +16,7 @@ class Review extends Component {
           defaultTitle="Hairpiq"
         />
 
-        <div className="uk-grid uk-grid-margin">
-
-          <div className="uk-width-medium-10-10">
-        
-            Published
-
-          </div>
-        
-        </div>
+        <h1>Published</h1>
 
       </div>
     );
