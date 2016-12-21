@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
-import { Link } from 'react-router';
 import Helmet from 'react-helmet';
 
-class Review extends Component {
+class Trash extends Component {
 
   render() {
 
@@ -23,4 +22,4 @@ class Review extends Component {
   }
 }
 
-export default Review;
+export default Trash;

@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
-import { Link } from 'react-router';
 import Helmet from 'react-helmet';
+import UnpublishedWell from '../../partials/admin/UnpublishedWell';
 
-class Review extends Component {
+class Unpublished extends Component {
 
   render() {
 
@@ -18,9 +18,11 @@ class Review extends Component {
 
         <h1>Unpublished</h1>
 
+        <UnpublishedWell />
+
       </div>
     );
   }
 }
 
-export default Review;
+export default Unpublished;
