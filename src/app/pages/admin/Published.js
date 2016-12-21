@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { render } from 'react-dom';
 import Helmet from 'react-helmet';
 import PublishedWell from '../../partials/admin/PublishedWell';
+import ActionDelete from 'material-ui/svg-icons/action/delete';
+import FileCloudOff from 'material-ui/svg-icons/file/cloud-done';
 
 class Published extends Component {
 
@@ -16,7 +18,11 @@ class Published extends Component {
           defaultTitle="Hairpiq"
         />
 
-        <h1>Published</h1>
+        <div className="intro">
+          <h1>Published</h1>
+          <p>These hairpiqs are live!</p>
+          <p>To unpublish one, hit the <strong>Cloud Off</strong> button ( <FileCloudOff /> ). To move to trash, hit the <strong>Trash</strong> button (<ActionDelete />).</p>
+        </div>
 
         <PublishedWell />
 
