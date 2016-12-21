@@ -18,15 +18,7 @@ class Pending extends Component {
           defaultTitle="Hairpiq"
         />
 
-        <div className="uk-grid uk-grid-margin">
-
-          <div className="uk-width-medium-6-10 uk-push-2-10">
-
-            <h1>Pending Requests</h1>
-
-          </div>
-          
-        </div>
+        <h1>Pending Requests</h1>
 
         <PendingWell
           location={this.props.location}

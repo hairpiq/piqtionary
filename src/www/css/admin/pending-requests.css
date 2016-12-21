@@ -1,8 +1,7 @@
 .pending-request-container {
 	
 	margin-top: 25px;
-	padding:50px 25px;
-	background:#f5f5f5;
+	padding:25px;
 
 }
 
@@ -17,7 +16,7 @@
 }
 
 .pending-request .data-container {
-	padding:15px 25px;
+	padding:30px 25px 0;
 }
 
 .pending-request {
@@ -57,29 +56,47 @@
 	width:55%;
 	display:inline-block;
 	background: #e8e8e8;
-	text-align: center;
+	text-align: right;
 	position: absolute;
     right: 0;
     bottom: 0;
 }
 
 .pending-request .toolbar .button {
-	margin: 10px 5px;
+	margin: 10px;
 	min-width: auto !important;
 }
 
-.pending-request .toolbar .button span {
-	padding: 0 6px !important;
-}
-
-.pending-request .toolbar .button.udpate {
-	margin-right:20px;
-}
-
 .pending-request .toolbar .button.approve {
-	margin-left:20px;
+	margin-left:0;
 }
 
 .pending-request-dialog.disabled {
 	pointer-events: none;
+}
+
+@media (max-width: 480px) {
+
+	.pending-request .toolbar {
+		position: relative;		
+		width: 100%;
+	}
+
+}
+
+@media (min-width: 768px) and (max-width: 960px) {
+
+	.pending-request .photo {
+		width: 55%;
+	}
+
+	.pending-request .detail-info {
+		width: 45%;
+	}
+
+
+	.pending-request .toolbar {
+		position: relative;		
+		width: 100%;
+	}
 }
