@@ -1,12 +1,19 @@
 .results-well-container {
 	width:100%;
-	background:#f5f5f5;
 	position: relative;
 	padding-top:15px;
+	padding-bottom: 25px;
 }
 
 .results-well-container .uk-grid {
 	padding: 0 25px 0;
+}
+
+.results-well-container .loader {
+	position: relative;
+	width: 40px;
+    height: 40px;
+    margin: 20px auto 0;
 }
 
 

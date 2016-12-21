@@ -152,20 +152,20 @@ class PendingItem extends Component {
 		return (
 
       <Paper className="pending-request">
-        <div className="reset-text-container">
-        {renderResetTextButton()}
-        </div>
-        <div className="delete-request-container">
-          <a className="delete-request-button" onClick={this.rejectItem}>
-            <IconButton className="delete-request">
-              <ActionDelete color={grey600} />
-            </IconButton>
-          </a>
-        </div>
         <div className="photo">
           <a href={listItem.s3_url} target="_blank"><img src={listItem.s3_url + '?' + new Date().getTime().toString()} /></a>
         </div>
         <div className="detail-info">
+          <div className="reset-text-container">
+          {renderResetTextButton()}
+          </div>
+          <div className="delete-request-container">
+            <a className="delete-request-button" onClick={this.rejectItem}>
+              <IconButton className="delete-request">
+                <ActionDelete color={grey600} />
+              </IconButton>
+            </a>
+          </div>
           <div className="data-container">
             <TextField
               id={'stylename-' + this.props.listItem._id}

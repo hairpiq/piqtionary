@@ -4,6 +4,9 @@ import { Link } from 'react-router';
 import InfiniteScroll from 'react-infinite-scroller';
 import Services from '../services/';
 import ResultItem from './ResultItem';
+import CircularProgress from 'material-ui/CircularProgress';
+import {grey400} from 'material-ui/styles/colors';
+
 
 class ResultsWell extends Component {
 
@@ -80,7 +83,11 @@ class ResultsWell extends Component {
     if (this.state.term !== this.props.term)
       this.resetStateForTerm(this.props.term);
 
-    const loader = <div className="loader">Loading ...</div>;
+    const loader = (
+      <div className="loader">
+        <CircularProgress color={grey400} />
+      </div>
+    );
 
     var items = [];
       this.state.hairpiqs.map((listItem, i) => {
