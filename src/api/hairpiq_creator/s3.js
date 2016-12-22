@@ -32,15 +32,24 @@ module.exports = {
 		return execute(long_url, filepath, filename);
 
 	},
-	delete: function(url) {
+	delete: function(s3_url) {
 
-		console.log('-------AA-------');
+		var pieces = s3_url.split('/');
+		var filename = pieces[pieces.length - 1];
 
 		return new Promise(function(resolve, reject) {
 
-			console.log('-------BB-------');
+			s3fsImpl.unlink(filename, function(err, r) {
+				
+				if(err)
+				{
+					console.log(err);
+					reject(new Error(err));
+				}
 
-			resolve({});
+				resolve('success');
+				
+			});
 
 		});
 	}
@@ -61,6 +70,7 @@ function execute(url, filepath, filename) {
 
 			s3fsImpl.writeFile(filename, stream, {ContentType: 'image/jpeg'}).then(function() {
 				fs.unlink(filepath, function(err) {
+					
 					if(err)
 					{
 						console.log(err);

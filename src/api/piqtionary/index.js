@@ -80,6 +80,7 @@ module.exports = function(app, db) {
 
 			item.orig_photo_url = req.body.orig_photo_url;
 			item.rendered_url = req.body.rendered_url;
+			item.pending_id = pending_id._id;
 
 			console.log('Item is rejected');
 
@@ -100,9 +101,40 @@ module.exports = function(app, db) {
 				assert.equal(null, err);
 				console.log('D - Item removed from pending_hairpiqs: ' + pending_id._id);
 
+				// if hairpiq is approved, delete original photo asset
+				if (is_approved === 'true')
+					deleteAsset();
+				
 				res.send(JSON.stringify('success'));
 			
 			});
+
+		}
+
+		function deleteAsset() {
+
+			var params = {};
+			var pieces = req.body.orig_photo_url.split('/');
+			params.cloudinary_id = pieces[pieces.length - 1];
+
+			request({
+			    url: 'http://' + config.HOSTNAME + '/hairpiq_creator/delete', //URL to hit
+			    qs: {time: +new Date()}, //Query string data
+			    method: 'POST',
+			    headers : {
+			        "Authorization" : config.API_BASIC_AUTH
+				},
+			    //Lets post the following key/values as form
+			    json: params
+				},
+				function(error, response, body) {
+				    if(error) {
+				        console.log(error);
+				    } else {
+				    	console.log(body);
+					}
+				}
+			)
 
 		}
 
@@ -152,24 +184,41 @@ module.exports = function(app, db) {
 		console.log('B - called: /piqtionary/move_to_trash');
 
 		// delete a hairpiq 
-			// find hairpiq in removed_hairpiqs collection
-			// delete
-
-			// data needed
-			// - _id
+			// insert hairpiq in removed_hairpiqs collection
+			// find hairpiq in approved_hairpiqs collection
+				// delete
 
 		var id = {
 			_id: ObjectID(req.body._id)
 		};
-					
-		db.collection('approved_hairpiqs').remove(id, function(err, result) {
-					
-			assert.equal(null, err);
-			console.log('C - Deleted document from removed_hairpiqs: ' + id._id);
 
-			res.send(JSON.stringify('success'));
-		
+		var item = {
+			s3_url: req.body.s3_url,
+			stylename: req.body.stylename,
+			ig_username: req.body.ig_username,
+			publish_status: req.body.publish_status,
+			approved_id: id._id
+		}
+
+		db.collection('removed_hairpiqs').insertOne(item, function(err, result) {
+							
+			assert.equal(null, err);
+			console.log('C.A - Item inserted into removed_hairpiqs: ' + result.insertedId);
+			removeApprovedHairpiq();
+
 		});
+
+		function removeApprovedHairpiq() {
+					
+			db.collection('approved_hairpiqs').remove(id, function(err, result) {
+						
+				assert.equal(null, err);
+				console.log('C - Deleted document from approved_hairpiqs: ' + id._id);
+
+				res.send(JSON.stringify('success'));
+			
+			});
+		}
 
 	});
 
@@ -197,11 +246,41 @@ module.exports = function(app, db) {
 			assert.equal(null, err);
 			console.log('C - Deleted document from removed_hairpiqs: ' + id._id);
 
-			// delete file from S3
+			// delete images via hairpiq creator api
 
-			res.send(JSON.stringify('success'));
+			deleteAssets();
 		
 		});
+
+		function deleteAssets() {
+
+			var params = {};
+		
+			if (req.body.s3_url !== undefined)
+				params.s3_url = req.body.s3_url;
+			if (req.body.orig_photo_url !== undefined && req.body.orig_photo_url.length > 0) {
+				var pieces = req.body.orig_photo_url.split('/');
+				params.cloudinary_id = pieces[ pieces.length - 1].split('.jpg')[0];
+			}
+
+			request({
+			    url: 'http://' + config.HOSTNAME + '/hairpiq_creator/delete', //URL to hit
+			    qs: {time: +new Date()}, //Query string data
+			    method: 'POST',
+			    headers : {
+			        "Authorization" : config.API_BASIC_AUTH
+				},
+			    //Lets post the following key/values as form
+			    json: params
+				}, function(error, response, body){
+				    if(error) {
+				        console.log(error);
+				    } else {
+				    	res.send(JSON.stringify('success'));
+				}
+			});
+
+		}
 
 	});
 
@@ -372,7 +451,7 @@ module.exports = function(app, db) {
 		var filename = pieces[pieces.length - 1];
 
 		var params = {
-			public_id: filename,
+			cloudinary_id: filename,
 			stylename: req.body.updated_stylename,
 			ig_username: req.body.updated_ig_username
 		}
@@ -496,6 +575,64 @@ module.exports = function(app, db) {
 		} else {
 			console.log('C.B - No limit supplied.');
 			res.send('No limit supplied.');
+		}
+
+	});
+
+	/*
+		restore hairpiq from trash
+	*/
+
+	app.post('/piqtionary/restore', function(req, res, next) {
+
+		console.log('B - called: /piqtionary/restore');
+
+		// restore a hairpiq 
+			// if hairpiq has approved_id property
+				// insert into approved_hairpiqs collection
+			// else if hairpiq has pending_id property
+				// insert into pending_hairpiqs collection
+			// then find hairpiq in removed_hairpiqs collection
+				// delete
+
+		var id = {
+			_id: ObjectID(req.body._id)
+		};
+		var item = req.body;
+		var restored_collection = '[restored_collection_name_here]';
+
+		if (req.body.approved_id !== undefined) {
+			
+			var approved_id = { _id: ObjectID(req.body.approved_id) };
+			item._id = approved_id._id;
+			restored_collection = 'approved_hairpiqs';
+
+		} else if (req.body.pending_id !== undefined) {
+
+			var pending_id = { _id: ObjectID(req.body.pending_id) };
+			item._id = pending_id._id;
+			restored_collection = 'pending_hairpiqs';
+
+		}
+
+		db.collection(restored_collection).save(item, {w:1}, function(err, result) {
+							
+			assert.equal(null, err);
+			console.log('C.A - Item inserted into ' + restored_collection + ': ' + result.insertedId);
+			removeTrashedHairpiq();
+
+		});
+
+		function removeTrashedHairpiq() {
+					
+			db.collection('removed_hairpiqs').remove(id, function(err, result) {
+						
+				assert.equal(null, err);
+				console.log('C - Deleted document from removed_hairpiqs: ' + id._id);
+
+				res.send(JSON.stringify('success'));
+			
+			});
 		}
 
 	});

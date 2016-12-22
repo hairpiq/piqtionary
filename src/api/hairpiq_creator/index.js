@@ -165,12 +165,20 @@ module.exports = function(app) {
 				msg = messages.c.two;
 			else
 				msg = messages.c.three;
-
+			
 			var reply = twilio.creatReplyMessage(msg).toString();
 			res.writeHead(200, {'Content-Type': 'text/xml'});
 			res.end(reply);
 
 			req.session.destroy();
+
+			// delete image off of cloudinary
+			if (answer !== "YES") {
+				var pieces = req.session.orig_photo_url.split('/');
+				params.cloudinary_id = pieces[ pieces.length - 1].split('.jpg')[0];
+				deleteAssets(params);
+			}
+
 		}
 
 	});
@@ -189,21 +197,23 @@ module.exports = function(app) {
 				}
 			};
 
-		var public_id = req.body.public_id;
+		var cloudinary_id = req.body.cloudinary_id;
 		var stylename = req.body.stylename;
 		var ig_username = req.body.ig_username;
 
-		update(public_id, stylename, ig_username, options).then(function(result) {
+		update(cloudinary_id, stylename, ig_username, options).then(function(result) {
 			res.send(JSON.stringify(result));
 		});
 
 	});
 
+	/*
+		delete hairpiq assets
+	*/
+
 	app.post('/hairpiq_creator/delete', function(req, res) {
 
-		var public_id = req.body.public_id;
-
-		deleteHairpiqFromS3(public_id).then(function(result) {
+		deleteAssets(req.body).then(function(result) {
 			res.send(JSON.stringify(result));
 		});
 
@@ -262,11 +272,11 @@ function create(photo_url, stylename, ig_username, options) {
 
 }
 
-function update(public_id, stylename, ig_username, options) {
+function update(cloudinary_id, stylename, ig_username, options) {
 
 	return new Promise(function(resolve, reject) {
 
-		cloudinary.update(public_id, stylename, ig_username, options).then(function(result){
+		cloudinary.update(cloudinary_id, stylename, ig_username, options).then(function(result){
 			
 			console.log("Cloudinary responded...");
 
@@ -295,20 +305,53 @@ function update(public_id, stylename, ig_username, options) {
 
 }
 
-function deleteHairpiqFromS3(s3_url) {
+function deleteAssets(params) {
 
-	return new Promise(function(resolve, reject) {
+	var arr = [];
 
-		s3.delete(s3_url).then(function(result) {
-				
-			console.log("S3 responded...");
+	if (params.s3_url) {
+		
+		// delete from S3
 
-			console.log(result);
+		console.log('requesting S3...');
 
-			resolve(result);
-		});
+		arr.push(
+			new Promise(function(resolve, reject) {
 
-	});
+				s3.delete(params.s3_url).then(function(result) {
+						
+					console.log("S3 responded...");
+					console.log(result);
+
+					resolve(result);
+				});
+			})
+		);
+
+	}
+
+	if (params.cloudinary_id) {
+		
+		// delete from Cloudinary
+
+		console.log('requesting Cloudinary...');
+
+		arr.push(
+			new Promise(function(resolve, reject) {
+
+				cloudinary.delete(params.cloudinary_id).then(function(result) {
+						
+					console.log("Cloudinary responded...");
+					console.log(result);
+
+					resolve(result);
+				});
+			})
+		);
+
+	}
+
+	return Promise.all(arr);
 }
 
 function submitForReview(obj) {
