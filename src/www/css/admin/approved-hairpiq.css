@@ -36,3 +36,7 @@
 .approved-hairpiq .publish-hairpiq-button {
 	display: block;
 }
+
+.approved-hairpiq-dialog.disabled {
+	pointer-events: none;
+}
