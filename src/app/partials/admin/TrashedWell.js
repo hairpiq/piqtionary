@@ -64,7 +64,7 @@ class TrashedWell extends Component {
       case 'RESTORE':
 
         title = 'RESTORE HAIRPIQ';
-        message = 'Restore this hairpiq by moving it to the Unpublish section? You can republish it by going to the "Unpublished" Section and clicking this hairpiq\'s "Publish" button.';
+        message = 'Restore this hairpiq?';
 
         break;
     }
@@ -100,7 +100,7 @@ class TrashedWell extends Component {
 
       case 'RESTORE':
 
-        Services.unpublish(hairpiq).then(function(result) {
+        Services.restore(hairpiq).then(function(result) {
           $('.approved-hairpiq-dialog').removeClass('disabled');
           _this.resetStateForWell();
         });
@@ -173,7 +173,7 @@ class TrashedWell extends Component {
 
       case 'RESTORE':
 
-        message = 'restored! check "Pending Requests" or "Unpublished"';
+        message = 'restored!';
 
         break;
     }

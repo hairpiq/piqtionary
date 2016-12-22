@@ -74,7 +74,7 @@ module.exports = {
 			_options[k] = options[k];
 		
 		return new Promise(function(resolve, reject) {
-
+			
 			var rendered_url = addMeta({
 					id: public_id,
 					stylename: stylename,
@@ -89,6 +89,19 @@ module.exports = {
 			resolve(result);
 
 		});
+	},
+	delete: function(public_id) {
+
+		return new Promise(function(resolve, reject) {
+			
+			cloudinary.uploader.destroy(public_id, function(result) {
+				
+				resolve(result);
+
+			});
+
+		});
+
 	}
 };
 

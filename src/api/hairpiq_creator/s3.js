@@ -20,36 +20,7 @@ module.exports = {
 		var filename = pieces[pieces.length - 1] + '.jpg';
 		var filepath = __dirname + '/s3-queue/' + filename;
 
-		return new Promise(function(resolve, reject) {
-
-			request(long_url).pipe(fs.createWriteStream(filepath)).on("finish", function() {
-		
-				// when file is added to queue
-					// save it to s3
-					// then return the url
-
-				var stream = fs.createReadStream(filepath);
-
-				s3fsImpl.writeFile(filename, stream, {ContentType: 'image/jpeg'}).then(function() {
-					fs.unlink(filepath, function(err) {
-						if(err)
-						{
-							console.log(err);
-							reject(new Error(err));
-						}
-
-						var result = {
-							url: endpoint_url + filename
-						}
-
-						resolve(result);
-						
-					});
-				});
-
-			});
-
-		});
+		return execute(long_url, filepath, filename);
 		
 	},
 	update: function(long_url) {
@@ -58,38 +29,64 @@ module.exports = {
 		var filename = pieces[pieces.length - 1];
 		var filepath = __dirname + '/s3-queue/' + filename;
 
+		return execute(long_url, filepath, filename);
+
+	},
+	delete: function(s3_url) {
+
+		var pieces = s3_url.split('/');
+		var filename = pieces[pieces.length - 1];
+
 		return new Promise(function(resolve, reject) {
 
-			// add updated version to queue
-			request(long_url).pipe(fs.createWriteStream(filepath)).on("finish", function() {
-		
-				// when file is added to queue
-					// save it to s3
-					// then return the url
+			s3fsImpl.unlink(filename, function(err, r) {
+				
+				if(err)
+				{
+					console.log(err);
+					reject(new Error(err));
+				}
 
-				var stream = fs.createReadStream(filepath);
+				resolve('success');
+				
+			});
 
-				s3fsImpl.writeFile(filename, stream, {ContentType: 'image/jpeg'}).then(function() {
-					fs.unlink(filepath, function(err) {
-						if(err)
-						{
-							console.log(err);
-							reject(new Error(err));
-						}
+		});
+	}
+}
 
-						var result = {
-							url: endpoint_url + filename
-						}
+function execute(url, filepath, filename) {
 
-						resolve(result);
-						
-					});
+	return new Promise(function(resolve, reject) {
+
+		// add updated version to queue
+		request(url).pipe(fs.createWriteStream(filepath)).on("finish", function() {
+	
+			// when file is added to queue
+				// save it to s3
+				// then return the url
+
+			var stream = fs.createReadStream(filepath);
+
+			s3fsImpl.writeFile(filename, stream, {ContentType: 'image/jpeg'}).then(function() {
+				fs.unlink(filepath, function(err) {
+					
+					if(err)
+					{
+						console.log(err);
+						reject(new Error(err));
+					}
+
+					var result = {
+						url: endpoint_url + filename
+					}
+
+					resolve(result);
+					
 				});
-
 			});
 
 		});
 
-	}
-
+	});
 }
