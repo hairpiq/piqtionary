@@ -15,7 +15,8 @@ import NavigationMenu from 'material-ui/svg-icons/navigation/menu';
 import {browserHistory} from 'react-router';
 import NavTabs from '../../partials/admin/NavTabs';
 
-import CreateButton from '../../partials/CreateButton';
+import Modal from '../../partials/admin/Modal';
+import CreateButton from '../../partials/admin/CreateButton';
 
 
 var RetinaImage = require('react-retina-image');
@@ -44,7 +45,7 @@ class Main extends Component {
   constructor(props) {
     super(props);
 
-    var initialSelectedIndex = 0;
+    var initialSelectedIndex = -1;
 
     switch (this.props.location.pathname) {
       case '/admin':
@@ -74,7 +75,27 @@ class Main extends Component {
     
   }
 
+  componentWillReceiveProps(nextProps) {
+    // if we changed routes...
+    if ((
+      nextProps.location.key !== this.props.location.key &&
+      nextProps.location.state &&
+      nextProps.location.state.modal
+    )) {
+      // save the old children (just like animation)
+      this.previousChildren = this.props.children
+    }
+  }
+
   render() {
+
+    let { location } = this.props
+
+    let isModal = (
+      location.state &&
+      location.state.modal &&
+      this.previousChildren
+    )
 
     const logo = (
       <Link to="/admin/"><RetinaImage className="logo" src={["/assets/images/hairpiq-site-logo.png", "/assets/images/2x/hairpiq-site-logo.png"]} /></Link>
@@ -110,11 +131,20 @@ class Main extends Component {
 
               <div className="main-container">
 
-              {this.props.children}
+              {isModal ?
+                this.previousChildren :
+                this.props.children
+              }
 
               </div>
+              
+              {isModal && (
+                <Modal isOpen={true} returnTo={location.state.returnTo} pathname={location.pathname} hairpiqs={location.state.hairpiqs}>
+                  {this.props.children}
+                </Modal>
+              )}
 
-              <CreateButton />
+              <CreateButton location={this.props.location} />
 
             </div>
 
