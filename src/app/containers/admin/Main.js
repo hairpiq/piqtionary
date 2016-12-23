@@ -16,7 +16,7 @@ import {browserHistory} from 'react-router';
 import NavTabs from '../../partials/admin/NavTabs';
 
 import Modal from '../../partials/admin/Modal';
-import CreateButton from '../../partials/admin/CreateButton';
+import CreateButton from '../../partials/admin/hairpiq_creator/CreateButton';
 
 
 var RetinaImage = require('react-retina-image');
