@@ -9,6 +9,7 @@
 
 .admin .intro {
 	margin:0 25px;
+	max-width:500px;
 }
 
 .admin .snackbar {

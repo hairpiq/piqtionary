@@ -184,7 +184,7 @@ class PendingItem extends Component {
               />
             <TextField
               id={'ig_username-' + this.props.listItem._id}
-              intText="update here"
+              hintText="update here"
               floatingLabelText="IG Username"
               floatingLabelFixed={true}
               fullWidth={true}

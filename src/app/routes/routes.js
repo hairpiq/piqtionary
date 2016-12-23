@@ -24,6 +24,7 @@ import Pending from '../pages/admin/Pending';
 import Unpublished from '../pages/admin/Unpublished';
 import Published from '../pages/admin/Published';
 import Trash from '../pages/admin/Trash';
+import Create from '../pages/admin/Create';
 
 // Needed for onTouchTap
 // http://stackoverflow.com/a/34015469/988941
@@ -47,6 +48,7 @@ module.exports = (
 				<Route path="unpublished" component={Unpublished}/>
 				<Route path="published" component={Published}/>
 				<Route path="trash" component={Trash}/>
+				<Route path="create" component={Create}/>
 			</Route>
 
 		</Route>
