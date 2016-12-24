@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
-import {green600, grey300, grey400} from 'material-ui/styles/colors';
+import {orange800, grey300, grey400} from 'material-ui/styles/colors';
 import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 import Divider from 'material-ui/Divider';
 import Subheader from 'material-ui/Subheader';
+import Toggle from 'material-ui/Toggle';
 import Checkbox from 'material-ui/Checkbox';
 import Slider from 'material-ui/Slider';
 import {
@@ -22,8 +23,7 @@ class NavStepper extends Component {
 		super();
 
 		this.state = {
-			finished: false,
-    		stepIndex: 0
+    		stepIndex: 0,
 		}
 
 		this.handleNext = this.handleNext.bind(this);
@@ -33,18 +33,45 @@ class NavStepper extends Component {
 	}
 
 	handleNext = () => {
-		const {stepIndex} = this.state;
-		this.setState({
-		  stepIndex: stepIndex + 1,
-		  finished: stepIndex >= 2,
-		});
+		
+		let {stepIndex} = this.state;
+		
+		if (stepIndex === 0 && this.props.isPrerenderedToggled) {
+			
+			// if step index is on first step (0) and image is pre-rendered
+				// skip step 2
+
+			stepIndex = stepIndex + 1;
+
+		} else if (stepIndex === 2 && this.props.isValid) {
+			
+			// if stepIndex is on final step (2) and data is valid
+				// submit
+
+			this.props.handleDialog();
+		}
+
+		if (stepIndex !== 2)
+			this.setState({
+			  stepIndex: stepIndex + 1,
+			});
+
 	};
 
 	handlePrev = () => {
-		const {stepIndex} = this.state;
+		
+		let {stepIndex} = this.state;
+
+		// if step index is on the last step (2) and image is pre-rendered
+			// skip step 2
+
+		if (stepIndex === 2 && this.props.isPrerenderedToggled)
+			stepIndex = stepIndex - 1;
+
 		if (stepIndex > 0) {
 		  this.setState({stepIndex: stepIndex - 1});
 		}
+
 	};
 
 	renderStepActions(step) {
@@ -52,18 +79,33 @@ class NavStepper extends Component {
 
 		return (
 		  <div style={{margin: '12px 0'}}>
+
+		  	{stepIndex === 2 ?
+		  		<RaisedButton
+		  		  className="submit-button"
+			      label="Create"
+			      disableTouchRipple={true}
+			      disableFocusRipple={true}
+			      labelColor="#ffffff"
+                  backgroundColor={orange800}
+			      disabled={!this.props.isValid || this.props.finished}
+			      onTouchTap={this.handleNext}
+			      style={{marginRight: 12}}
+			    />
+			:
 		    <RaisedButton
-		      label={stepIndex === 2 ? 'Finish' : 'Next'}
+		      label={stepIndex === 0 && this.props.isPrerenderedToggled ? 'Add Info' : 'Next'}
 		      disableTouchRipple={true}
 		      disableFocusRipple={true}
 		      primary={true}
 		      onTouchTap={this.handleNext}
 		      style={{marginRight: 12}}
-		    />
+		    />}
+
 		    {step > 0 && (
 		      <FlatButton
 		        label="Back"
-		        disabled={stepIndex === 0}
+		        disabled={stepIndex === 0 || this.props.finished}
 		        disableTouchRipple={true}
 		        disableFocusRipple={true}
 		        onTouchTap={this.handlePrev}
@@ -75,7 +117,7 @@ class NavStepper extends Component {
 
 	render() {
 
-	    const {finished, stepIndex} = this.state;
+	    const {stepIndex} = this.state;
 	    
 	    const {
 	    	uploadedFileCloudinaryUrl,
@@ -83,7 +125,8 @@ class NavStepper extends Component {
 	    	imageLoaded,
 	    	image,
 	    	logoColor,
-	    	plateColor
+	    	plateColor,
+	    	finished
 	    } = this.props;
 
 		const textfieldStyles = {
@@ -131,10 +174,21 @@ class NavStepper extends Component {
 									:
 									<div>
 										<FlatButton
+											className="crop-button"
 											backgroundColor={grey300}
 											label="Adjust Crop"
 											onClick={this.props.clearCrop}
 											icon={<FontIcon className="material-icons">crop_free</FontIcon>}/>
+
+										<div className="data-container">
+							            	<Toggle
+							            	  className="toggle"
+										      label="Is this Hairpiq pre-rendered?"
+										      labelPosition="right"
+										      onToggle={this.props.onPrerenderedToggle}
+										      defaultToggled={this.props.isPrerenderedToggled}
+										    />
+									    </div>
 
 										{this.renderStepActions(0)}
 
@@ -202,6 +256,7 @@ class NavStepper extends Component {
 									maxLength="25"
 									defaultValue={this.props.stylename}
 									value={this.props.stylename}
+									errorText={this.props.stylenameErrorText}
 						            onChange={this.props.handleStylenameChange}/>
 								<Divider />
 								<TextField
@@ -211,6 +266,7 @@ class NavStepper extends Component {
 									maxLength="31"
 									defaultValue={this.props.ig_username}
 									value={this.props.ig_username}
+									errorText={this.props.ig_usernameErrorText}
 						            onChange={this.props.handleIGUsernameChange}/>
 								<Divider />
 							</div>
@@ -224,11 +280,14 @@ class NavStepper extends Component {
 		              href="#"
 		              onClick={(event) => {
 		                event.preventDefault();
-		                this.setState({stepIndex: 0, finished: false});
+		                this.props.clearImage();
+		                this.props.clearInfo();
+		                this.props.setFinished(false);
+		                this.setState({stepIndex: 0});
 		              }}
 		            >
 		              Click here
-		            </a> to reset the example.
+		            </a> to create a new hairpiq.
 		          </p>
 		        )}
 		      	</div>
