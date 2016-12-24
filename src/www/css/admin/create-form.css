@@ -67,6 +67,7 @@
 	position: absolute;
     top: 50px;
     left: 48px;
+    width:146px;
 }
 
 .create-form-plate {
@@ -74,21 +75,57 @@
     position: absolute;
     bottom: 78px;
     right: 20px;
+    width: 280px;
+}
+
+.create-form .checkbox {
+	margin-left: 10px !important;
+}
+
+.create-form .checkbox label {
+	text-transform: capitalize;
+}
+
+.create-form .textfield [type="text"] {
+	margin-left: 20px;
 }
 
 .create-form .data-container {
-	position: relative;
-	padding:30px 25px;
+	padding: 0 10px;
 }
 
-.create-form .data-container.no-padding-top {
-	padding-top:0;
-}
-
-.create-form .data-container:last-child {
-	padding-bottom:30px;
+.create-form .data-container.textfields {
+	padding: 0 30px 0 0;
 }
 
 .create-form .nav-stepper button {
 	margin-right: 15px !important;
 }
+
+.create-form-plate-stylename {
+	position: absolute;
+    top: 436px;
+    left: 172px;
+    font-family: Montserrat;
+    font-weight: bold;
+    font-size: 24px;
+    letter-spacing: -1px;
+    color: #ffffff;
+    z-index: 1;
+    right: 45px;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.create-form-plate-ig_username {
+	position: absolute;
+    top: 458px;
+    left: 172px;
+    font-size: 20px;
+    color: #ffffff;
+    z-index: 1;
+    right: 45px;
+    overflow: hidden;
+    white-space: nowrap;
+}
+

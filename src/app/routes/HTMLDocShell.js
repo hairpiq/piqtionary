@@ -19,7 +19,7 @@ module.exports = function(markup) {
 	        '<div id="app">' + markup + '</div>',
 	        '<script>',
 				'var WebFontConfig = {',
-					'google: { families: [ "Roboto:400,300,500:latin" ] }',
+					'google: { families: [ "Roboto:400,300,500:latin", "Montserrat:400,700" ] }',
 				'};',
 				'(function() {',
 					'var wf = document.createElement("script");',
