@@ -199,13 +199,19 @@ class NavStepper extends Component {
 									style={textfieldStyles}
 									hintText="Style Name"
 									underlineShow={false}
-									maxLength="25" />
+									maxLength="25"
+									defaultValue={this.props.stylename}
+									value={this.props.stylename}
+						            onChange={this.props.handleStylenameChange}/>
 								<Divider />
 								<TextField
 									style={textfieldStyles}
 									hintText="IG Username"
 									underlineShow={false}
-									maxLength="31" />
+									maxLength="31"
+									defaultValue={this.props.ig_username}
+									value={this.props.ig_username}
+						            onChange={this.props.handleIGUsernameChange}/>
 								<Divider />
 							</div>
 			              {this.renderStepActions(2)}
