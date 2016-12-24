@@ -10,12 +10,11 @@ import {grey400} from 'material-ui/styles/colors';
 
 import {Cropper} from 'react-image-cropper';
 
-import FlatButton from 'material-ui/FlatButton';
-import {green600, grey300} from 'material-ui/styles/colors';
-import TextField from 'material-ui/TextField';
-import RaisedButton from 'material-ui/RaisedButton';
-
 import NavStepper from './NavStepper';
+
+import Dialog from 'material-ui/Dialog';
+import FlatButton from 'material-ui/FlatButton';
+import Snackbar from 'material-ui/Snackbar';
 
 const config = process.env;
 const CLOUDINARY_UPLOAD_URL = 'https://api.cloudinary.com/v1_1/' + config.CLOUDINARY_CLOUD_NAME + '/image/upload';
@@ -36,7 +35,9 @@ class CreateForm extends Component {
 			cropper: {
 				image: undefined,
             	imageLoaded: false,
+            	values: {}
 			},
+			isPrerenderedToggled: false,
 			logo: {
 				color: 'white',
 				opacity: 1
@@ -46,23 +47,53 @@ class CreateForm extends Component {
 				opacity: 0.5
 			},
 			stylename: 'Style Name',
-			ig_username: '@ig_username'
+			ig_username: '@ig_username',
+			stylenameErrorText: '',
+			ig_usernameErrorText: '',
+			is_stylename_valid: false,
+			is_ig_username_valid: false,
+			dialog: {
+	            open: false,
+	            message: '',
+	            action: ''
+	        },
+	        finished: false,
+	        snackbar: {
+				open: false
+			}
 		}
 
 		// Cropper methods
 		this.onImageDrop = this.onImageDrop.bind(this);
 
 		// NavStepper methods
+		this.onPrerenderedToggle = this.onPrerenderedToggle.bind(this);
 		this.onLogoColorCheck = this.onLogoColorCheck.bind(this);
 		this.onPlateColorCheck = this.onPlateColorCheck.bind(this);
 		this.handleStylenameChange = this.handleStylenameChange.bind(this);
 		this.handleIGUsernameChange = this.handleIGUsernameChange.bind(this);
+		this.clearInfo = this.clearInfo.bind(this);
+		this.setFinished = this.setFinished.bind(this);
+
+		// Dialog methods
+		this.handleOpen = this.handleOpen.bind(this);
+      	this.handleClose = this.handleClose.bind(this);
+      	this.handleSubmit = this.handleSubmit.bind(this);
+
 	}
 
 	componentDidMount() {
 
 		$('.modal-inner').addClass('fixed-create-form-width');
-	
+
+		this.setState({
+			stylename: 'Style Name',
+			ig_username: '@ig_username',
+			stylenameErrorText: '',
+			ig_usernameErrorText: '',
+			is_stylename_valid: false,
+			is_ig_username_valid: false
+		});
 	}
 
 	componentWillUnmount() {
@@ -72,6 +103,8 @@ class CreateForm extends Component {
 	}
 
 	onImageDrop(files) {
+
+		$('.modal-inner, .create-form').addClass('disabled');
 		
 		this.setState({
 			cloudinary: {
@@ -107,6 +140,8 @@ class CreateForm extends Component {
 
 	onImageLoaded(state) {
 
+		$('.modal-inner, .create-form').removeClass('disabled');
+
 		this.setState({
 			cropper: {
 				[state + 'Loaded']: true
@@ -118,11 +153,13 @@ class CreateForm extends Component {
 	cropImage(state) {
 
 		let croppedImage = this.refs.cropper.crop();
+		let croppedValues = this.refs.cropper.values();
 		
 		this.setState({
 			cropper: {
 				image: croppedImage,
-				imageLoaded: true
+				imageLoaded: true,
+				values: croppedValues
 			}
 		});
 
@@ -132,7 +169,8 @@ class CreateForm extends Component {
 
 		this.setState({
 			cropper: {
-				image: undefined
+				image: undefined,
+				values: {}
 			}
 		});
 
@@ -151,8 +189,18 @@ class CreateForm extends Component {
 			cropper: {
 				image: undefined,
 				imageLoaded: false,
-			}
+				values: {}
+			},
+			isPrerenderedToggled: false
 		});
+	}
+
+	onPrerenderedToggle() {
+
+		this.setState({
+			isPrerenderedToggled: !this.state.isPrerenderedToggled
+		});
+
 	}
 
 	onLogoColorCheck(e, isChecked) {
@@ -204,19 +252,176 @@ class CreateForm extends Component {
 
 	handleStylenameChange(e) {
 
-		this.setState({
-			stylename: e.target.value
-		});
+		if (e.target.value.toLowerCase().indexOf('style name') !== -1) {
+			this.setState({
+				stylenameErrorText: 'Replace this text with the Style Name.',
+				stylename: e.target.value,
+				is_stylename_valid: false
+			});
+		} else if (e.target.value.length === 0) {
+			this.setState({
+				stylenameErrorText: 'This field is required.',
+				stylename: e.target.value,
+				is_stylename_valid: false
+			});
+		} else {
+			this.setState({
+				stylenameErrorText: '',
+				stylename: e.target.value,
+				is_stylename_valid: true
+			});
+		}
 
 	}
 
 	handleIGUsernameChange(e) {
 
+		var checkForUsernameFormat = new RegExp('^[a-z0-9_-]{3,30}$');
+		var username = e.target.value.split('@')[1];
+
+		if (!checkForUsernameFormat.test(username)) {
+			this.setState({
+				ig_usernameErrorText: 'Invalid format: @your_ig_username',
+				ig_username: '@' + username,
+				is_ig_username_valid: false
+			});
+		} else if (e.target.value.toLowerCase().indexOf('ig_username') !== -1) {
+			this.setState({
+				ig_usernameErrorText: 'Replace this text with your IG username.',
+				ig_username: e.target.value,
+				is_ig_username_valid: false
+			});
+		} else if (e.target.value.length === 0) {
+			this.setState({
+				ig_usernameErrorText: 'This field is required.',
+				ig_username: e.target.value,
+				is_ig_username_valid: false
+			});
+		} else {
+			this.setState({
+				ig_usernameErrorText: '',
+				ig_username: '@' + (username !== undefined ? username : e.target.value),
+				is_ig_username_valid: true
+			});
+		}
+
+	}
+
+	clearInfo() {
+		
 		this.setState({
-			ig_username: e.target.value
+			stylename: 'Style Name',
+			ig_username: '@ig_username',
+			stylenameErrorText: '',
+			ig_usernameErrorText: '',
+			is_stylename_valid: false,
+			is_ig_username_valid: false
+		});
+	}
+
+	submit() {
+
+		var params = {
+			orig_photo_url: this.state.cloudinary.uploadedFileCloudinaryUrl,
+			crop: this.state.cropper.values,
+			logo: this.state.logo,
+			plate: this.state.plate,
+			stylename: this.state.stylename,
+			ig_username: this.state.ig_username
+		}
+
+		console.log(params);
+	}
+
+	handleDialog(obj) {
+
+	    var title;
+	    var message;
+
+	    // if is pre-rendered
+			// state message about automatically approving
+		// if is not pre-rendered
+			// state message about sending hairpiq to pending requests section to be approved
+
+		if (this.state.isPrerenderedToggled) {
+			title = 'ADD DIRECTLY TO PIQTIONARY';
+			message = 'Since this Hairpiq is pre-rendered, it will be submitted directly to the Piqtionary. You okay with that?';
+		} else {
+			title = 'ADD TO PENDING REQUESTS';
+			message = 'Do you want to submit this hairpiq to the "Pending Requests" Section for team review?';
+		}
+
+
+		this.setState({
+		  dialog: {
+		    open: true,
+		    title: title,
+		    message: message,
+		  }
+		});
+	}
+
+	handleSubmit() {
+
+		let params = {
+			orig_photo_url: this.state.cloudinary.uploadedFileCloudinaryUrl,
+			crop: this.state.cropper.values,
+			logo: this.state.logo,
+			plate: this.state.plate,
+			stylename: this.state.stylename,
+			ig_username: this.state.ig_username
+		}
+
+		console.log(params);
+
+		const _this = this;
+
+		$('.create-form-dialog').addClass('disabled');
+
+		// Services here
+			// if is pre-rendered
+				// automatically approve
+				// enabled dialog
+			// if is not pre-rendered
+				// submit to pending requests section to be approved
+				// enable dialog
+
+		$('.create-form-dialog').removeClass('disabled');
+
+		this.setFinished(true);
+		this.setState({
+				snackbar: {
+		        open: true,
+		    }
+	    });
+
+		this.handleClose();
+
+	}
+
+	setFinished(bool) {
+		
+		this.setState({
+			finished: bool
 		});
 
 	}
+
+	handleOpen = () => {
+		this.setState({dialog: {open: true}});
+	};
+
+	handleClose = () => {
+		this.setState({dialog: {open: false }});
+	};
+
+	closeSnackbar = () => {
+		this.setState({
+				snackbar: { 
+				open: false
+			}
+		});
+	};
 
 	render() {
 
@@ -250,7 +455,24 @@ class CreateForm extends Component {
 	    	</div>
 	    );
 
+	    const actions = [
+	      <FlatButton
+	        label="Cancel"
+	        primary={true}
+	        onTouchTap={this.handleClose}
+	        onClick={this.handleClose}
+	      />,
+	      <FlatButton
+	        label="Submit"
+	        primary={true}
+	        keyboardFocused={true}
+	        onTouchTap={this.handleSubmit}
+	        onClick={this.handleSubmit}
+	      />,
+	    ];
+
 		return (
+
 			<div className="create-form">
 				
 					
@@ -260,8 +482,8 @@ class CreateForm extends Component {
 					
 					<div className="photo">
 						<Paper zDepth={2}>
-							{logo}
-							{plate}
+							{!this.state.isPrerenderedToggled ? logo : null}
+							{!this.state.isPrerenderedToggled ? plate : null}
 							<img className="cropped-image" src={this.state.cropper.image} alt=""/>
 						</Paper>
 					</div> :
@@ -283,7 +505,7 @@ class CreateForm extends Component {
 						
 						{this.state.cloudinary.uploadedFileCloudinaryUrl === '' ? null :
 						<div>
-				          <Paper zDepth={2}>
+				          <Paper className="cropper" zDepth={2}>
 				          	<Cropper
 				          		src={this.state.cloudinary.uploadedFileCloudinaryUrl}
 				          		ref="cropper"
@@ -309,6 +531,9 @@ class CreateForm extends Component {
 						cropImage={() => this.cropImage('image')}
 						clearCrop={() => this.clearCrop()}
 						clearImage={() => this.clearImage()}
+
+						isPrerenderedToggled={this.state.isPrerenderedToggled}
+						onPrerenderedToggle={this.onPrerenderedToggle}
 						
 						logoColor={this.state.logo.color}
 						onLogoColorCheck={this.onLogoColorCheck}
@@ -318,14 +543,41 @@ class CreateForm extends Component {
 						plateColor={this.state.plate.color}
 						onPlateColorCheck={this.onPlateColorCheck}
 						onPlateOpacityChange={this.onPlateOpacityChange}
+						
 						stylename={this.state.stylename}
 						handleStylenameChange={this.handleStylenameChange}
+						stylenameErrorText={this.state.stylenameErrorText}
+						
 						ig_username={this.state.ig_username}
 						handleIGUsernameChange={this.handleIGUsernameChange}
-
+						ig_usernameErrorText={this.state.ig_usernameErrorText}
+						
+						isValid={(this.state.is_stylename_valid && this.state.is_ig_username_valid)}
+						clearInfo={this.clearInfo}
+						handleDialog={() => this.handleDialog()}
+						finished={this.state.finished}
+						setFinished={this.setFinished}
 					 />
 
 				</div>
+
+				<Dialog
+		            title={this.state.dialog.title}
+		            actions={actions}
+		            modal={false}
+		            open={this.state.dialog.open}
+		            onRequestClose={this.handleClose}
+		            actionsContainerClassName="create-form-dialog">
+		            {this.state.dialog.message}
+		        </Dialog>
+
+		        <Snackbar
+		          className="snackbar"
+		          open={this.state.snackbar.open}
+		          message="submitted!"
+		          autoHideDuration={4000}
+		          onRequestClose={this.closeSnackbar}
+		        />
 
 			</div>
 		)
