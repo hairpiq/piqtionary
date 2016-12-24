@@ -63,6 +63,10 @@
 	margin: 0 auto;
 }
 
+.create-form .cropper img {
+    max-width: none;
+}
+
 .create-form-logo {
 	position: absolute;
     top: 50px;

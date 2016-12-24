@@ -283,7 +283,7 @@ class CreateForm extends Component {
 						
 						{this.state.cloudinary.uploadedFileCloudinaryUrl === '' ? null :
 						<div>
-				          <Paper zDepth={2}>
+				          <Paper className="cropper" zDepth={2}>
 				          	<Cropper
 				          		src={this.state.cloudinary.uploadedFileCloudinaryUrl}
 				          		ref="cropper"
