@@ -138,3 +138,7 @@
     white-space: nowrap;
 }
 
+.create-form.disabled {
+    pointer-events: none;
+}
+

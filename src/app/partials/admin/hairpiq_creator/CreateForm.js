@@ -72,6 +72,8 @@ class CreateForm extends Component {
 	}
 
 	onImageDrop(files) {
+
+		$('.modal-inner, .create-form').addClass('disabled');
 		
 		this.setState({
 			cloudinary: {
@@ -106,6 +108,8 @@ class CreateForm extends Component {
 	}
 
 	onImageLoaded(state) {
+
+		$('.modal-inner, .create-form').removeClass('disabled');
 
 		this.setState({
 			cropper: {
