@@ -44,7 +44,9 @@ class CreateForm extends Component {
 			plate: {
 				color: 'black',
 				opacity: 0.5
-			}
+			},
+			stylename: 'Style Name',
+			ig_username: '@ig_username'
 		}
 
 		// Cropper methods
@@ -53,7 +55,8 @@ class CreateForm extends Component {
 		// NavStepper methods
 		this.onLogoColorCheck = this.onLogoColorCheck.bind(this);
 		this.onPlateColorCheck = this.onPlateColorCheck.bind(this);
-
+		this.handleStylenameChange = this.handleStylenameChange.bind(this);
+		this.handleIGUsernameChange = this.handleIGUsernameChange.bind(this);
 	}
 
 	componentDidMount() {
@@ -92,7 +95,6 @@ class CreateForm extends Component {
 			}
 
 			if (response.body.secure_url !== '') {
-				console.log('response.body.secure_url: ' + response.body.secure_url);
 				this.setState({
 					cloudinary: {
 						uploadedFileCloudinaryUrl: response.body.secure_url,
@@ -200,6 +202,22 @@ class CreateForm extends Component {
 
 	}
 
+	handleStylenameChange(e) {
+
+		this.setState({
+			stylename: e.target.value
+		});
+
+	}
+
+	handleIGUsernameChange(e) {
+
+		this.setState({
+			ig_username: e.target.value
+		});
+
+	}
+
 	render() {
 
 		const logoStyles = {
@@ -220,10 +238,10 @@ class CreateForm extends Component {
 	    const plate = (
 	    	<div>
 	    		<div className="create-form-plate-stylename">
-	    			<p>Style Name</p>
+	    			<p>{this.state.stylename}</p>
 	    		</div>
 	    		<div className="create-form-plate-ig_username">
-	    			<p>@ig_username</p>
+	    			<p>{this.state.ig_username}</p>
 	    		</div>
 		    	<RetinaImage
 		    		className="create-form-plate"
@@ -300,6 +318,10 @@ class CreateForm extends Component {
 						plateColor={this.state.plate.color}
 						onPlateColorCheck={this.onPlateColorCheck}
 						onPlateOpacityChange={this.onPlateOpacityChange}
+						stylename={this.state.stylename}
+						handleStylenameChange={this.handleStylenameChange}
+						ig_username={this.state.ig_username}
+						handleIGUsernameChange={this.handleIGUsernameChange}
 
 					 />
 
