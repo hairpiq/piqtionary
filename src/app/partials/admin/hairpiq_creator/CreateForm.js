@@ -37,26 +37,35 @@ class CreateForm extends Component {
 				image: undefined,
             	imageLoaded: false,
 			},
-			finished: false,
-    		stepIndex: 0
+			logo: {
+				color: 'white',
+				opacity: 1
+			},
+			plate: {
+				color: 'black',
+				opacity: 0.5
+			}
 		}
 
-		// cropper methods
+		// Cropper methods
 		this.onImageDrop = this.onImageDrop.bind(this);
-		this.onImageLoaded = this.onImageLoaded.bind(this);
-		this.cropImage = this.cropImage.bind(this);
-		this.clearCrop = this.clearCrop.bind(this);
+
+		// NavStepper methods
+		this.onLogoColorCheck = this.onLogoColorCheck.bind(this);
+		this.onPlateColorCheck = this.onPlateColorCheck.bind(this);
 
 	}
 
 	componentDidMount() {
 
 		$('.modal-inner').addClass('fixed-create-form-width');
+	
 	}
 
 	componentWillUnmount() {
 
 		$('.modal-inner').removeClass('fixed-create-form-width');
+
 	}
 
 	onImageDrop(files) {
@@ -144,14 +153,83 @@ class CreateForm extends Component {
 		});
 	}
 
+	onLogoColorCheck(e, isChecked) {
+
+		var color = (isChecked ? 'black' : 'white');
+
+		this.setState({
+			logo: {
+				color: color,
+				opacity: this.state.logo.opacity
+			}
+		})
+	}
+
+	onLogoOpacityChange = (event, value) => {
+		
+		this.setState({
+			logo: {
+				opacity: value,
+				color: this.state.logo.color
+			}
+		});
+
+	}
+
+	onPlateColorCheck(e, isChecked) {
+
+		var color = (isChecked ? 'black' : 'white');
+
+		this.setState({
+			plate: {
+				color: color,
+				opacity: this.state.plate.opacity
+			}
+		});
+
+	}
+
+	onPlateOpacityChange = (event, value) => {
+		
+		this.setState({
+			plate: {
+				opacity: value,
+				color: this.state.plate.color
+			}
+		});
+
+	}
+
 	render() {
 
+		const logoStyles = {
+			opacity: this.state.logo.opacity
+		}
+
+		const plateStyles = {
+			opacity: this.state.plate.opacity
+		}
+
 		const logo = (
-	    	<RetinaImage className="create-form-logo" src={["/assets/images/hairpiq_creator/logo-white.png", "/assets/images/hairpiq_creator/2x/logo-white.png"]} />
+	    	<RetinaImage
+	    		className="create-form-logo"
+	    		src={["/assets/images/hairpiq_creator/logo-" + this.state.logo.color + ".png", "/assets/images/hairpiq_creator/2x/logo-" + this.state.logo.color + ".png"] }
+	    		style={logoStyles} />
 	    );
 
 	    const plate = (
-	    	<RetinaImage className="create-form-plate" src={["/assets/images/hairpiq_creator/plate-white.png", "/assets/images/hairpiq_creator/2x/plate-white.png"]} />
+	    	<div>
+	    		<div className="create-form-plate-stylename">
+	    			<p>Style Name</p>
+	    		</div>
+	    		<div className="create-form-plate-ig_username">
+	    			<p>@ig_username</p>
+	    		</div>
+		    	<RetinaImage
+		    		className="create-form-plate"
+		    		src={["/assets/images/hairpiq_creator/plate-" + this.state.plate.color + ".png", "/assets/images/hairpiq_creator/2x/plate-" + this.state.plate.color + ".png"]}
+		    		style={plateStyles} />
+	    	</div>
 	    );
 
 		return (
@@ -166,7 +244,7 @@ class CreateForm extends Component {
 						<Paper zDepth={2}>
 							{logo}
 							{plate}
-							<img src={this.state.cropper.image} alt=""/>
+							<img className="cropped-image" src={this.state.cropper.image} alt=""/>
 						</Paper>
 					</div> :
 					
@@ -204,13 +282,25 @@ class CreateForm extends Component {
 				<div className="right-col">
 
 					<NavStepper
+						
 						uploadedFileCloudinaryUrl={this.state.cloudinary.uploadedFileCloudinaryUrl}
 						isUploading={this.state.cloudinary.isUploading}
+						
 						imageLoaded={this.state.cropper.imageLoaded}
 						image={this.state.cropper.image}
 						cropImage={() => this.cropImage('image')}
 						clearCrop={() => this.clearCrop()}
 						clearImage={() => this.clearImage()}
+						
+						logoColor={this.state.logo.color}
+						onLogoColorCheck={this.onLogoColorCheck}
+						logoOpacity={this.state.logo.opacity}
+						onLogoOpacityChange={this.onLogoOpacityChange}
+						
+						plateColor={this.state.plate.color}
+						onPlateColorCheck={this.onPlateColorCheck}
+						onPlateOpacityChange={this.onPlateOpacityChange}
+
 					 />
 
 				</div>

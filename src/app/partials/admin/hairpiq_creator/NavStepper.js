@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
-import {green600, grey300} from 'material-ui/styles/colors';
+import {green600, grey300, grey400} from 'material-ui/styles/colors';
+import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 import Divider from 'material-ui/Divider';
 import Subheader from 'material-ui/Subheader';
-import Toggle from 'material-ui/Toggle';
+import Checkbox from 'material-ui/Checkbox';
 import Slider from 'material-ui/Slider';
 import {
   Step,
@@ -80,8 +81,15 @@ class NavStepper extends Component {
 	    	uploadedFileCloudinaryUrl,
 	    	isUploading,
 	    	imageLoaded,
-	    	image
+	    	image,
+	    	logoColor,
+	    	plateColor
 	    } = this.props;
+
+		const textfieldStyles = {
+			marginLeft: '20px',
+			width: '100%'
+		};
 
 		return (
 
@@ -139,17 +147,45 @@ class NavStepper extends Component {
 			            </StepContent>
 			          </Step>
 			          <Step>
-			            <StepLabel>Choose a Color</StepLabel>
+			            <StepLabel>Customize Colors</StepLabel>
 			            <StepContent>
 			              
-			            	<Divider />
 							<Subheader>Logo</Subheader>
-							<div className="data-container no-padding-top">
-								<Toggle
-							      label="Color"
-							      labelPosition="right"
+
+							<div className="data-container">
+								<Checkbox
+									className="checkbox"
+									checkedIcon={<FontIcon className="material-icons">invert_colors</FontIcon>}
+									uncheckedIcon={<FontIcon color={grey400} className="material-icons">invert_colors</FontIcon>}
+									label={logoColor}
+									onCheck={this.props.onLogoColorCheck}
 							    />
-							    <Slider defaultValue={0.5} />
+							    <Slider
+							    	min={0.3}
+							    	defaultValue={0.5}
+							    	value={this.props.logoOpacity}
+          							onChange={this.props.onLogoOpacityChange}
+							    />
+						    </div>
+
+						    <Subheader>Plate</Subheader>
+
+							<div className="data-container">
+								<Checkbox
+									className="checkbox"
+									checkedIcon={<FontIcon className="material-icons">invert_colors</FontIcon>}
+									uncheckedIcon={<FontIcon color={grey400} className="material-icons">invert_colors</FontIcon>}
+									label={plateColor}
+									onCheck={this.props.onPlateColorCheck}
+									defaultChecked={true}
+							    />
+							    <Slider
+							    	min={0.3}
+							    	max={0.7}
+							    	defaultValue={0.5}
+							    	value={this.props.plateOpacity}
+          							onChange={this.props.onPlateOpacityChange}
+							    />
 						    </div>
 
 			              {this.renderStepActions(1)}
@@ -158,12 +194,20 @@ class NavStepper extends Component {
 			          <Step>
 			            <StepLabel>Add Info</StepLabel>
 			            <StepContent>
-			              <p>
-			                Try out different ad text to see what brings in the most customers,
-			                and learn how to enhance your ads using features like ad extensions.
-			                If you run into any problems with your ads, find out how to tell if
-			                they're running and how to resolve approval issues.
-			              </p>
+			            	<div className="data-container textfields">
+								<TextField
+									style={textfieldStyles}
+									hintText="Style Name"
+									underlineShow={false}
+									maxLength="25" />
+								<Divider />
+								<TextField
+									style={textfieldStyles}
+									hintText="IG Username"
+									underlineShow={false}
+									maxLength="31" />
+								<Divider />
+							</div>
 			              {this.renderStepActions(2)}
 			            </StepContent>
 			          </Step>

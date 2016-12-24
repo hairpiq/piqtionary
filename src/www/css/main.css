@@ -8,16 +8,6 @@ body {
 	background: #f5f5f5;
 }
 
-/* this forces the body background color to fill the screen when there is no content */
-
-#app {
-	position: absolute;
-	bottom: 0;
-    top: 0;
-    left: 0;
-    right: 0;
-}
-
 .app_bar {
 	position: fixed !important;
 	top:0;

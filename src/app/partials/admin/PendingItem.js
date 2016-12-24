@@ -5,7 +5,7 @@ import TextField from 'material-ui/TextField';
 import IconButton from 'material-ui/IconButton';
 import ActionDelete from 'material-ui/svg-icons/action/delete';
 import ContentBackspace from 'material-ui/svg-icons/content/backspace';
-import {orange700, green600, grey100, grey600} from 'material-ui/styles/colors';
+import {green600, grey100, grey600} from 'material-ui/styles/colors';
 import RaisedButton from 'material-ui/RaisedButton';
 import LazyLoad from 'react-lazyload';
 
@@ -117,7 +117,7 @@ class PendingItem extends Component {
                 className="button update"
                 label="Update"
                 labelColor="#ffffff"
-                backgroundColor={orange700}
+                primary={true}
                 onClick={this.updateItem}
                 />
       } else {
