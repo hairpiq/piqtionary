@@ -21,6 +21,10 @@
   border-radius: 5px;
 }
 
+.modal .modal-inner.disabled {
+  pointer-events: none;
+}
+
 .modal .close-button-container {
 	position:relative;
 }

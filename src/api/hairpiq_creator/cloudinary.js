@@ -177,40 +177,65 @@ function addMeta(obj) {
 
 	// Apply Meta info
 
+	var transformations = [];
+
+	// apply crop info if supplied
+
+	if(obj.crop) {
+		transformations.push(crop);
+		transformations.push({
+			width: 1080,
+			aspect_ratio: "4:5",
+			crop: "scale"
+		});
+	};
+
+	// overlay logo
+
+	transformations.push({
+		overlay: "logo",
+		x: 74,
+		y: 77,
+		gravity: "north_west",
+		effect: "colorize",
+		color: config.meta.logo.color,
+		opacity: config.meta.logo.opacity,
+		width: 372
+	});
+
+	// overlay plate
+
+	transformations.push({
+		overlay: "plate",
+		x: 360,
+		y: 148,
+		gravity: "south_west",
+		effect: "colorize",
+		color: config.meta.plate.color,
+		opacity: config.meta.plate.opacity
+	});
+
+	// overlay Style Name
+
+	transformations.push({
+		overlay:"text:Montserrat_" + config.meta.plate.stylename_font_size + "_bold:" + obj.stylename,
+		x: 390,
+		y: 234,
+		gravity: "south_west",
+		color: "white"
+	});
+
+	// overlay IG Username
+
+	transformations.push({
+		overlay:"text:Montserrat_" + config.meta.plate.ig_username_font_size + "_letter_spacing_1:" + obj.ig_username,
+		x: 390,
+		y: 168,
+		gravity: "south_west",
+		color: "white"
+	});
+
 	return cloudinary.url(obj.id, {
-		transformation:[
-		{
-			overlay: "logo",
-			x: 74,
-			y: 77,
-			gravity: "north_west",
-			effect: "colorize",
-			color: config.meta.logo.color,
-			opacity: config.meta.logo.opacity,
-			width: 372
-		},
-		{
-			overlay: "plate",
-			x: 360,
-			y: 148,
-			gravity: "south_west",
-			effect: "colorize",
-			color: config.meta.plate.color,
-			opacity: config.meta.plate.opacity
-		},
-		{
-			overlay:"text:Montserrat_" + config.meta.plate.stylename_font_size + "_bold:" + obj.stylename,
-			x: 390,
-			y: 234,
-			gravity: "south_west",
-			color: "white"
-		},
-		{
-			overlay:"text:Montserrat_" + config.meta.plate.ig_username_font_size + "_letter_spacing_1:" + obj.ig_username,
-			x: 390,
-			y: 168,
-			gravity: "south_west",
-			color: "white"
-		}]
+		transformation:transformations
 	});
 }

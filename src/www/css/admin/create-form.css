@@ -48,6 +48,9 @@
 
 .create-form .dropzone p {
 	margin: 0;
+    font-size: 26px;
+    line-height: 40px;
+    padding: 0 20px;
 }
 
 .create-form .loader {
@@ -61,6 +64,10 @@
 
 .create-form .loader > div {
 	margin: 0 auto;
+}
+
+.create-form .cropper img {
+    max-width: none;
 }
 
 .create-form-logo {
@@ -86,6 +93,10 @@
 	text-transform: capitalize;
 }
 
+.create-form .toggle {
+    margin: 30px 0;
+}
+
 .create-form .textfield [type="text"] {
 	margin-left: 20px;
 }
@@ -100,6 +111,16 @@
 
 .create-form .nav-stepper button {
 	margin-right: 15px !important;
+}
+
+.create-form .crop-button,
+.create-form .submit-button {
+    margin-top: 20px !important;
+}
+
+/* nav-stepper step indicator graphic should render larger */
+.create-form .nav-stepper > div > div > div > span > span {
+    width: 34px !important;
 }
 
 .create-form-plate-stylename {
@@ -127,5 +148,9 @@
     right: 45px;
     overflow: hidden;
     white-space: nowrap;
+}
+
+.create-form-dialog.disabled {
+    pointer-events: none;
 }
 
