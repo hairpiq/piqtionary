@@ -14,8 +14,6 @@ module.exports = {
 		params.pending_id = params._id;
 		delete params._id;
 
-		console.log(params);
-
 		return execute('//' + config.HOSTNAME + '/piqtionary/approve', params);
 		
 	},

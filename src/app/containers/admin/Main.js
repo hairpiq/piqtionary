@@ -144,7 +144,8 @@ class Main extends Component {
                 </Modal>
               )}
 
-              <CreateButton location={this.props.location} />
+              {this.props.location.pathname !== '/admin/create' ?
+              <CreateButton location={this.props.location} /> : null }
 
             </div>
 

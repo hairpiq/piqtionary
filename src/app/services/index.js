@@ -1,24 +1,11 @@
+const config = process.env;
+
 module.exports = {
 	getList: function(params) {
 
 		params.limit = 10;
 
-		return new Promise(function(resolve, reject) {
-
-			$.ajax({
-			  	type: "POST",
-			  	url: '//' + process.env.HOSTNAME + '/piqtionary/list',
-			  	data: params,
-			  	success: function(result) {
-					resolve(result);
-				},
-			 	dataType: 'json',
-			 	beforeSend: function (xhr) {
-				    xhr.setRequestHeader ("Authorization", process.env.API_BASIC_AUTH);
-				}
-			});
-
-		});
+		return execute('//' + config.HOSTNAME + '/piqtionary/list', params);
 
 	},
 	getKeywords: function() {
@@ -33,7 +20,7 @@ module.exports = {
 				},
 			 	dataType: 'json',
 			 	beforeSend: function (xhr) {
-				    xhr.setRequestHeader ("Authorization", process.env.API_BASIC_AUTH);
+				    xhr.setRequestHeader ("Authorization", config.API_BASIC_AUTH);
 				}
 			});
 
@@ -42,22 +29,28 @@ module.exports = {
 	},
 	getById: function(params) {
 
-		return new Promise(function(resolve, reject) {
-
-			$.ajax({
-			  	type: "POST",
-			  	url: '//' + process.env.HOSTNAME + '/piqtionary/get_by_id',
-			  	data: params,
-			  	success: function(result) {
-					resolve(result);
-				},
-			 	dataType: 'json',
-			 	beforeSend: function (xhr) {
-				    xhr.setRequestHeader ("Authorization", process.env.API_BASIC_AUTH);
-				}
-			});
-
-		});
+		return execute('//' + config.HOSTNAME + '/piqtionary/get_by_id', params);
 
 	}
 };
+
+function execute(url, params) {
+
+	return new Promise(function(resolve, reject) {
+
+		$.ajax({
+		  	type: "POST",
+		  	url: url,
+		  	data: params,
+		  	success: function(result) {
+				resolve(result);
+			},
+		 	dataType: 'json',
+		 	beforeSend: function (xhr) {
+			    xhr.setRequestHeader ("Authorization", config.API_BASIC_AUTH);
+			}
+		});
+
+	})
+
+}
