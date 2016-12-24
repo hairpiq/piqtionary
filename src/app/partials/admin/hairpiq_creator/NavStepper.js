@@ -94,7 +94,7 @@ class NavStepper extends Component {
 		return (
 
 			<div className="nav-stepper">
-				<div style={{maxWidth: 380, maxHeight: 400, margin: 'auto'}}>
+				<div>
 			        <Stepper activeStep={stepIndex} orientation="vertical">
 			          <Step>
 			            <StepLabel>Add An Image</StepLabel>
