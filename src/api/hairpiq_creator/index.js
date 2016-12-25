@@ -30,6 +30,8 @@ module.exports = function(app) {
 
 	app.post('/hairpiq_creator/mms', function(req, res) {
 
+		console.log('B - called: /hairpiq_creator/mms');
+
 		console.log('mms received from Twilio...');
 
 		// if rendered url is NOT set
@@ -189,6 +191,8 @@ module.exports = function(app) {
 
 	app.post('/hairpiq_creator/update', function(req, res) {
 
+		console.log('B - called: /hairpiq_creator/update');
+
 		var options = {
 				gravity: "south",
 				theme: {
@@ -213,8 +217,32 @@ module.exports = function(app) {
 
 	app.post('/hairpiq_creator/delete', function(req, res) {
 
+		console.log('B - called: /hairpiq_creator/delete');
+
 		deleteAssets(req.body).then(function(result) {
 			res.send(JSON.stringify(result));
+		});
+
+	});
+
+	/*
+		add pre-rendered hairpiq to piqtionary review process
+	*/
+
+	app.post('/hairpiq_creator/add', function(req, res) {
+
+		console.log('B - called: /hairpiq_creator/add');
+
+		var params = {
+			rendered_url: '',
+			orig_photo_url: req.body.orig_photo_url,
+			s3_url: '',
+			stylename: req.body.stylename,
+			ig_username: req.body.ig_username
+		}
+
+		add(params).then(function(result){
+			res.send(result);
 		});
 
 	});
@@ -354,6 +382,33 @@ function deleteAssets(params) {
 	return Promise.all(arr);
 }
 
+function add(params) {
+
+	return new Promise(function(resolve, reject) {
+
+		// save to S3
+
+		console.log('requesting S3...');
+
+		var orig_photo_url = params.orig_photo_url.split('.jpg')[0];
+
+		s3.save(orig_photo_url).then(function(result) {
+
+			console.log("S3 responded...");
+
+			params.s3_url = result.url;
+			
+			console.log(params.s3_url);
+
+			submitForReview(params).then(function(resolve, reject) {
+				resolve(params);
+			});
+
+		});
+
+	});
+}
+
 function submitForReview(obj) {
 
 	/* test data
@@ -374,23 +429,29 @@ function submitForReview(obj) {
 		ig_username: obj.ig_username
 	}
 
-	//submit object into piqtionary pending queue
+	return new Promise(function(resolve, reject) {
 
-	request({
-	    url: 'http://' + config.HOSTNAME + '/piqtionary/submit', //URL to hit
-	    qs: {time: +new Date()}, //Query string data
-	    method: 'POST',
-	    headers : {
-	        "Authorization" : config.API_BASIC_AUTH
-		},
-	    //Lets post the following key/values as form
-	    json: params
-		}, function(error, response, body){
-		    if(error) {
-		        console.log(error);
-		    } else {
-		        console.log(response.statusCode, body);
-		}
+		//submit object into piqtionary pending queue
+
+		request({
+		    url: 'http://' + config.HOSTNAME + '/piqtionary/submit', //URL to hit
+		    qs: {time: +new Date()}, //Query string data
+		    method: 'POST',
+		    headers : {
+		        "Authorization" : config.API_BASIC_AUTH
+			},
+		    //Lets post the following key/values as form
+		    json: params
+			}, function(error, response, body){
+			    if(error) {
+			        console.log(error);
+			        reject(new Error(error));
+			    } else {
+			        console.log(response.statusCode, body);
+			        resolve(body);
+			}
+		});
+
 	});
 
 }

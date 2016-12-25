@@ -302,12 +302,18 @@ module.exports = function(app, db) {
 		if (req.body.limit !== undefined && req.body.limit.length > 0) {
 			var limit = Number(req.body.limit);
 			var skip = Number(req.body.page_num) * Number(req.body.limit);
+			var sort = { _id : -1};
+
+			//db.messages.find({$text: {$search: "cook"}}, {score: {$meta: "textScore"}}).sort({score:{$meta:"textScore"}})
 
 			// if a keyword is included, add it to the query
-			if (req.body.term)
-				query.stylename = new RegExp('^'+ req.body.term + '$', "i");
+			if (req.body.term) {
+				query.$text = { $search: req.body.term };
+				//query.score = { $meta: "textScore" };
+				//sort = { score: { $meta:"textScore" } };
+			}
 
-			var cursor = db.collection('approved_hairpiqs').find(query).skip(skip).sort({ _id : -1}).limit(limit);
+			var cursor = db.collection('approved_hairpiqs').find(query).skip(skip).sort(sort).limit(limit);
 
 			cursor.forEach(function(doc, err) {
 					
@@ -636,6 +642,5 @@ module.exports = function(app, db) {
 		}
 
 	});
-
 
 }

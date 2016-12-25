@@ -4,6 +4,7 @@ import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
 import IconButton from 'material-ui/IconButton';
 import ActionDelete from 'material-ui/svg-icons/action/delete';
+import ActionLock from 'material-ui/svg-icons/action/lock';
 import ContentBackspace from 'material-ui/svg-icons/content/backspace';
 import {green600, grey100, grey600} from 'material-ui/styles/colors';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -91,12 +92,24 @@ class PendingItem extends Component {
 
     const listItem = this.props.listItem;
     const isTextBeingEdited = (this.state.stylename !== listItem.stylename || this.state.ig_username !== listItem.ig_username)
+    const isPrerendered = (listItem.rendered_url === undefined || listItem.rendered_url.length === 0);
 
     const renderResetTextButton = () => {
-      if (isTextBeingEdited) {
+      if (isPrerendered) {
+        return  <IconButton
+                    className="reset-text"
+                    tooltip="Prerendered. Can't edit."
+                    disableTouchRipple={true}>
+                  <ActionLock color="#b3b3b3" />
+                </IconButton>
+      } else if (isTextBeingEdited) {
         return (
-          <a className="reset-text-button" onClick={this.resetText}>
-            <IconButton className="reset-text">
+          <a
+            className="reset-text-button"
+            onClick={this.resetText}>
+            <IconButton
+              className="reset-text"
+              tooltip="Reset text to saved state.">
               <ContentBackspace color={grey600} />
             </IconButton>
           </a>
@@ -166,7 +179,7 @@ class PendingItem extends Component {
           </div>
           <div className="delete-request-container">
             <a className="delete-request-button" onClick={this.rejectItem}>
-              <IconButton className="delete-request">
+              <IconButton className="delete-request" tooltip="Move to Trash.">
                 <ActionDelete color={grey600} />
               </IconButton>
             </a>
@@ -181,6 +194,7 @@ class PendingItem extends Component {
               value={this.state.stylename}
               defaultValue={this.state.stylename}
               onChange={this.handleStylenameChange}
+              disabled={isPrerendered}
               />
             <TextField
               id={'ig_username-' + this.props.listItem._id}
@@ -191,6 +205,7 @@ class PendingItem extends Component {
               value={this.state.ig_username}
               defaultValue={this.state.ig_username}
               onChange={this.handleIGUsernameChange}
+              disabled={isPrerendered}
               />
           </div>
         </div>
