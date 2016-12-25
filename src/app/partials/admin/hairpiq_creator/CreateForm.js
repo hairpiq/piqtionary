@@ -154,6 +154,9 @@ class CreateForm extends Component {
 
 		let croppedImage = this.refs.cropper.crop();
 		let croppedValues = this.refs.cropper.values();
+
+		console.log('croppedValues:');
+		console.log(croppedValues);
 		
 		this.setState({
 			cropper: {
@@ -346,15 +349,16 @@ class CreateForm extends Component {
 
 		let params = {
 			orig_photo_url: this.state.cloudinary.uploadedFileCloudinaryUrl,
-			crop: this.state.cropper.values,
 			stylename: this.state.stylename,
 			ig_username: this.state.ig_username,
 		}
 
-		if (!this.state.isPrerenderedToggled) {
-			params.logo = this.state.logo;
-			params.plate = this.state.plate;
-		}
+		if (!this.state.isPrerenderedToggled)
+			params.options = JSON.stringify({
+				crop_data: this.state.cropper.values,
+				logo: this.state.logo,
+				plate: this.state.plate
+			});
 
 		console.log(params);
 
@@ -362,7 +366,9 @@ class CreateForm extends Component {
 
 		$('.create-form-dialog').addClass('disabled');
 
-		Services.hairpiqCreator.add(params).then(function(result) {
+		const method = (!this.state.isPrerenderedToggled ? 'render' : 'add');
+
+		Services.hairpiqCreator[method](params).then(function(result) {
 
 			console.log('A');
 			console.log(result);

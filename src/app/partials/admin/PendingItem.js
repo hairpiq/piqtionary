@@ -97,7 +97,7 @@ class PendingItem extends Component {
     const renderResetTextButton = () => {
       if (isPrerendered) {
         return  <IconButton
-                    className="reset-text"
+                    className="reset-text locked"
                     tooltip="Prerendered. Can't edit."
                     disableTouchRipple={true}>
                   <ActionLock color="#b3b3b3" />

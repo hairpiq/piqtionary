@@ -8,29 +8,28 @@ cloudinary.config({
 });
 
 module.exports = {
-	create: function(photo_url, stylename, ig_username, options) {
+	create: function(photo_url, stylename, ig_username, options = null) {
 
 		var settings = {
 			width: 1080,
 			aspect_ratio: "4:5",
 			crop: "fill",
-			colors: true
+			gravity: "south"
 		}
 
 		var _options = {
-			gravity: "south",
-			theme: {
-				logo: "white",
-				plate: "dark",
-				color: ""
+			logo: {
+					color: "white",
+					opacity: 1
+				},
+			plate: {
+				color: "black",
+				opacity: 0.5
 			}
 		}
 
-		for (var k in settings)
-			_options[k] = settings[k];
-
-		for (k in options)
-			_options[k] = options[k];
+		if ( options !== null)
+			_options = options;
 
 		return new Promise(function(resolve, reject) {
 
@@ -38,13 +37,11 @@ module.exports = {
 
 				var public_id = result.public_id;
 
-				_options.theme.color = result.predominant.google[1][0];
-
-				var rendered_url = addMeta({
+				var rendered_url = addTransformations({
 					id: public_id,
 					stylename: stylename,
 					ig_username: ig_username,
-					theme: _options.theme
+					options: _options
 				});
 
 				var result = {
@@ -54,32 +51,34 @@ module.exports = {
 
 				resolve(result);
 			},
-			_options);
+			settings);
 
 		});
 
 	},
-	update: function(public_id, stylename, ig_username, options) {
+	update: function(public_id, stylename, ig_username, options = null) {
 
 		var _options = {
-			gravity: "south",
-			theme: {
-				logo: "white",
-				plate: "dark",
-				color: ""
-			}
-		}
+				logo: {
+					color: "white",
+					opacity: 1
+				},
+				plate: {
+					color: "black",
+					opacity: 0.5
+				}
+			};
 
-		for (var k in options)
-			_options[k] = options[k];
+		if (options !== null)
+			_options = options;
 		
 		return new Promise(function(resolve, reject) {
 			
-			var rendered_url = addMeta({
+			var rendered_url = addTransformations({
 					id: public_id,
 					stylename: stylename,
 					ig_username: ig_username,
-					theme: _options.theme
+					options: _options
 				});
 
 			var result = {
@@ -105,75 +104,7 @@ module.exports = {
 	}
 };
 
-function addMeta(obj) {
-
-	var config = {};
-	config.meta = {};
-
-	// Apply Logo Customizations
-
-	config.meta.logo = {
-		color: "",  
-		opacity: 0
-	}
-
-	switch (obj.theme.logo) {
-
-		case "light":
-
-			config.meta.logo.color = "white";
-			config.meta.logo.opacity = 100
-
-		break;
-		
-		case "dark":
-
-			config.meta.logo.color = "black";
-			config.meta.logo.opacity = 40
-
-		break;
-
-		case "color":
-
-			config.meta.logo.color = obj.theme.color;
-			config.meta.logo.opacity = 80;
-
-		break;
-	}
-
-	// Apply Plate Customizations
-
-	config.meta.plate = {
-		color: "",
-		opacity: 0,
-		stylename_font_size : 62,
-		ig_username_font_size : 50
-	}
-
-	switch (obj.theme.plate) {
-
-		case "light":
-
-			config.meta.plate.color = "white";
-			config.meta.plate.opacity = 25;
-
-		break;
-
-		case "dark":
-
-			config.meta.plate.color = "black";
-			config.meta.plate.opacity = 25;
-
-		break;
-
-		case "color":
-
-			config.meta.plate.color = obj.theme.color;
-			config.meta.plate.opacity = 25;
-
-		break;
-
-	}
+function addTransformations(obj) {
 
 	// Apply Meta info
 
@@ -181,12 +112,38 @@ function addMeta(obj) {
 
 	// apply crop info if supplied
 
-	if(obj.crop) {
-		transformations.push(crop);
+	console.log('AA');
+	console.log(obj);
+
+	if(obj.options.hasOwnProperty('crop_data')) {
+		
+		// compensate for percentage difference between original photo
+		// and user crop tool
+
+		let hairpiq_width = 1080;
+		let viewport_width = 420;
+		
+		transformations.push({
+			width: viewport_width
+		});
+		
+		let crop_data = obj.options.crop_data;
+		let percDiff =  (hairpiq_width / viewport_width);
+
+		let crop_data_perc_diff = {
+			x: Math.ceil(crop_data.x + (crop_data.x * percDiff)),
+			y: Math.ceil(crop_data.y + (crop_data.y * percDiff)),
+			width: Math.ceil(crop_data.width + (crop_data.width * percDiff)),
+			height: Math.ceil(crop_data.height + (crop_data.height * percDiff))
+		}
+
+		crop_data.crop = 'crop';
+
+		transformations.push(crop_data);
+
 		transformations.push({
 			width: 1080,
-			aspect_ratio: "4:5",
-			crop: "scale"
+			aspect_ratio: '4:5'
 		});
 	};
 
@@ -198,8 +155,8 @@ function addMeta(obj) {
 		y: 77,
 		gravity: "north_west",
 		effect: "colorize",
-		color: config.meta.logo.color,
-		opacity: config.meta.logo.opacity,
+		color: obj.options.logo.color,
+		opacity: obj.options.logo.opacity,
 		width: 372
 	});
 
@@ -211,14 +168,17 @@ function addMeta(obj) {
 		y: 148,
 		gravity: "south_west",
 		effect: "colorize",
-		color: config.meta.plate.color,
-		opacity: config.meta.plate.opacity
+		color: obj.options.plate.color,
+		opacity: obj.options.plate.opacity
 	});
+
+	const stylename_font_size = 62;
+	const ig_username_font_size = 50;
 
 	// overlay Style Name
 
 	transformations.push({
-		overlay:"text:Montserrat_" + config.meta.plate.stylename_font_size + "_bold:" + obj.stylename,
+		overlay:"text:Montserrat_" + stylename_font_size + "_bold:" + obj.stylename,
 		x: 390,
 		y: 234,
 		gravity: "south_west",
@@ -228,14 +188,18 @@ function addMeta(obj) {
 	// overlay IG Username
 
 	transformations.push({
-		overlay:"text:Montserrat_" + config.meta.plate.ig_username_font_size + "_letter_spacing_1:" + obj.ig_username,
+		overlay:"text:Montserrat_" + ig_username_font_size + "_letter_spacing_1:" + obj.ig_username,
 		x: 390,
 		y: 168,
 		gravity: "south_west",
 		color: "white"
 	});
 
+	console.log('AB');
+	console.log(transformations);
+
 	return cloudinary.url(obj.id, {
-		transformation:transformations
+		transformation:transformations,
+		effect: "sharpen"
 	});
 }

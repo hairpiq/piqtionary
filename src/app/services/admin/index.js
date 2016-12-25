@@ -84,6 +84,12 @@ module.exports = {
 		add: function(params) {
 			
 			return execute('//' + config.HOSTNAME + '/hairpiq_creator/add', params);
+
+		},
+		render: function(params) {
+
+			return execute('//' + config.HOSTNAME + '/hairpiq_creator/render', params);
+
 		}
 	}
 }
