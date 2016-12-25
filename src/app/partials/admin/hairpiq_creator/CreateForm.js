@@ -16,6 +16,8 @@ import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import Snackbar from 'material-ui/Snackbar';
 
+import Services from '../../../services/admin/'
+
 const config = process.env;
 const CLOUDINARY_UPLOAD_URL = 'https://api.cloudinary.com/v1_1/' + config.CLOUDINARY_CLOUD_NAME + '/image/upload';
 
@@ -54,8 +56,6 @@ class CreateForm extends Component {
 			is_ig_username_valid: false,
 			dialog: {
 	            open: false,
-	            message: '',
-	            action: ''
 	        },
 	        finished: false,
 	        snackbar: {
@@ -335,28 +335,9 @@ class CreateForm extends Component {
 
 	handleDialog(obj) {
 
-	    var title;
-	    var message;
-
-	    // if is pre-rendered
-			// state message about automatically approving
-		// if is not pre-rendered
-			// state message about sending hairpiq to pending requests section to be approved
-
-		if (this.state.isPrerenderedToggled) {
-			title = 'ADD DIRECTLY TO PIQTIONARY';
-			message = 'Since this Hairpiq is pre-rendered, it will be submitted directly to the Piqtionary. You okay with that?';
-		} else {
-			title = 'ADD TO PENDING REQUESTS';
-			message = 'Do you want to submit this hairpiq to the "Pending Requests" Section for team review?';
-		}
-
-
 		this.setState({
 		  dialog: {
-		    open: true,
-		    title: title,
-		    message: message,
+		    open: true
 		  }
 		});
 	}
@@ -366,10 +347,13 @@ class CreateForm extends Component {
 		let params = {
 			orig_photo_url: this.state.cloudinary.uploadedFileCloudinaryUrl,
 			crop: this.state.cropper.values,
-			logo: this.state.logo,
-			plate: this.state.plate,
 			stylename: this.state.stylename,
-			ig_username: this.state.ig_username
+			ig_username: this.state.ig_username,
+		}
+
+		if (!this.state.isPrerenderedToggled) {
+			params.logo = this.state.logo;
+			params.plate = this.state.plate;
 		}
 
 		console.log(params);
@@ -378,24 +362,22 @@ class CreateForm extends Component {
 
 		$('.create-form-dialog').addClass('disabled');
 
-		// Services here
-			// if is pre-rendered
-				// automatically approve
-				// enabled dialog
-			// if is not pre-rendered
-				// submit to pending requests section to be approved
-				// enable dialog
+		Services.hairpiqCreator.add(params).then(function(result) {
 
-		$('.create-form-dialog').removeClass('disabled');
+			console.log('A');
+			console.log(result);
 
-		this.setFinished(true);
-		this.setState({
-				snackbar: {
-		        open: true,
-		    }
-	    });
+			$('.create-form-dialog').removeClass('disabled');
 
-		this.handleClose();
+			_this.setFinished(true);
+			_this.setState({
+					snackbar: {
+			        open: true,
+			    }
+		    });
+			_this.handleClose();
+
+		});
 
 	}
 
@@ -562,13 +544,13 @@ class CreateForm extends Component {
 				</div>
 
 				<Dialog
-		            title={this.state.dialog.title}
+		            title='ADD TO PENDING REQUESTS'
 		            actions={actions}
 		            modal={false}
 		            open={this.state.dialog.open}
 		            onRequestClose={this.handleClose}
 		            actionsContainerClassName="create-form-dialog">
-		            {this.state.dialog.message}
+		            <p>Do you want to submit this hairpiq to the "Pending Requests" Section for team review?</p>
 		        </Dialog>
 
 		        <Snackbar
