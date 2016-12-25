@@ -40,9 +40,9 @@ class SearchBar extends Component {
   }
 
   linkTo(params) {
-    console.log(params);
 
     browserHistory.push(params);
+    
   }
 
   onChange = (event, { newValue, method }) => {
@@ -109,6 +109,20 @@ class SearchBar extends Component {
     
     });
 
+    // when enter button is pressed, perform search
+    input.keydown(function (e) {
+
+      var keypressed = e.keyCode || e.which;
+      if (keypressed == 13) {
+
+        const destination = (_this.state.value.length > 0 ? '/q/' + _this.state.value : '/');
+
+        _this.linkTo(destination);
+
+      }
+
+    });
+
     // set the state here so that the term is loaded on page refresh
     this.setState({value: this.props.term});
 
@@ -134,10 +148,6 @@ class SearchBar extends Component {
 
     const { value, suggestions } = this.state;
 
-    // an anti-pattern to include this here? Well how else am I gonna populate the text field on refresh, huh?
-   // if (this.state.term !== undefined && this.state.term !== this.props.term)
-     // this.resetStateForTerm(this.props.term);
-
     const inputProps = {
       placeholder: "what hairstyle would you like to see?",
       value,
@@ -145,8 +155,6 @@ class SearchBar extends Component {
     };
 
     const destination = (this.state.value.length > 0 ? '/q/' + this.state.value : '/');
-
-    //const link = <Link className="search-button-link" to={destination} />
 
     return (
       
@@ -160,11 +168,6 @@ class SearchBar extends Component {
           renderSuggestion={renderSuggestion}
           inputProps={inputProps}
         />
-        {/*<Link className="search-button-link" to={destination}>
-          <div className="flat-button-styles search-button">
-            <SearchIcon className='icon' /> <span>Search</span>
-          </div>
-        </Link>*/}
         <a className="search-button-link" onTouchTap={() => this.linkTo(destination)}>
 	      <FlatButton
 	        className="search-button"

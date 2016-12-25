@@ -78,6 +78,13 @@ module.exports = {
 
 		return execute('//' + config.HOSTNAME + '/piqtionary/delete', params);
 		
+	},
+	hairpiqCreator: {
+		
+		add: function(params) {
+			
+			return execute('//' + config.HOSTNAME + '/hairpiq_creator/add', params);
+		}
 	}
 }
 
