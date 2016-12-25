@@ -1,10 +1,16 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
-import { Link } from 'react-router';
+import { browserHistory } from 'react-router';
 import IconButton from 'material-ui/IconButton';
 import NavigationClose from 'material-ui/svg-icons/navigation/close';
 
 class Modal extends Component {
+
+	constructor() {
+		super();
+
+		this.linkTo = this.linkTo.bind(this);
+	}
 
 	componentDidMount() {
 
@@ -15,6 +21,10 @@ class Modal extends Component {
 
 		$('body').removeClass('modal-open');
 	}
+
+	linkTo(params) {
+		browserHistory.push(params);
+	}
 	
 	render() {
 		
@@ -24,11 +34,13 @@ class Modal extends Component {
 				<div className="modal">
 			        <div className='modal-inner'>
 			        	<div className="close-button-container">
-				        	<Link className="close-button" to={this.props.returnTo}>
-				              <IconButton className="close-modal">
+				        	<div className="close-button">
+				              <IconButton
+				              	className="close-modal"
+				              	onTouchTap={() => this.linkTo(this.props.returnTo)}>
 				                <NavigationClose />
 				              </IconButton>
-				            </Link>
+				            </div>
 			            </div>
 			            {this.props.children}
 			        </div>
