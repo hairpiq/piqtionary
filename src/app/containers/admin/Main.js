@@ -67,12 +67,19 @@ class Main extends Component {
     };
 
     this.linkTo = this.linkTo.bind(this);
+    this.openLiveSite = this.openLiveSite.bind(this);
   }
 
   linkTo(route) {
 
     browserHistory.push(route);
     
+  }
+
+  openLiveSite() {
+    
+    window.open("/", "_blank");
+
   }
 
   componentWillReceiveProps(nextProps) {
@@ -98,7 +105,10 @@ class Main extends Component {
     )
 
     const logo = (
-      <Link to="/admin/"><RetinaImage className="logo" src={["/assets/images/hairpiq-site-logo.png", "/assets/images/2x/hairpiq-site-logo.png"]} /></Link>
+      <a
+        onTouchTap={() => this.linkTo('/admin/')}>
+        <RetinaImage className="logo" src={["/assets/images/hairpiq-site-logo.png", "/assets/images/2x/hairpiq-site-logo.png"]} />
+      </a>
     );
 
     const standard_actions = (
@@ -107,7 +117,9 @@ class Main extends Component {
         <IconButton iconStyle={styles.appBarIconButton} tooltip="Photos"><ImagePhotoLibrary /></IconButton>
         <IconButton iconStyle={styles.appBarIconButton} tooltip="Videos"><AVVideoLibrary /></IconButton>
         */}
-        <IconButton href="/" target="_blank" iconStyle={styles.appBarIconButton} tooltip="Live Site"><ActionLaunch /></IconButton>
+        <IconButton
+          onTouchTap={() => this.openLiveSite()}
+          iconStyle={styles.appBarIconButton} tooltip="Live Site"><ActionLaunch /></IconButton>
       </div>
     )
 

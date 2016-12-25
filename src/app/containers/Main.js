@@ -4,7 +4,7 @@ import {deepOrange500, grey700} from 'material-ui/styles/colors';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
-import { Link } from 'react-router';
+import {browserHistory} from 'react-router';
 import IconButton from 'material-ui/IconButton';
 import PhotoLibraryIcon from 'material-ui/svg-icons/image/photo-library';
 import VideoLibraryIcon from 'material-ui/svg-icons/av/video-library';
@@ -41,6 +41,16 @@ class Main extends Component {
     this.state = {
       indexChildren: {}
     }
+
+    this.linkTo = this.linkTo.bind(this);
+
+  }
+
+  linkTo(route) {
+
+    browserHistory.push(route);
+    
+    console.log(browserHistory);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -69,7 +79,10 @@ class Main extends Component {
     )
 
     const logo = (
-      <Link to="/"><RetinaImage className="logo" src={["/assets/images/hairpiq-site-logo.png", "/assets/images/2x/hairpiq-site-logo.png"]} /></Link>
+      <a
+        onTouchTap={() => this.linkTo('/')}>
+        <RetinaImage className="logo" src={["/assets/images/hairpiq-site-logo.png", "/assets/images/2x/hairpiq-site-logo.png"]} />
+      </a>
     );
 
     const search_bar = (

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
-import { Link } from 'react-router';
 import InfiniteScroll from 'react-infinite-scroller';
 import Services from '../services/';
 import ResultItem from './ResultItem';

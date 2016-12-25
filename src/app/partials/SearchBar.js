@@ -6,7 +6,8 @@ import {orange700} from 'material-ui/styles/colors';
 import Services from '../services/';
 import SearchIcon from 'material-ui/svg-icons/action/search';
 import Autosuggest from 'react-autosuggest';
-import { Link } from 'react-router';
+import { browserHistory } from 'react-router';
+import TouchRipple from 'material-ui/internal/TouchRipple';
 
 // https://developer.mozilla.org/en/docs/Web/JavaScript/Guide/Regular_Expressions#Using_Special_Characters
 function escapeRegexCharacters(str) {
@@ -33,6 +34,15 @@ class SearchBar extends Component {
       value: '',
       suggestions: []
     };
+
+    this.linkTo = this.linkTo.bind(this);
+
+  }
+
+  linkTo(params) {
+    console.log(params);
+
+    browserHistory.push(params);
   }
 
   onChange = (event, { newValue, method }) => {
@@ -104,6 +114,15 @@ class SearchBar extends Component {
 
   }
 
+  componentWillReceiveProps(nextProps) {
+    
+    if (nextProps.hasOwnProperty('term'))
+      this.setState({
+        value: nextProps.term
+      })
+
+  }
+
   resetStateForTerm(term) {
     this.setState({
       term: term,
@@ -116,8 +135,8 @@ class SearchBar extends Component {
     const { value, suggestions } = this.state;
 
     // an anti-pattern to include this here? Well how else am I gonna populate the text field on refresh, huh?
-    if (this.state.term !== undefined && this.state.term !== this.props.term)
-      this.resetStateForTerm(this.props.term);
+   // if (this.state.term !== undefined && this.state.term !== this.props.term)
+     // this.resetStateForTerm(this.props.term);
 
     const inputProps = {
       placeholder: "what hairstyle would you like to see?",
@@ -125,9 +144,9 @@ class SearchBar extends Component {
       onChange: this.onChange
     };
 
-    const destination = () => {
-      return (this.state.value.length > 0 ? '/q/' + this.state.value : '/');
-    }
+    const destination = (this.state.value.length > 0 ? '/q/' + this.state.value : '/');
+
+    //const link = <Link className="search-button-link" to={destination} />
 
     return (
       
@@ -141,7 +160,12 @@ class SearchBar extends Component {
           renderSuggestion={renderSuggestion}
           inputProps={inputProps}
         />
-        <Link className="search-button-link" to={destination}>
+        {/*<Link className="search-button-link" to={destination}>
+          <div className="flat-button-styles search-button">
+            <SearchIcon className='icon' /> <span>Search</span>
+          </div>
+        </Link>*/}
+        <a className="search-button-link" onTouchTap={() => this.linkTo(destination)}>
 	      <FlatButton
 	        className="search-button"
 	        backgroundColor={orange700}
@@ -149,8 +173,7 @@ class SearchBar extends Component {
           rippleColor="#ffffff"
 	        icon={<SearchIcon className='icon' />}
 	        />
-        </Link>
-
+        </a>
       </div>
     );
   }
