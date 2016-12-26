@@ -24,65 +24,69 @@ class Modal extends Component {
 
   render() {
 
-    const curent_id = this.props.pathname.split('/')[2];
+    if (this.props.hairpiqs !== undefined) {
 
-    var current_hairpiq = {}
-    var before_id = '';
-    var next_id = '';
+      const curent_id = this.props.pathname.split('/')[2];
 
-    for (var i = 0; i < this.props.hairpiqs.length; i++) {
-      if (curent_id  === this.props.hairpiqs[i]._id) {
+      var current_hairpiq = {}
+      var before_id = '';
+      var next_id = '';
 
-        current_hairpiq = this.props.hairpiqs[i];
+      for (var i = 0; i < this.props.hairpiqs.length; i++) {
+        if (curent_id  === this.props.hairpiqs[i]._id) {
 
-        if (this.props.hairpiqs[i - 1] !== undefined)
-          before_id = this.props.hairpiqs[i - 1]._id;
+          current_hairpiq = this.props.hairpiqs[i];
 
-        if (this.props.hairpiqs[i + 1] !== undefined)
-          next_id = this.props.hairpiqs[i + 1]._id;
+          if (this.props.hairpiqs[i - 1] !== undefined)
+            before_id = this.props.hairpiqs[i - 1]._id;
 
-        break;
+          if (this.props.hairpiqs[i + 1] !== undefined)
+            next_id = this.props.hairpiqs[i + 1]._id;
+
+          break;
+        }
       }
-    }
 
-    const state = { modal: true, returnTo: '/', hairpiqs: this.props.hairpiqs };
+      const state = { modal: true, returnTo: '/', hairpiqs: this.props.hairpiqs };
 
-    function renderBeforeLink() {
-      if (before_id.length > 0)
-        return (
+      function renderBeforeLink() {
+        if (before_id.length > 0)
+          return (
 
-          <Link to={{
-                pathname: `/p/${before_id}`,
-                state: state
-          }}>
-            <FlatButton
-              className="button before"
-              backgroundColor={grey300}
-              hoverColor={grey100}
-              icon={<ImageNavigateBefore />}
-            />
-          </Link>
+            <Link to={{
+                  pathname: `/p/${before_id}`,
+                  state: state
+            }}>
+              <FlatButton
+                className="button before"
+                backgroundColor={grey300}
+                hoverColor={grey100}
+                icon={<ImageNavigateBefore />}
+              />
+            </Link>
 
-        );
-    }
+          );
+      }
 
-    function renderNextLink() {
-      if (next_id.length > 0)
-        return (
+      function renderNextLink() {
+        if (next_id.length > 0)
+          return (
 
-          <Link to={{
-                pathname: `/p/${next_id}`,
-                state: state
-          }}>
-            <FlatButton
-              className="button next"
-              backgroundColor={grey300}
-              hoverColor={grey100}
-              icon={<ImageNavigateNext />}
-            />
-          </Link>
+            <Link to={{
+                  pathname: `/p/${next_id}`,
+                  state: state
+            }}>
+              <FlatButton
+                className="button next"
+                backgroundColor={grey300}
+                hoverColor={grey100}
+                icon={<ImageNavigateNext />}
+              />
+            </Link>
 
-        );
+          );
+      }
+
     }
 
     return (
