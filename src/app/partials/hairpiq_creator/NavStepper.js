@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
-import {orange800, grey300, grey400} from 'material-ui/styles/colors';
+import {green600, grey300, grey400} from 'material-ui/styles/colors';
 import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -87,7 +87,7 @@ class NavStepper extends Component {
 			      disableTouchRipple={true}
 			      disableFocusRipple={true}
 			      labelColor="#ffffff"
-                  backgroundColor={orange800}
+                  backgroundColor={green600}
 			      disabled={!this.props.isValid || this.props.finished}
 			      onTouchTap={this.handleNext}
 			      style={{marginRight: 12}}
