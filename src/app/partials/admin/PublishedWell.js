@@ -258,7 +258,8 @@ class PublishedWell extends Component {
             modal={false}
             open={this.state.dialog.open}
             onRequestClose={this.handleClose}
-            actionsContainerClassName="approved-hairpiq-dialog">
+            actionsContainerClassName="approved-hairpiq-dialog"
+            overlayClassName="admin dialog-overlay">
             {this.state.dialog.message}
           </Dialog>
         </div>

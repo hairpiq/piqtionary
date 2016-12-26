@@ -319,20 +319,6 @@ class CreateForm extends Component {
 		});
 	}
 
-	submit() {
-
-		var params = {
-			orig_photo_url: this.state.cloudinary.uploadedFileCloudinaryUrl,
-			crop: this.state.cropper.values,
-			logo: this.state.logo,
-			plate: this.state.plate,
-			stylename: this.state.stylename,
-			ig_username: this.state.ig_username
-		}
-
-		console.log(params);
-	}
-
 	handleDialog(obj) {
 
 		this.setState({
@@ -346,26 +332,24 @@ class CreateForm extends Component {
 
 		let params = {
 			orig_photo_url: this.state.cloudinary.uploadedFileCloudinaryUrl,
-			crop: this.state.cropper.values,
 			stylename: this.state.stylename,
 			ig_username: this.state.ig_username,
 		}
 
-		if (!this.state.isPrerenderedToggled) {
-			params.logo = this.state.logo;
-			params.plate = this.state.plate;
-		}
-
-		console.log(params);
+		if (!this.state.isPrerenderedToggled)
+			params.options = JSON.stringify({
+				crop_data: this.state.cropper.values,
+				logo: this.state.logo,
+				plate: this.state.plate
+			});
 
 		const _this = this;
 
 		$('.create-form-dialog').addClass('disabled');
 
-		Services.hairpiqCreator.add(params).then(function(result) {
+		const method = (!this.state.isPrerenderedToggled ? 'render' : 'addPreRendered');
 
-			console.log('A');
-			console.log(result);
+		Services.hairpiqCreator[method](params).then(function(result) {
 
 			$('.create-form-dialog').removeClass('disabled');
 

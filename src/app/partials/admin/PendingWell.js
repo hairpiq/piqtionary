@@ -85,6 +85,7 @@ class PendingWell extends Component {
       },
       hairpiq: obj.hairpiq
     });
+
   }
 
   handleSubmit() {
@@ -279,7 +280,8 @@ class PendingWell extends Component {
             modal={false}
             open={this.state.dialog.open}
             onRequestClose={this.handleClose}
-            actionsContainerClassName="pending-request-dialog">
+            actionsContainerClassName="pending-request-dialog"
+            overlayClassName="admin dialog-overlay">
             {this.state.dialog.message}
           </Dialog>
         </div>

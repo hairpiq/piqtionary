@@ -26,7 +26,7 @@ module.exports = {
 	update: function(long_url) {
 
 		var pieces = long_url.split('/');
-		var filename = pieces[pieces.length - 1];
+		var filename = pieces[pieces.length - 1] + '.jpg';
 		var filepath = __dirname + '/s3-queue/' + filename;
 
 		return execute(long_url, filepath, filename);
@@ -84,6 +84,9 @@ function execute(url, filepath, filename) {
 					resolve(result);
 					
 				});
+			}).catch(function(err) {
+				console.log(err);
+				reject(new Error(err));
 			});
 
 		});

@@ -111,12 +111,15 @@ module.exports = function(app) {
 			}
 			
 			var options = {
-				gravity: "south",
-				theme: {
-					logo: "dark",
-					plate: "dark"
+				logo: {
+						color: "white",
+						opacity: 1
+					},
+				plate: {
+					color: "black",
+					opacity: 0.5
 				}
-			};
+			}
 
 			// send quick message
 			twilio.send(req.body.From, messages.b.one, config.TWILIO_LOGO);
@@ -193,20 +196,17 @@ module.exports = function(app) {
 
 		console.log('B - called: /hairpiq_creator/update');
 
-		var options = {
-				gravity: "south",
-				theme: {
-					logo: "dark",
-					plate: "dark"
-				}
-			};
-
-		var cloudinary_id = req.body.cloudinary_id;
+		var pieces = req.body.orig_photo_url.split('/');
+		var cloudinary_id = pieces[ pieces.length - 1].split('.jpg')[0];
 		var stylename = req.body.stylename;
 		var ig_username = req.body.ig_username;
 
+		var options = null;
+		if (req.body.options !== undefined)
+			options = JSON.parse(req.body.options);
+
 		update(cloudinary_id, stylename, ig_username, options).then(function(result) {
-			res.send(JSON.stringify(result));
+			res.send(result);
 		});
 
 	});
@@ -229,9 +229,9 @@ module.exports = function(app) {
 		add pre-rendered hairpiq to piqtionary review process
 	*/
 
-	app.post('/hairpiq_creator/add', function(req, res) {
+	app.post('/hairpiq_creator/add_prerendered', function(req, res) {
 
-		console.log('B - called: /hairpiq_creator/add');
+		console.log('B - called: /hairpiq_creator/add_prerendered');
 
 		var params = {
 			rendered_url: '',
@@ -241,8 +241,48 @@ module.exports = function(app) {
 			ig_username: req.body.ig_username
 		}
 
-		add(params).then(function(result){
-			res.send(result);
+		addPreRendered(params).then(function(result){
+
+			submitForReview(params).then(function(resolve, reject) {
+				res.send(params);
+			});
+
+		});
+
+	});
+
+	/*
+		Render a new hairpiq, different than Create.
+		/create consumes a photo texted in by MMS.
+		/render takes a photo already on cloudinary. The photo was
+		submitted by a user of the Hairpiq Creator Web App
+	*/
+
+	app.post('/hairpiq_creator/render', function(req, res) {
+
+		console.log('B - called: /hairpiq_creator/render');
+
+		var pieces = req.body.orig_photo_url.split('/');
+		var cloudinary_id = pieces[ pieces.length - 1].split('.jpg')[0];
+		var stylename = req.body.stylename;
+		var ig_username = req.body.ig_username;
+		var options = JSON.parse(req.body.options);
+
+		render(cloudinary_id, stylename, ig_username, options).then(function(result) {
+
+			var params = {
+				rendered_url: result.rendered_url,
+				orig_photo_url: req.body.orig_photo_url,
+				s3_url: result.s3_url,
+				stylename: req.body.stylename,
+				ig_username: req.body.ig_username,
+				options: req.body.options
+			}
+
+			submitForReview(params).then(function(resolve, reject) {
+				res.send(params);
+			});
+
 		});
 
 	});
@@ -382,7 +422,7 @@ function deleteAssets(params) {
 	return Promise.all(arr);
 }
 
-function add(params) {
+function addPreRendered(params) {
 
 	return new Promise(function(resolve, reject) {
 
@@ -400,13 +440,45 @@ function add(params) {
 			
 			console.log(params.s3_url);
 
-			submitForReview(params).then(function(resolve, reject) {
-				resolve(params);
+			resolve(params);
+
+		});
+
+	});
+}
+
+function render(cloudinary_id, stylename, ig_username, options) {
+
+	return new Promise(function(resolve, reject) {
+
+		cloudinary.update(cloudinary_id, stylename, ig_username, options).then(function(result){
+			
+			console.log("Cloudinary responded...");
+
+			var _result = result;
+
+			console.log(_result.rendered_url);
+
+			// save to S3
+
+			console.log('requesting S3...');
+
+			s3.save(_result.rendered_url).then(function(result) {
+				
+				console.log("S3 responded...");
+
+				_result.s3_url = result.url;
+				
+				console.log(_result.s3_url);
+
+				resolve(_result);
+
 			});
 
 		});
 
 	});
+
 }
 
 function submitForReview(obj) {
@@ -428,6 +500,9 @@ function submitForReview(obj) {
 		stylename: obj.stylename,
 		ig_username: obj.ig_username
 	}
+
+	if (obj.options !== undefined)
+		params.options = obj.options
 
 	return new Promise(function(resolve, reject) {
 

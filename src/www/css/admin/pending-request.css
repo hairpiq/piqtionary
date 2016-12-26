@@ -60,6 +60,10 @@
 	right: 50px;
 }
 
+.pending-request .reset-text.locked {
+	cursor: not-allowed !important;
+}
+
 .pending-request .toolbar {
 	width:55%;
 	display:inline-block;
