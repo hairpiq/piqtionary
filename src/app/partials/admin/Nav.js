@@ -27,7 +27,6 @@ class Nav extends Component {
  					<Subheader>Manage Hairpiqs</Subheader>
 			        <MenuItem
 			          onTouchTap={this.props.handleClose}
-			          onClick={this.props.handleClose}
 			          containerElement={<Link to="/admin/" />}
 			          leftIcon={<NotificationMMS />}
 			        >
@@ -35,7 +34,6 @@ class Nav extends Component {
 			        </MenuItem>
 			        <MenuItem
 			          onTouchTap={this.props.handleClose}
-			          onClick={this.props.handleClose}
 			          containerElement={<Link to="/admin/unpublished" />}
 			          leftIcon={<FileCloudOff />}
 			        >
@@ -43,7 +41,6 @@ class Nav extends Component {
 			        </MenuItem>
 			        <MenuItem
 			          onTouchTap={this.props.handleClose}
-			          onClick={this.props.handleClose}
 			          containerElement={<Link to="/admin/published" />}
 			          leftIcon={<FileCloudDone />}
 			        >
@@ -52,7 +49,6 @@ class Nav extends Component {
 			        <Divider inset={true} />
 			        <MenuItem
 			          onTouchTap={this.props.handleClose}
-			          onClick={this.props.handleClose}
 			          containerElement={<Link to="/admin/trash" />}
 			          leftIcon={<ActionDelete />}
 			        >

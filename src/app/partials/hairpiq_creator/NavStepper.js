@@ -163,12 +163,12 @@ class NavStepper extends Component {
 										<FlatButton
 											backgroundColor={grey300}
 											label="Crop"
-											onClick={this.props.cropImage}
+											onTouchTap={this.props.cropImage}
 											icon={<FontIcon className="material-icons">crop</FontIcon>}/>
 										<FlatButton
 											backgroundColor={grey300}
 											label="Clear"
-											onClick={this.props.clearImage}
+											onTouchTap={this.props.clearImage}
 											icon={<FontIcon className="material-icons">layers_clear</FontIcon>}/>
 									</div>
 									:
@@ -177,7 +177,7 @@ class NavStepper extends Component {
 											className="crop-button"
 											backgroundColor={grey300}
 											label="Adjust Crop"
-											onClick={this.props.clearCrop}
+											onTouchTap={this.props.clearCrop}
 											icon={<FontIcon className="material-icons">crop_free</FontIcon>}/>
 
 										{this.renderStepActions(0)}
@@ -275,7 +275,7 @@ class NavStepper extends Component {
 		          <p style={{margin: '20px 0', textAlign: 'center'}}>
 		            <a
 		              href="#"
-		              onClick={(event) => {
+		              onTouchTap={(event) => {
 		                event.preventDefault();
 		                this.props.clearImage();
 		                this.props.clearInfo();

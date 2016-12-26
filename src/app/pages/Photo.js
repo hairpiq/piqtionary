@@ -17,31 +17,26 @@ class Photo extends Component {
 
   componentDidMount() {
 
-      if (this.props.hairpiq !== undefined) {
-        
-        this.setState({
-          data: this.props.hairpiq
-        });
+    if (this.props.hairpiq === undefined) {
 
-      } else {
+      var _this = this;
 
-        var _this = this;
-
-        // add id
-        var params = {
-          _id: this.props.params.id
-        }
-
-        // get keywords for AutoComplete
-        Services.getById(params).then(function(result) {
-
-          _this.setState({ data: result[0]});
-
-        }).catch(function(error) {
-          console.log(error);
-        });
-
+      // add id
+      var params = {
+        _id: this.props.params.id
       }
+
+      // get keywords for AutoComplete
+      Services.getById(params).then(function(result) {
+
+        _this.setState({ data: result[0]});
+
+      }).catch(function(error) {
+        console.log(error);
+      });
+
+    }
+
   }
 
   renderMetaData() {
@@ -81,7 +76,7 @@ class Photo extends Component {
         {this.renderMetaData()}
           
           <DetailCard
-            data={this.state.data}
+            data={this.props.hairpiq || this.state.data}
           />
 
       </div>

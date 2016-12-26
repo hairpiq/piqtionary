@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
-import { Link } from 'react-router';
+import { browserHistory } from 'react-router';
 import Paper from 'material-ui/Paper';
 import Chip from 'material-ui/Chip';
 import Divider from 'material-ui/Divider';
@@ -11,6 +11,18 @@ import ShareMenu from './ShareMenu';
 import RelatedItems from './RelatedItems';
 
 class DetailCard extends Component {
+
+	constructor() {
+		super();
+
+		this.linkTo = this.linkTo.bind(this);
+	}
+
+	linkTo(route) {
+
+		browserHistory.push(route);
+
+	}
 
 	render() {
 
@@ -44,12 +56,14 @@ class DetailCard extends Component {
 			                </div>
 						</div>
 						<Divider />
-						<div className="data-container">
-							<Link to="/q/test"><Chip className="chip">test</Chip></Link>
-							<Link to="/q/tagtag"><Chip className="chip">tagtag</Chip></Link>
-							<Link to="/q/tag"><Chip className="chip">tag</Chip></Link>
-							<Link to="/q/tagtagtagtag"><Chip className="chip">tagtagtagtag</Chip></Link>
-							<Link to="/q/tagtagtag"><Chip className="chip">tagtagtag</Chip></Link>
+						<div className="data-container tag-cloud">
+
+							<a onTouchTap={() => this.linkTo('/q/test')}><Chip className="chip">test</Chip></a>
+							<a onTouchTap={() => this.linkTo('/q/tagtag')}><Chip className="chip">tagtag</Chip></a>
+							<a onTouchTap={() => this.linkTo('/q/tag')}><Chip className="chip">tag</Chip></a>
+							<a onTouchTap={() => this.linkTo('/q/tagtagtagtag')}><Chip className="chip">tagtagtagtag</Chip></a>
+							<a onTouchTap={() => this.linkTo('/q/tagtagtag')}><Chip className="chip">tagtagtag</Chip></a>
+
 						</div>
 						<Divider />
 						<div className="data-container">

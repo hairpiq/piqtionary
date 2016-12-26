@@ -243,14 +243,12 @@ class PendingWell extends Component {
         label="Cancel"
         primary={true}
         onTouchTap={this.handleClose}
-        onClick={this.handleClose}
       />,
       <FlatButton
         label="Submit"
         primary={true}
         keyboardFocused={true}
         onTouchTap={this.handleSubmit}
-        onClick={this.handleSubmit}
       />,
     ];
 

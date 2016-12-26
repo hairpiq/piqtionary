@@ -63,13 +63,13 @@ class TrashedItem extends Component {
         <div className="detail-info">
           <div className="publish-hairpiq-container">
             <a className="publish-hairpiq-button">
-              <IconButton className="publish-hairpiq" onClick={this.restoreItem}>
+              <IconButton className="publish-hairpiq" onTouchTap={this.restoreItem}>
                 {renderRestoreIcon()}
               </IconButton>
             </a>
           </div>
           <div className="delete-hairpiq-container">
-            <a className="delete-hairpiq-button" onClick={this.deleteItem}>
+            <a className="delete-hairpiq-button" onTouchTap={this.deleteItem}>
               <IconButton className="delete-hairpiq">
                 <ActionDeleteForever color={grey600} />
               </IconButton>

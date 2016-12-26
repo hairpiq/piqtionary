@@ -32,16 +32,20 @@ class Modal extends Component {
 	
 	render() {
 
+		console.log(this.props);
+
 		if (this.props.hairpiqs !== undefined) {
 
-	      const curent_id = this.props.pathname.split('/')[2];
+	      const current_id = this.props.pathname.split('/')[2];
 
 	      var current_hairpiq = {}
 	      var before_id = '';
 	      var next_id = '';
 
+	      console.log("A");
+
 	      for (var i = 0; i < this.props.hairpiqs.length; i++) {
-	        if (curent_id  === this.props.hairpiqs[i]._id) {
+	        if (current_id  === this.props.hairpiqs[i]._id) {
 
 	          current_hairpiq = this.props.hairpiqs[i];
 
@@ -54,10 +58,11 @@ class Modal extends Component {
 	          break;
 	        }
 	      }
-
-	      const state = { modal: true, returnTo: '/', hairpiqs: this.props.hairpiqs };
-
+	      console.log(current_hairpiq);
+	       console.log("B");
 	    }
+
+	    const _this = this;
 
 	    function renderBeforeLink() {
 			if (before_id.length > 0)
@@ -65,12 +70,13 @@ class Modal extends Component {
 
 			      <FlatButton
 			        className="button before"
-			        onTouchTap={() => this.linkTo({
+			        onTouchTap={() => _this.linkTo({
 				        pathname: `/p/${before_id}`,
-				        state: state
+				        state: { modal: true, returnTo: '/', hairpiqs: _this.props.hairpiqs }
 				    })}
 			        backgroundColor={grey300}
 			        hoverColor={grey100}
+			        disableTouchRipple={true}
 			        icon={<ImageNavigateBefore />}
 			      />
 
@@ -83,12 +89,13 @@ class Modal extends Component {
 
 			      <FlatButton
 			        className="button next"
-			        onTouchTap={() => this.linkTo({
+			        onTouchTap={() => _this.linkTo({
 				        pathname: `/p/${next_id}`,
-				        state: state
+				        state: { modal: true, returnTo: '/', hairpiqs: _this.props.hairpiqs }
 				    })}
 			        backgroundColor={grey300}
 			        hoverColor={grey100}
+			        disableTouchRipple={true}
 			        icon={<ImageNavigateNext />}
 			      />
 
