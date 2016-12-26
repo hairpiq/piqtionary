@@ -533,7 +533,8 @@ class CreateForm extends Component {
 		            modal={false}
 		            open={this.state.dialog.open}
 		            onRequestClose={this.handleClose}
-		            actionsContainerClassName="create-form-dialog">
+		            actionsContainerClassName="create-form-dialog"
+		            overlayClassName="main dialog-overlay">
 		            <p>Do you want to submit this hairpiq to the "Pending Requests" Section for team review?</p>
 		        </Dialog>
 

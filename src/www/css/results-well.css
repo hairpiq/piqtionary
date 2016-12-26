@@ -25,6 +25,11 @@
 	overflow: hidden;
 }
 
+.hairpiq-paper hr {
+	border-top: 1px solid #ddd !important;
+	background: none !important;
+}
+
 .hairpiq-data {
 	padding: 7px 10px;
 }
