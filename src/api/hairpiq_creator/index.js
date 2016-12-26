@@ -196,9 +196,14 @@ module.exports = function(app) {
 
 		console.log('B - called: /hairpiq_creator/update');
 
-		var cloudinary_id = req.body.orig_photo_url;
+		var pieces = req.body.orig_photo_url.split('/');
+		var cloudinary_id = pieces[ pieces.length - 1].split('.jpg')[0];
 		var stylename = req.body.stylename;
 		var ig_username = req.body.ig_username;
+
+		var options = null;
+		if (req.body.options !== undefined)
+			options = JSON.parse(req.body.options);
 
 		update(cloudinary_id, stylename, ig_username, options).then(function(result) {
 			res.send(result);
@@ -224,9 +229,9 @@ module.exports = function(app) {
 		add pre-rendered hairpiq to piqtionary review process
 	*/
 
-	app.post('/hairpiq_creator/add', function(req, res) {
+	app.post('/hairpiq_creator/add_prerendered', function(req, res) {
 
-		console.log('B - called: /hairpiq_creator/add');
+		console.log('B - called: /hairpiq_creator/add_prerendered');
 
 		var params = {
 			rendered_url: '',
@@ -236,7 +241,7 @@ module.exports = function(app) {
 			ig_username: req.body.ig_username
 		}
 
-		add(params).then(function(result){
+		addPreRendered(params).then(function(result){
 
 			submitForReview(params).then(function(resolve, reject) {
 				res.send(params);
@@ -265,8 +270,17 @@ module.exports = function(app) {
 
 		render(cloudinary_id, stylename, ig_username, options).then(function(result) {
 
-			submitForReview(result).then(function(resolve, reject) {
-				res.send(result);
+			var params = {
+				rendered_url: result.rendered_url,
+				orig_photo_url: req.body.orig_photo_url,
+				s3_url: result.s3_url,
+				stylename: req.body.stylename,
+				ig_username: req.body.ig_username,
+				options: req.body.options
+			}
+
+			submitForReview(params).then(function(resolve, reject) {
+				res.send(params);
 			});
 
 		});
@@ -408,7 +422,7 @@ function deleteAssets(params) {
 	return Promise.all(arr);
 }
 
-function add(params) {
+function addPreRendered(params) {
 
 	return new Promise(function(resolve, reject) {
 
@@ -486,6 +500,9 @@ function submitForReview(obj) {
 		stylename: obj.stylename,
 		ig_username: obj.ig_username
 	}
+
+	if (obj.options !== undefined)
+		params.options = obj.options
 
 	return new Promise(function(resolve, reject) {
 

@@ -12,6 +12,10 @@
 	max-width:500px;
 }
 
+.admin.dialog-overlay {
+	pointer-events: none;
+}
+
 .admin .snackbar {
 	text-align: center;
 }

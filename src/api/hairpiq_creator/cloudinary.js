@@ -58,6 +58,10 @@ module.exports = {
 	},
 	update: function(public_id, stylename, ig_username, options = null) {
 
+		console.log('EE');
+		console.log(options);
+		console.log('EE--');
+
 		var _options = {
 				logo: {
 					color: "white",
@@ -112,9 +116,6 @@ function addTransformations(obj) {
 
 	// apply crop info if supplied
 
-	console.log('AA');
-	console.log(obj);
-
 	if(obj.options.hasOwnProperty('crop_data')) {
 		
 		// compensate for percentage difference between original photo
@@ -128,22 +129,13 @@ function addTransformations(obj) {
 		});
 		
 		let crop_data = obj.options.crop_data;
-		let percDiff =  (hairpiq_width / viewport_width);
-
-		let crop_data_perc_diff = {
-			x: Math.ceil(crop_data.x + (crop_data.x * percDiff)),
-			y: Math.ceil(crop_data.y + (crop_data.y * percDiff)),
-			width: Math.ceil(crop_data.width + (crop_data.width * percDiff)),
-			height: Math.ceil(crop_data.height + (crop_data.height * percDiff))
-		}
-
 		crop_data.crop = 'crop';
-
 		transformations.push(crop_data);
 
 		transformations.push({
-			width: 1080,
-			aspect_ratio: '4:5'
+			width: hairpiq_width,
+			aspect_ratio: '4:5',
+			effect: 'sharpen'
 		});
 	};
 
@@ -156,7 +148,7 @@ function addTransformations(obj) {
 		gravity: "north_west",
 		effect: "colorize",
 		color: obj.options.logo.color,
-		opacity: obj.options.logo.opacity,
+		opacity: obj.options.logo.opacity * 100,
 		width: 372
 	});
 
@@ -169,7 +161,7 @@ function addTransformations(obj) {
 		gravity: "south_west",
 		effect: "colorize",
 		color: obj.options.plate.color,
-		opacity: obj.options.plate.opacity
+		opacity: obj.options.plate.opacity * 100
 	});
 
 	const stylename_font_size = 62;
@@ -195,11 +187,7 @@ function addTransformations(obj) {
 		color: "white"
 	});
 
-	console.log('AB');
-	console.log(transformations);
-
 	return cloudinary.url(obj.id, {
-		transformation:transformations,
-		effect: "sharpen"
+		transformation:transformations
 	});
 }

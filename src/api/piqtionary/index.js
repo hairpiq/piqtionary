@@ -23,6 +23,9 @@ module.exports = function(app, db) {
 			ig_username: req.body.ig_username
 		};
 
+		if (req.body.options !== undefined)
+			item.options = req.body.options;
+
 
 		db.collection('pending_hairpiqs').insertOne(item, function(err, result) {
 						
@@ -453,14 +456,17 @@ module.exports = function(app, db) {
 
 		console.log('B - called: /piqtionary/update');
 
-		var pieces = req.body.orig_photo_url.split('/');
-		var filename = pieces[pieces.length - 1];
-
 		var params = {
-			cloudinary_id: filename,
+			orig_photo_url: req.body.orig_photo_url,
 			stylename: req.body.updated_stylename,
 			ig_username: req.body.updated_ig_username
 		}
+
+		if (req.body.options !== undefined)
+			params.options = req.body.options;
+
+		console.log('BB');
+		console.log(params);
 
 		// recomposite hairpiq
 
@@ -487,11 +493,6 @@ module.exports = function(app, db) {
 			var id = {
 				_id: ObjectID(req.body._id)
 			};
-
-			var item = {
-				stylename: req.body.updated_stylename,
-				ig_username: req.body.updated_ig_username
-			}
 					
 			db.collection('pending_hairpiqs').update(id, { $set: params }, function(err, result) {
 						

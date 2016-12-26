@@ -154,9 +154,6 @@ class CreateForm extends Component {
 
 		let croppedImage = this.refs.cropper.crop();
 		let croppedValues = this.refs.cropper.values();
-
-		console.log('croppedValues:');
-		console.log(croppedValues);
 		
 		this.setState({
 			cropper: {
@@ -322,20 +319,6 @@ class CreateForm extends Component {
 		});
 	}
 
-	submit() {
-
-		var params = {
-			orig_photo_url: this.state.cloudinary.uploadedFileCloudinaryUrl,
-			crop: this.state.cropper.values,
-			logo: this.state.logo,
-			plate: this.state.plate,
-			stylename: this.state.stylename,
-			ig_username: this.state.ig_username
-		}
-
-		console.log(params);
-	}
-
 	handleDialog(obj) {
 
 		this.setState({
@@ -360,18 +343,13 @@ class CreateForm extends Component {
 				plate: this.state.plate
 			});
 
-		console.log(params);
-
 		const _this = this;
 
 		$('.create-form-dialog').addClass('disabled');
 
-		const method = (!this.state.isPrerenderedToggled ? 'render' : 'add');
+		const method = (!this.state.isPrerenderedToggled ? 'render' : 'addPreRendered');
 
 		Services.hairpiqCreator[method](params).then(function(result) {
-
-			console.log('A');
-			console.log(result);
 
 			$('.create-form-dialog').removeClass('disabled');
 
