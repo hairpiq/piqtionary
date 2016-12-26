@@ -50,13 +50,13 @@ class UnpublishedItem extends Component {
         <div className="detail-info">
           <div className="publish-hairpiq-container">
             <a className="publish-hairpiq-button">
-              <IconButton className="publish-hairpiq" onClick={this.publishItem}>
+              <IconButton className="publish-hairpiq" onTouchTap={this.publishItem}>
                 <FileCloudDone color={grey600} />
               </IconButton>
             </a>
           </div>
           <div className="delete-hairpiq-container">
-            <a className="delete-hairpiq-button" onClick={this.rejectItem}>
+            <a className="delete-hairpiq-button" onTouchTap={this.rejectItem}>
               <IconButton className="delete-hairpiq">
                 <ActionDelete color={grey600} />
               </IconButton>

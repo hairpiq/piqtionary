@@ -1,3 +1,8 @@
+.detail-card {
+	padding-top: 40px;
+	background: #ffffff;
+}
+
 .detail-card:after {
 
 	content: "";
@@ -16,6 +21,11 @@
 
 }
 
+.modal .detail-card {
+    padding-top: 0;
+    border-radius: 5px;
+}
+
 .modal .detail-card .right-col {
 	overflow-y: scroll;
 }
@@ -27,9 +37,12 @@
     background: #f5f5f5;
     display: flex;
     align-items: center;
+    position: relative;
+}
+
+.modal .detail-card .photo {
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
-    position: relative;
 }
 
 .detail-card .detail-info {
@@ -57,10 +70,15 @@
 	margin-bottom:0;
 }
 
+.detail-card .data-container .tag-cloud a {
+	cursor: pointer !important;
+} 
+
 .detail-card .data-container .chip {
 	display: inline-block !important;
 	margin-right: 5px !important;
 	margin-bottom: 5px !important;
+	cursor: pointer !important;
 }
 
 .detail-card hr {

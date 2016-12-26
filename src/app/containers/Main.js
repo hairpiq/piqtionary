@@ -56,7 +56,6 @@ class Main extends Component {
 
     browserHistory.push(route);
     
-    console.log(browserHistory);
   }
 
   componentDidMount() {

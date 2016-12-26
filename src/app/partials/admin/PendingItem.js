@@ -106,7 +106,7 @@ class PendingItem extends Component {
         return (
           <a
             className="reset-text-button"
-            onClick={this.resetText}>
+            onTouchTap={this.resetText}>
             <IconButton
               className="reset-text"
               tooltip="Reset text to saved state.">
@@ -131,7 +131,7 @@ class PendingItem extends Component {
                 label="Update"
                 labelColor="#ffffff"
                 primary={true}
-                onClick={this.updateItem}
+                onTouchTap={this.updateItem}
                 />
       } else {
         return <RaisedButton
@@ -151,7 +151,7 @@ class PendingItem extends Component {
                 label="Approve"
                 labelColor="#ffffff"
                 backgroundColor={green600}
-                onClick={this.approveItem}
+                onTouchTap={this.approveItem}
                 />
       } else {
         return <RaisedButton
@@ -178,7 +178,7 @@ class PendingItem extends Component {
           {renderResetTextButton()}
           </div>
           <div className="delete-request-container">
-            <a className="delete-request-button" onClick={this.rejectItem}>
+            <a className="delete-request-button" onTouchTap={this.rejectItem}>
               <IconButton className="delete-request" tooltip="Move to Trash.">
                 <ActionDelete color={grey600} />
               </IconButton>
