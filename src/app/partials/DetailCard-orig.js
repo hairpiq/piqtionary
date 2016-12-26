@@ -20,15 +20,15 @@ class DetailCard extends Component {
 
 			<div className="detail-card">
 
-				<div className="left-col">
-					<div className="photo">
-						<Paper className="paper" zDepth={2}>
+				<div className="parent left-col">
+					<div className="child photo">
+						<Paper className="paper" zDepth={4}>
 							<img src={params.s3_url} />
 						</Paper>
 					</div>
 				</div>
-				<div className="right-col">
-					<div className="detail-info">
+				<div className="parent right-col">
+					<div className="child detail-info">
 						<div className="data-container">
 							<div className="title">
 			                  Style Name
