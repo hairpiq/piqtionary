@@ -35,10 +35,10 @@ class Create extends Component {
         />
 
         <div className="intro">
-          <h1>Create a Hairpiq</h1>
+          <h1>Create Your Own Hairpiq</h1>
           <p>Use the below form to create a hairpiq.</p>
           <p>Just follow the instructions and enjoy.</p>
-          <p>You can create a hairpiq for yourself, and if you'd like your hairpiq to be featured by us, just select the option to apply in the form.</p>
+          <p>You can create a hairpiq for yourself, and <strong>if you'd like your hairpiq to be featured by us, just select the option to apply in the form</strong>.</p>
         </div>
 
         <CreateForm />

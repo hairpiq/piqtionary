@@ -180,16 +180,6 @@ class NavStepper extends Component {
 											onClick={this.props.clearCrop}
 											icon={<FontIcon className="material-icons">crop_free</FontIcon>}/>
 
-										<div className="data-container">
-							            	<Toggle
-							            	  className="toggle"
-										      label="Is this Hairpiq pre-rendered?"
-										      labelPosition="right"
-										      onToggle={this.props.onPrerenderedToggle}
-										      defaultToggled={this.props.isPrerenderedToggled}
-										    />
-									    </div>
-
 										{this.renderStepActions(0)}
 
 									</div>
@@ -270,6 +260,13 @@ class NavStepper extends Component {
 						            onChange={this.props.handleIGUsernameChange}/>
 								<Divider />
 							</div>
+							<div className="data-container">
+				            	<Toggle
+				            	  className="toggle"
+							      label="Apply to feature this custom hairpiq on hairpiq.com, to include instagram and facebook."
+							      labelPosition="right"
+							    />
+						    </div>
 			              {this.renderStepActions(2)}
 			            </StepContent>
 			          </Step>
