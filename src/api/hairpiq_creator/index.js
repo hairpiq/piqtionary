@@ -28,9 +28,9 @@ module.exports = function(app) {
 		consume mms from Twilio
 	*/
 
-	app.post('/hairpiq_creator/mms', function(req, res) {
+	app.post('/api/hairpiq_creator/mms', function(req, res) {
 
-		console.log('B - called: /hairpiq_creator/mms');
+		console.log('B - called: /api/hairpiq_creator/mms');
 
 		console.log('mms received from Twilio...');
 
@@ -192,9 +192,9 @@ module.exports = function(app) {
 		update hairpiq data
 	*/
 
-	app.post('/hairpiq_creator/update', function(req, res) {
+	app.post('/api/hairpiq_creator/update', function(req, res) {
 
-		console.log('B - called: /hairpiq_creator/update');
+		console.log('B - called: /api/hairpiq_creator/update');
 
 		var pieces = req.body.orig_photo_url.split('/');
 		var cloudinary_id = pieces[ pieces.length - 1].split('.jpg')[0];
@@ -215,9 +215,9 @@ module.exports = function(app) {
 		delete hairpiq assets
 	*/
 
-	app.post('/hairpiq_creator/delete', function(req, res) {
+	app.post('/api/hairpiq_creator/delete', function(req, res) {
 
-		console.log('B - called: /hairpiq_creator/delete');
+		console.log('B - called: /api/hairpiq_creator/delete');
 
 		deleteAssets(req.body).then(function(result) {
 			res.send(JSON.stringify(result));
@@ -229,9 +229,9 @@ module.exports = function(app) {
 		add pre-rendered hairpiq to piqtionary review process
 	*/
 
-	app.post('/hairpiq_creator/add_prerendered', function(req, res) {
+	app.post('/api/hairpiq_creator/add_prerendered', function(req, res) {
 
-		console.log('B - called: /hairpiq_creator/add_prerendered');
+		console.log('B - called: /api/hairpiq_creator/add_prerendered');
 
 		var params = {
 			rendered_url: '',
@@ -258,9 +258,9 @@ module.exports = function(app) {
 		submitted by a user of the Hairpiq Creator Web App
 	*/
 
-	app.post('/hairpiq_creator/render', function(req, res) {
+	app.post('/api/hairpiq_creator/render', function(req, res) {
 
-		console.log('B - called: /hairpiq_creator/render');
+		console.log('B - called: /api/hairpiq_creator/render');
 
 		var pieces = req.body.orig_photo_url.split('/');
 		var cloudinary_id = pieces[ pieces.length - 1].split('.jpg')[0];

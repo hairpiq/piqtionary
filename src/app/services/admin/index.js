@@ -5,7 +5,7 @@ module.exports = {
 
 		params.limit = 10;
 
-		return execute('//' + config.HOSTNAME + '/piqtionary/pending', params);
+		return execute('//' + config.HOSTNAME + '/api/piqtionary/pending', params);
 		
 	},
 	reject: function(params) {
@@ -14,7 +14,7 @@ module.exports = {
 		params.pending_id = params._id;
 		delete params._id;
 
-		return execute('//' + config.HOSTNAME + '/piqtionary/approve', params);
+		return execute('//' + config.HOSTNAME + '/api/piqtionary/approve', params);
 		
 	},
 	approve: function(params) {
@@ -23,72 +23,72 @@ module.exports = {
 		params.pending_id = params._id;
 		delete params._id;
 
-		return execute('//' + config.HOSTNAME + '/piqtionary/approve', params);
+		return execute('//' + config.HOSTNAME + '/api/piqtionary/approve', params);
 		
 	},
 	update: function(params) {
 
-		return execute('//' + config.HOSTNAME + '/piqtionary/update', params);
+		return execute('//' + config.HOSTNAME + '/api/piqtionary/update', params);
 
 	},
 	getList: function(params) {
 
 		params.limit = 10;
 
-		return execute('//' + config.HOSTNAME + '/piqtionary/list', params);
+		return execute('//' + config.HOSTNAME + '/api/piqtionary/list', params);
 
 	},
 	getUnpublished: function(params) {
 
 		params.limit = 10;
 
-		return execute('//' + config.HOSTNAME + '/piqtionary/unpublished', params);
+		return execute('//' + config.HOSTNAME + '/api/piqtionary/unpublished', params);
 
 	},
 	publish: function(params) {
 
 		params.publish_status = 'published';
 
-		return execute('//' + config.HOSTNAME + '/piqtionary/set_status', params);
+		return execute('//' + config.HOSTNAME + '/api/piqtionary/set_status', params);
 
 	},
 	unpublish: function(params) {
 
 		params.publish_status = 'unpublished';
 
-		return execute('//' + config.HOSTNAME + '/piqtionary/set_status', params);
+		return execute('//' + config.HOSTNAME + '/api/piqtionary/set_status', params);
 
 	},
 	moveToTrash: function(params) {
 
-		return execute('//' + config.HOSTNAME + '/piqtionary/move_to_trash', params);
+		return execute('//' + config.HOSTNAME + '/api/piqtionary/move_to_trash', params);
 		
 	},
 	getTrashedList: function(params) {
 
 		params.limit = 10;
 
-		return execute('//' + config.HOSTNAME + '/piqtionary/trashed', params);
+		return execute('//' + config.HOSTNAME + '/api/piqtionary/trashed', params);
 
 	},
 	restore: function(params) {
-		return execute('//' + config.HOSTNAME + '/piqtionary/restore', params);
+		return execute('//' + config.HOSTNAME + '/api/piqtionary/restore', params);
 	},
 	delete: function(params) {
 
-		return execute('//' + config.HOSTNAME + '/piqtionary/delete', params);
+		return execute('//' + config.HOSTNAME + '/api/piqtionary/delete', params);
 		
 	},
 	hairpiqCreator: {
 		
 		addPreRendered: function(params) {
 			
-			return execute('//' + config.HOSTNAME + '/hairpiq_creator/add_prerendered', params);
+			return execute('//' + config.HOSTNAME + '/api/hairpiq_creator/add_prerendered', params);
 
 		},
 		render: function(params) {
 
-			return execute('//' + config.HOSTNAME + '/hairpiq_creator/render', params);
+			return execute('//' + config.HOSTNAME + '/api/hairpiq_creator/render', params);
 
 		}
 	}
