@@ -14,7 +14,7 @@ class Create extends Component {
 
   }
 
-   componentWillUnmount() {
+  componentWillUnmount() {
 
     // if not rendered in modal
       // remove fixed width from main-container
