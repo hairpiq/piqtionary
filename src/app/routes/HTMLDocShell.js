@@ -16,7 +16,7 @@ module.exports = function(markup) {
 	        '<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">',
 	      '</head>',
 	      '<body>',
-	        '<div id="app">' + markup + '</div>',
+	        '<div id="app" class="loading">' + markup + '</div>',
 	        '<script>',
 				'var WebFontConfig = {',
 					'google: { families: [ "Roboto:400,300,500:latin", "Montserrat:400,700" ] }',

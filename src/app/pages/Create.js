@@ -29,7 +29,7 @@ class Create extends Component {
       <div>
 
         <Helmet
-          title="Admin Area: Create a Hairpiq"
+          title="Create a Hairpiq"
           titleTemplate="%s - Hairpiq"
           defaultTitle="Hairpiq"
         />
