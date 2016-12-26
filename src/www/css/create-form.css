@@ -10,6 +10,11 @@
     display: none;
 }
 
+.main-container.fixed-create-form-width .create-form,
+.main-container.fixed-create-form-width .create-form .photo {
+    background: #ffffff !important;
+}
+
 .create-form:after {
 
 	content: "";

@@ -12,6 +12,10 @@ body {
 	padding-bottom:50px;
 }
 
+.main .app_bar {
+	background: #ffffff !important;
+}
+
 #app.loading {
 	display: none;
 }

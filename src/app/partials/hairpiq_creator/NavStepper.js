@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
-import {orange700, orange800, grey300, grey400} from 'material-ui/styles/colors';
+import {orange800, grey300, grey400} from 'material-ui/styles/colors';
 import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -17,10 +17,6 @@ import {
   StepContent,
 } from 'material-ui/Stepper';
 import FontIcon from 'material-ui/FontIcon';
-
-const stepperStyles = {
-	primary1Color: orange700
-}
 
 class NavStepper extends Component {
 	constructor() {
@@ -142,10 +138,7 @@ class NavStepper extends Component {
 
 			<div className="nav-stepper">
 				<div>
-			        <Stepper
-			        	activeStep={stepIndex}
-			        	orientation="vertical"
-			        	style={stepperStyles}>
+			        <Stepper activeStep={stepIndex} orientation="vertical">
 			          <Step>
 			            <StepLabel>Add An Image</StepLabel>
 			            <StepContent>
