@@ -82,6 +82,14 @@ class Main extends Component {
 
   }
 
+  componentDidMount() {
+
+    // compensate for javascript ugly page loading by removing
+    // the loading class when this component finally mounts to page.
+    $("#app").removeClass('loading');
+    
+  }
+
   componentWillReceiveProps(nextProps) {
     // if we changed routes...
     if ((
