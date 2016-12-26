@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
-import {orange800, grey300, grey400} from 'material-ui/styles/colors';
+import {green600, grey300, grey400} from 'material-ui/styles/colors';
 import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -87,7 +87,7 @@ class NavStepper extends Component {
 			      disableTouchRipple={true}
 			      disableFocusRipple={true}
 			      labelColor="#ffffff"
-                  backgroundColor={orange800}
+                  backgroundColor={green600}
 			      disabled={!this.props.isValid || this.props.finished}
 			      onTouchTap={this.handleNext}
 			      style={{marginRight: 12}}
@@ -180,16 +180,6 @@ class NavStepper extends Component {
 											onClick={this.props.clearCrop}
 											icon={<FontIcon className="material-icons">crop_free</FontIcon>}/>
 
-										<div className="data-container">
-							            	<Toggle
-							            	  className="toggle"
-										      label="Is this Hairpiq pre-rendered?"
-										      labelPosition="right"
-										      onToggle={this.props.onPrerenderedToggle}
-										      defaultToggled={this.props.isPrerenderedToggled}
-										    />
-									    </div>
-
 										{this.renderStepActions(0)}
 
 									</div>
@@ -270,6 +260,13 @@ class NavStepper extends Component {
 						            onChange={this.props.handleIGUsernameChange}/>
 								<Divider />
 							</div>
+							<div className="data-container">
+				            	<Toggle
+				            	  className="toggle"
+							      label="Apply to feature this custom hairpiq on hairpiq.com, to include instagram and facebook."
+							      labelPosition="right"
+							    />
+						    </div>
 			              {this.renderStepActions(2)}
 			            </StepContent>
 			          </Step>
