@@ -81,9 +81,15 @@ module.exports = {
 	},
 	hairpiqCreator: {
 		
-		add: function(params) {
+		addPreRendered: function(params) {
 			
-			return execute('//' + config.HOSTNAME + '/hairpiq_creator/add', params);
+			return execute('//' + config.HOSTNAME + '/hairpiq_creator/add_prerendered', params);
+
+		},
+		render: function(params) {
+
+			return execute('//' + config.HOSTNAME + '/hairpiq_creator/render', params);
+
 		}
 	}
 }
