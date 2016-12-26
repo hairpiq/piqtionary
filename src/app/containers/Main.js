@@ -11,6 +11,7 @@ import VideoLibraryIcon from 'material-ui/svg-icons/av/video-library';
 import InfoIcon from 'material-ui/svg-icons/action/info';
 import Modal from '../partials/Modal';
 import SearchBar from '../partials/SearchBar';
+import CreateButton from '../partials/hairpiq_creator/CreateButton';
 
 var RetinaImage = require('react-retina-image');
 
@@ -127,6 +128,9 @@ class Main extends Component {
                   {this.props.children}
                 </Modal>
               )}
+
+              {this.props.location.pathname !== '/create' ?
+              <CreateButton location={this.props.location} /> : null }
 
             </div>
 

@@ -1,3 +1,7 @@
+.admin {
+	padding-bottom:50px;
+}
+
 .admin .app_bar {
 	position: relative !important;
     box-shadow: none !important;

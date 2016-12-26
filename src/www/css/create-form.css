@@ -2,6 +2,14 @@
 	width: 768px;
 }
 
+.main-container.fixed-create-form-width {
+    margin: 0 auto;
+}
+
+.modal-inner.fixed-create-form-width .intro {
+    display: none;
+}
+
 .create-form:after {
 
 	content: "";

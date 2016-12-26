@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
 import Helmet from 'react-helmet';
-import CreateForm from '../../partials/admin/hairpiq_creator/CreateForm';
+import CreateForm from '../partials/hairpiq_creator/CreateForm';
 
 class Create extends Component {
 
@@ -38,7 +38,7 @@ class Create extends Component {
           <h1>Create a Hairpiq</h1>
           <p>Use the below form to create a hairpiq.</p>
           <p>Just follow the instructions and enjoy.</p>
-          <p>Keep in mind that being able to add a pre-rendered hairpiq is an <strong>Admin Feature Only</strong>.</p>
+          <p>You can create a hairpiq for yourself, and if you'd like your hairpiq to be featured by us, just select the option to apply in the form.</p>
         </div>
 
         <CreateForm />

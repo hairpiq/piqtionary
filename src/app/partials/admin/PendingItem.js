@@ -94,9 +94,6 @@ class PendingItem extends Component {
     const isTextBeingEdited = (this.state.stylename !== listItem.stylename || this.state.ig_username !== listItem.ig_username)
     const isPrerendered = (listItem.rendered_url === undefined || listItem.rendered_url.length === 0);
 
-    console.log('AA');
-    console.log(listItem);
-
     const renderResetTextButton = () => {
       if (isPrerendered) {
         return  <IconButton
