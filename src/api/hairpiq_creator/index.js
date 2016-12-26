@@ -509,7 +509,7 @@ function submitForReview(obj) {
 		//submit object into piqtionary pending queue
 
 		request({
-		    url: 'http://' + config.HOSTNAME + '/piqtionary/submit', //URL to hit
+		    url: 'http://' + config.HOSTNAME + '/api/piqtionary/submit', //URL to hit
 		    qs: {time: +new Date()}, //Query string data
 		    method: 'POST',
 		    headers : {

@@ -3,7 +3,6 @@ import { render } from 'react-dom';
 import SearchBar from '../partials/SearchBar';
 import ResultsWell from '../partials/ResultsWell';
 import Helmet from 'react-helmet';
-import CreateButton from '../partials/CreateButton';
 import { Link } from 'react-router';
 
 class Index extends Component {
@@ -29,8 +28,6 @@ class Index extends Component {
           </div>
         
         </div>
-
-        <CreateButton />
 
       </div>
     );

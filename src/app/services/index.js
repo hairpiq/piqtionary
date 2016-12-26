@@ -31,6 +31,15 @@ module.exports = {
 
 		return execute('//' + config.HOSTNAME + '/api/piqtionary/get_by_id', params);
 
+	},
+	hairpiqCreator: {
+		
+		render: function(params) {
+
+			return execute('//' + config.HOSTNAME + '/api/hairpiq_creator/render', params);
+
+		}
+
 	}
 };
 
