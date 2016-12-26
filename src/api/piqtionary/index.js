@@ -11,9 +11,9 @@ module.exports = function(app, db) {
 		submit a hairpiq to the review queue
 	*/
 
-	app.post('/piqtionary/submit', function(req, res, next) {
+	app.post('/api/piqtionary/submit', function(req, res, next) {
 
-		console.log('B - called: /piqtionary/submit');
+		console.log('B - called: /api/piqtionary/submit');
 
 		var item = {
 			rendered_url: req.body.rendered_url,
@@ -41,9 +41,9 @@ module.exports = function(app, db) {
 		approve or reject a hairpiq in the review queue
 	*/
 
-	app.post('/piqtionary/approve', function(req, res, next) {
+	app.post('/api/piqtionary/approve', function(req, res, next) {
 
-		console.log('B - called: /piqtionary/approve');
+		console.log('B - called: /api/piqtionary/approve');
 
 		// if hairpiq is approved
 			// insert new into mongodb hairpiqs collection
@@ -121,7 +121,7 @@ module.exports = function(app, db) {
 			params.cloudinary_id = pieces[pieces.length - 1];
 
 			request({
-			    url: 'http://' + config.HOSTNAME + '/hairpiq_creator/delete', //URL to hit
+			    url: 'http://' + config.HOSTNAME + '/api/hairpiq_creator/delete', //URL to hit
 			    qs: {time: +new Date()}, //Query string data
 			    method: 'POST',
 			    headers : {
@@ -147,9 +147,9 @@ module.exports = function(app, db) {
 		update a hairpiq published status
 	*/
 
-	app.post('/piqtionary/set_status', function(req, res, next) {
+	app.post('/api/piqtionary/set_status', function(req, res, next) {
 
-		console.log('B - called: /piqtionary/set_status');
+		console.log('B - called: /api/piqtionary/set_status');
 
 		// set hairpiq status 
 			// find hairpiq in approved_hairpiqs collection
@@ -182,9 +182,9 @@ module.exports = function(app, db) {
 		move hairpiq to trash
 	*/
 
-	app.post('/piqtionary/move_to_trash', function(req, res, next) {
+	app.post('/api/piqtionary/move_to_trash', function(req, res, next) {
 
-		console.log('B - called: /piqtionary/move_to_trash');
+		console.log('B - called: /api/piqtionary/move_to_trash');
 
 		// delete a hairpiq 
 			// insert hairpiq in removed_hairpiqs collection
@@ -229,9 +229,9 @@ module.exports = function(app, db) {
 		delete a hairpiq
 	*/
 
-	app.post('/piqtionary/delete', function(req, res, next) {
+	app.post('/api/piqtionary/delete', function(req, res, next) {
 
-		console.log('B - called: /piqtionary/delete');
+		console.log('B - called: /api/piqtionary/delete');
 
 		// delete a hairpiq 
 			// find hairpiq in removed_hairpiqs collection
@@ -267,7 +267,7 @@ module.exports = function(app, db) {
 			}
 
 			request({
-			    url: 'http://' + config.HOSTNAME + '/hairpiq_creator/delete', //URL to hit
+			    url: 'http://' + config.HOSTNAME + '/api/hairpiq_creator/delete', //URL to hit
 			    qs: {time: +new Date()}, //Query string data
 			    method: 'POST',
 			    headers : {
@@ -291,9 +291,9 @@ module.exports = function(app, db) {
 		retrieve a list of hairpiqs
 	*/
 
-	app.post('/piqtionary/list', function(req, res, next) {
+	app.post('/api/piqtionary/list', function(req, res, next) {
 
-		console.log('B - called: /piqtionary/list');
+		console.log('B - called: /api/piqtionary/list');
 
 		// find a collection of hairpiqs
 		// limit - the amount of docs to return
@@ -342,9 +342,9 @@ module.exports = function(app, db) {
 		create database keyword json for AutoComplete module
 	*/
 
-	app.post('/piqtionary/keywords', function(req, res, next) {
+	app.post('/api/piqtionary/keywords', function(req, res, next) {
 
-		console.log('B - called: /piqtionary/keywords');
+		console.log('B - called: /api/piqtionary/keywords');
 
 		var resultArray = [];
 
@@ -368,9 +368,9 @@ module.exports = function(app, db) {
 		get a hairpiq document by id
 	*/
 
-	app.post('/piqtionary/get_by_id', function(req, res, next) {
+	app.post('/api/piqtionary/get_by_id', function(req, res, next) {
 
-		console.log('B - called: /piqtionary/get_by_id');
+		console.log('B - called: /api/piqtionary/get_by_id');
 
 		// get a hairpiq by id
 			// find hairpiq in approved_hairpiqs collection
@@ -405,9 +405,9 @@ module.exports = function(app, db) {
 		retrieve a list of pending hairpiqs
 	*/
 
-	app.post('/piqtionary/pending', function(req, res, next) {
+	app.post('/api/piqtionary/pending', function(req, res, next) {
 
-		console.log('B - called: /piqtionary/pending');
+		console.log('B - called: /api/piqtionary/pending');
 
 		// find a collection of pending hairpiqs
 		// limit - the amount of docs to return
@@ -445,7 +445,7 @@ module.exports = function(app, db) {
 		update a hairpiq
 	*/
 
-	app.post('/piqtionary/update', function(req, res, next) {
+	app.post('/api/piqtionary/update', function(req, res, next) {
 
 		// re-render hairpiq via hairpiq creator api
 		// update the hairpiq document
@@ -454,7 +454,7 @@ module.exports = function(app, db) {
 		// - ig_username
 		// return as success
 
-		console.log('B - called: /piqtionary/update');
+		console.log('B - called: /api/piqtionary/update');
 
 		var params = {
 			orig_photo_url: req.body.orig_photo_url,
@@ -465,13 +465,10 @@ module.exports = function(app, db) {
 		if (req.body.options !== undefined)
 			params.options = req.body.options;
 
-		console.log('BB');
-		console.log(params);
-
 		// recomposite hairpiq
 
 		request({
-		    url: 'http://' + config.HOSTNAME + '/hairpiq_creator/update', //URL to hit
+		    url: 'http://' + config.HOSTNAME + '/api/hairpiq_creator/update', //URL to hit
 		    qs: {time: +new Date()}, //Query string data
 		    method: 'POST',
 		    headers : {
@@ -509,9 +506,9 @@ module.exports = function(app, db) {
 		retrieve a list of hairpiqs by publish status
 	*/
 
-	app.post('/piqtionary/unpublished', function(req, res, next) {
+	app.post('/api/piqtionary/unpublished', function(req, res, next) {
 
-		console.log('B - called: /piqtionary/unpublished');
+		console.log('B - called: /api/piqtionary/unpublished');
 
 		// find a collection of hairpiqs that are unpublished
 		// limit - the amount of docs to return
@@ -550,9 +547,9 @@ module.exports = function(app, db) {
 		retrieve a list of hairpiqs by publish status
 	*/
 
-	app.post('/piqtionary/trashed', function(req, res, next) {
+	app.post('/api/piqtionary/trashed', function(req, res, next) {
 
-		console.log('B - called: /piqtionary/trashed');
+		console.log('B - called: /api/piqtionary/trashed');
 
 		// find a collection of hairpiqs that are in trash
 		// limit - the amount of docs to return
@@ -590,9 +587,9 @@ module.exports = function(app, db) {
 		restore hairpiq from trash
 	*/
 
-	app.post('/piqtionary/restore', function(req, res, next) {
+	app.post('/api/piqtionary/restore', function(req, res, next) {
 
-		console.log('B - called: /piqtionary/restore');
+		console.log('B - called: /api/piqtionary/restore');
 
 		// restore a hairpiq 
 			// if hairpiq has approved_id property

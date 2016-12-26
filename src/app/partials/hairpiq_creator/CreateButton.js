@@ -10,7 +10,7 @@ class CreateButton extends Component {
 
 	linkTo(params) {
 		browserHistory.push({
-            pathname: '/admin/create',
+            pathname: '/create',
             state: {
             	modal: true,
             	returnTo: this.props.location.pathname

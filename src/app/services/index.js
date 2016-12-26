@@ -5,7 +5,7 @@ module.exports = {
 
 		params.limit = 10;
 
-		return execute('//' + config.HOSTNAME + '/piqtionary/list', params);
+		return execute('//' + config.HOSTNAME + '/api/piqtionary/list', params);
 
 	},
 	getKeywords: function() {
@@ -14,7 +14,7 @@ module.exports = {
 
 			$.ajax({
 			  	type: "POST",
-			  	url: '//' + process.env.HOSTNAME + '/piqtionary/keywords',
+			  	url: '//' + process.env.HOSTNAME + '/api/piqtionary/keywords',
 			  	success: function(result) {
 					resolve(result);
 				},
@@ -29,7 +29,16 @@ module.exports = {
 	},
 	getById: function(params) {
 
-		return execute('//' + config.HOSTNAME + '/piqtionary/get_by_id', params);
+		return execute('//' + config.HOSTNAME + '/api/piqtionary/get_by_id', params);
+
+	},
+	hairpiqCreator: {
+		
+		render: function(params) {
+
+			return execute('//' + config.HOSTNAME + '/api/hairpiq_creator/render', params);
+
+		}
 
 	}
 };
