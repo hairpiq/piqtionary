@@ -1,29 +1,19 @@
 .results-well-container {
 	width:100%;
-	background:#f5f5f5;
-	border-top:1px solid #e0e0e0;
 	position: relative;
+	padding-top:15px;
+	padding-bottom: 25px;
 }
 
 .results-well-container .uk-grid {
 	padding: 0 25px 0;
 }
 
-
-
-.button-create-a-hairpiq {
-	position: fixed;
-	right: 20px;
-	bottom: 15px;
-}
-
-@media (min-width: 768px) {
-
-	.button-create-a-hairpiq {
-		right: 50px;
-		bottom: 50px;
-	}
-
+.results-well-container .loader {
+	position: relative;
+	width: 40px;
+    height: 40px;
+    margin: 20px auto 0;
 }
 
 
@@ -33,6 +23,11 @@
 
 .hairpiq-paper {
 	overflow: hidden;
+}
+
+.hairpiq-paper hr {
+	border-top: 1px solid #ddd !important;
+	background: none !important;
 }
 
 .hairpiq-data {

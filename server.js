@@ -13,8 +13,7 @@ mongo.connect(process.env.DB_URL, function(err, db) {
 
 	// start app
 
-	require('babel-register')(
-	{
+	require('babel-register')({
 		presets:['react']
 	});
 
@@ -24,6 +23,7 @@ mongo.connect(process.env.DB_URL, function(err, db) {
 	// allow nodejs to access get and post variables
 	var bodyParser = require('body-parser');
 	app.use(bodyParser.urlencoded({extended: false}));
+	app.use(bodyParser.json());
 
 	// create static folder to serve static assets
 	app.use(express.static('public'));

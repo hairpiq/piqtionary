@@ -1,0 +1,38 @@
+.main.dialog-overlay {
+    pointer-events: none;
+}
+
+.modal-inner {
+    position: relative;
+    border-radius: 5px;
+}
+
+.modal .main-container {
+    padding-top:25px;
+}
+
+.modal .nav .button {
+    width: 25px;
+    height: 100px !important;
+    position: absolute !important;
+    z-index: 1;
+    min-width: auto !important;
+    border-radius: 0 !important;
+    margin-top:-50px !important;
+    top:50%;
+}
+
+
+.modal .nav .button.before {
+    left: -25px;
+    border-top-left-radius: 5px !important;
+    border-bottom-left-radius: 5px !important;
+}
+
+.modal .nav .button.next {
+    right:-25px;
+    border-top-right-radius: 5px !important;
+    border-bottom-right-radius: 5px !important;
+}
+
+

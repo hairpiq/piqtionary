@@ -20,7 +20,9 @@ const config = {
       'process.env':{
         'NODE_ENV': JSON.stringify('production'),
         'HOSTNAME': JSON.stringify(process.env.HOSTNAME),
-        'API_BASIC_AUTH': JSON.stringify(process.env.API_BASIC_AUTH)
+        'API_BASIC_AUTH': JSON.stringify(process.env.API_BASIC_AUTH),
+        'CLOUDINARY_CLOUD_NAME': JSON.stringify(process.env.CLOUDINARY_CLOUD_NAME),
+        'CLOUDINARY_UPLOAD_PRESET': JSON.stringify(process.env.CLOUDINARY_UPLOAD_PRESET)
       }
     }),
     // Minify the bundle

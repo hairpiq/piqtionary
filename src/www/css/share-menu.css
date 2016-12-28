@@ -1,0 +1,15 @@
+.share-menu {
+	min-height: 50px;
+}
+.share-menu .button {
+	width: 50px;
+    height: 40px !important;
+    min-width: auto !important;
+    margin-right: 6px !important;
+    float: left;
+}
+
+.share-menu [class^="icon-"] {
+	font-size: 26px !important;
+	color: #ffffff !important;
+}

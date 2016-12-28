@@ -1,0 +1,37 @@
+.admin {
+	padding-bottom:50px;
+}
+
+.admin .app_bar {
+	position: relative !important;
+    box-shadow: none !important;
+}
+
+.admin .main-container {
+	padding-top:40px;
+}
+
+.admin .intro {
+	margin:0 25px;
+	max-width:500px;
+}
+
+.admin.dialog-overlay {
+	pointer-events: none;
+}
+
+.admin .snackbar {
+	text-align: center;
+}
+
+@media (max-width: 480px) {
+
+	.admin h1 {
+		font-size: 200%;
+	}
+
+	.admin .intro {
+		text-align: center;
+	}
+
+}
