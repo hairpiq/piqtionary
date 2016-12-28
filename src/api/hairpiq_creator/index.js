@@ -10,6 +10,7 @@ var fs = require('fs');
 var express = require('express');
 var session = require('express-session');
 var request = require('request');
+var clarifai = require('./clarifai');
 
 module.exports = function(app) {
 	
@@ -286,6 +287,19 @@ module.exports = function(app) {
 		});
 
 	});
+
+	/*
+		validate photo via clarifai
+	*/
+
+	app.post('/api/hairpiq_creator/validate', function(req, res) {
+		
+		validate(req.body.orig_photo_url).then(function(result) {
+			
+			res.send(result);
+
+		});
+	});
 }
 
 function create(photo_url, stylename, ig_username, options) {
@@ -479,6 +493,19 @@ function render(cloudinary_id, stylename, ig_username, options) {
 
 	});
 
+}
+
+function validate(url) {
+
+	return new Promise(function(resolve, reject) {
+
+		clarifai.validate(url).then(function(result) {
+
+			resolve(result);
+
+		});
+		
+	});
 }
 
 function submitForReview(obj) {

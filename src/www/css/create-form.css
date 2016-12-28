@@ -68,7 +68,7 @@
 
 .create-form .loader {
 	margin: 0 auto;
-	width: 200px;
+	width: 420px;
 	height: 200px;
 	display: flex;
     align-items: center;
@@ -165,5 +165,9 @@
 
 .create-form-dialog.disabled {
     pointer-events: none;
+}
+
+.create-form .uk-alert-danger {
+    padding: 10px;
 }
 

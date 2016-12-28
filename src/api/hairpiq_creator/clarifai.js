@@ -1,22 +1,27 @@
 require('dotenv').config();
 var config = process.env;
 var Clarifai = require("clarifai");
+var Q = require("q");
 var api = new Clarifai.App(
     config.CLARIFAI_CLIENT_ID,
     config.CLARIFAI_CLIENT_SECRET
 );
 
 module.exports = {
-    validate: function(photo_url) {
-        // check if safe for work
-        // if not
-            // return false
-        // if so
-        // check if man or woman
-        // if not
-            // return false
-        // if so
-            // return true
+   validate: function(photo_url) {
+        
+        return new Promise(function(resolve, reject) {
+            
+            Q.all([validateNSFW(photo_url), validateMaleOrFemale(photo_url)]).then(function(result) {
+               
+               var result = (result[0] && result[1]);
+
+               resolve(result);
+
+            });
+
+        });
+
     },
     predict: function(photo_url) {
 
@@ -87,6 +92,35 @@ module.exports = {
 }
 
 
+function validateNSFW(photo_url){
+     return new Promise(function(resolve, reject) {
+            api.models.predict(Clarifai.NSFW_MODEL, photo_url).then(function (response) {
+                    var results =  determineWhatNSFW(response);
+                    resolve(results);
+                },
+                function (err) {
+                    identifyClarifaiError(err);
+                    reject(new Error(err));
+                }
+            );
+        });
+}
+
+function validateMaleOrFemale(photo_url){
+     return new Promise(function(resolve, reject) {
+            api.models.predict(Clarifai.GENERAL_MODEL, photo_url).then(function (response) {
+                    var results =  determineIfMaleOrFemalePicture(response);
+                    resolve(results);
+                },
+                function (err) {
+                    identifyClarifaiError(err);
+                    reject(new Error(err));
+                }
+            );
+        });
+}
+
+
 function getTopRatedTagHandler(response) {
     var maxValue = 0;
     var maxRecord = {};
@@ -103,6 +137,33 @@ function getTopRatedTagHandler(response) {
 
     });
     return maxRecord;
+}
+
+
+function determineIfMaleOrFemalePicture(response) {
+    var status = false;
+    response.data.outputs.forEach(function (output) {
+        output.data.concepts.forEach(function (tag) {
+            if (tag.name === 'man' || tag.name === 'woman') {
+                status = true;
+                return status;
+            }
+        });
+    });
+    return status;
+}
+
+function determineWhatNSFW(response) {
+    var status = false;
+    response.data.outputs.forEach(function (output) {
+        output.data.concepts.forEach(function (tag) {
+            if (tag.name === 'sfw' &&  Math.ceil(tag.value * 100) > 95) {
+                status = true;
+                return status;
+            }
+        });
+    });
+    return status;
 }
 
 function identifyClarifaiError(err) {

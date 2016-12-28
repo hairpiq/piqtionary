@@ -122,6 +122,7 @@ class NavStepper extends Component {
 	    const {
 	    	uploadedFileCloudinaryUrl,
 	    	isUploading,
+	    	image_valid,
 	    	imageLoaded,
 	    	image,
 	    	logoColor,
@@ -144,9 +145,23 @@ class NavStepper extends Component {
 			            <StepContent>
 			            	<div>
 				            	{uploadedFileCloudinaryUrl !== '' || isUploading ? null :
-								<p>
-									In the left drop zone area, drop a selfie image or click to select a file to upload.
-								</p>}
+
+				            		<div>
+							            {image_valid === '' ?
+										<p>
+											In the left drop zone area, drop a selfie image or click to select a file to upload.
+										</p>
+										: null}
+
+										{image_valid === 'invalid' ?
+										<div className="uk-alert-danger">
+											<p>Please upload a more appropriate photo. We focus exclusively on semi-close-up photos of people that have their hairstyle on display.</p>
+											<p>In the left drop zone area, drop a selfie image or click to select a file to upload.</p>
+										</div>
+										: null}
+									</div>
+
+								}
 
 					          	{!isUploading ? null :
 								<p>

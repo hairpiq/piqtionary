@@ -80,7 +80,16 @@ module.exports = {
 		
 	},
 	hairpiqCreator: {
-		
+		validate: function(params) {
+
+			return execute('//' + config.HOSTNAME + '/api/hairpiq_creator/validate', params);
+
+		},
+		delete: function(params) {
+
+			return execute('//' + config.HOSTNAME + '/api/hairpiq_creator/delete', params);
+
+		},
 		addPreRendered: function(params) {
 			
 			return execute('//' + config.HOSTNAME + '/api/hairpiq_creator/add_prerendered', params);
