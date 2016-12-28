@@ -32,8 +32,6 @@ class Modal extends Component {
 	
 	render() {
 
-		console.log(this.props);
-
 		if (this.props.hairpiqs !== undefined) {
 
 	      const current_id = this.props.pathname.split('/')[2];
