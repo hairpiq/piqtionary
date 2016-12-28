@@ -70,6 +70,25 @@ module.exports = function(app, db) {
 		if (is_approved === 'true') {
 
 			console.log('Item is approved');
+
+			request({
+			    url: 'http://' + config.HOSTNAME + '/api/hairpiq_creator/educate', //URL to hit
+			    qs: {time: +new Date()}, //Query string data
+			    method: 'POST',
+			    headers : {
+			        "Authorization" : config.API_BASIC_AUTH
+				},
+			    //Lets post the following key/values as form
+			    json: item
+				},
+				function(error, response, body) {
+				    if(error) {
+				        console.log(error);
+				    } else {
+				    	console.log(body);
+					}
+				}
+			)
 		
 			db.collection('approved_hairpiqs').insertOne(item, function(err, result) {
 							

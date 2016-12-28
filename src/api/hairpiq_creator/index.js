@@ -300,6 +300,18 @@ module.exports = function(app) {
 
 		});
 	});
+
+	/*
+		educate the clarifai ai about photo
+	*/
+
+	app.post('/api/hairpiq_creator/educate', function(req, res) {
+		
+		educate(req.body.s3_url, req.body.stylename);
+			
+		res.send('education request made.');
+
+	});
 }
 
 function create(photo_url, stylename, ig_username, options) {
@@ -506,6 +518,12 @@ function validate(url) {
 		});
 		
 	});
+}
+
+function educate(photo_url, stylename) {
+
+	clarifai.insert(photo_url, stylename);
+
 }
 
 function submitForReview(obj) {

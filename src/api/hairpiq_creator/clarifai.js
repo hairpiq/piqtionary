@@ -34,7 +34,6 @@ module.exports = {
                     console.log('Clarifai - B: predicted...');
                     
                     result =  getTopRatedTagHandler(result);
-                    console.log(result);
 
                     resolve(result);
 
@@ -49,46 +48,29 @@ module.exports = {
         });
 
     },
-    insert: function(photo_url, stylename, ig_username) {
+    insert: function(photo_url, stylename) {
 
         console.log('Clarifai - A: insert hairpiq and stylename concept into clarifai');
-        
-        return new Promise(function(resolve, reject) {
 
-            var concept = stylename.replace(/ /g,'').toLowerCase();
+        api.inputs.create({
+            url: photo_url,
+            concepts: [{id: stylename, value: true }]
+        }).then(function(result) {
 
-            api.inputs.create({
-                url: photo_url,
-                concepts: [{id: concept, value: true }]
-            }).then(function(result) {
+            console.log('Clarifai - B: inserted. Now train model: ' + config.CLARIFAI_MODEL_ID);
+            
+            api.models.train(config.CLARIFAI_MODEL_ID).then(function(result) {
 
-                console.log('Clarifai - B: inserted. Now train model: ' + config.model_id);
-                
-                console.log(result);
+                console.log('Clarifai - C: trained.');
 
-                api.models.train(config.model_id).then(function(result) {
-
-                    console.log('Clarifai - C: trained.');
-                    
-                    resolve(response);
-
-                },function(err) {
-                    
-                    console.error(err);
-                    reject(new Error(err));
-
-                });
-
-            },
-            function(err) {
-                
-                console.error(err);
-                reject(new Error(err));
-
+            }).catch(function(error) {
+                console.log(new Error(error));
             });
-
+        }).catch(function(error) {
+            console.log(new Error(error));
         });
-    },
+
+    }
 }
 
 
