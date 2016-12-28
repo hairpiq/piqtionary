@@ -12,7 +12,7 @@ module.exports = {
         
         return new Promise(function(resolve, reject) {
             
-            Q.all([validateNSFW(photo_url), validateMaleOrFemale(photo_url)]).then(function(result) {
+            Q.all([validateNSFW(photo_url), validatePictureSubject(photo_url)]).then(function(result) {
                
                var result = (result[0] && result[1]);
 
@@ -88,10 +88,10 @@ function validateNSFW(photo_url){
         });
 }
 
-function validateMaleOrFemale(photo_url){
+function validatePictureSubject(photo_url){
      return new Promise(function(resolve, reject) {
             api.models.predict(Clarifai.GENERAL_MODEL, photo_url).then(function (response) {
-                    var results =  determineIfMaleOrFemalePicture(response);
+                    var results =  determineIfPictureSubjectQualifies(response);
                     resolve(results);
                 },
                 function (err) {
@@ -122,11 +122,11 @@ function getTopRatedTagHandler(response) {
 }
 
 
-function determineIfMaleOrFemalePicture(response) {
+function determineIfPictureSubjectQualifies(response) {
     var status = false;
     response.data.outputs.forEach(function (output) {
         output.data.concepts.forEach(function (tag) {
-            if (tag.name === 'man' || tag.name === 'woman') {
+            if (tag.name === 'man' || tag.name === 'woman' || tag.name === 'adult' || tag.name === 'portrait' || tag.name === 'headshot') {
                 status = true;
                 return status;
             }
