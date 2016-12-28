@@ -32,7 +32,8 @@ class CreateForm extends Component {
 			cloudinary: {
 				uploadedFile: null,
 				uploadedFileCloudinaryUrl: '',
-				isUploading: false
+				isUploading: false,
+				valid: ''
 			},
 			cropper: {
 				image: undefined,
@@ -117,6 +118,8 @@ class CreateForm extends Component {
 	}
 
 	handleImageUpload(file) {
+
+		const _this = this;
 		
 		let upload = request.post(CLOUDINARY_UPLOAD_URL)
 							.field('upload_preset', config.CLOUDINARY_UPLOAD_PRESET)
@@ -128,12 +131,52 @@ class CreateForm extends Component {
 			}
 
 			if (response.body.secure_url !== '') {
-				this.setState({
-					cloudinary: {
-						uploadedFileCloudinaryUrl: response.body.secure_url,
-						isUploading: false
+
+				let temp_url = response.body.secure_url;
+
+				// if image is valid
+					// set url
+				// else
+					// set state as invalid image
+
+				var params = {
+					orig_photo_url: temp_url
+				}
+
+				Services.hairpiqCreator.validate(params).then(function (result) {
+					
+					if (Boolean(result) === true) {
+
+						_this.setState({
+							cloudinary: {
+								uploadedFileCloudinaryUrl: response.body.secure_url,
+								isUploading: false,
+								valid: 'valid'
+							}
+						});
+
+					} else {
+
+						const pieces = temp_url.split('/');
+						params = {
+							cloudinary_id: pieces[ pieces.length - 1].split('.')[0]
+						}
+
+						Services.hairpiqCreator.delete(params).then(function (result) {
+
+							_this.setState({
+								cloudinary: {
+									uploadedFileCloudinaryUrl: '',
+									valid: 'invalid',
+									isUploading: false
+								}
+							});
+
+						});
+
 					}
-				})
+
+				});
 			}
 		});
 	}
@@ -184,7 +227,8 @@ class CreateForm extends Component {
 			cloudinary: {
 				uploadedFile: null,
 				uploadedFileCloudinaryUrl: '',
-				isUploading: false
+				isUploading: false,
+				valid: ''
 			},
 			cropper: {
 				image: undefined,
@@ -443,6 +487,12 @@ class CreateForm extends Component {
 				
 					
 				<div className="left-col">
+
+					{/*
+						// if cropper image is set
+							// show cropped image
+					*/}
+						
 					
 					{this.state.cropper.image !== undefined ?
 					
@@ -452,35 +502,70 @@ class CreateForm extends Component {
 							{!this.state.isPrerenderedToggled ? plate : null}
 							<img className="cropped-image" src={this.state.cropper.image} alt=""/>
 						</Paper>
-					</div> :
+					</div>
 					
+					:
+
 					<div className="photo">
-						{this.state.cloudinary.uploadedFileCloudinaryUrl !== '' || this.state.cloudinary.isUploading ? null :
-						<Dropzone
-							className="dropzone"
-							multiple={false}
-							accept="image/*"
-							onDrop={this.onImageDrop}>
-							<p>Drop a selfie image or click to select a file to upload.</p>
-						</Dropzone>}
-						
-						{!this.state.cloudinary.isUploading ? null :
-						<div className="loader">
-					       <CircularProgress color={grey400} size={80} thickness={5} />
-					    </div>}
-						
-						{this.state.cloudinary.uploadedFileCloudinaryUrl === '' ? null :
+
+						{/*
+							// if cloudinary image is NOT valid
+
+						*/}
+
+
+						{this.state.cloudinary.valid !== 'valid' ?
+
 						<div>
-				          <Paper className="cropper" zDepth={2}>
-				          	<Cropper
-				          		src={this.state.cloudinary.uploadedFileCloudinaryUrl}
-				          		ref="cropper"
-				          		rate={4 / 5}
-				          		width={500}
-				          		imageLoaded={() => this.onImageLoaded('image')}
-				          		/>
-				          </Paper>
-				        </div>}
+						
+							{/*
+								// if cloudinary url is NOT set OR if image is NOT uploading
+									// display dropzone area
+							*/}
+
+							{this.state.cloudinary.uploadedFileCloudinaryUrl !== '' || this.state.cloudinary.isUploading ? null :
+							<Dropzone
+								className="dropzone"
+								multiple={false}
+								accept="image/*"
+								onDrop={this.onImageDrop}>
+									<p>Drop a selfie image or click to select a file to upload.</p>
+							</Dropzone>}
+
+							{/*
+								// if image is uploading
+									// display loading graphic
+							*/}
+							
+							{!this.state.cloudinary.isUploading ? null :
+							<div className="loader">
+						       <CircularProgress color={grey400} size={80} thickness={5} />
+						    </div>}
+
+					    </div>
+					    
+					    :
+
+						<div>
+							
+							{/*
+								// display cropper tool
+							*/}
+
+							<Paper className="cropper" zDepth={2}>
+								<Cropper
+									src={this.state.cloudinary.uploadedFileCloudinaryUrl}
+									ref="cropper"
+									rate={4 / 5}
+									width={500}
+									imageLoaded={() => this.onImageLoaded('image')}
+									/>
+							</Paper>
+
+				        </div>
+					    
+					    }
+
 				    </div>
 			    	}
 				</div>
@@ -491,7 +576,8 @@ class CreateForm extends Component {
 						
 						uploadedFileCloudinaryUrl={this.state.cloudinary.uploadedFileCloudinaryUrl}
 						isUploading={this.state.cloudinary.isUploading}
-						
+						image_valid={this.state.cloudinary.valid}
+
 						imageLoaded={this.state.cropper.imageLoaded}
 						image={this.state.cropper.image}
 						cropImage={() => this.cropImage('image')}

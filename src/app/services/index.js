@@ -33,7 +33,17 @@ module.exports = {
 
 	},
 	hairpiqCreator: {
-		
+
+		validate: function(params) {
+
+			return execute('//' + config.HOSTNAME + '/api/hairpiq_creator/validate', params);
+
+		},
+		delete: function(params) {
+
+			return execute('//' + config.HOSTNAME + '/api/hairpiq_creator/delete', params);
+
+		},
 		render: function(params) {
 
 			return execute('//' + config.HOSTNAME + '/api/hairpiq_creator/render', params);
