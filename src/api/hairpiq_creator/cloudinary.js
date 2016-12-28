@@ -58,10 +58,6 @@ module.exports = {
 	},
 	update: function(public_id, stylename, ig_username, options = null) {
 
-		console.log('EE');
-		console.log(options);
-		console.log('EE--');
-
 		var _options = {
 				logo: {
 					color: "white",
@@ -129,7 +125,7 @@ function addTransformations(obj) {
 		});
 		
 		let crop_data = obj.options.crop_data;
-		crop_data.crop = 'crop';
+		crop_data.crop = 'fill';
 		transformations.push(crop_data);
 
 		transformations.push({
