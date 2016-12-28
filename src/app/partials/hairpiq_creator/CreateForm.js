@@ -164,6 +164,8 @@ class CreateForm extends Component {
 
 						Services.hairpiqCreator.delete(params).then(function (result) {
 
+							$('.modal-inner, .create-form').removeClass('disabled');
+
 							_this.setState({
 								cloudinary: {
 									uploadedFileCloudinaryUrl: '',
