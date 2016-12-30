@@ -532,7 +532,7 @@ class CreateForm extends Component {
 								multiple={false}
 								accept="image/*"
 								onDrop={this.onImageDrop}>
-									<p>Drop a selfie image or click to select a file to upload.</p>
+									<p>Drop a selfie or headshot image or click to select a file to upload.</p>
 							</Dropzone>}
 
 							{/*
@@ -561,6 +561,13 @@ class CreateForm extends Component {
 									ref="cropper"
 									rate={4 / 5}
 									width={500}
+									allowNewSelection={false}
+									styles={{
+	                                	modal: {
+	                                     opacity: 0.70,
+	                                     backgroundColor: '#000'
+	                                	}
+	                            	}}
 									imageLoaded={() => this.onImageLoaded('image')}
 									/>
 							</Paper>

@@ -64,31 +64,13 @@ module.exports = function(app, db) {
 			s3_url: req.body.s3_url,
 			stylename: req.body.stylename,
 			ig_username: req.body.ig_username,
-			publish_status: "unpublished"
+			publish_status: "unpublished",
+			trained_status: "untrained"
 		}
 
 		if (is_approved === 'true') {
 
 			console.log('Item is approved');
-
-			request({
-			    url: 'http://' + config.HOSTNAME + '/api/hairpiq_creator/educate', //URL to hit
-			    qs: {time: +new Date()}, //Query string data
-			    method: 'POST',
-			    headers : {
-			        "Authorization" : config.API_BASIC_AUTH
-				},
-			    //Lets post the following key/values as form
-			    json: item
-				},
-				function(error, response, body) {
-				    if(error) {
-				        console.log(error);
-				    } else {
-				    	console.log(body);
-					}
-				}
-			)
 		
 			db.collection('approved_hairpiqs').insertOne(item, function(err, result) {
 							
@@ -657,6 +639,83 @@ module.exports = function(app, db) {
 			
 			});
 		}
+
+	});
+
+	/*
+		train hairpiq.com
+	*/
+
+	app.post('/api/piqtionary/untrained', function(req, res, next) {
+
+		console.log('B - called: /api/piqtionary/untrained');
+
+		// find a collection of untrained hairpiqs
+		// limit - the amount of docs to return
+		// page_num - the index of the set of docs to return
+
+		var resultArray = [];
+		var query = {'trained_status': 'untrained'};
+
+		if (req.body.limit !== undefined && req.body.limit.length > 0) {
+			var limit = Number(req.body.limit);
+
+			var cursor = db.collection('approved_hairpiqs').find().sort({ _id : -1}).limit(limit);
+
+			cursor.forEach(function(doc, err) {
+					
+				console.log('C.A - Retrieved document in pending_hairpiqs: ' + doc._id);
+				assert.equal(null, err);
+				resultArray.push(doc);
+
+			}, function() {
+								
+				res.setHeader('Content-Type', 'application/json');
+				res.send(JSON.stringify(resultArray));
+
+			});
+
+		} else {
+			console.log('C.B - No limit supplied.');
+			res.send('No limit supplied.');
+		}
+
+
+	});
+
+	/*
+		train hairpiq.com
+	*/
+
+	app.post('/api/piqtionary/trained_status', function(req, res, next) {
+
+		console.log('B - called: /api/piqtionary/trained_status');
+
+		// set hairpiq status 
+			// find hairpiq in approved_hairpiqs collection
+			// set status "unpublished|published"
+
+			// data needed
+			// - _id
+			// - publish_status
+
+		var id = {
+			_id: ObjectID(req.body._id)
+		};
+
+		var item = {
+			trained_status: req.body.trained_status
+		};
+				
+		db.collection('approved_hairpiqs').update(id, { $set: item }, function(err, result) {
+					
+			assert.equal(null, err);
+			console.log('C - Updated document in approved_hairpiqs: ' + id._id);
+
+			res.send(JSON.stringify('success'));
+		
+		});
+
 
 	});
 

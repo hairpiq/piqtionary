@@ -1,6 +1,8 @@
 require('dotenv').config();
 var config = process.env;
 var Clarifai = require("clarifai");
+
+require('es6-promise').polyfill();
 var Q = require("q");
 var api = new Clarifai.App(
     config.CLARIFAI_CLIENT_ID,
@@ -48,26 +50,32 @@ module.exports = {
         });
 
     },
-    insert: function(photo_url, stylename) {
+    insert: function(base64, stylename) {
 
         console.log('Clarifai - A: insert hairpiq and stylename concept into clarifai');
 
-        api.inputs.create({
-            url: photo_url,
-            concepts: [{id: stylename, value: true }]
-        }).then(function(result) {
-
-            console.log('Clarifai - B: inserted. Now train model: ' + config.CLARIFAI_MODEL_ID);
+        return new Promise(function(resolve, reject) {
             
-            api.models.train(config.CLARIFAI_MODEL_ID).then(function(result) {
+            api.inputs.create({
+                base64: base64,
+                concepts: [{id: stylename, value: true }]
+            }).then(function(result) {
 
-                console.log('Clarifai - C: trained.');
+                console.log('Clarifai - B: inserted. Now train model: ' + config.CLARIFAI_MODEL_ID);
+                
+                api.models.train(config.CLARIFAI_MODEL_ID).then(function(result) {
 
+                    console.log('Clarifai - C: trained.');
+
+                    resolve(result);
+
+                }).catch(function(error) {
+                    console.log(error.status, error.statusText);
+                });
             }).catch(function(error) {
-                console.log(new Error(error));
+                console.log(error.status, error.statusText);
             });
-        }).catch(function(error) {
-            console.log(new Error(error));
+
         });
 
     }

@@ -12,6 +12,11 @@ class ResultItem extends Component {
 
     this.linkTo = this.linkTo.bind(this);
   }
+
+  proxyUrl = (s3_url) => {
+
+    return '/h/' + s3_url.split('.com/')[1];
+  }
   
   linkTo(id) {
     browserHistory.push({

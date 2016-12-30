@@ -8,6 +8,11 @@ import request from 'superagent';
 import CircularProgress from 'material-ui/CircularProgress';
 import {grey400} from 'material-ui/styles/colors';
 
+import {Tabs, Tab} from 'material-ui/Tabs';
+import {GridList, GridTile} from 'material-ui/GridList';
+import IconButton from 'material-ui/IconButton';
+import ImageRemoveRedEye from 'material-ui/svg-icons/image/remove-red-eye';
+
 import {Cropper} from 'react-image-cropper';
 
 import NavStepper from './NavStepper';
@@ -16,14 +21,14 @@ import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import Snackbar from 'material-ui/Snackbar';
 
-import Services from '../../../services/admin/'
+import Services from '../../../services/admin/';
 
 const config = process.env;
 const CLOUDINARY_UPLOAD_URL = 'https://api.cloudinary.com/v1_1/' + config.CLOUDINARY_CLOUD_NAME + '/image/upload';
 
 var RetinaImage = require('react-retina-image');
 
-class CreateForm extends Component {
+class TrainForm extends Component {
 
 	constructor() {
 		super();
@@ -61,7 +66,14 @@ class CreateForm extends Component {
 	        finished: false,
 	        snackbar: {
 				open: false
-			}
+			},
+			hairpiqs: [],
+			imageSelected: false,
+			tabs: {
+				tab_value: 'grid'
+			},
+			selectedImageUrl: '',
+			selected_image_id: ''
 		}
 
 		// Cropper methods
@@ -96,6 +108,19 @@ class CreateForm extends Component {
 			is_stylename_valid: false,
 			is_ig_username_valid: false
 		});
+
+		var params = {};
+
+		var _this = this;
+
+		Services.getUntrained(params).then(function(result) {
+
+			_this.setState({
+				
+				hairpiqs: result
+
+			});
+		});
 	}
 
 	componentWillUnmount() {
@@ -104,9 +129,39 @@ class CreateForm extends Component {
 
 	}
 
+	handleTabChange = (value) => {
+		
+		this.setState({
+			
+			tabs: {
+				tab_value: value,
+			}
+
+		});
+
+	};
+
+	setGridImageForCrop = (item) => {
+
+		const proxy_url = '/h/' + item.s3_url.split('.com/')[1];
+
+		this.setState({
+			
+			imageSelected: true,
+			stylename: item.stylename,
+			is_stylename_valid: true,
+			selectedImageUrl: proxy_url,
+			selectedImageIsUploading: true,
+			selected_image_id: item._id
+
+		});
+
+	}
+
+
 	onImageDrop(files) {
 
-		$('.modal-inner, .create-form').addClass('disabled');
+		$('.modal-inner, .train-form').addClass('disabled');
 		
 		this.setState({
 			cloudinary: {
@@ -187,12 +242,14 @@ class CreateForm extends Component {
 
 		console.log(this.refs.cropper['refs']);
 
-		$('.modal-inner, .create-form').removeClass('disabled');
+		$('.modal-inner, .train-form').removeClass('disabled');
+		$('.cropper').removeClass('unloaded');
 
 		this.setState({
 			cropper: {
-				[state + 'Loaded']: true
-			}
+				[state + 'Loaded']: true,
+			},
+			selectedImageIsUploading: false
 		});
 
 	}
@@ -218,7 +275,7 @@ class CreateForm extends Component {
 			cropper: {
 				image: undefined,
 				values: {}
-			}
+			},
 		});
 
 	}
@@ -239,7 +296,10 @@ class CreateForm extends Component {
 				imageLoaded: false,
 				values: {}
 			},
-			isPrerenderedToggled: false
+			isPrerenderedToggled: false,
+			selectedImageUrl: '',
+			imageSelected: false,
+			selected_image_id: ''
 		});
 	}
 
@@ -378,28 +438,27 @@ class CreateForm extends Component {
 
 	handleSubmit() {
 
-		let params = {
-			orig_photo_url: this.state.cloudinary.uploadedFileCloudinaryUrl,
-			stylename: this.state.stylename,
-			ig_username: this.state.ig_username,
-		}
+		let base64 = this.state.cropper.image.replace(/^data:image\/(.*);base64,/, '');
 
-		if (!this.state.isPrerenderedToggled)
-			params.options = JSON.stringify({
-				crop_data: this.state.cropper.values,
-				logo: this.state.logo,
-				plate: this.state.plate
-			});
+		let params = {
+			base64: base64,
+			stylename: this.state.stylename,
+			id: this.state.selected_image_id
+		}
 
 		const _this = this;
 
-		$('.create-form-dialog').addClass('disabled');
+		console.log('A---');
 
-		const method = (!this.state.isPrerenderedToggled ? 'render' : 'addPreRendered');
+		$('.train-form-dialog').addClass('disabled');
 
-		Services.hairpiqCreator[method](params).then(function(result) {
+		console.log('B---');
 
-			$('.create-form-dialog').removeClass('disabled');
+		Services.hairpiqCreator.train(params).then(function(result) {
+
+			console.log('EEEEE');
+
+			$('.train-form-dialog').removeClass('disabled');
 
 			_this.setFinished(true);
 			_this.setState({
@@ -469,6 +528,19 @@ class CreateForm extends Component {
 	    	</div>
 	    );
 
+	    const gridStyles = {
+		  root: {
+		    display: 'flex',
+		    flexWrap: 'wrap',
+		    justifyContent: 'space-around',
+		  },
+		  gridList: {
+		    width: 'auto',
+		    height: 600,
+		    overflowY: 'auto',
+		  },
+		};
+
 	    const actions = [
 	      <FlatButton
 	        label="Cancel"
@@ -483,11 +555,12 @@ class CreateForm extends Component {
 	      />,
 	    ];
 
+	    const tilesData = [];
+
 		return (
 
-			<div className="create-form">
-				
-					
+			<div className="train-form">
+
 				<div className="left-col">
 
 					{/*
@@ -498,91 +571,191 @@ class CreateForm extends Component {
 					
 					{this.state.cropper.image !== undefined ?
 					
-					<div className="photo">
+					<div className="photo cropped-image">
 						<Paper zDepth={2}>
-							{!this.state.isPrerenderedToggled ? logo : null}
-							{!this.state.isPrerenderedToggled ? plate : null}
-							<img className="cropped-image" src={this.state.cropper.image} alt=""/>
+							<img src={this.state.cropper.image} alt=""/>
 						</Paper>
 					</div>
 					
 					:
 
-					<div className="photo">
+					<Tabs
+						className="train-tabs"
+				        value={this.state.tabs.tab_value}
+				        onChange={this.handleTabChange}>
+						<Tab label="Select from Hairpiq" value="grid" >
+						    
+						    <div className="photo">
 
-						{/*
-							// if cloudinary image is NOT valid
+						    	{/*
+									// if grid_image is NOT selected
 
-						*/}
+								*/}
 
+								{this.state.selectedImageUrl === '' ?
 
-						{this.state.cloudinary.valid !== 'valid' ?
+									<GridList
+								      cellHeight={180}
+								      style={gridStyles.gridList}>
+								      
+								      {this.state.hairpiqs.map((item) => (
+								        <GridTile
+								          key={item._id}
+								          title={item.stylename}
+								          actionIcon={<IconButton onTouchTap={() => this.setGridImageForCrop(item)}><ImageRemoveRedEye color="white" /></IconButton>}
+								          >
+								          <img src={item.s3_url} />
+								        </GridTile>
+								      ))}
+								    </GridList>
 
-						<div>
-						
-							{/*
-								// if cloudinary url is NOT set OR if image is NOT uploading
-									// display dropzone area
-							*/}
+							    :
 
-							{this.state.cloudinary.uploadedFileCloudinaryUrl !== '' || this.state.cloudinary.isUploading ? null :
-							<Dropzone
-								className="dropzone"
-								multiple={false}
-								accept="image/*"
-								onDrop={this.onImageDrop}>
-									<p>Drop a selfie or headshot image or click to select a file to upload.</p>
-							</Dropzone>}
+							    <div>
 
-							{/*
-								// if image is uploading
-									// display loading graphic
-							*/}
-							
-							{!this.state.cloudinary.isUploading ? null :
-							<div className="loader">
-						       <CircularProgress color={grey400} size={80} thickness={5} />
-						    </div>}
+							    	{/*
+										// if image is uploading
+											// display loading graphic
+									*/}
 
-					    </div>
-					    
-					    :
+						    		{!this.state.selectedImageIsUploading ? null : 
+									
+									<div className="loader">
+								       <CircularProgress color={grey400} size={80} thickness={5} />
+								    </div>}
 
-						<div>
-							
-							{/*
-								// display cropper tool
-							*/}
+									{/*
+										// display grid cropper tool
+									*/}
 
-							<Paper className="cropper" zDepth={2}>
-								<Cropper
-									src={this.state.cloudinary.uploadedFileCloudinaryUrl}
-									ref="cropper"
-									rate={4 / 5}
-									width={500}
-									allowNewSelection={false}
-									styles={{
-	                                	modal: {
-	                                     opacity: 0.70,
-	                                     backgroundColor: '#000'
-	                                	}
-	                            	}}
-									imageLoaded={() => this.onImageLoaded('image')}
-									/>
-							</Paper>
+									<Paper className="cropper unloaded" zDepth={2}>
 
-				        </div>
-					    
-					    }
+										<Cropper
+											src={this.state.selectedImageUrl}
+											ref="cropper"
+											width={500}
+											fixedRatio={false}
+											allowNewSelection={false}
+											styles={{
+				                                 modal: {
+				                                     opacity: 0.70,
+				                                     backgroundColor: '#000'
+				                                 },
+				                                 dotInner: {
+				                                     borderColor: '#ff0000'
+				                                 },
+				                                 dotInnerCenterVertical: {
+				                                     backgroundColor: '#ff0000'
+				                                 },
+				                                 dotInnerCenterHorizontal: {
+				                                     backgroundColor: '#ff0000'
+				                                 }
+				                             }}
+											imageLoaded={() => this.onImageLoaded('image')}
+											/>
+									</Paper>
 
-				    </div>
+						        </div>
+
+						    	}
+
+						    </div>
+
+						</Tab>
+						<Tab label="Upload Image" value="dropzone">
+						 	<div>
+							    
+							    <div className="photo">
+
+									{/*
+										// if cloudinary image is NOT valid
+
+									*/}
+
+									{this.state.cloudinary.valid !== 'valid' ?
+
+									<div>
+									
+										{/*
+											// if cloudinary url is NOT set OR if image is NOT uploading
+												// display dropzone area
+										*/}
+
+										{this.state.cloudinary.uploadedFileCloudinaryUrl !== '' || this.state.cloudinary.isUploading ? null :
+										<Dropzone
+											className="dropzone"
+											multiple={false}
+											accept="image/*"
+											onDrop={this.onImageDrop}>
+												<p>Drop a selfie or headshot image or click to select a file to upload.</p>
+										</Dropzone>}
+
+										{/*
+											// if image is uploading
+												// display loading graphic
+										*/}
+										
+										{!this.state.cloudinary.isUploading ? null :
+										<div className="loader">
+									       <CircularProgress color={grey400} size={80} thickness={5} />
+									    </div>}
+
+								    </div>
+								    
+								    :
+
+									<div>
+										
+										{/*
+											// display dropzone cropper tool
+										*/}
+
+										<Paper className="cropper" zDepth={2}>
+											<Cropper
+												src={this.state.cloudinary.uploadedFileCloudinaryUrl}
+												ref="cropper"
+												width={500}
+												fixedRatio={false}
+												allowNewSelection={false}
+												styles={{
+					                                 modal: {
+					                                     opacity: 0.70,
+					                                     backgroundColor: '#000'
+					                                 },
+					                                 dotInner: {
+					                                     borderColor: '#ff0000'
+					                                 },
+					                                 dotInnerCenterVertical: {
+					                                     backgroundColor: '#ff0000'
+					                                 },
+					                                 dotInnerCenterHorizontal: {
+					                                     backgroundColor: '#ff0000'
+					                                 }
+					                             }}
+												imageLoaded={() => this.onImageLoaded('image')}
+												/>
+										</Paper>
+
+							        </div>
+							    
+							    	}
+
+					    		</div>
+
+						  	</div>
+						</Tab>
+					</Tabs>
+
 			    	}
+
 				</div>
 				
 				<div className="right-col">
 
 					<NavStepper
 						
+						tab_value={this.state.tabs.tab_value}
+						imageSelected={this.state.imageSelected}
 						uploadedFileCloudinaryUrl={this.state.cloudinary.uploadedFileCloudinaryUrl}
 						isUploading={this.state.cloudinary.isUploading}
 						image_valid={this.state.cloudinary.valid}
@@ -613,7 +786,7 @@ class CreateForm extends Component {
 						handleIGUsernameChange={this.handleIGUsernameChange}
 						ig_usernameErrorText={this.state.ig_usernameErrorText}
 						
-						isValid={(this.state.is_stylename_valid && this.state.is_ig_username_valid)}
+						isValid={(this.state.is_stylename_valid)}
 						clearInfo={this.clearInfo}
 						handleDialog={() => this.handleDialog()}
 						finished={this.state.finished}
@@ -623,14 +796,14 @@ class CreateForm extends Component {
 				</div>
 
 				<Dialog
-		            title='ADD TO PENDING REQUESTS'
+		            title='IMPROVE HAIRPIQ® VISION'
 		            actions={actions}
 		            modal={false}
 		            open={this.state.dialog.open}
 		            onRequestClose={this.handleClose}
-		            actionsContainerClassName="create-form-dialog"
+		            actionsContainerClassName="train-form-dialog"
 		            overlayClassName="admin dialog-overlay">
-		            <p>Do you want to submit this hairpiq to the "Pending Requests" Section for team review?</p>
+		            <p>Do you want to submit this cropped hairstyle and stylename to Vision?</p>
 		        </Dialog>
 
 		        <Snackbar
@@ -647,4 +820,4 @@ class CreateForm extends Component {
 
 }
 
-export default CreateForm;
+export default TrainForm;
