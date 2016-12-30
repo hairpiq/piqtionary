@@ -12,6 +12,11 @@ class ResultItem extends Component {
 
     this.linkTo = this.linkTo.bind(this);
   }
+
+  proxyUrl = (s3_url) => {
+
+    return '/h/' + s3_url.split('.com/')[1];
+  }
   
   linkTo(id) {
     browserHistory.push({
@@ -31,7 +36,7 @@ class ResultItem extends Component {
             onTouchTap={() => this.linkTo(listItem._id)}
             >
             <LazyLoad height={200} offset={100} once>
-              <img src={listItem.s3_url} />
+              <img src={this.proxyUrl(listItem.s3_url)} />
             </LazyLoad>
           </a>
         </div>

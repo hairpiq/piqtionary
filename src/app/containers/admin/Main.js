@@ -13,6 +13,7 @@ import ActionLaunch from 'material-ui/svg-icons/action/launch';
 import NavigationMenu from 'material-ui/svg-icons/navigation/menu';
 
 import {browserHistory} from 'react-router';
+import NavSlider from '../../partials/admin/NavSlider';
 import NavTabs from '../../partials/admin/NavTabs';
 
 import Modal from '../../partials/admin/Modal';
@@ -63,7 +64,8 @@ class Main extends Component {
     }
     
     this.state = {
-      initialSelectedIndex: initialSelectedIndex
+      initialSelectedIndex: initialSelectedIndex,
+      open: false
     };
 
     this.linkTo = this.linkTo.bind(this);
@@ -102,6 +104,10 @@ class Main extends Component {
     }
   }
 
+  handleToggle = () => this.setState({open: !this.state.open});
+
+  handleClose = () => this.setState({open: false});
+
   render() {
 
     let { location } = this.props
@@ -114,7 +120,7 @@ class Main extends Component {
 
     const logo = (
       <a
-        onTouchTap={() => this.linkTo('/admin/')}>
+        onTouchTap={() => this.linkTo('/admin')}>
         <RetinaImage className="logo" src={["/assets/images/hairpiq-site-logo.png", "/assets/images/2x/hairpiq-site-logo.png"]} />
       </a>
     );
@@ -123,11 +129,11 @@ class Main extends Component {
       <div>
         {/*
         <IconButton iconStyle={styles.appBarIconButton} tooltip="Photos"><ImagePhotoLibrary /></IconButton>
-        <IconButton iconStyle={styles.appBarIconButton} tooltip="Videos"><AVVideoLibrary /></IconButton>
         */}
         <IconButton
           onTouchTap={() => this.openLiveSite()}
-          iconStyle={styles.appBarIconButton} tooltip="Live Site"><ActionLaunch /></IconButton>
+          iconStyle={styles.appBarIconButton}
+          tooltip="Live Site"><ActionLaunch /></IconButton>
       </div>
     )
 
@@ -140,14 +146,15 @@ class Main extends Component {
               <AppBar
                 className="app_bar"
                 title={logo}
-                showMenuIconButton={false}
                 iconElementRight={standard_actions}
+                onLeftIconButtonTouchTap={this.handleToggle}
               />
 
+              {this.props.location.pathname !== '/admin/vision' ?
               <NavTabs
                 initialSelectedIndex={this.state.initialSelectedIndex}
                 onActive={this.linkTo}
-              />
+              /> : null }
 
               <div className="main-container">
 
@@ -166,6 +173,12 @@ class Main extends Component {
 
               {this.props.location.pathname !== '/admin/create' ?
               <CreateButton location={this.props.location} /> : null }
+
+              <NavSlider
+                open={this.state.open}
+                onRequestChange={(open) => this.setState({open})}
+                handleClose={() => this.handleClose()}
+              />
 
             </div>
 

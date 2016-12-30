@@ -17,6 +17,11 @@ class ShareMenu extends Component {
 	    });
 
 	}
+
+	proxyUrl = (s3_url) => {
+
+		return '/h/' + s3_url.split('.com/')[1];
+	}
 	
 	render() {
 
@@ -29,7 +34,7 @@ class ShareMenu extends Component {
 		return (
 
 			<div className="share-menu margin-top-10">
-				<a href={params.s3_url} target="_blank" download>
+				<a href={this.proxyUrl(params.s3_url)} target="_blank" download>
 					<FlatButton
 						className="button download"
 						backgroundColor={orange700}

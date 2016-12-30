@@ -54,6 +54,14 @@ body {
 	z-index: 1;
 }
 
+.progress-bar {
+	visibility: hidden;
+}
+
+.progress-bar.show {
+	visibility: visible;
+}
+
 @media (min-width: 768px) {
 
 	.create-button {

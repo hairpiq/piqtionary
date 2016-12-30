@@ -12,7 +12,7 @@ class Published extends Component {
       <div>
 
         <Helmet
-          title="Admin Area: Published Photos"
+          title="Admin: Published"
           titleTemplate="%s - Hairpiq"
           defaultTitle="Hairpiq"
         />

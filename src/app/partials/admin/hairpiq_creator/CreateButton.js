@@ -3,7 +3,7 @@ import { render } from 'react-dom';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import ImageAddAPhoto from 'material-ui/svg-icons/image/add-a-photo';
-import {orange700} from 'material-ui/styles/colors';
+import {grey900} from 'material-ui/styles/colors';
 import {browserHistory} from 'react-router';
 
 class CreateButton extends Component {
@@ -25,7 +25,7 @@ class CreateButton extends Component {
 			
 					<FloatingActionButton
 						onTouchTap={this.linkTo.bind(this)}
-						backgroundColor={orange700}
+						backgroundColor={grey900}
 						className="create-button"
 						zDepth={5}>
 			          <ImageAddAPhoto />

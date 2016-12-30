@@ -12,7 +12,7 @@ class Pending extends Component {
       <div>
 
         <Helmet
-          title="Admin Area: Pending Requests"
+          title="Admin: Pending Requests"
           titleTemplate="%s - Hairpiq"
           defaultTitle="Hairpiq"
         />

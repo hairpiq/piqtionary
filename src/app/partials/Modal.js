@@ -40,8 +40,6 @@ class Modal extends Component {
 	      var before_id = '';
 	      var next_id = '';
 
-	      console.log("A");
-
 	      for (var i = 0; i < this.props.hairpiqs.length; i++) {
 	        if (current_id  === this.props.hairpiqs[i]._id) {
 
@@ -56,8 +54,6 @@ class Modal extends Component {
 	          break;
 	        }
 	      }
-	      console.log(current_hairpiq);
-	       console.log("B");
 	    }
 
 	    const _this = this;

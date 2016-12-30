@@ -23,7 +23,8 @@ const config = {
         'API_BASIC_AUTH': JSON.stringify(process.env.API_BASIC_AUTH),
         'CLOUDINARY_CLOUD_NAME': JSON.stringify(process.env.CLOUDINARY_CLOUD_NAME),
         'CLOUDINARY_UPLOAD_PRESET': JSON.stringify(process.env.CLOUDINARY_UPLOAD_PRESET),
-        'CLARIFAI_MODEL_ID': JSON.stringify(process.env.CLARIFAI_MODEL_ID)
+        'CLARIFAI_MODEL_ID': JSON.stringify(process.env.CLARIFAI_MODEL_ID),
+        'S3_BUCKET_NAME': JSON.stringify(process.env.S3_BUCKET_NAME),
       }
     }),
     // Minify the bundle

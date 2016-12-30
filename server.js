@@ -1,11 +1,12 @@
 require('dotenv').config();
+const config = process.env;
 
 // connect to db
 
 var mongo = require('mongodb');
 var assert = require('assert');
 
-mongo.connect(process.env.DB_URL, function(err, db) {
+mongo.connect(config.DB_URL, function(err, db) {
 		
 	assert.equal(null, err);
 
@@ -20,13 +21,18 @@ mongo.connect(process.env.DB_URL, function(err, db) {
 	const express = require('express');
 	const app = express();
 
-	// allow nodejs to access get and post variables
+	// allow nodejs to access get and post variables of various sizes
 	var bodyParser = require('body-parser');
-	app.use(bodyParser.urlencoded({extended: false}));
-	app.use(bodyParser.json());
+	app.use(bodyParser.json({limit: '50mb'}));
+	app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
+
 
 	// create static folder to serve static assets
 	app.use(express.static('public'));
+	
+	// proxy for s3 hairpiq files
+	var proxy = require('./customized_node_modules/express-http-proxy');
+	app.use('/h', proxy(config.S3_BUCKET_NAME + '.s3.amazonaws.com/'));
 
 	// require routes for REACT routing
 	app.use(require('./src/app/routes/index.js'));
