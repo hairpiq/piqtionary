@@ -20,7 +20,8 @@ class DetailCard extends Component {
 
 	proxyUrl = (s3_url) => {
 
-		return '/h/' + s3_url.split('.com/')[1];
+		if (s3_url)
+			return '/h/' + s3_url.split('.com/')[1];
 	
 	}
 
@@ -33,6 +34,8 @@ class DetailCard extends Component {
 	render() {
 
 		const params = this.props.data;
+
+		console.log(params);
 		
 		return (
 

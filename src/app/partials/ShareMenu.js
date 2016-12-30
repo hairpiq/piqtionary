@@ -20,7 +20,8 @@ class ShareMenu extends Component {
 
 	proxyUrl = (s3_url) => {
 
-		return '/h/' + s3_url.split('.com/')[1];
+		if (s3_url)
+			return '/h/' + s3_url.split('.com/')[1];
 	}
 	
 	render() {
