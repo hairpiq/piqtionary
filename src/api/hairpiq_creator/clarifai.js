@@ -145,6 +145,7 @@ function determineIfPictureSubjectQualifies(response) {
 
 function determineWhatNSFW(response) {
     var status = false;
+
     response.data.outputs.forEach(function (output) {
         output.data.concepts.forEach(function (tag) {
             if (tag.name === 'sfw' &&  Math.ceil(tag.value * 100) > 95) {

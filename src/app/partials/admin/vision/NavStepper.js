@@ -238,7 +238,7 @@ class NavStepper extends Component {
 		              }}
 		            >
 		              Click here
-		            </a> to create a new hairpiq.
+		            </a> to improve Vision some more.
 		          </p>
 		        )}
 		      	</div>

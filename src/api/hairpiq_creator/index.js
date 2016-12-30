@@ -300,8 +300,7 @@ module.exports = function(app) {
 
 		train(req.body.base64, req.body.stylename, id).then(function(result) {
 
-			//res.send(result);
-			res.send(result);
+			res.send(JSON.stringify(result));
 
 		});
 

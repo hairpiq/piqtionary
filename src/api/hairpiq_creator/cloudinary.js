@@ -125,7 +125,7 @@ function addTransformations(obj) {
 		});
 		
 		let crop_data = obj.options.crop_data;
-		crop_data.crop = 'fill';
+		crop_data.crop = 'crop';
 		transformations.push(crop_data);
 
 		transformations.push({

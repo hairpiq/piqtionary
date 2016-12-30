@@ -36,7 +36,7 @@ class ResultItem extends Component {
             onTouchTap={() => this.linkTo(listItem._id)}
             >
             <LazyLoad height={200} offset={100} once>
-              <img src={listItem.s3_url} />
+              <img src={this.proxyUrl(listItem.s3_url)} />
             </LazyLoad>
           </a>
         </div>

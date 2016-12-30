@@ -660,7 +660,7 @@ module.exports = function(app, db) {
 		if (req.body.limit !== undefined && req.body.limit.length > 0) {
 			var limit = Number(req.body.limit);
 
-			var cursor = db.collection('approved_hairpiqs').find().sort({ _id : -1}).limit(limit);
+			var cursor = db.collection('approved_hairpiqs').find(query).sort({ _id : -1}).limit(limit);
 
 			cursor.forEach(function(doc, err) {
 					
@@ -706,7 +706,7 @@ module.exports = function(app, db) {
 		var item = {
 			trained_status: req.body.trained_status
 		};
-				
+		
 		db.collection('approved_hairpiqs').update(id, { $set: item }, function(err, result) {
 					
 			assert.equal(null, err);

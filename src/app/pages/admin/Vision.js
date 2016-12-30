@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
 import Helmet from 'react-helmet';
-import VisionForm from '../../partials/admin/train/VisionForm';
+import VisionForm from '../../partials/admin/vision/VisionForm';
 
 class Train extends Component {
 

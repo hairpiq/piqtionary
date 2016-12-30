@@ -299,7 +299,7 @@ class NavStepper extends Component {
 		              }}
 		            >
 		              Click here
-		            </a> to start over.
+		            </a> to create a new hairpiq.
 		          </p>
 		        )}
 		      	</div>

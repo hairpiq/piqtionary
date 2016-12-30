@@ -18,6 +18,12 @@ class DetailCard extends Component {
 		this.linkTo = this.linkTo.bind(this);
 	}
 
+	proxyUrl = (s3_url) => {
+
+		return '/h/' + s3_url.split('.com/')[1];
+	
+	}
+
 	linkTo(route) {
 
 		browserHistory.push(route);
@@ -35,7 +41,7 @@ class DetailCard extends Component {
 				<div className="left-col">
 					<div className="photo">
 						<Paper className="paper" zDepth={2}>
-							<img src={params.s3_url} />
+							<img src={this.proxyUrl(params.s3_url)} />
 						</Paper>
 					</div>
 				</div>

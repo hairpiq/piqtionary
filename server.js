@@ -29,9 +29,9 @@ mongo.connect(config.DB_URL, function(err, db) {
 
 	// create static folder to serve static assets
 	app.use(express.static('public'));
-
+	
 	// proxy for s3 hairpiq files
-	var proxy = require('express-http-proxy');
+	var proxy = require('./customized_node_modules/express-http-proxy');
 	app.use('/h', proxy(config.S3_BUCKET_NAME + '.s3.amazonaws.com/'));
 
 	// require routes for REACT routing

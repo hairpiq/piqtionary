@@ -20,6 +20,7 @@ import NavStepper from './NavStepper';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import Snackbar from 'material-ui/Snackbar';
+import LinearProgress from 'material-ui/LinearProgress';
 
 import Services from '../../../services/admin/';
 
@@ -109,11 +110,14 @@ class TrainForm extends Component {
 			is_ig_username_valid: false
 		});
 
-		var params = {};
+		this.setGridList();
+	}
 
-		var _this = this;
+	setGridList = () => {
 
-		Services.getUntrained(params).then(function(result) {
+		const _this = this;
+		
+		Services.getUntrained({}).then(function(result) {
 
 			_this.setState({
 				
@@ -130,6 +134,9 @@ class TrainForm extends Component {
 	}
 
 	handleTabChange = (value) => {
+
+		if ('grid')
+			this.setGridList();
 		
 		this.setState({
 			
@@ -239,8 +246,6 @@ class TrainForm extends Component {
 	}
 
 	onImageLoaded(state) {
-
-		console.log(this.refs.cropper['refs']);
 
 		$('.modal-inner, .train-form').removeClass('disabled');
 		$('.cropper').removeClass('unloaded');
@@ -448,17 +453,13 @@ class TrainForm extends Component {
 
 		const _this = this;
 
-		console.log('A---');
-
 		$('.train-form-dialog').addClass('disabled');
-
-		console.log('B---');
+		$('.progress-bar').addClass('show');
 
 		Services.hairpiqCreator.train(params).then(function(result) {
 
-			console.log('EEEEE');
-
 			$('.train-form-dialog').removeClass('disabled');
+			$('.progress-bar').removeClass('show');
 
 			_this.setFinished(true);
 			_this.setState({
@@ -536,7 +537,7 @@ class TrainForm extends Component {
 		  },
 		  gridList: {
 		    width: 'auto',
-		    height: 600,
+		    maxHeight: 600,
 		    overflowY: 'auto',
 		  },
 		};
@@ -715,6 +716,8 @@ class TrainForm extends Component {
 												src={this.state.cloudinary.uploadedFileCloudinaryUrl}
 												ref="cropper"
 												width={500}
+												originX={100}
+												originY={100}
 												fixedRatio={false}
 												allowNewSelection={false}
 												styles={{
@@ -803,6 +806,7 @@ class TrainForm extends Component {
 		            onRequestClose={this.handleClose}
 		            actionsContainerClassName="train-form-dialog"
 		            overlayClassName="admin dialog-overlay">
+		            <LinearProgress mode="indeterminate" className="progress-bar" />
 		            <p>Do you want to submit this cropped hairstyle and stylename to Vision?</p>
 		        </Dialog>
 

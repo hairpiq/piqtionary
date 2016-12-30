@@ -15,6 +15,7 @@ import NavStepper from './NavStepper';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import Snackbar from 'material-ui/Snackbar';
+import LinearProgress from 'material-ui/LinearProgress';
 
 import Services from '../../services/'
 
@@ -393,12 +394,14 @@ class CreateForm extends Component {
 		const _this = this;
 
 		$('.create-form-dialog').addClass('disabled');
+		$('.progress-bar').addClass('show');
 
 		const method = (!this.state.isPrerenderedToggled ? 'render' : 'addPreRendered');
 
 		Services.hairpiqCreator[method](params).then(function(result) {
 
 			$('.create-form-dialog').removeClass('disabled');
+			$('.progress-bar').removeClass('show');
 
 			_this.setFinished(true);
 			_this.setState({
@@ -561,6 +564,8 @@ class CreateForm extends Component {
 									ref="cropper"
 									rate={4 / 5}
 									width={500}
+									originX={100}
+									originY={100}
 									allowNewSelection={false}
 									styles={{
 	                                	modal: {
@@ -631,6 +636,7 @@ class CreateForm extends Component {
 		            onRequestClose={this.handleClose}
 		            actionsContainerClassName="create-form-dialog"
 		            overlayClassName="main dialog-overlay">
+		            <LinearProgress mode="indeterminate" className="progress-bar" />
 		            <p>Do you want to submit this hairpiq to the "Pending Requests" Section for team review?</p>
 		        </Dialog>
 
