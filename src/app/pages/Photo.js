@@ -39,6 +39,12 @@ class Photo extends Component {
 
   }
 
+  proxyUrl = (s3_url) => {
+
+    return '/h/' + s3_url.split('.com/')[1];
+  
+  }
+
   renderMetaData() {
     if(this.state.data.stylename) {
       
@@ -54,7 +60,7 @@ class Photo extends Component {
                 {"name": "description", "content": description},
                 {"property": "og:url",  "content": "http://hairpiq.com/p/" + params._id},
                 {"property": "og:type", "content": "article"},
-                {"property": "og:image", "content": params.s3_url},
+                {"property": "og:image", "content": this.proxyUrl(params.s3_url)},
                 {"property": "fb:app_id", "content": "1055815611207867"},
                 /* Twitter Summary Card Data */
                 {"property": "twitter:card", "content": "summary_large_image"},

@@ -125,7 +125,7 @@ function addTransformations(obj) {
 		});
 		
 		let crop_data = obj.options.crop_data;
-		crop_data.crop = 'crop';
+		crop_data.crop = obj.options.crop_type; 
 		transformations.push(crop_data);
 
 		transformations.push({
@@ -135,53 +135,56 @@ function addTransformations(obj) {
 		});
 	};
 
-	// overlay logo
+	if(obj.options.hasOwnProperty('logo')) {
 
-	transformations.push({
-		overlay: "logo",
-		x: 74,
-		y: 77,
-		gravity: "north_west",
-		effect: "colorize",
-		color: obj.options.logo.color,
-		opacity: obj.options.logo.opacity * 100,
-		width: 372
-	});
+		// overlay logo
 
-	// overlay plate
+		transformations.push({
+			overlay: "logo",
+			x: 74,
+			y: 77,
+			gravity: "north_west",
+			effect: "colorize",
+			color: obj.options.logo.color,
+			opacity: obj.options.logo.opacity * 100,
+			width: 372
+		});
 
-	transformations.push({
-		overlay: "plate",
-		x: 360,
-		y: 148,
-		gravity: "south_west",
-		effect: "colorize",
-		color: obj.options.plate.color,
-		opacity: obj.options.plate.opacity * 100
-	});
+		// overlay plate
 
-	const stylename_font_size = 62;
-	const ig_username_font_size = 50;
+		transformations.push({
+			overlay: "plate",
+			x: 360,
+			y: 148,
+			gravity: "south_west",
+			effect: "colorize",
+			color: obj.options.plate.color,
+			opacity: obj.options.plate.opacity * 100
+		});
 
-	// overlay Style Name
+		const stylename_font_size = 62;
+		const ig_username_font_size = 50;
 
-	transformations.push({
-		overlay:"text:Montserrat_" + stylename_font_size + "_bold:" + obj.stylename,
-		x: 390,
-		y: 234,
-		gravity: "south_west",
-		color: "white"
-	});
+		// overlay Style Name
 
-	// overlay IG Username
+		transformations.push({
+			overlay:"text:Montserrat_" + stylename_font_size + "_bold:" + obj.stylename,
+			x: 390,
+			y: 1068,
+			gravity: "north_west",
+			color: "white"
+		});
 
-	transformations.push({
-		overlay:"text:Montserrat_" + ig_username_font_size + "_letter_spacing_1:" + obj.ig_username,
-		x: 390,
-		y: 168,
-		gravity: "south_west",
-		color: "white"
-	});
+		// overlay IG Username
+
+		transformations.push({
+			overlay:"text:Montserrat_" + ig_username_font_size + "_letter_spacing_1:" + obj.ig_username,
+			x: 390,
+			y: 1136,
+			gravity: "north_west",
+			color: "white"
+		});
+	}
 
 	return cloudinary.url(obj.id, {
 		transformation:transformations
