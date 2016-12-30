@@ -149,14 +149,14 @@ class NavStepper extends Component {
 				            		<div>
 							            {image_valid === '' ?
 										<p>
-											In the left drop zone area, drop a selfie image or click to select a file to upload.
+											In the left drop zone area, drop a selfie or headshot image or click to select a file to upload.
 										</p>
 										: null}
 
 										{image_valid === 'invalid' ?
 										<div className="uk-alert-danger">
 											<p>Please upload a more appropriate photo. We focus exclusively on semi-close-up photos of people that have their hairstyle on display.</p>
-											<p>In the left drop zone area, drop a selfie image or click to select a file to upload.</p>
+											<p>In the left drop zone area, drop a selfie or headshot image or click to select a file to upload.</p>
 										</div>
 										: null}
 									</div>
@@ -189,7 +189,7 @@ class NavStepper extends Component {
 									:
 									<div>
 										<FlatButton
-											className="crop-button"
+											className="adjust-crop-button"
 											backgroundColor={grey300}
 											label="Adjust Crop"
 											onTouchTap={this.props.clearCrop}

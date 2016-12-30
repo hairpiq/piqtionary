@@ -8,6 +8,7 @@ import Dialog from 'material-ui/Dialog';
 import CircularProgress from 'material-ui/CircularProgress';
 import {grey400} from 'material-ui/styles/colors';
 import Snackbar from 'material-ui/Snackbar';
+import LinearProgress from 'material-ui/LinearProgress';
 
 class PendingWell extends Component {
 
@@ -95,12 +96,14 @@ class PendingWell extends Component {
     const _this = this;
 
     $('.pending-request-dialog').addClass('disabled');
+    $('.progress-bar').addClass('show');
     
     switch (action) {
       case 'REJECT':
 
         Services.reject(hairpiq).then(function(result) {
            $('.pending-request-dialog').removeClass('disabled');
+           $('.progress-bar').removeClass('show');
           _this.resetStateForWell();
         });
 
@@ -110,6 +113,7 @@ class PendingWell extends Component {
 
         Services.update(hairpiq).then(function(result) {
           $('.pending-request-dialog').removeClass('disabled');
+          $('.progress-bar').removeClass('show');
           _this.resetStateForWell();
         });
 
@@ -119,6 +123,7 @@ class PendingWell extends Component {
 
         Services.approve(hairpiq).then(function(result) {
           $('.pending-request-dialog').removeClass('disabled');
+          $('.progress-bar').removeClass('show');
           _this.resetStateForWell();
         });
 
@@ -280,7 +285,8 @@ class PendingWell extends Component {
             onRequestClose={this.handleClose}
             actionsContainerClassName="pending-request-dialog"
             overlayClassName="admin dialog-overlay">
-            {this.state.dialog.message}
+            <LinearProgress mode="indeterminate" className="progress-bar" />
+            <p>{this.state.dialog.message}</p>
           </Dialog>
         </div>
 
