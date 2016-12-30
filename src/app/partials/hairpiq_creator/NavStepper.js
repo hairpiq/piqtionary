@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
-import {green600, grey300, grey400} from 'material-ui/styles/colors';
+import {green600, grey300, grey400, grey900} from 'material-ui/styles/colors';
 import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -134,6 +134,12 @@ class NavStepper extends Component {
 			marginLeft: '20px',
 			width: '100%'
 		};
+
+		const styles = {
+			thumbSwitched: {
+			    backgroundColor: grey900,
+			},
+		}
 
 		return (
 
@@ -278,8 +284,10 @@ class NavStepper extends Component {
 							<div className="data-container">
 				            	<Toggle
 				            	  className="toggle"
-							      label="Apply to feature this custom hairpiq on hairpiq.com, to include instagram and facebook."
+							      label="apply to be featured on hairpiq.com and on our social media"
 							      labelPosition="right"
+							      thumbSwitchedStyle={styles.thumbSwitched}
+							      defaultToggled={true}
 							    />
 						    </div>
 			              {this.renderStepActions(2)}

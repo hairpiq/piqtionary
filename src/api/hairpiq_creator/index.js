@@ -239,7 +239,8 @@ module.exports = function(app) {
 			orig_photo_url: req.body.orig_photo_url,
 			s3_url: '',
 			stylename: req.body.stylename,
-			ig_username: req.body.ig_username
+			ig_username: req.body.ig_username,
+			options: JSON.parse(req.body.options)
 		}
 
 		addPreRendered(params).then(function(result){

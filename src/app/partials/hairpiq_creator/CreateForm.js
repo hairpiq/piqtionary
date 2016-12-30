@@ -39,9 +39,9 @@ class CreateForm extends Component {
 			cropper: {
 				image: undefined,
             	imageLoaded: false,
-            	values: {}
+            	values: {},
+            	crop_type: ''
 			},
-			isPrerenderedToggled: false,
 			logo: {
 				color: 'white',
 				opacity: 1
@@ -201,12 +201,14 @@ class CreateForm extends Component {
 
 		let croppedImage = this.refs.cropper.crop();
 		let croppedValues = this.refs.cropper.values();
+		let crop_type = ($('.cropper img')[0].naturalWidth === 1080 && $('.cropper img')[0].naturalHeight === 1350 ? 'fill' : 'crop');
 		
 		this.setState({
 			cropper: {
 				image: croppedImage,
 				imageLoaded: true,
-				values: croppedValues
+				values: croppedValues,
+				crop_type: crop_type
 			}
 		});
 
@@ -237,7 +239,8 @@ class CreateForm extends Component {
 			cropper: {
 				image: undefined,
 				imageLoaded: false,
-				values: {}
+				values: {},
+				crop_type: ''
 			},
 			isPrerenderedToggled: false
 		});
@@ -384,12 +387,12 @@ class CreateForm extends Component {
 			ig_username: this.state.ig_username,
 		}
 
-		if (!this.state.isPrerenderedToggled)
-			params.options = JSON.stringify({
-				crop_data: this.state.cropper.values,
-				logo: this.state.logo,
-				plate: this.state.plate
-			});
+		params.options = JSON.stringify({
+			crop_type: this.state.cropper.crop_type,
+			crop_data: this.state.cropper.values,
+			logo: this.state.logo,
+			plate: this.state.plate
+		});
 
 		const _this = this;
 
