@@ -79,6 +79,13 @@ module.exports = {
 		return execute('//' + config.HOSTNAME + '/api/piqtionary/delete', params);
 		
 	},
+	getUntrained: function(params) {
+
+		params.limit = 10;
+
+		return execute('//' + config.HOSTNAME + '/api/piqtionary/untrained', params);
+		
+	},
 	hairpiqCreator: {
 		validate: function(params) {
 
@@ -99,7 +106,12 @@ module.exports = {
 
 			return execute('//' + config.HOSTNAME + '/api/hairpiq_creator/render', params);
 
-		}
+		},
+		train: function(params) {
+
+			return execute('//' + config.HOSTNAME + '/api/hairpiq_creator/train', params);
+			
+		},
 	}
 }
 
@@ -117,7 +129,12 @@ function execute(url, params) {
 		 	dataType: 'json',
 		 	beforeSend: function (xhr) {
 			    xhr.setRequestHeader ("Authorization", config.API_BASIC_AUTH);
-			}
+			},
+			error: function(XMLHttpRequest, textStatus, errorThrown) { 
+		        console.log("Status: " + textStatus);
+		        console.log("Error: " + errorThrown); 
+		        reject(errorThrown);
+		    }  
 		});
 
 	});

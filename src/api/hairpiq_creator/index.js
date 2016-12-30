@@ -40,11 +40,11 @@ module.exports = function(app) {
 				// send url
 				// ask feature question
 		// else does the user want their hairpiq featured?
-				// if yes
-					// add rendered url to piqtionary review queue
-					// send message about consideration
-				// if no
-					// send message of declination acceptance
+			// if yes
+				// add rendered url to piqtionary review queue
+				// send message about consideration
+			// if no
+				// send message of declination acceptance
 							
 
 		if (req.session.rendered_url === undefined) {
@@ -289,6 +289,24 @@ module.exports = function(app) {
 	});
 
 	/*
+		train the clarifai ai about photo
+	*/
+
+	app.post('/api/hairpiq_creator/train', function(req, res) {
+		
+		const id = req.body.id || null;
+
+		// mark trained_status in piqtionary api
+
+		train(req.body.base64, req.body.stylename, id).then(function(result) {
+
+			res.send(JSON.stringify(result));
+
+		});
+
+	});
+
+	/*
 		validate photo via clarifai
 	*/
 
@@ -301,17 +319,6 @@ module.exports = function(app) {
 		});
 	});
 
-	/*
-		educate the clarifai ai about photo
-	*/
-
-	app.post('/api/hairpiq_creator/educate', function(req, res) {
-		
-		educate(req.body.s3_url, req.body.stylename);
-			
-		res.send('education request made.');
-
-	});
 }
 
 function create(photo_url, stylename, ig_username, options) {
@@ -520,9 +527,47 @@ function validate(url) {
 	});
 }
 
-function educate(photo_url, stylename) {
+function train(base64, stylename, id = null) {
 
-	clarifai.insert(photo_url, stylename);
+	return new Promise (function(resolve, reject) {
+
+		clarifai.insert(base64, stylename).then(function(result) {
+
+			if (id !== null) {
+
+				var params = {
+					_id: id,
+					trained_status: 'trained'
+				}
+				
+				request({
+				    url: 'http://' + config.HOSTNAME + '/api/piqtionary/trained_status', //URL to hit
+				    qs: {time: +new Date()}, //Query string data
+				    method: 'POST',
+				    headers : {
+				        "Authorization" : config.API_BASIC_AUTH
+					},
+				    //Lets post the following key/values as form
+				    json: params
+					}, function(error, response, body){
+					    if(error) {
+					        console.log(error);
+					        reject(new Error(error));
+					    } else {
+					        console.log(response.statusCode, body);
+					        resolve(body);
+					}
+				});
+
+			} else {
+
+				resolve('success');
+
+			}
+
+			});
+
+	});
 
 }
 

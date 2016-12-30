@@ -26,6 +26,7 @@ import AdminUnpublished from '../pages/admin/Unpublished';
 import AdminPublished from '../pages/admin/Published';
 import AdminTrash from '../pages/admin/Trash';
 import AdminCreate from '../pages/admin/Create';
+import AdminVision from '../pages/admin/Vision';
 
 // Needed for onTouchTap
 // http://stackoverflow.com/a/34015469/988941
@@ -51,6 +52,7 @@ module.exports = (
 				<Route path="published" component={AdminPublished}/>
 				<Route path="trash" component={AdminTrash}/>
 				<Route path="create" component={AdminCreate}/>
+				<Route path="vision" component={AdminVision}/>
 			</Route>
 
 		</Route>

@@ -8,6 +8,7 @@ import Dialog from 'material-ui/Dialog';
 import CircularProgress from 'material-ui/CircularProgress';
 import {grey400} from 'material-ui/styles/colors';
 import Snackbar from 'material-ui/Snackbar';
+import LinearProgress from 'material-ui/LinearProgress';
 
 class UnpublishedWell extends Component {
 
@@ -87,12 +88,14 @@ class UnpublishedWell extends Component {
     const _this = this;
 
     $('.approved-hairpiq-dialog').addClass('disabled');
+    $('.progress-bar').addClass('show');
     
     switch (action) {
       case 'REJECT':
 
         Services.moveToTrash(hairpiq).then(function(result) {
            $('.approved-hairpiq-dialog').removeClass('disabled');
+           $('.progress-bar').removeClass('show');
           _this.resetStateForWell();
         });
 
@@ -102,6 +105,7 @@ class UnpublishedWell extends Component {
 
         Services.publish(hairpiq).then(function(result) {
           $('.approved-hairpiq-dialog').removeClass('disabled');
+          $('.progress-bar').removeClass('show');
           _this.resetStateForWell();
         });
 
@@ -258,7 +262,8 @@ class UnpublishedWell extends Component {
             onRequestClose={this.handleClose}
             actionsContainerClassName="approved-hairpiq-dialog"
             overlayClassName="admin dialog-overlay">
-            {this.state.dialog.message}
+            <LinearProgress mode="indeterminate" className="progress-bar" />
+            <p>{this.state.dialog.message}</p>
           </Dialog>
         </div>
 

@@ -1,6 +1,8 @@
 require('dotenv').config();
 var config = process.env;
 var Clarifai = require("clarifai");
+
+require('es6-promise').polyfill();
 var Q = require("q");
 var api = new Clarifai.App(
     config.CLARIFAI_CLIENT_ID,
@@ -12,7 +14,7 @@ module.exports = {
         
         return new Promise(function(resolve, reject) {
             
-            Q.all([validateNSFW(photo_url), validateMaleOrFemale(photo_url)]).then(function(result) {
+            Q.all([validateNSFW(photo_url), validatePictureSubject(photo_url)]).then(function(result) {
                
                var result = (result[0] && result[1]);
 
@@ -48,26 +50,32 @@ module.exports = {
         });
 
     },
-    insert: function(photo_url, stylename) {
+    insert: function(base64, stylename) {
 
         console.log('Clarifai - A: insert hairpiq and stylename concept into clarifai');
 
-        api.inputs.create({
-            url: photo_url,
-            concepts: [{id: stylename, value: true }]
-        }).then(function(result) {
-
-            console.log('Clarifai - B: inserted. Now train model: ' + config.CLARIFAI_MODEL_ID);
+        return new Promise(function(resolve, reject) {
             
-            api.models.train(config.CLARIFAI_MODEL_ID).then(function(result) {
+            api.inputs.create({
+                base64: base64,
+                concepts: [{id: stylename, value: true }]
+            }).then(function(result) {
 
-                console.log('Clarifai - C: trained.');
+                console.log('Clarifai - B: inserted. Now train model: ' + config.CLARIFAI_MODEL_ID);
+                
+                api.models.train(config.CLARIFAI_MODEL_ID).then(function(result) {
 
+                    console.log('Clarifai - C: trained.');
+
+                    resolve(result);
+
+                }).catch(function(error) {
+                    console.log(error.status, error.statusText);
+                });
             }).catch(function(error) {
-                console.log(new Error(error));
+                console.log(error.status, error.statusText);
             });
-        }).catch(function(error) {
-            console.log(new Error(error));
+
         });
 
     }
@@ -88,10 +96,10 @@ function validateNSFW(photo_url){
         });
 }
 
-function validateMaleOrFemale(photo_url){
+function validatePictureSubject(photo_url){
      return new Promise(function(resolve, reject) {
             api.models.predict(Clarifai.GENERAL_MODEL, photo_url).then(function (response) {
-                    var results =  determineIfMaleOrFemalePicture(response);
+                    var results =  determineIfPictureSubjectQualifies(response);
                     resolve(results);
                 },
                 function (err) {
@@ -122,11 +130,11 @@ function getTopRatedTagHandler(response) {
 }
 
 
-function determineIfMaleOrFemalePicture(response) {
+function determineIfPictureSubjectQualifies(response) {
     var status = false;
     response.data.outputs.forEach(function (output) {
         output.data.concepts.forEach(function (tag) {
-            if (tag.name === 'man' || tag.name === 'woman') {
+            if (tag.name === 'man' || tag.name === 'woman' || tag.name === 'adult' || tag.name === 'portrait' || tag.name === 'headshot') {
                 status = true;
                 return status;
             }
@@ -137,6 +145,7 @@ function determineIfMaleOrFemalePicture(response) {
 
 function determineWhatNSFW(response) {
     var status = false;
+
     response.data.outputs.forEach(function (output) {
         output.data.concepts.forEach(function (tag) {
             if (tag.name === 'sfw' &&  Math.ceil(tag.value * 100) > 95) {

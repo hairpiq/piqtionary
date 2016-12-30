@@ -15,8 +15,9 @@ import NavStepper from './NavStepper';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import Snackbar from 'material-ui/Snackbar';
+import LinearProgress from 'material-ui/LinearProgress';
 
-import Services from '../../../services/admin/'
+import Services from '../../../services/admin/';
 
 const config = process.env;
 const CLOUDINARY_UPLOAD_URL = 'https://api.cloudinary.com/v1_1/' + config.CLOUDINARY_CLOUD_NAME + '/image/upload';
@@ -395,11 +396,14 @@ class CreateForm extends Component {
 
 		$('.create-form-dialog').addClass('disabled');
 
+		$('.progress-bar').addClass('show');
+
 		const method = (!this.state.isPrerenderedToggled ? 'render' : 'addPreRendered');
 
 		Services.hairpiqCreator[method](params).then(function(result) {
 
 			$('.create-form-dialog').removeClass('disabled');
+			$('.progress-bar').removeClass('show');
 
 			_this.setFinished(true);
 			_this.setState({
@@ -531,7 +535,7 @@ class CreateForm extends Component {
 								multiple={false}
 								accept="image/*"
 								onDrop={this.onImageDrop}>
-									<p>Drop a selfie image or click to select a file to upload.</p>
+									<p>Drop a selfie or headshot image or click to select a file to upload.</p>
 							</Dropzone>}
 
 							{/*
@@ -560,6 +564,15 @@ class CreateForm extends Component {
 									ref="cropper"
 									rate={4 / 5}
 									width={500}
+									originX={100}
+									originY={100}
+									allowNewSelection={false}
+									styles={{
+	                                	modal: {
+	                                     opacity: 0.70,
+	                                     backgroundColor: '#000'
+	                                	}
+	                            	}}
 									imageLoaded={() => this.onImageLoaded('image')}
 									/>
 							</Paper>
@@ -623,6 +636,7 @@ class CreateForm extends Component {
 		            onRequestClose={this.handleClose}
 		            actionsContainerClassName="create-form-dialog"
 		            overlayClassName="admin dialog-overlay">
+		            <LinearProgress mode="indeterminate" className="progress-bar" />
 		            <p>Do you want to submit this hairpiq to the "Pending Requests" Section for team review?</p>
 		        </Dialog>
 

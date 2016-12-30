@@ -15,7 +15,7 @@ class Trash extends Component {
       <div>
 
         <Helmet
-          title="Admin Area: Trash"
+          title="Admin: Trash"
           titleTemplate="%s - Hairpiq"
           defaultTitle="Hairpiq"
         />

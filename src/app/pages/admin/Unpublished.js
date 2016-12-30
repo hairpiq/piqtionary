@@ -13,7 +13,7 @@ class Unpublished extends Component {
       <div>
 
         <Helmet
-          title="Admin Area: Unpublished Photos"
+          title="Admin: Unpublished"
           titleTemplate="%s - Hairpiq"
           defaultTitle="Hairpiq"
         />
