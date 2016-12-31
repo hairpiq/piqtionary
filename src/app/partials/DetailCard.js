@@ -45,10 +45,16 @@ class DetailCard extends Component {
 		var _this = this;
 
 		const params = {
-			photo_url: this.proxyUrl(this.props.data.s3_url)
+			photo_url: this.props.data.s3_url
 		}
 
+		console.log('A');
+		console.log(params);
+
 		Services.hairpiqCreator.getTags(params).then(function(result) {
+
+			console.log('H');
+			console.log(result);
 
 			$('.detail-card hr').removeClass('unloaded');
 
@@ -62,6 +68,8 @@ class DetailCard extends Component {
 
 
 	render() {
+
+		console.log('AA');
 
 		const params = this.props.data;
 
