@@ -61,7 +61,6 @@ class DetailCard extends Component {
 	}
 
 
-
 	render() {
 
 		const params = this.props.data;
@@ -124,14 +123,14 @@ class DetailCard extends Component {
 			                />
 			            </div>
 			            <Divider />
-			            <div className="data-container">
+			            {/*<div className="data-container">
 							<div className="title">
 			                  Related Hairpiqs
 			                </div>
 			                <RelatedItems
 			                	data={params}
 			                />
-			            </div>
+			            </div>*/}
 					</div>
 				</div>
 
