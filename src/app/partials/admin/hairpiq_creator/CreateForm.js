@@ -39,7 +39,8 @@ class CreateForm extends Component {
 			cropper: {
 				image: undefined,
             	imageLoaded: false,
-            	values: {}
+            	values: {},
+            	crop_type: ''
 			},
 			isPrerenderedToggled: false,
 			logo: {
@@ -186,8 +187,6 @@ class CreateForm extends Component {
 
 	onImageLoaded(state) {
 
-		console.log(this.refs.cropper['refs']);
-
 		$('.modal-inner, .create-form').removeClass('disabled');
 
 		this.setState({
@@ -200,6 +199,7 @@ class CreateForm extends Component {
 
 	cropImage(state) {
 
+		let crop_type = ($('.cropper img')[0].naturalWidth === 1080 && $('.cropper img')[0].naturalHeight === 1350 ? 'fill' : 'crop');
 		let croppedImage = this.refs.cropper.crop();
 		let croppedValues = this.refs.cropper.values();
 		
@@ -207,7 +207,8 @@ class CreateForm extends Component {
 			cropper: {
 				image: croppedImage,
 				imageLoaded: true,
-				values: croppedValues
+				values: croppedValues,
+				crop_type: crop_type
 			}
 		});
 
@@ -238,7 +239,8 @@ class CreateForm extends Component {
 			cropper: {
 				image: undefined,
 				imageLoaded: false,
-				values: {}
+				values: {},
+				crop_type: ''
 			},
 			isPrerenderedToggled: false
 		});
@@ -383,14 +385,19 @@ class CreateForm extends Component {
 			orig_photo_url: this.state.cloudinary.uploadedFileCloudinaryUrl,
 			stylename: this.state.stylename,
 			ig_username: this.state.ig_username,
+			options: {
+				crop_type: this.state.crop_type,
+				crop_data: this.state.cropper.values
+			},
+			add_to_pending_requests: true
 		}
 
-		if (!this.state.isPrerenderedToggled)
-			params.options = JSON.stringify({
-				crop_data: this.state.cropper.values,
-				logo: this.state.logo,
-				plate: this.state.plate
-			});
+		if (!this.state.isPrerenderedToggled) {
+			params.options.logo = this.state.logo;
+			params.options.plate = this.state.plate;
+		}
+		
+		params.options = JSON.stringify(params.options);
 
 		const _this = this;
 

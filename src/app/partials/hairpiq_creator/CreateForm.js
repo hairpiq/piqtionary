@@ -17,7 +17,7 @@ import FlatButton from 'material-ui/FlatButton';
 import Snackbar from 'material-ui/Snackbar';
 import LinearProgress from 'material-ui/LinearProgress';
 
-import Services from '../../services/'
+import Services from '../../services/';
 
 const config = process.env;
 const CLOUDINARY_UPLOAD_URL = 'https://api.cloudinary.com/v1_1/' + config.CLOUDINARY_CLOUD_NAME + '/image/upload';
@@ -39,9 +39,9 @@ class CreateForm extends Component {
 			cropper: {
 				image: undefined,
             	imageLoaded: false,
-            	values: {}
+            	values: {},
+            	crop_type: ''
 			},
-			isPrerenderedToggled: false,
 			logo: {
 				color: 'white',
 				opacity: 1
@@ -62,14 +62,15 @@ class CreateForm extends Component {
 	        finished: false,
 	        snackbar: {
 				open: false
-			}
+			},
+			isApplyToggled: true
 		}
 
 		// Cropper methods
 		this.onImageDrop = this.onImageDrop.bind(this);
 
 		// NavStepper methods
-		this.onPrerenderedToggle = this.onPrerenderedToggle.bind(this);
+		this.onApplyToggle = this.onApplyToggle.bind(this);
 		this.onLogoColorCheck = this.onLogoColorCheck.bind(this);
 		this.onPlateColorCheck = this.onPlateColorCheck.bind(this);
 		this.handleStylenameChange = this.handleStylenameChange.bind(this);
@@ -81,6 +82,8 @@ class CreateForm extends Component {
 		this.handleOpen = this.handleOpen.bind(this);
       	this.handleClose = this.handleClose.bind(this);
       	this.handleSubmit = this.handleSubmit.bind(this);
+
+      	this.openNewWindow = this.openNewWindow.bind(this);
 
 	}
 
@@ -201,12 +204,14 @@ class CreateForm extends Component {
 
 		let croppedImage = this.refs.cropper.crop();
 		let croppedValues = this.refs.cropper.values();
+		let crop_type = ($('.cropper img')[0].naturalWidth === 1080 && $('.cropper img')[0].naturalHeight === 1350 ? 'fill' : 'crop');
 		
 		this.setState({
 			cropper: {
 				image: croppedImage,
 				imageLoaded: true,
-				values: croppedValues
+				values: croppedValues,
+				crop_type: crop_type
 			}
 		});
 
@@ -226,6 +231,7 @@ class CreateForm extends Component {
 	clearImage() {
 
 		console.log('clear image on cloudinary, as well!');
+		console.log(this.state.uploadedFileCloudinaryUrl);
 
 		this.setState({
 			cloudinary: {
@@ -237,16 +243,17 @@ class CreateForm extends Component {
 			cropper: {
 				image: undefined,
 				imageLoaded: false,
-				values: {}
+				values: {},
+				crop_type: ''
 			},
-			isPrerenderedToggled: false
+			isApplyToggled: true
 		});
 	}
 
-	onPrerenderedToggle() {
+	onApplyToggle() {
 
 		this.setState({
-			isPrerenderedToggled: !this.state.isPrerenderedToggled
+			isApplyToggled: !this.state.isApplyToggled
 		});
 
 	}
@@ -382,23 +389,24 @@ class CreateForm extends Component {
 			orig_photo_url: this.state.cloudinary.uploadedFileCloudinaryUrl,
 			stylename: this.state.stylename,
 			ig_username: this.state.ig_username,
+			add_to_pending_requests: this.state.isApplyToggled,
 		}
 
-		if (!this.state.isPrerenderedToggled)
-			params.options = JSON.stringify({
-				crop_data: this.state.cropper.values,
-				logo: this.state.logo,
-				plate: this.state.plate
-			});
+		params.options = JSON.stringify({
+			crop_type: this.state.cropper.crop_type,
+			crop_data: this.state.cropper.values,
+			logo: this.state.logo,
+			plate: this.state.plate
+		});
 
 		const _this = this;
 
 		$('.create-form-dialog').addClass('disabled');
 		$('.progress-bar').addClass('show');
 
-		const method = (!this.state.isPrerenderedToggled ? 'render' : 'addPreRendered');
+		Services.hairpiqCreator.render(params).then(function(result) {
 
-		Services.hairpiqCreator[method](params).then(function(result) {
+			_this.openNewWindow(_this.proxyUrl(result.s3_url));
 
 			$('.create-form-dialog').removeClass('disabled');
 			$('.progress-bar').removeClass('show');
@@ -412,6 +420,18 @@ class CreateForm extends Component {
 			_this.handleClose();
 
 		});
+
+	}
+
+	proxyUrl = (s3_url) => {
+
+		if (s3_url)
+			return '/h/' + s3_url.split('.com/')[1];
+	}
+
+	openNewWindow(url) {
+
+		window.open(url, "_blank");
 
 	}
 
@@ -599,8 +619,8 @@ class CreateForm extends Component {
 						clearCrop={() => this.clearCrop()}
 						clearImage={() => this.clearImage()}
 
-						isPrerenderedToggled={this.state.isPrerenderedToggled}
-						onPrerenderedToggle={this.onPrerenderedToggle}
+						isApplyToggled={this.state.isApplyToggled}
+						onApplyToggle={this.onApplyToggle}
 						
 						logoColor={this.state.logo.color}
 						onLogoColorCheck={this.onLogoColorCheck}
@@ -629,7 +649,7 @@ class CreateForm extends Component {
 				</div>
 
 				<Dialog
-		            title='ADD TO PENDING REQUESTS'
+		            title='CREATE YOUR HAIRPIQ'
 		            actions={actions}
 		            modal={false}
 		            open={this.state.dialog.open}
@@ -637,13 +657,16 @@ class CreateForm extends Component {
 		            actionsContainerClassName="create-form-dialog"
 		            overlayClassName="main dialog-overlay">
 		            <LinearProgress mode="indeterminate" className="progress-bar" />
-		            <p>Do you want to submit this hairpiq to the "Pending Requests" Section for team review?</p>
+		            <p>Click <strong>Submit</strong> to download your newly created hairpiq!</p>
+		            {this.state.isApplyToggled ? 
+		            <p>We are excited to review your creation and if approved, it will be featured on hairpiq.com, home to all the hairstyles you know and love.</p>
+		        	: null }
 		        </Dialog>
 
 		        <Snackbar
 		          className="snackbar"
 		          open={this.state.snackbar.open}
-		          message="submitted!"
+		          message="created!"
 		          autoHideDuration={4000}
 		          onRequestClose={this.closeSnackbar}
 		        />

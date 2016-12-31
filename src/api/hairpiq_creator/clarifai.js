@@ -41,9 +41,36 @@ module.exports = {
 
                 },
                 function (err) {
-                    
+                    console.log(err);
                     identifyClarifaiError(err);
-                    reject(new Error(err));
+                    reject(err);
+
+                }
+            );
+        });
+
+    },
+    getTags: function(photo_url) {
+
+        photo_url = 'http://'+ config.HOSTNAME + photo_url;
+
+        console.log('Clarifai - A: get the related hairstyle tags based off of a submitted image');
+
+        return new Promise(function(resolve, reject) {
+
+            api.models.predict(config.CLARIFAI_MODEL_ID, photo_url).then(function (result) {
+                    
+                    console.log('Clarifai - B: tags retreived...');
+                    
+                    result =  getTags(result);
+
+                    resolve(result);
+
+                },
+                function (err) {
+                    console.log(err);
+                    identifyClarifaiError(err);
+                    reject(err);
 
                 }
             );
@@ -114,6 +141,7 @@ function validatePictureSubject(photo_url){
 function getTopRatedTagHandler(response) {
     var maxValue = 0;
     var maxRecord = {};
+
     response.data.outputs.forEach(function (output) {
         //console.log(output.data.concepts);
         output.data.concepts.forEach(function (tag) {
@@ -126,7 +154,25 @@ function getTopRatedTagHandler(response) {
         });
 
     });
+    
     return maxRecord;
+}
+
+function getTags(response) {
+    
+    var tags = [];
+    
+    response.data.outputs.forEach(function (output) {
+
+        output.data.concepts.map((concept, i) => {
+
+            tags.push({ name: concept.name });
+
+        });
+
+    });
+
+    return tags;
 }
 
 

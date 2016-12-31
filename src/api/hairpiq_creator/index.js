@@ -239,7 +239,8 @@ module.exports = function(app) {
 			orig_photo_url: req.body.orig_photo_url,
 			s3_url: '',
 			stylename: req.body.stylename,
-			ig_username: req.body.ig_username
+			ig_username: req.body.ig_username,
+			options: JSON.parse(req.body.options)
 		}
 
 		addPreRendered(params).then(function(result){
@@ -280,12 +281,28 @@ module.exports = function(app) {
 				options: req.body.options
 			}
 
-			submitForReview(params).then(function(resolve, reject) {
-				res.send(params);
-			});
+			if (req.body.add_to_pending_requests)
+				submitForReview(params).then(function(resolve, reject) {
+					res.send(params);
+				});
+			else
+				res.send(params);				
 
 		});
 
+	});
+
+	/*
+		validate photo via clarifai
+	*/
+
+	app.post('/api/hairpiq_creator/validate', function(req, res) {
+		
+		validate(req.body.orig_photo_url).then(function(result) {
+			
+			res.send(result);
+
+		});
 	});
 
 	/*
@@ -307,14 +324,27 @@ module.exports = function(app) {
 	});
 
 	/*
-		validate photo via clarifai
+		predict photo conecpts via clarifai
 	*/
 
-	app.post('/api/hairpiq_creator/validate', function(req, res) {
+	app.post('/api/hairpiq_creator/predict', function(req, res) {
 		
-		validate(req.body.orig_photo_url).then(function(result) {
+		predict(req.body.photo_url).then(function(result) {
 			
-			res.send(result);
+			res.send(JSON.stringify(result));
+
+		});
+	});
+
+	/*
+		predict photo conecpts via clarifai
+	*/
+
+	app.post('/api/hairpiq_creator/get_tags', function(req, res) {
+		
+		getTags(req.body.photo_url).then(function(result) {
+			
+			res.send(JSON.stringify(result));
 
 		});
 	});
@@ -566,6 +596,34 @@ function train(base64, stylename, id = null) {
 			}
 
 			});
+
+	});
+
+}
+
+function predict(photo_url) {
+
+	return new Promise(function(resolve, reject) {
+
+		clarifai.predict(photo_url).then(function(result) {
+
+			resolve(result);
+
+		});
+
+	});
+
+}
+
+function getTags(photo_url) {
+
+	return new Promise(function(resolve, reject) {
+
+		clarifai.getTags(photo_url).then(function(result) {
+
+			resolve(result);
+
+		});
 
 	});
 
