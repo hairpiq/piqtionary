@@ -293,6 +293,19 @@ module.exports = function(app) {
 	});
 
 	/*
+		validate photo via clarifai
+	*/
+
+	app.post('/api/hairpiq_creator/validate', function(req, res) {
+		
+		validate(req.body.orig_photo_url).then(function(result) {
+			
+			res.send(result);
+
+		});
+	});
+
+	/*
 		train the clarifai ai about photo
 	*/
 
@@ -311,14 +324,27 @@ module.exports = function(app) {
 	});
 
 	/*
-		validate photo via clarifai
+		predict photo conecpts via clarifai
 	*/
 
-	app.post('/api/hairpiq_creator/validate', function(req, res) {
+	app.post('/api/hairpiq_creator/predict', function(req, res) {
 		
-		validate(req.body.orig_photo_url).then(function(result) {
+		predict(req.body.photo_url).then(function(result) {
 			
-			res.send(result);
+			res.send(JSON.stringify(result));
+
+		});
+	});
+
+	/*
+		predict photo conecpts via clarifai
+	*/
+
+	app.post('/api/hairpiq_creator/get_tags', function(req, res) {
+		
+		getTags(req.body.photo_url).then(function(result) {
+			
+			res.send(JSON.stringify(result));
 
 		});
 	});
@@ -570,6 +596,34 @@ function train(base64, stylename, id = null) {
 			}
 
 			});
+
+	});
+
+}
+
+function predict(photo_url) {
+
+	return new Promise(function(resolve, reject) {
+
+		clarifai.predict(photo_url).then(function(result) {
+
+			resolve(result);
+
+		});
+
+	});
+
+}
+
+function getTags(photo_url) {
+
+	return new Promise(function(resolve, reject) {
+
+		clarifai.getTags(photo_url).then(function(result) {
+
+			resolve(result);
+
+		});
 
 	});
 
