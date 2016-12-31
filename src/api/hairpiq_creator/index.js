@@ -281,9 +281,12 @@ module.exports = function(app) {
 				options: req.body.options
 			}
 
-			submitForReview(params).then(function(resolve, reject) {
-				res.send(params);
-			});
+			if (req.body.add_to_pending_requests)
+				submitForReview(params).then(function(resolve, reject) {
+					res.send(params);
+				});
+			else
+				res.send(params);				
 
 		});
 

@@ -34,8 +34,6 @@ class DetailCard extends Component {
 	render() {
 
 		const params = this.props.data;
-
-		console.log(params);
 		
 		return (
 
