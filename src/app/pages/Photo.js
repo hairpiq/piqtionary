@@ -15,6 +15,13 @@ class Photo extends Component {
     }
   }
 
+  proxyUrl = (s3_url) => {
+
+    if (s3_url)
+      return '/h/' + s3_url.split('.com/')[1];
+  
+  }
+
   componentDidMount() {
 
     if (this.props.hairpiq === undefined) {
@@ -26,7 +33,6 @@ class Photo extends Component {
         _id: this.props.params.id
       }
 
-      // get keywords for AutoComplete
       Services.getById(params).then(function(result) {
 
         _this.setState({ data: result[0]});
@@ -37,12 +43,6 @@ class Photo extends Component {
 
     }
 
-  }
-
-  proxyUrl = (s3_url) => {
-
-    return '/h/' + s3_url.split('.com/')[1];
-  
   }
 
   renderMetaData() {
