@@ -341,8 +341,14 @@ module.exports = function(app) {
 	*/
 
 	app.post('/api/hairpiq_creator/get_tags', function(req, res) {
+
+		console.log('C');
+		console.log(req.body);
 		
 		getTags(req.body.photo_url).then(function(result) {
+
+			console.log('G');
+			console.log(result);
 			
 			res.send(JSON.stringify(result));
 
@@ -617,9 +623,15 @@ function predict(photo_url) {
 
 function getTags(photo_url) {
 
+	console.log('D');
+	console.log('photo_url: ' + photo_url);
+
 	return new Promise(function(resolve, reject) {
 
 		clarifai.getTags(photo_url).then(function(result) {
+
+			console.log('F');
+			console.log(result);
 
 			resolve(result);
 
