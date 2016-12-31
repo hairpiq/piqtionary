@@ -36,14 +36,7 @@ class NavStepper extends Component {
 		
 		let {stepIndex} = this.state;
 		
-		if (stepIndex === 0 && this.props.isPrerenderedToggled) {
-			
-			// if step index is on first step (0) and image is pre-rendered
-				// skip step 2
-
-			stepIndex = stepIndex + 1;
-
-		} else if (stepIndex === 2 && this.props.isValid) {
+		if (stepIndex === 2 && this.props.isValid) {
 			
 			// if stepIndex is on final step (2) and data is valid
 				// submit
@@ -61,12 +54,6 @@ class NavStepper extends Component {
 	handlePrev = () => {
 		
 		let {stepIndex} = this.state;
-
-		// if step index is on the last step (2) and image is pre-rendered
-			// skip step 2
-
-		if (stepIndex === 2 && this.props.isPrerenderedToggled)
-			stepIndex = stepIndex - 1;
 
 		if (stepIndex > 0) {
 		  this.setState({stepIndex: stepIndex - 1});
@@ -94,7 +81,7 @@ class NavStepper extends Component {
 			    />
 			:
 		    <RaisedButton
-		      label={stepIndex === 0 && this.props.isPrerenderedToggled ? 'Add Info' : 'Next'}
+		      label="Next"
 		      disableTouchRipple={true}
 		      disableFocusRipple={true}
 		      primary={true}
@@ -287,7 +274,8 @@ class NavStepper extends Component {
 							      label="apply to be featured on hairpiq.com and on our social media"
 							      labelPosition="right"
 							      thumbSwitchedStyle={styles.thumbSwitched}
-							      defaultToggled={true}
+							      onToggle={this.props.onApplyToggle}
+								  defaultToggled={this.props.isApplyToggled}
 							    />
 						    </div>
 			              {this.renderStepActions(2)}

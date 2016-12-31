@@ -389,6 +389,7 @@ class CreateForm extends Component {
 				crop_type: this.state.crop_type,
 				crop_data: this.state.cropper.values
 			},
+			add_to_pending_requests: true
 		}
 
 		if (!this.state.isPrerenderedToggled) {
