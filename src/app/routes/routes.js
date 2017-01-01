@@ -18,6 +18,7 @@ import Index from '../pages/Index';
 import Photo from '../pages/Photo';
 import About from '../pages/About';
 import Create from '../pages/Create';
+import Survey from '../pages/Survey';
 
 // admin container and page components
 import AdminMain from '../containers/admin/Main';
@@ -44,6 +45,7 @@ module.exports = (
 				<Route path="p/:id" component={Photo}/>
 				<Redirect from="p/:id/" to="p/:id"/>
 				<Route path="create" component={Create}/>
+				<Route path="survey" component={Survey}/>
 			</Route>
 
 			<Route path="admin" component={AdminMain}>
