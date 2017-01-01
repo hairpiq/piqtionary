@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
 import Helmet from 'react-helmet';
-import VisionForm from '../../partials/admin/vision/VisionForm';
+import AvaVisionForm from '../../partials/admin/ava-vision/AvaVisionForm';
 
-class Train extends Component {
+class AvaVision extends Component {
 
   constructor() {
     super();
@@ -36,19 +36,19 @@ class Train extends Component {
       <div>
 
         <Helmet
-          title="Admin: Vision"
+          title="Admin: Ava Vision"
           titleTemplate="%s - Hairpiq"
           defaultTitle="Hairpiq"
         />
 
         <div className="intro">
-          <h1>Hairpiq&reg; Vision</h1>
-          <p>Use the below form to improve Hairpiq Vision.</p>
+          <h1>Hairpiq&reg; Ava Vision</h1>
+          <p>Use the below form to improve Ava Vision!</p>
           <p>Use the crop tool to isolate only the hairstyle part of the photo.</p>
           <p>When complete, press the <strong>Submit</strong> button.</p>
         </div>
 
-        <VisionForm
+        <AvaVisionForm
           data={this.state.data}
         />
 
@@ -57,4 +57,4 @@ class Train extends Component {
   }
 }
 
-export default Train;
+export default AvaVision;

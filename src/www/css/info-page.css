@@ -1,0 +1,35 @@
+.info-page .content-container {
+	margin-top: 12px;
+	padding: 50px;
+}
+
+.info-page .content {
+	max-width: 500px;
+}
+
+.info-page .ava-vision-tear-sheet {
+	padding: 20px;
+}
+
+.info-page .ava-vision-icon {
+	margin-right: 10px;
+}
+
+.info-page .team-member {
+	min-height: 116px;
+}
+
+.info-page .team-member-info {
+	margin-left: 60px;
+	line-height: 20px;
+}
+
+@media (min-width: 768px) {
+	.info-page .content-container {
+		margin-top: 80px;
+	}
+
+	.info-page .content {
+		margin: 0 auto;
+	}
+}

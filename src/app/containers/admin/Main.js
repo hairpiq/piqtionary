@@ -121,7 +121,7 @@ class Main extends Component {
     const logo = (
       <a
         onTouchTap={() => this.linkTo('/admin')}>
-        <RetinaImage className="logo" src={["/assets/images/hairpiq-site-logo.png", "/assets/images/2x/hairpiq-site-logo.png"]} />
+        <RetinaImage className="logo" src={["/images/hairpiq-site-logo.png", "/images/2x/hairpiq-site-logo.png"]} />
       </a>
     );
 
@@ -150,7 +150,7 @@ class Main extends Component {
                 onLeftIconButtonTouchTap={this.handleToggle}
               />
 
-              {this.props.location.pathname !== '/admin/vision' ?
+              {this.props.location.pathname !== '/admin/ava-vision' ?
               <NavTabs
                 initialSelectedIndex={this.state.initialSelectedIndex}
                 onActive={this.linkTo}
