@@ -64,6 +64,16 @@ body {
 	visibility: visible;
 }
 
+.drip-tab .drip-powered-by {
+	display: none;
+}
+
+@media (max-width: 849px) {
+	.drip-tab-container {
+		display: none;
+	}
+}
+
 @media (min-width: 768px) {
 
 	.create-button {
