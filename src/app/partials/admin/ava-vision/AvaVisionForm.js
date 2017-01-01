@@ -29,7 +29,7 @@ const CLOUDINARY_UPLOAD_URL = 'https://api.cloudinary.com/v1_1/' + config.CLOUDI
 
 var RetinaImage = require('react-retina-image');
 
-class TrainForm extends Component {
+class AvaVisionForm extends Component {
 
 	constructor() {
 		super();
@@ -510,7 +510,7 @@ class TrainForm extends Component {
 		const logo = (
 	    	<RetinaImage
 	    		className="create-form-logo"
-	    		src={["/assets/images/hairpiq_creator/logo-" + this.state.logo.color + ".png", "/assets/images/hairpiq_creator/2x/logo-" + this.state.logo.color + ".png"] }
+	    		src={["/images/hairpiq_creator/logo-" + this.state.logo.color + ".png", "/images/hairpiq_creator/2x/logo-" + this.state.logo.color + ".png"] }
 	    		style={logoStyles} />
 	    );
 
@@ -524,7 +524,7 @@ class TrainForm extends Component {
 	    		</div>
 		    	<RetinaImage
 		    		className="create-form-plate"
-		    		src={["/assets/images/hairpiq_creator/plate-" + this.state.plate.color + ".png", "/assets/images/hairpiq_creator/2x/plate-" + this.state.plate.color + ".png"]}
+		    		src={["/images/hairpiq_creator/plate-" + this.state.plate.color + ".png", "/images/hairpiq_creator/2x/plate-" + this.state.plate.color + ".png"]}
 		    		style={plateStyles} />
 	    	</div>
 	    );
@@ -799,7 +799,7 @@ class TrainForm extends Component {
 				</div>
 
 				<Dialog
-		            title='IMPROVE HAIRPIQ® VISION'
+		            title='IMPROVE AVA VISION'
 		            actions={actions}
 		            modal={false}
 		            open={this.state.dialog.open}
@@ -807,7 +807,7 @@ class TrainForm extends Component {
 		            actionsContainerClassName="train-form-dialog"
 		            overlayClassName="admin dialog-overlay">
 		            <LinearProgress mode="indeterminate" className="progress-bar" />
-		            <p>Do you want to submit this cropped hairstyle and stylename to Vision?</p>
+		            <p>Do you want to submit this cropped hairstyle and stylename to Ava Vision?</p>
 		        </Dialog>
 
 		        <Snackbar
@@ -824,4 +824,4 @@ class TrainForm extends Component {
 
 }
 
-export default TrainForm;
+export default AvaVisionForm;

@@ -45,7 +45,7 @@ class DetailCard extends Component {
 		var _this = this;
 
 		const params = {
-			photo_url: this.proxyUrl(this.props.data.s3_url)
+			photo_url: this.props.data.s3_url
 		}
 
 		Services.hairpiqCreator.getTags(params).then(function(result) {

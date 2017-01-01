@@ -2,7 +2,6 @@
 	width:100%;
 	position: relative;
 	padding-top:15px;
-	padding-bottom: 25px;
 }
 
 .results-well-container .uk-grid {
@@ -51,6 +50,17 @@
 
 .hairpiq-data:last-child {
 	padding-bottom: 12px;
+}
+
+.results-well-container .uk-alert-success {
+   
+   border: rgba(101,159,19,.3) 2px solid;
+   text-align: center;
+
+}
+
+.results-well-container .survey-button {
+    color: #fff !important;
 }
 
 @media (min-width: 480px) and (max-width: 767px) {

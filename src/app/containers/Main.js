@@ -12,6 +12,8 @@ import InfoIcon from 'material-ui/svg-icons/action/info';
 import Modal from '../partials/Modal';
 import SearchBar from '../partials/SearchBar';
 import CreateButton from '../partials/hairpiq_creator/CreateButton';
+import SiteFooter from '../partials/SiteFooter';
+
 
 var RetinaImage = require('react-retina-image');
 
@@ -94,7 +96,7 @@ class Main extends Component {
     const logo = (
       <a
         onTouchTap={() => this.linkTo('/')}>
-        <RetinaImage className="logo" src={["/assets/images/hairpiq-site-logo.png", "/assets/images/2x/hairpiq-site-logo.png"]} />
+        <RetinaImage className="logo" src={["/images/hairpiq-site-logo.png", "/images/2x/hairpiq-site-logo.png"]} />
       </a>
     );
 
@@ -108,7 +110,12 @@ class Main extends Component {
         <IconButton iconStyle={styles.appBarIconButton} tooltip="Photos"><PhotoLibraryIcon /></IconButton>
         <IconButton iconStyle={styles.appBarIconButton} tooltip="Videos"><VideoLibraryIcon /></IconButton>
         */}
-        <IconButton iconStyle={styles.appBarIconButton} tooltip="More Info"><InfoIcon /></IconButton>
+        <IconButton
+         onTouchTap={() => this.linkTo('/info')}
+          iconStyle={styles.appBarIconButton}
+          tooltip="More Info">
+          <InfoIcon />
+        </IconButton>
       </div>
     )
 
@@ -141,8 +148,10 @@ class Main extends Component {
                 </Modal>
               )}
 
-              {this.props.location.pathname !== '/create' ?
+              {this.props.location.pathname !== '/create' || this.props.location.pathname !== '/survey'?
               <CreateButton location={this.props.location} /> : null }
+
+              <SiteFooter />
 
             </div>
 

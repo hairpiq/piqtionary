@@ -31,10 +31,10 @@ class Nav extends Component {
 			        </MenuItem>
 			        <MenuItem
 			          onTouchTap={this.props.handleClose}
-			          containerElement={<Link to="/admin/vision" />}
+			          containerElement={<Link to="/admin/ava-vision" />}
 			          leftIcon={<ImageRemoveRedEye />}
 			        >
-			          Vision
+			          Ava Vision
 			        </MenuItem>
 		      	</Drawer>
 		    </div>

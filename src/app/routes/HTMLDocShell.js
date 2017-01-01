@@ -11,7 +11,7 @@ module.exports = function(markup) {
 	        '<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0, maximum-scale=1, minimum-scale=1">',
 	        // <!-- Google Site Verification -->
 	        '<meta name="google-site-verification" content="nhsuVYUKQtmHlNyJWNzD2JLLnIKfyoQwnWRHjbUjQgg" />',
-	        '<link href="/assets/images/favicon.ico" rel="shortcut icon">',
+	        '<link href="/images/favicon.ico" rel="shortcut icon">',
 	        '<link rel="stylesheet" href="/css/styles.css"></link>',
 	        '<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">',
 	      '</head>',
@@ -31,6 +31,19 @@ module.exports = function(markup) {
 				'})();',
 		    '</script>',
 	        '<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>',
+		    //<!-- Drip -->
+			'<script type="text/javascript">',
+			  'var _dcq = _dcq || [];',
+			  'var _dcs = _dcs || {};',
+			  '_dcs.account = "8434294";',
+			  '(function() {',
+			    'var dc = document.createElement("script");',
+			    'dc.type = "text/javascript"; dc.async = true;',
+			    'dc.src = "//tag.getdrip.com/8434294.js";',
+			    'var s = document.getElementsByTagName("script")[0];',
+			    's.parentNode.insertBefore(dc, s);',
+			  '})();',
+			'</script>',
 	      	'<script type="text/javascript" src="/app.js"></script>',
 	      '</body>',
 	    '</html>'
