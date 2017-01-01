@@ -12,6 +12,8 @@ import InfoIcon from 'material-ui/svg-icons/action/info';
 import Modal from '../partials/Modal';
 import SearchBar from '../partials/SearchBar';
 import CreateButton from '../partials/hairpiq_creator/CreateButton';
+import SiteFooter from '../partials/SiteFooter';
+
 
 var RetinaImage = require('react-retina-image');
 
@@ -148,6 +150,8 @@ class Main extends Component {
 
               {this.props.location.pathname !== '/create' || this.props.location.pathname !== '/survey'?
               <CreateButton location={this.props.location} /> : null }
+
+              <SiteFooter />
 
             </div>
 
