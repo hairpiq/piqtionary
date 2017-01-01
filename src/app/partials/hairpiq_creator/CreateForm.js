@@ -472,7 +472,7 @@ class CreateForm extends Component {
 		const logo = (
 	    	<RetinaImage
 	    		className="create-form-logo"
-	    		src={["/assets/images/hairpiq_creator/logo-" + this.state.logo.color + ".png", "/assets/images/hairpiq_creator/2x/logo-" + this.state.logo.color + ".png"] }
+	    		src={["/images/hairpiq_creator/logo-" + this.state.logo.color + ".png", "/images/hairpiq_creator/2x/logo-" + this.state.logo.color + ".png"] }
 	    		style={logoStyles} />
 	    );
 
@@ -486,7 +486,7 @@ class CreateForm extends Component {
 	    		</div>
 		    	<RetinaImage
 		    		className="create-form-plate"
-		    		src={["/assets/images/hairpiq_creator/plate-" + this.state.plate.color + ".png", "/assets/images/hairpiq_creator/2x/plate-" + this.state.plate.color + ".png"]}
+		    		src={["/images/hairpiq_creator/plate-" + this.state.plate.color + ".png", "/images/hairpiq_creator/2x/plate-" + this.state.plate.color + ".png"]}
 		    		style={plateStyles} />
 	    	</div>
 	    );
