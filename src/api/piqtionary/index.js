@@ -26,7 +26,6 @@ module.exports = function(app, db) {
 		if (req.body.options !== undefined)
 			item.options = req.body.options;
 
-
 		db.collection('pending_hairpiqs').insertOne(item, function(err, result) {
 						
 			assert.equal(null, err);

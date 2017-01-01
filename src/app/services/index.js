@@ -51,9 +51,6 @@ module.exports = {
 		},
 		getTags: function(params) {
 
-			console.log('B');
-			console.log(params);
-
 			return execute('//' + config.HOSTNAME + '/api/hairpiq_creator/get_tags', params);
 
 		}

@@ -52,11 +52,6 @@ module.exports = {
     },
     getTags: function(photo_url) {
 
-        //photo_url = 'http://'+ config.HOSTNAME + photo_url;
-
-        console.log('E');
-        console.log(photo_url);
-
         console.log('Clarifai - A: get the related hairstyle tags based off of a submitted image');
 
         return new Promise(function(resolve, reject) {
@@ -71,6 +66,7 @@ module.exports = {
 
                 },
                 function (err) {
+                    
                     console.log(err);
                     identifyClarifaiError(err);
                     reject(err);
