@@ -34,7 +34,7 @@ class Info extends Component {
                  <p>And we're able to do that because of Ava Vision.</p>
                  <MobileTearSheet>
                   <div className="ava-vision-tear-sheet">
-                    <h2><ImageRemoveRedEye className="ava-vision-icon" color="#555555" />Hairpiq&reg; Ava Vision</h2>
+                    <h2>Hairpiq&reg; Ava Vision<ImageRemoveRedEye className="ava-vision-icon" color="#555555" /></h2>
                     <Divider />
                     <p>Hairpiq&reg; Ava Vision is <strong>Artifically Intelligent Hairstyle Analysis Software</strong> that enables Hairpiq to detect a hairstyle in a photograph, automatically.</p>
                     <p>Through Ava Vision, Hairpiq can provide predictive analysis on photos which leads to <strong>highly accurate suggested products, services and related capabilities</strong>.</p>
