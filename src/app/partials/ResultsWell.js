@@ -125,8 +125,8 @@ class ResultsWell extends Component {
           <div className="uk-grid uk-grid-margin" data-uk-grid-match data-uk-grid-margin>
             <div className="uk-width-medium-6-10 uk-push-2-10">
               <div className="uk-alert uk-alert-success">
-                <p>We're sorry that nothing returned, and are actively working to improve our search results</p>
-                <p>Please take a moment to tell us what you'd like to see on hairpiq.com</p>
+                <p>We're sorry that nothing returned, and are actively working to improve our search results.</p>
+                <p>Please take a moment to tell us what you'd like to see on hairpiq.com.</p>
                 <p>
                   <FlatButton
                     onTouchTap={() => this.linkTo(this.props.location.pathname)}
