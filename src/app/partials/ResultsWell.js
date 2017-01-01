@@ -4,8 +4,9 @@ import InfiniteScroll from 'react-infinite-scroller';
 import Services from '../services/';
 import ResultItem from './ResultItem';
 import CircularProgress from 'material-ui/CircularProgress';
-import {grey400} from 'material-ui/styles/colors';
-
+import {grey400, orange700} from 'material-ui/styles/colors';
+import FlatButton from 'material-ui/FlatButton';
+import { browserHistory } from 'react-router';
 
 class ResultsWell extends Component {
 
@@ -19,7 +20,16 @@ class ResultsWell extends Component {
           hasMoreItems: true,
           term: this.props.term
       };
+  }
 
+  linkTo(returnToPathname) {
+    browserHistory.push({
+        pathname: '/survey',
+        state: {
+          modal: true,
+          returnTo: returnToPathname
+        }
+    });
   }
 
   loadItems(page) {
@@ -110,6 +120,28 @@ class ResultsWell extends Component {
 
         <div className="results-well-container">
 
+          {this.props.term.length > 0 && items.length === 0 ?
+
+          <div className="uk-grid uk-grid-margin" data-uk-grid-match data-uk-grid-margin>
+            <div className="uk-width-medium-6-10 uk-push-2-10">
+              <div className="uk-alert uk-alert-success">
+                <p>We're sorry that nothing returned, and are actively working to improve our search results</p>
+                <p>Please take a moment to tell us what you'd like to see on hairpiq.com</p>
+                <p>
+                  <FlatButton
+                    onTouchTap={() => this.linkTo(this.props.location.pathname)}
+                    className="survey-button"
+                    label="Tell Us"
+                    backgroundColor={orange700}
+                    hoverColor="#faba79"
+                    rippleColor="#ffffff" />
+                </p>
+              </div>
+            </div>
+          </div>
+
+          :
+
           <InfiniteScroll
               pageStart={0}
               loadMore={this.loadItems.bind(this)}
@@ -120,6 +152,8 @@ class ResultsWell extends Component {
                   {items}
               </div>
           </InfiniteScroll>
+
+          }
         
         </div>
 
