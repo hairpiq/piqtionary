@@ -202,6 +202,9 @@ class CreateForm extends Component {
 		let crop_type = ($('.cropper img')[0].naturalWidth === 1080 && $('.cropper img')[0].naturalHeight === 1350 ? 'fill' : 'crop');
 		let croppedImage = this.refs.cropper.crop();
 		let croppedValues = this.refs.cropper.values();
+
+		console.log('A');
+		console.log('crop_type: ' + crop_type);
 		
 		this.setState({
 			cropper: {

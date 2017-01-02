@@ -90,3 +90,51 @@
 	display: none;
 }
 
+.detail-card .ava-vision-dialog {
+	margin:0 auto;
+}
+
+.ava-vision-dialog .message-bubble {
+	border: 1px solid #BDBDBD !important;
+	border-radius: 15px;
+	padding:10px;
+	display:inline-block;
+	position:relative;
+	border-bottom-right-radius: 10px;
+}
+
+.ava-vision-dialog .message-bubble:after,
+.ava-vision-dialog .message-bubble:before {
+	left: 100%;
+	top: 64%;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+}
+
+.ava-vision-dialog .message-bubble:after {
+	border-color: rgba(255, 255, 255, 0);
+	border-left-color: #ffffff;
+	border-width: 5px;
+	margin-top: -5px;
+}
+
+.ava-vision-dialog .message-bubble:before {
+	border-color: rgba(102, 102, 102, 0);
+	border-left-color: #909090;
+	border-width: 6px;
+	margin-top: -6px;
+}
+
+.ava-vision-dialog .progress {
+	margin-right: 5px;
+}
+
+.ava-vision-dialog .message-author {
+	display:inline-block;
+	margin-left: 10px;
+}
+
