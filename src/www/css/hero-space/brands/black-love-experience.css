@@ -1,7 +1,13 @@
+.hero-space .uk-accordion-title:first-child {
+	background: #804774;
+    color: #fff;
+}
+
 .brands.black-love-experience {
 	background: #6f3764;
 	padding: 50px 0;
 	text-align: center;
+	border-radius: 5px;
 }
 
 .brands.black-love-experience p {

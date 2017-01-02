@@ -53,8 +53,10 @@
 
 .results-well-container .uk-alert-success {
    
-   border: rgba(101,159,19,.3) 2px solid;
-   text-align: center;
+	text-align: center;
+	border-radius: 2px;
+	border: 1px solid #ded9d9;
+	padding:25px;
 
 }
 
