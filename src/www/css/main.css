@@ -10,6 +10,13 @@ body {
 	min-height: 100%;
 }
 
+a {
+	color: #ab6817;
+}
+a:hover {
+	color: #885211;
+}
+
 .main .app_bar {
 	background: #ffffff !important;
 }
