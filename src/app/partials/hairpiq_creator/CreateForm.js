@@ -63,7 +63,8 @@ class CreateForm extends Component {
 	        snackbar: {
 				open: false
 			},
-			isApplyToggled: true
+			isApplyToggled: true,
+			download_url: ''
 		}
 
 		// Cropper methods
@@ -413,6 +414,7 @@ class CreateForm extends Component {
 
 			_this.setFinished(true);
 			_this.setState({
+					download_url: _this.proxyUrl(result.s3_url), 
 					snackbar: {
 			        open: true,
 			    }
@@ -644,6 +646,8 @@ class CreateForm extends Component {
 						handleDialog={() => this.handleDialog()}
 						finished={this.state.finished}
 						setFinished={this.setFinished}
+
+						download_url={this.state.download_url}
 					 />
 
 				</div>
