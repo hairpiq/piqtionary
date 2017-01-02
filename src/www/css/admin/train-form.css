@@ -1,0 +1,120 @@
+.fixed-train-form-width {
+	width: 768px;
+}
+
+.main-container.fixed-train-form-width {
+    margin: 0 auto;
+}
+
+.main-container.fixed-train-form-width .train-form {
+    background: #ffffff;
+}
+
+.train-form:after {
+
+	content: "";
+    display: block;
+    clear: both;
+}
+
+.train-form .left-col {
+	width:60%;
+	float: left;
+}
+
+.train-form .right-col {
+	width:40%;
+	float: left;
+}
+
+.train-form .photo {
+	width:100%;
+	min-height: 350px;
+	padding-top: 20px;
+    display: flex;
+    align-items: center;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    position: relative;
+}
+
+.train-form .train-tabs {
+	margin: 20px;
+}
+
+.train-form .dropzone {
+	margin: 0 auto;
+	width: 100%;
+	height: 350px;
+	padding: 10px;
+	border-width: 2px;
+	border-color: rgb(102, 102, 102);
+	border-style: dashed;
+	border-radius: 5px;
+	display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+}
+
+.train-form .dropzone p {
+	margin: 0;
+    font-size: 26px;
+    line-height: 40px;
+    padding: 0 20px;
+}
+
+.train-form .loader {
+	margin: 0 auto;
+	width: 420px;
+	height: 200px;
+	display: flex;
+    align-items: center;
+    text-align: center;
+}
+
+.train-form .loader > div {
+	margin: 0 auto;
+}
+
+.train-form .cropper.unloaded {
+    position: absolute;
+    top: 0;
+}
+
+.train-form .cropper img {
+    max-width: none;
+}
+
+.train-form .photo.cropped-image {
+	padding: 20px;
+}
+
+/* nav-stepper step indicator graphic should render larger */
+.train-form .nav-stepper > div > div > div > span > span {
+    width: 34px !important;
+}
+
+.train-form .nav-stepper button {
+	margin-right: 15px !important;
+}
+
+.train-form .crop-button,
+.train-form .submit-button {
+    margin-top: 20px !important;
+}
+
+.train-form .uk-alert-warning,
+.train-form .uk-alert-danger {
+    padding: 10px;
+}
+
+.train-form-dialog.disabled {
+    pointer-events: none;
+}
+
+.train-form .uk-alert-warning p:last-child,
+.train-form .uk-alert-danger p:last-child {
+    margin-bottom: 0;
+}
+

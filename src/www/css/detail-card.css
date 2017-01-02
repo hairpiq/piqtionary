@@ -1,103 +1,140 @@
-.detail-card-container {
-	margin-top:75px;
-	width:100%;
-	background:#f5f5f5;
-	border-top:1px solid #e0e0e0;
-	position: relative;
-	padding-bottom:50px;
-}
-
-
 .detail-card {
-	margin-top:-70px;
+	padding-top: 40px;
+	background: #ffffff;
 }
 
-.data-column {
-	position: relative;
+.detail-card:after {
+
+	content: "";
+    display: block;
+    clear: both;
 }
 
-.detail-card .data {
-	padding: 20px 20px 0;
+.detail-card .left-col {
+	width:60%;
+	float: left;
 }
 
-.detail-card .title {
+.detail-card .right-col {
+	width:40%;
+	float: left;
+
+}
+
+.modal .detail-card {
+    padding-top: 0;
+    border-radius: 5px;
+}
+
+.modal .detail-card .right-col {
+	overflow-y: scroll;
+}
+
+.detail-card .photo {
+	width:100%;
+	min-height: 350px;
+	padding: 20px;
+    background: #f5f5f5;
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.modal .detail-card .photo {
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+.detail-card .detail-info {
+	margin: 0 auto;
+	width:100%;
+	height: auto;
+	outline: none;
+	padding-top: 20px;
+}
+
+.detail-card .data-container {
+	padding:15px 25px;
+}
+
+.detail-card .data-container .title {
 	color: #9E9E9E;
-	font-size:85%;
-}
-
-.detail-card .text {
-	margin-bottom:10px;
 	font-size: 90%;
 }
 
-.detail-card .text:last-child {
+.detail-card .data-container .text {
+	margin-bottom:10px;
+}
+
+.detail-card .data-container .text:last-child {
 	margin-bottom:0;
 }
 
-.detail-card .chip {
+.detail-card .data-container .tag-cloud a {
+	cursor: pointer !important;
+}
+
+.detail-card .data-container .chip {
 	display: inline-block !important;
 	margin-right: 5px !important;
 	margin-bottom: 5px !important;
+	cursor: pointer !important;
 }
 
-.detail-card .tertiary {
-	background: #F5F5F5;
-	padding-bottom:20px;
+.detail-card hr {
+	border-top: 1px solid #ddd !important;
+	background: none !important;
 }
 
-.detail-card .button {
-	min-width: auto !important;
-	width: 21% !important;
-    height: 60px !important;
-    padding: 10px 10px 0 !important;
-    margin-right:10px !important;
+.detail-card hr.unloaded {
+	display: none;
 }
 
-.detail-card .button:last-child {
-	margin-right: 0 !important;
+.detail-card .ava-vision-dialog {
+	margin:0 auto;
 }
 
-.button.download {
-	background: #F57C00;
+.ava-vision-dialog .message-bubble {
+	border: 1px solid #BDBDBD !important;
+	border-radius: 15px;
+	padding:10px;
+	display:inline-block;
+	position:relative;
+	border-bottom-right-radius: 10px;
 }
 
-.button.download svg {
-	height: 100% !important;
-    width: 100% !important;
+.ava-vision-dialog .message-bubble:after,
+.ava-vision-dialog .message-bubble:before {
+	left: 100%;
+	top: 64%;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
 }
 
-.button.tumblr {
-	padding: 10px 13px 0 !important;
+.ava-vision-dialog .message-bubble:after {
+	border-color: rgba(255, 255, 255, 0);
+	border-left-color: #ffffff;
+	border-width: 5px;
+	margin-top: -5px;
 }
 
-@media (min-width:768px) {
-	.detail-card .tertiary {
-		position: absolute;
-	    left: 0;
-	    right: 0;
-	    bottom: 0;
-	}
+.ava-vision-dialog .message-bubble:before {
+	border-color: rgba(102, 102, 102, 0);
+	border-left-color: #909090;
+	border-width: 6px;
+	margin-top: -6px;
 }
 
-@media (min-width:768px) and (max-width:959px) {
-	.detail-card .button {
-		width: 21% !important;
-    	height: 45px !important;
-    	padding: 3px 8px 0 !important;
-	}
-
-	.button.tumblr {
-		padding: 3px 10px 0 !important;
-	}
+.ava-vision-dialog .progress {
+	margin-right: 5px;
 }
 
-@media (min-width:960px) {
-	.detail-card .button {
-		width: 60px !important;
-    	height: 60px !important;
-	}
-
-	.button.tumblr {
-		padding: 12px 13px 0 !important;
-	}
+.ava-vision-dialog .message-author {
+	display:inline-block;
+	margin-left: 10px;
 }
+

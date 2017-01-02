@@ -1,22 +1,29 @@
 require('dotenv').config();
 var config = process.env;
 var Clarifai = require("clarifai");
+
+require('es6-promise').polyfill();
+var Q = require("q");
 var api = new Clarifai.App(
     config.CLARIFAI_CLIENT_ID,
     config.CLARIFAI_CLIENT_SECRET
 );
 
 module.exports = {
-    validate: function(photo_url) {
-        // check if safe for work
-        // if not
-            // return false
-        // if so
-        // check if man or woman
-        // if not
-            // return false
-        // if so
-            // return true
+   validate: function(photo_url) {
+        
+        return new Promise(function(resolve, reject) {
+            
+            Q.all([validateNSFW(photo_url), validatePictureSubject(photo_url)]).then(function(result) {
+               
+               var result = (result[0] && result[1]);
+
+               resolve(result);
+
+            });
+
+        });
+
     },
     predict: function(photo_url) {
 
@@ -29,67 +36,111 @@ module.exports = {
                     console.log('Clarifai - B: predicted...');
                     
                     result =  getTopRatedTagHandler(result);
-                    console.log(result);
 
                     resolve(result);
 
                 },
                 function (err) {
-                    
+                    console.log(err);
                     identifyClarifaiError(err);
-                    reject(new Error(err));
+                    reject(err);
 
                 }
             );
         });
 
     },
-    insert: function(photo_url, stylename, ig_username) {
+    getTags: function(photo_url) {
 
-        console.log('Clarifai - A: insert hairpiq and stylename concept into clarifai');
-        
+        console.log('Clarifai - A: get the related hairstyle tags based off of a submitted image');
+
         return new Promise(function(resolve, reject) {
 
-            var concept = stylename.replace(/ /g,'').toLowerCase();
+            api.models.predict(config.CLARIFAI_MODEL_ID, photo_url).then(function (result) {
+                    
+                    console.log('Clarifai - B: tags retreived...');
+                    
+                    result =  getTags(result);
 
+                    resolve(result);
+
+                },
+                function (err) {
+                    
+                    console.log(err);
+                    identifyClarifaiError(err);
+                    reject(err);
+
+                }
+            );
+        });
+
+    },
+    insert: function(base64, stylename) {
+
+        console.log('Clarifai - A: insert hairpiq and stylename concept into clarifai');
+
+        return new Promise(function(resolve, reject) {
+            
             api.inputs.create({
-                url: photo_url,
-                concepts: [{id: concept, value: true }]
+                base64: base64,
+                concepts: [{id: stylename, value: true }]
             }).then(function(result) {
 
-                console.log('Clarifai - B: inserted. Now train model: ' + config.model_id);
+                console.log('Clarifai - B: inserted. Now train model: ' + config.CLARIFAI_MODEL_ID);
                 
-                console.log(result);
-
-                api.models.train(config.model_id).then(function(result) {
+                api.models.train(config.CLARIFAI_MODEL_ID).then(function(result) {
 
                     console.log('Clarifai - C: trained.');
-                    
-                    resolve(response);
 
-                },function(err) {
-                    
-                    console.error(err);
-                    reject(new Error(err));
+                    resolve(result);
 
+                }).catch(function(error) {
+                    console.log(error.status, error.statusText);
                 });
-
-            },
-            function(err) {
-                
-                console.error(err);
-                reject(new Error(err));
-
+            }).catch(function(error) {
+                console.log(error.status, error.statusText);
             });
 
         });
-    },
+
+    }
+}
+
+
+function validateNSFW(photo_url){
+     return new Promise(function(resolve, reject) {
+            api.models.predict(Clarifai.NSFW_MODEL, photo_url).then(function (response) {
+                    var results =  determineWhatNSFW(response);
+                    resolve(results);
+                },
+                function (err) {
+                    identifyClarifaiError(err);
+                    reject(new Error(err));
+                }
+            );
+        });
+}
+
+function validatePictureSubject(photo_url){
+     return new Promise(function(resolve, reject) {
+            api.models.predict(Clarifai.GENERAL_MODEL, photo_url).then(function (response) {
+                    var results =  determineIfPictureSubjectQualifies(response);
+                    resolve(results);
+                },
+                function (err) {
+                    identifyClarifaiError(err);
+                    reject(new Error(err));
+                }
+            );
+        });
 }
 
 
 function getTopRatedTagHandler(response) {
     var maxValue = 0;
     var maxRecord = {};
+
     response.data.outputs.forEach(function (output) {
         //console.log(output.data.concepts);
         output.data.concepts.forEach(function (tag) {
@@ -102,7 +153,53 @@ function getTopRatedTagHandler(response) {
         });
 
     });
+    
     return maxRecord;
+}
+
+function getTags(response) {
+    
+    var tags = [];
+    
+    response.data.outputs.forEach(function (output) {
+
+        output.data.concepts.map((concept, i) => {
+
+            tags.push({ name: concept.name });
+
+        });
+
+    });
+
+    return tags;
+}
+
+
+function determineIfPictureSubjectQualifies(response) {
+    var status = false;
+    response.data.outputs.forEach(function (output) {
+        output.data.concepts.forEach(function (tag) {
+            if (tag.name === 'man' || tag.name === 'woman' || tag.name === 'adult' || tag.name === 'portrait' || tag.name === 'headshot') {
+                status = true;
+                return status;
+            }
+        });
+    });
+    return status;
+}
+
+function determineWhatNSFW(response) {
+    var status = false;
+
+    response.data.outputs.forEach(function (output) {
+        output.data.concepts.forEach(function (tag) {
+            if (tag.name === 'sfw' &&  Math.ceil(tag.value * 100) > 95) {
+                status = true;
+                return status;
+            }
+        });
+    });
+    return status;
 }
 
 function identifyClarifaiError(err) {
