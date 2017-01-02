@@ -31,6 +31,8 @@ module.exports = function(markup) {
 				'})();',
 		    '</script>',
 	        '<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>',
+	        '<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/uikit/2.27.2/js/core/core.js"></script>',
+	        '<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/uikit/2.27.2/js/components/accordion.js"></script>',
 		    //<!-- Drip -->
 			'<script type="text/javascript">',
 			  'var _dcq = _dcq || [];',

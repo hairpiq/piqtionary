@@ -1,0 +1,31 @@
+.brands.black-love-experience {
+	background: #6f3764;
+	padding: 50px 0;
+	text-align: center;
+	position: relative;
+}
+
+.brands.black-love-experience p {
+	color: #ebc6c8;
+	font-family: Montserrat;
+	font-size: 130%;
+    letter-spacing: -1px;
+}
+
+.brands.black-love-experience span {
+	color: #ffffff;
+}
+
+.brands.black-love-experience .black-love-experience-logo {
+	width: 210px;
+}
+
+.brands.black-love-experience .black-love-experience-button {
+	width: 180px;
+}
+
+.brands.black-love-experience iframe {
+	position: relative !important;
+	width: 100% !important;
+	height: 245px !important;
+}
