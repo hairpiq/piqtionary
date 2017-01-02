@@ -202,9 +202,6 @@ class CreateForm extends Component {
 		let crop_type = ($('.cropper img')[0].naturalWidth === 1080 && $('.cropper img')[0].naturalHeight === 1350 ? 'fill' : 'crop');
 		let croppedImage = this.refs.cropper.crop();
 		let croppedValues = this.refs.cropper.values();
-
-		console.log('A');
-		console.log('crop_type: ' + crop_type);
 		
 		this.setState({
 			cropper: {
@@ -389,7 +386,7 @@ class CreateForm extends Component {
 			stylename: this.state.stylename,
 			ig_username: this.state.ig_username,
 			options: {
-				crop_type: this.state.crop_type,
+				crop_type: this.state.cropper.crop_type,
 				crop_data: this.state.cropper.values
 			},
 			add_to_pending_requests: true
@@ -509,7 +506,6 @@ class CreateForm extends Component {
 							// show cropped image
 					*/}
 						
-					
 					{this.state.cropper.image !== undefined ?
 					
 					<div className="photo">
