@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { render } from 'react-dom';
 import Helmet from 'react-helmet';
 import AvaVisionForm from '../../partials/admin/ava-vision/AvaVisionForm';
+import ImageRemoveRedEye from 'material-ui/svg-icons/image/remove-red-eye';
 
 class AvaVision extends Component {
 
@@ -42,7 +43,7 @@ class AvaVision extends Component {
         />
 
         <div className="intro">
-          <h1>Hairpiq&reg; Ava Vision</h1>
+          <h1>Hairpiq&reg; Ava Vision <ImageRemoveRedEye className="ava-vision-icon" color="#555555"/></h1>
           <p>Use the below form to improve Ava Vision!</p>
           <p>Use the crop tool to isolate only the hairstyle part of the photo.</p>
           <p>When complete, press the <strong>Submit</strong> button.</p>
