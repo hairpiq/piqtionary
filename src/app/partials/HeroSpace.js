@@ -6,7 +6,7 @@ import Accordion from './Accordion';
 var RetinaImage = require('react-retina-image');
 import IconButton from 'material-ui/IconButton';
 import NavigationClose from 'material-ui/svg-icons/navigation/close';
-var Iframe = require("./customized_node_modules/react-iframe");
+var Iframe = require("../../../customized_node_modules/react-iframe-for-youtube");
 
 class HeroSpace extends Component {
 
@@ -14,23 +14,31 @@ class HeroSpace extends Component {
 		super();
 
 		this.state = {
-			open: true
+			open: false
 		}
 
 		this.handleToggle = this.handleToggle.bind(this);
+		this.openLiveSite = this.openLiveSite.bind(this);
 	}
 
 	handleToggle = () => this.setState({open: !this.state.open});
+	
+	handleClose = () => {
+
+		$('.uk-accordion-title.uk-active').click();
+		this.setState({open: false });
+
+	}
 
 	componentDidMount() {
 
-		let _this = this;
+		this.handleClose();
 
-		$('.uk-accordion').on('toggle.uk.accordion', function(e) {
-		
-			_this.handleToggle();
-		
-		});
+	}
+
+	openLiveSite(url) {
+    
+		window.open(url, "_blank");
 
 	}
 	
@@ -44,6 +52,7 @@ class HeroSpace extends Component {
 	              	className="close-accordion"
 	              	disableTouchRipple={true}
 	              	touch={true}
+	              	onTouchTap={() => this.handleClose()}
 	              	>
 	                <NavigationClose color="#ffffff" />
 	              </IconButton>
@@ -60,10 +69,13 @@ class HeroSpace extends Component {
 					
 					<div className="uk-grid" data-uk-grid-match>
 	                
-						<div className="uk-width-medium-3-10">
+						<div className="uk-width-medium-4-10">
 
 							<p>
-								<RetinaImage className="black-love-experience-logo" src={["/images/hero-space/brands/black-love-experience/logo.png", "/images/hero-space/brands/black-love-experience/2x/logo.png"]} />
+								<a
+        							onTouchTap={() => this.openLiveSite('https://blacklove.splashthat.com/')}>
+									<RetinaImage className="black-love-experience-logo" src={["/images/hero-space/brands/black-love-experience/logo.png", "/images/hero-space/brands/black-love-experience/2x/logo.png"]} />
+								</a>
 							</p>
 							<p>Feb 18 2017 @ 7pm</p>
 							<RaisedButton
@@ -71,16 +83,17 @@ class HeroSpace extends Component {
 				                label="Buy Tickets"
 				                labelColor="#210a09"
 				                backgroundColor="#f7e6ea"
+				                onTouchTap={() => this.openLiveSite('https://blacklove.splashthat.com/')}
 				                />
 				            <p>Use Code <span>SANKBLKLV</span> for <span>$10 Off</span> General Admission</p>
 						</div>
 
-						<div className="uk-width-medium-6-10 uk-push-1-10">
+						<div className="uk-width-medium-6-10">
 
 							<Paper>
 
 								<Iframe
-									url="https://www.youtube.com/embed/T7ss5gON6Kk"
+									url="//www.youtube.com/embed/T7ss5gON6Kk"
 									width='560px'
 									height='315px' />
 
