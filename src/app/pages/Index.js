@@ -18,7 +18,7 @@ class Index extends Component {
 
         <HeroSpace />
 
-        <div className="uk-grid uk-grid-margin">
+        <div className="uk-grid">
 
           <div className="uk-width-medium-10-10">
         

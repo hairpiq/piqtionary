@@ -2,7 +2,6 @@
 	background: #6f3764;
 	padding: 50px 0;
 	text-align: center;
-	position: relative;
 }
 
 .brands.black-love-experience p {
@@ -28,4 +27,8 @@
 	position: relative !important;
 	width: 100% !important;
 	height: 245px !important;
+}
+
+.brands.black-love-experience .uk-width-medium-6-10 {
+	padding-right:25px;
 }
