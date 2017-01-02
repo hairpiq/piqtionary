@@ -148,7 +148,7 @@ class Main extends Component {
                 </Modal>
               )}
 
-              {this.props.location.pathname !== '/create' || this.props.location.pathname !== '/survey'?
+              {this.props.location.pathname !== '/create' && this.props.location.pathname !== '/survey' ?
               <CreateButton location={this.props.location} /> : null }
 
               <SiteFooter />

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
-import {green600, grey300, grey400, grey900} from 'material-ui/styles/colors';
+import {green600, grey300, grey400, grey900, orange700} from 'material-ui/styles/colors';
 import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -283,20 +283,37 @@ class NavStepper extends Component {
 			          </Step>
 			        </Stepper>
 		        {finished && (
-		          <p style={{margin: '20px 0', textAlign: 'center'}}>
-		            <a
-		              href="#"
-		              onTouchTap={(event) => {
-		                event.preventDefault();
-		                this.props.clearImage();
-		                this.props.clearInfo();
-		                this.props.setFinished(false);
-		                this.setState({stepIndex: 0});
-		              }}
-		            >
-		              Click here
-		            </a> to create a new hairpiq.
-		          </p>
+
+		        	<div>
+		        		<a style={{margin: '20px 0 0 35px', textAlign: 'center'}}
+		        			href={this.props.download_url}
+		        			target="_blank"
+		        			download
+		        			>
+		        		<FlatButton
+							className="button download"
+							label="Download Hairpiq"
+							backgroundColor={orange700}
+							hoverColor="#faba79"
+					      	target="_blank"
+					      	icon={<FontIcon color="#ffffff" className="icon-download" />}
+						    />
+						</a>
+						<p style={{margin: '20px 0', textAlign: 'center'}}>
+							<a
+							  href="#"
+							  onTouchTap={(event) => {
+							    event.preventDefault();
+							    this.props.clearImage();
+							    this.props.clearInfo();
+							    this.props.setFinished(false);
+							    this.setState({stepIndex: 0});
+							  }}
+							>
+							  Click here
+							</a> to create a new hairpiq.
+						</p>
+		          </div>
 		        )}
 		      	</div>
 
