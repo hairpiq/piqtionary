@@ -10,6 +10,7 @@ import {orange700} from 'material-ui/styles/colors';
 import ShareMenu from './ShareMenu';
 import RelatedItems from './RelatedItems';
 import Services from '../services/';
+import CircularProgress from 'material-ui/CircularProgress';
 
 class DetailCard extends Component {
 
@@ -50,13 +51,19 @@ class DetailCard extends Component {
 
 		Services.hairpiqCreator.getTags(params).then(function(result) {
 
-			$('.detail-card hr').removeClass('unloaded');
-
 			_this.setState({
 			  	tags: result
 			});
 
 		});
+
+	}
+
+	componentWillReceiveProps(nextProps) {
+
+		this.setState({
+			tags: []
+		})
 
 	}
 
@@ -76,12 +83,21 @@ class DetailCard extends Component {
 	        );
 	    });
 
+	     const ava_dialog = (
+	     	<div className="ava-vision-dialog">
+    			<div className="message-bubble">
+    				<CircularProgress className="progress" size={20} /> analyzing hair...
+    			</div>
+    			<div className="message-author">Ava</div>
+    		</div>
+    		)
+
 	    const tags = (
 	    	<div>
 		    	<div className="data-container tag-cloud">
-		    		{tag_links}
+		    		{tag_links.length > 0 ? tag_links : ava_dialog}
 		    	</div>
-		    	<Divider className='unloaded' />
+		    	<Divider />
 	    	</div>
 	    )
 		
