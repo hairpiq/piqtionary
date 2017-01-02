@@ -1,0 +1,32 @@
+.hero-space {
+	margin-top: 40px;
+}
+
+.hero-space.open .uk-container.uk-container-center {
+	padding: 0;
+}
+
+.hero-space .uk-accordion-title {
+	text-align: center;
+    text-decoration: underline;
+    margin-top: 25px;
+}
+
+.hero-space .uk-accordion-title.uk-active {
+	margin-top: 0;
+}
+
+.hero-space .uk-accordion-content {
+	padding: 0;
+}
+
+.hero-space .uk-accordion-content .uk-grid {
+	max-width: 768px;
+	margin: 0 auto;
+}
+
+.hero-space .close-button {
+	position: absolute;
+	top: 25px;
+	right: 25px;
+}
