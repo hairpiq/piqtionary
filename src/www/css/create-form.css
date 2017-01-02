@@ -126,8 +126,7 @@
 	margin-right: 15px !important;
 }
 
-.create-form .adjust-crop-button,
-.create-form .submit-button {
+.create-form .adjust-crop-button {
     margin-top: 20px !important;
 }
 
@@ -169,5 +168,10 @@
 
 .create-form .uk-alert-danger {
     padding: 10px;
+}
+
+.create-form .download.button {
+    color: #ffffff !important;
+    margin: 20px 0 0 35px !important;
 }
 
