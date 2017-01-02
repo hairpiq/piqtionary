@@ -110,9 +110,9 @@ class HeroSpace extends Component {
 		let accordionsData = {
 			_id: '507f191e810c19729de860ea',
 			options: {
-				showFirst: false,
+				showFirst: this.state.open,
 				collapse: true,
-				animate: true
+				animate: false
 			},
 			data: [{
 				title: 'Buy Tickets to the Black Love Experience',
