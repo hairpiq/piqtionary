@@ -39,6 +39,10 @@
 	right: 0;
 }
 
+.no-hero-space {
+	margin-top: 60px;
+}
+
 @media (min-width: 960px) {
 	.hero-space .close-button {
 		top: 25px;
