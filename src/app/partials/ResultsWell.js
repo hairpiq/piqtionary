@@ -7,6 +7,7 @@ import CircularProgress from 'material-ui/CircularProgress';
 import {grey400, orange700} from 'material-ui/styles/colors';
 import FlatButton from 'material-ui/FlatButton';
 import { browserHistory } from 'react-router';
+import Paper from 'material-ui/Paper';
 
 class ResultsWell extends Component {
 
@@ -124,19 +125,21 @@ class ResultsWell extends Component {
 
           <div className="uk-grid uk-grid-margin" data-uk-grid-match data-uk-grid-margin>
             <div className="uk-width-medium-6-10 uk-push-2-10">
-              <div className="uk-alert uk-alert-success">
-                <p>We're sorry that nothing returned, and are actively working to improve our search results.</p>
-                <p>Please take a moment to tell us what you'd like to see on hairpiq.com.</p>
-                <p>
-                  <FlatButton
-                    onTouchTap={() => this.linkTo(this.props.location.pathname)}
-                    className="survey-button"
-                    label="Tell Us"
-                    backgroundColor={orange700}
-                    hoverColor="#faba79"
-                    rippleColor="#ffffff" />
-                </p>
-              </div>
+              <Paper>
+                <div className="uk-alert uk-alert-success">
+                  <p>We're sorry that nothing returned, and are actively working to improve our search results.</p>
+                  <p>Please take a moment to tell us what you'd like to see on hairpiq.com.</p>
+                  <p>
+                    <FlatButton
+                      onTouchTap={() => this.linkTo(this.props.location.pathname)}
+                      className="survey-button"
+                      label="Tell Us"
+                      backgroundColor={orange700}
+                      hoverColor="#faba79"
+                      rippleColor="#ffffff" />
+                  </p>
+                </div>
+              </Paper>
             </div>
           </div>
 
