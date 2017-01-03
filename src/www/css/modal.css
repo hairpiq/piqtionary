@@ -39,3 +39,18 @@
     position: relative !important;
 }
 
+@media(max-width: 767px) {
+    .modal .nav .button {
+        width: 20px;
+        top:190px;
+    }
+
+    .modal .nav .button.next {
+        right: -20px;
+    }
+
+    .modal .nav .button.before {
+        left: -20px;
+    }
+}
+
