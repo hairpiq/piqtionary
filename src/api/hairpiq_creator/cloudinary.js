@@ -117,17 +117,22 @@ function addTransformations(obj) {
 		// compensate for percentage difference between original photo
 		// and user crop tool
 
-		let hairpiq_width = 1080;
-		let viewport_width = 420;
 		
+		
+		// first, normalize image width to client's width
 		transformations.push({
-			width: viewport_width
+			width: obj.options.client_width
 		});
 		
+		// next, crop out the identified portion of the image
 		let crop_data = obj.options.crop_data;
-		crop_data.crop = obj.options.crop_type; 
+		crop_data.crop = obj.options.crop_type;
 		transformations.push(crop_data);
 
+		// lastly, scale image to prefered hairpiq width of 1080
+		// an aspect ratio of "4:5" will scale to the preferred height to 1350
+
+		let hairpiq_width = 1080;
 		transformations.push({
 			width: hairpiq_width,
 			aspect_ratio: '4:5',

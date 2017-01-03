@@ -43,6 +43,14 @@
 	margin-top: 60px;
 }
 
+@media (max-width: 767px) {
+
+	.hero-space,
+	.no-hero-space {
+    	margin-top: -25px;
+  	}
+}
+
 @media (min-width: 960px) {
 	.hero-space .close-button {
 		top: 25px;

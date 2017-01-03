@@ -54,9 +54,17 @@
 }
 
 @media (max-width: 767px) {
+
   .search-bar-container {
-  	margin-left: 5%;
-  	position: relative;
+    position: absolute;
+    left: 60px;
+  	right: 10px;
+    top: 10px;
+  }
+
+  .search-button {
+    right: 0 !important;
+    min-width: 50px !important;
   }
 
   .react-autosuggest__input  {

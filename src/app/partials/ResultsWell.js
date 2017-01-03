@@ -19,7 +19,8 @@ class ResultsWell extends Component {
           hairpiqs: [],
           page_num: 0,
           hasMoreItems: true,
-          term: this.props.term
+          term: this.props.term,
+          result_status: ''
       };
   }
 
@@ -51,13 +52,14 @@ class ResultsWell extends Component {
 
 
     Services.getList(params).then(function(result) {
-      
+
       if(result.length > 0) {
         result.map((hairpiq) => {
           
             hairpiqs.push(hairpiq);
           
           });
+
 
         _this.setState({
           hairpiqs: hairpiqs,
@@ -69,9 +71,23 @@ class ResultsWell extends Component {
         });
       }
 
+      let result_status = (_this.state.hairpiqs.length === 0 && result.length === 0 ? 'none' : 'results-found');
+      _this.setState({
+        result_status: result_status
+      });   
+
     }).catch(function(error) {
       console.log(error);
     });
+  }
+
+  componentWillReceiveProps(nextProps) {
+
+
+    this.setState({
+        result_status: ''
+      });
+
   }
 
   // resetting the state forces the InfiniteScroll Component to re-render
@@ -82,7 +98,8 @@ class ResultsWell extends Component {
       hairpiqs: [],
       page_num: 0,
       hasMoreItems: true,
-      term: term
+      term: term,
+      result_status: ''
     });
   }
 
@@ -121,7 +138,7 @@ class ResultsWell extends Component {
 
         <div className="results-well-container">
 
-          {this.props.term.length > 0 && items.length === 0 ?
+          {this.state.result_status === 'none' ?
 
           <div className="uk-grid uk-grid-margin" data-uk-grid-match data-uk-grid-margin>
             <div className="uk-width-medium-6-10 uk-push-2-10">

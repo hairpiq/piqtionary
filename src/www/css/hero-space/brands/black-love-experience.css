@@ -38,3 +38,13 @@
 .brands.black-love-experience .uk-width-medium-6-10 {
 	padding-right:25px;
 }
+
+@media (max-width: 767px) {
+	.brands.black-love-experience .uk-width-medium-4-10 {
+		padding: 10px 10px 30px;
+	}
+
+	.brands.black-love-experience .black-love-experience-button {
+		margin-bottom: 5px;
+	}
+}
