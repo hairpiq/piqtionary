@@ -166,5 +166,28 @@
 		margin: 0px -25px;
     	text-align: center;
 	}
+
+	.detail-info {
+		padding-top: 0;
+	}
+
+	.detail-card .photo {
+		padding: 0;
+	}
+
+	.detail-card img {
+		
+		border-top-left-radius: 2px;
+    	border-top-right-radius: 2px;
+    	
+	}
+
+	.detail-info .stylename-mobile-col,
+	.detail-info .credit-mobile-col {
+		display:inline-block;
+		width:50%;
+		word-break: break-all;
+		vertical-align: top;
+	}
 }
 
