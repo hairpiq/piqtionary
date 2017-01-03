@@ -76,7 +76,7 @@ class DetailCard extends Component {
 	      this.state.tags.map((tag, i) => {
 	        tag_links.push(
 	            
-	            <a key={i} onTouchTap={() => this.linkTo('/search?=q' + tag.name.replace('-', '%20') )}>
+	            <a key={i} onTouchTap={() => this.linkTo('/search?q=' + tag.name.replace('-', '%20') )}>
 	            	<Chip className="chip">{tag.name.replace('-', ' ')}</Chip>
 	            </a>
 
