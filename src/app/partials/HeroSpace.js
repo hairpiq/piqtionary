@@ -25,8 +25,18 @@ class HeroSpace extends Component {
 	
 	handleClose = () => {
 
-		$('.uk-accordion-title.uk-active').click();
-		this.setState({open: false });
+		let _this = this;
+
+		$('.close-accordion').addClass('disabled');
+
+		setTimeout(function() {
+
+			$('.close-accordion').removeClass('disabled');
+
+			$('.uk-accordion-title.uk-active').click();
+			_this.setState({open: false });
+
+		},10);
 
 	}
 
@@ -52,6 +62,7 @@ class HeroSpace extends Component {
 	              	className="close-accordion"
 	              	touch={true}
 	              	onTouchTap={() => this.handleClose()}
+	              	disableTouchRipple={true}
 	              	>
 	                <NavigationClose color="#ffffff" />
 	              </IconButton>
@@ -114,7 +125,7 @@ class HeroSpace extends Component {
 				animate: false
 			},
 			data: [{
-				title: 'Buy Tickets to the Black Love Experience',
+				title: 'Get $10 Off The Black Love Experience',
 				content: black_love_experience_content
 			},
 			/*{
