@@ -102,7 +102,7 @@ class Main extends Component {
     );
 
     const search_bar = (
-      <SearchBar term={this.props.params.term ? this.props.params.term : ''} />
+      <SearchBar term={this.props.location.query.q ? this.props.location.query.q : ''} />
     );
 
     const standard_actions = (

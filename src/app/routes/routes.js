@@ -41,7 +41,7 @@ module.exports = (
 			
 			<Route component={Main}>
 				<IndexRoute component={Index}/>
-				<Route path="q/:term" component={Index}/>
+				<Route path="search" component={Index}/>
 				<Route path="p/:id" component={Photo}/>
 				<Redirect from="p/:id/" to="p/:id"/>
 				<Route path="create" component={Create}/>
