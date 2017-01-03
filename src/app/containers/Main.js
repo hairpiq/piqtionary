@@ -112,7 +112,8 @@ class Main extends Component {
         <IconButton iconStyle={styles.appBarIconButton} tooltip="Videos"><VideoLibraryIcon /></IconButton>
         */}
         <IconButton
-         onTouchTap={() => this.linkTo('/info')}
+          className="info-page-button"
+          onTouchTap={() => this.linkTo('/info')}
           iconStyle={styles.appBarIconButton}
           tooltip="More Info">
           <InfoIcon />

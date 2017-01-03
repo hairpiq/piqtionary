@@ -25,6 +25,10 @@
 }
 
 @media (max-width: 767px) {
+	.info-page-button {
+		display: none !important;
+	}
+	
 	.info-page {
 
 	    margin-top: -65px;
