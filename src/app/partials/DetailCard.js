@@ -116,17 +116,21 @@ class DetailCard extends Component {
 				<div className="right-col">
 					<div className="detail-info">
 						<div className="data-container">
-							<div className="title">
-			                  Style Name
+							<div className="stylename-mobile-col">
+								<div className="title">
+				                  Style Name
+				                </div>
+				                <div className="text">
+				                  {params.stylename}
+				                </div>
 			                </div>
-			                <div className="text">
-			                  {params.stylename}
-			                </div>
-			                <div className="title">
-			                  IG Profile
-			                </div>
-			                <div className="text">
-			                  {params.ig_username}
+			                <div className="credit-mobile-col">
+				                <div className="title">
+				                  IG Profile
+				                </div>
+				                <div className="text">
+				                  {params.ig_username}
+				                </div>
 			                </div>
 						</div>
 						<Divider />
