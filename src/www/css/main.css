@@ -102,7 +102,11 @@ footer {
 	}
 
 	.footer {
-		margin:0;
+		margin-top:0;
+	}
+
+	.main .intro {
+		padding:0 25px;
 	}
 }
 
@@ -127,6 +131,10 @@ footer {
 	.create-button {
 		right: 50px;
 		bottom: 50px;
+	}
+
+	.main .intro {
+		padding:80px 25px 0;
 	}
 
 }

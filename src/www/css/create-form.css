@@ -180,10 +180,6 @@
 
 @media (max-width: 479px) {
 
-    .main .intro {
-        padding: 0 25px;
-    }
-
     .fixed-create-form-width {
         width: 320px;
     }
@@ -254,4 +250,3 @@
     }    
 
 }
-
