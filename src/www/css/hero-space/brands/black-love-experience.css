@@ -41,6 +41,10 @@
 
 @media (max-width: 767px) {
 	.brands.black-love-experience .uk-width-medium-4-10 {
-		padding: 10px 0 30px;
+		padding: 10px 10px 30px;
+	}
+
+	.brands.black-love-experience .black-love-experience-button {
+		margin-bottom: 5px;
 	}
 }
