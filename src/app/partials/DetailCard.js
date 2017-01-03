@@ -11,6 +11,7 @@ import ShareMenu from './ShareMenu';
 import RelatedItems from './RelatedItems';
 import Services from '../services/';
 import CircularProgress from 'material-ui/CircularProgress';
+import ImageRemoveRedEye from 'material-ui/svg-icons/image/remove-red-eye';
 
 class DetailCard extends Component {
 
@@ -88,7 +89,7 @@ class DetailCard extends Component {
     			<div className="message-bubble">
     				<CircularProgress className="progress" size={20} /> analyzing hair...
     			</div>
-    			<div className="message-author">Ava Vision</div>
+    			<div className="message-author">Ava Vision<ImageRemoveRedEye className="ava-vision-icon" color="#555555" /></div>
     		</div>
     		)
 
@@ -138,8 +139,8 @@ class DetailCard extends Component {
 			                	data={params}
 			                />
 			            </div>
-			            <Divider />
-			            {/*<div className="data-container">
+			            {/*<Divider />
+			            <div className="data-container">
 							<div className="title">
 			                  Related Hairpiqs
 			                </div>
