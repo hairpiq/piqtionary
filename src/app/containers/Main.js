@@ -97,6 +97,7 @@ class Main extends Component {
       <a
         onTouchTap={() => this.linkTo('/')}>
         <RetinaImage className="logo" src={["/images/hairpiq-site-logo.png", "/images/2x/hairpiq-site-logo.png"]} />
+        <RetinaImage className="mobile-logo" src={["/images/hairpiq-site-mobile-logo.png", "/images/2x/hairpiq-site-mobile-logo.png"]} />
       </a>
     );
 

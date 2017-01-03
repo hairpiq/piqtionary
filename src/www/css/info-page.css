@@ -24,6 +24,22 @@
 	line-height: 20px;
 }
 
+@media (max-width: 767px) {
+	.info-page {
+
+	    margin-top: -65px;
+
+	}
+
+	.info-page .team-member {
+		padding: 20px 16px 20px !important;
+	}
+
+	.info-page .team-member-info {
+		margin: 100px 0 0;
+	}
+}
+
 @media (min-width: 768px) {
 	.info-page .content-container {
 		margin-top: 80px;

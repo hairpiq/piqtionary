@@ -50,7 +50,6 @@ class HeroSpace extends Component {
 	        	<div className="close-button">
 	              <IconButton
 	              	className="close-accordion"
-	              	disableTouchRipple={true}
 	              	touch={true}
 	              	onTouchTap={() => this.handleClose()}
 	              	>
