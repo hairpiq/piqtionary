@@ -9,28 +9,35 @@ import {browserHistory} from 'react-router';
 class CreateButton extends Component {
 
 	linkTo(params) {
-		browserHistory.push({
-            pathname: '/create',
-            state: {
-            	modal: true,
-            	returnTo: this.props.location.pathname
-            }
-        });
+
+		if ($('body').width() < 768)
+			browserHistory.push('/create');
+		else
+			browserHistory.push({
+	            pathname: '/create',
+	            state: {
+	            	modal: true,
+	            	returnTo: this.props.location.pathname
+	            }
+	        });
+	}
+
+	mobileLinkTo(route) {
+		browserHistory.push('/create');
 	}
 
 	render() {
 
 		return (
 			<div>
-			
-					<FloatingActionButton
-						onTouchTap={this.linkTo.bind(this)}
-						backgroundColor={orange700}
-						className="create-button"
-						zDepth={5}>
-			          <ImageAddAPhoto />
-			        </FloatingActionButton>
-			</div>
+				<FloatingActionButton
+					onTouchTap={this.linkTo.bind(this)}
+					backgroundColor={orange700}
+					className="create-button"
+					zDepth={5}>
+		          <ImageAddAPhoto />
+		        </FloatingActionButton>
+		    </div>
 		)
 	}
 }

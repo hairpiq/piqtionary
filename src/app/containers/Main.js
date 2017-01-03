@@ -97,6 +97,7 @@ class Main extends Component {
       <a
         onTouchTap={() => this.linkTo('/')}>
         <RetinaImage className="logo" src={["/images/hairpiq-site-logo.png", "/images/2x/hairpiq-site-logo.png"]} />
+        <RetinaImage className="mobile-logo" src={["/images/hairpiq-site-mobile-logo.png", "/images/2x/hairpiq-site-mobile-logo.png"]} />
       </a>
     );
 
@@ -111,7 +112,8 @@ class Main extends Component {
         <IconButton iconStyle={styles.appBarIconButton} tooltip="Videos"><VideoLibraryIcon /></IconButton>
         */}
         <IconButton
-         onTouchTap={() => this.linkTo('/info')}
+          className="info-page-button"
+          onTouchTap={() => this.linkTo('/info')}
           iconStyle={styles.appBarIconButton}
           tooltip="More Info">
           <InfoIcon />

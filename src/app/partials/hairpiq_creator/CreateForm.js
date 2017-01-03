@@ -40,7 +40,8 @@ class CreateForm extends Component {
 				image: undefined,
             	imageLoaded: false,
             	values: {},
-            	crop_type: ''
+            	crop_type: '',
+            	client_width: 0
 			},
 			logo: {
 				color: 'white',
@@ -206,13 +207,15 @@ class CreateForm extends Component {
 		let croppedImage = this.refs.cropper.crop();
 		let croppedValues = this.refs.cropper.values();
 		let crop_type = ($('.cropper img')[0].naturalWidth === 1080 && $('.cropper img')[0].naturalHeight === 1350 ? 'fill' : 'crop');
-		
+		let client_width = $('.cropper').width();
+
 		this.setState({
 			cropper: {
 				image: croppedImage,
 				imageLoaded: true,
 				values: croppedValues,
-				crop_type: crop_type
+				crop_type: crop_type,
+				client_width: client_width
 			}
 		});
 
@@ -231,8 +234,8 @@ class CreateForm extends Component {
 
 	clearImage() {
 
-		console.log('clear image on cloudinary, as well!');
-		console.log(this.state.uploadedFileCloudinaryUrl);
+		//console.log('clear image on cloudinary, as well!');
+		//console.log(this.state.uploadedFileCloudinaryUrl);
 
 		this.setState({
 			cloudinary: {
@@ -245,7 +248,8 @@ class CreateForm extends Component {
 				image: undefined,
 				imageLoaded: false,
 				values: {},
-				crop_type: ''
+				crop_type: '',
+				client_width: 0
 			},
 			isApplyToggled: true
 		});
@@ -396,8 +400,10 @@ class CreateForm extends Component {
 		params.options = JSON.stringify({
 			crop_type: this.state.cropper.crop_type,
 			crop_data: this.state.cropper.values,
+			client_width: this.state.cropper.client_width,
 			logo: this.state.logo,
-			plate: this.state.plate
+			plate: this.state.plate,
+
 		});
 
 		const _this = this;
@@ -472,10 +478,16 @@ class CreateForm extends Component {
 		}
 
 		const logo = (
-	    	<RetinaImage
-	    		className="create-form-logo"
-	    		src={["/images/hairpiq_creator/logo-" + this.state.logo.color + ".png", "/images/hairpiq_creator/2x/logo-" + this.state.logo.color + ".png"] }
-	    		style={logoStyles} />
+			<div>
+		    	<RetinaImage
+		    		className="create-form-logo"
+		    		src={["/images/hairpiq_creator/logo-" + this.state.logo.color + ".png", "/images/hairpiq_creator/2x/logo-" + this.state.logo.color + ".png"] }
+		    		style={logoStyles} />
+		    	<RetinaImage
+		    		className="create-form-mobile-logo"
+		    		src={["/images/hairpiq_creator/mobile-logo-" + this.state.logo.color + ".png", "/images/hairpiq_creator/2x/mobile-logo-" + this.state.logo.color + ".png"] }
+		    		style={logoStyles} />
+	    	</div>
 	    );
 
 	    const plate = (
@@ -489,6 +501,10 @@ class CreateForm extends Component {
 		    	<RetinaImage
 		    		className="create-form-plate"
 		    		src={["/images/hairpiq_creator/plate-" + this.state.plate.color + ".png", "/images/hairpiq_creator/2x/plate-" + this.state.plate.color + ".png"]}
+		    		style={plateStyles} />
+		    	<RetinaImage
+		    		className="create-form-mobile-plate"
+		    		src={["/images/hairpiq_creator/mobile-plate-" + this.state.plate.color + ".png", "/images/hairpiq_creator/2x/mobile-plate-" + this.state.plate.color + ".png"]}
 		    		style={plateStyles} />
 	    	</div>
 	    );
