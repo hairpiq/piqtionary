@@ -1,3 +1,6 @@
+.info-page {
+	margin-bottom:70px;
+}
 .info-page .content-container {
 	margin-top: 12px;
 	padding: 50px;
@@ -31,16 +34,21 @@
 	
 	.info-page {
 
-	    margin-top: -65px;
+	    margin-top: -70px;
+	    margin-bottom: 0;
 
 	}
 
 	.info-page .team-member {
-		padding: 20px 16px 20px !important;
+		padding: 10px 10px 0 !important;
 	}
 
 	.info-page .team-member-info {
-		margin: 100px 0 0;
+		margin: 110px 0 0;
+	}
+
+	.info-page .team-member img {
+		margin-top: 5px;
 	}
 }
 

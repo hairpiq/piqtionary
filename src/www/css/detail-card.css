@@ -138,6 +138,10 @@
 	margin-left: 10px;
 }
 
+.ava-vision-dialog .message-author .ava-vision-icon {
+	margin-left: 5px;
+}
+
 @media (max-width: 767px) {
 
 	.detail-card {
@@ -156,6 +160,11 @@
 
 	.detail-card .right-col {
 		width: 100%;
+	}
+
+	.detail-card .ava-vision-dialog {
+		margin: 0px -25px;
+    	text-align: center;
 	}
 }
 
