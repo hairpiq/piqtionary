@@ -75,6 +75,12 @@
 }
 
 @media (max-width:767px) {
+
+	.results-well-container .loader {
+		margin-top: 60px;
+		margin-bottom: 80px;
+	}
+
 	.results-well-container .uk-alert-success {
 		margin-bottom: 60px;
 	}
