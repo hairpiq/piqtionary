@@ -27,7 +27,7 @@ class Index extends Component {
           <div className="uk-width-medium-10-10">
         
             <ResultsWell
-              term={this.props.params.term ? this.props.params.term : ''}
+              term={this.props.location.query.q ? this.props.location.query.q : ''}
               location={this.props.location}
             />
 
