@@ -1,0 +1,252 @@
+.fixed-create-form-width {
+	width: 768px;
+}
+
+.main-container.fixed-create-form-width {
+    margin: 0 auto;
+}
+
+.modal-inner.fixed-create-form-width .intro {
+    display: none;
+}
+
+.main-container.fixed-create-form-width .create-form,
+.main-container.fixed-create-form-width .create-form .photo {
+    background: #ffffff !important;
+}
+
+.create-form:after {
+
+	content: "";
+    display: block;
+    clear: both;
+}
+
+.create-form .left-col {
+	width:60%;
+	float: left;
+}
+
+.create-form .right-col {
+	width:40%;
+	float: left;
+}
+
+.create-form .photo {
+	width:100%;
+	min-height: 350px;
+	padding: 20px;
+    background: #f5f5f5;
+    display: flex;
+    align-items: center;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    position: relative;
+}
+
+.create-form .dropzone {
+	margin: 0 auto;
+	width: 100%;
+	height: 350px;
+	padding: 10px;
+	border-width: 2px;
+	border-color: rgb(102, 102, 102);
+	border-style: dashed;
+	border-radius: 5px;
+	display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+}
+
+.create-form .dropzone p {
+	margin: 0;
+    font-size: 26px;
+    line-height: 40px;
+    padding: 0 20px;
+}
+
+.create-form .loader {
+	margin: 0 auto;
+	width: 420px;
+	height: 200px;
+	display: flex;
+    align-items: center;
+    text-align: center;
+}
+
+.create-form .loader > div {
+	margin: 0 auto;
+}
+
+.create-form .cropper img {
+    max-width: none;
+}
+
+.create-form-logo {
+	position: absolute;
+    top: 50px;
+    left: 48px;
+    width:146px;
+
+    display: none;
+}
+
+.create-form-plate {
+	position: absolute;
+    bottom: 78px;
+    right: 20px;
+    width: 280px;
+
+    display: none;
+}
+
+.create-form .checkbox {
+	margin-left: 10px !important;
+}
+
+.create-form .checkbox label {
+	text-transform: capitalize;
+}
+
+.create-form .toggle {
+    margin: 30px 0;
+}
+
+.create-form .textfield [type="text"] {
+	margin-left: 20px;
+}
+
+.create-form .data-container {
+	padding: 0 10px;
+}
+
+.create-form .data-container.textfields {
+	padding: 0 30px 0 0;
+}
+
+.create-form .nav-stepper button {
+	margin-right: 15px !important;
+}
+
+.create-form .adjust-crop-button {
+    margin-top: 20px !important;
+}
+
+/* nav-stepper step indicator graphic should render larger */
+.create-form .nav-stepper > div > div > div > span > span {
+    width: 34px !important;
+}
+
+.create-form-plate-stylename {
+	position: absolute;
+    top: 436px;
+    left: 172px;
+    font-family: Montserrat;
+    font-weight: bold;
+    font-size: 24px;
+    letter-spacing: -1px;
+    color: #ffffff;
+    z-index: 1;
+    right: 45px;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.create-form-plate-ig_username {
+	position: absolute;
+    top: 458px;
+    left: 172px;
+    font-size: 20px;
+    color: #ffffff;
+    z-index: 1;
+    right: 45px;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.create-form-dialog.disabled {
+    pointer-events: none;
+}
+
+.create-form .uk-alert-danger {
+    padding: 10px;
+}
+
+.create-form .download.button {
+    color: #ffffff !important;
+    margin: 20px 0 0 35px !important;
+}
+
+@media (max-width: 479px) {
+
+    .fixed-create-form-width {
+        width: 320px;
+    }
+
+    .create-form .left-col {
+        width: 100%;
+        float: none;
+    }
+
+    .create-form .photo {
+        border-top-right-radius: 5px;
+        border-bottom-left-radius: 0;
+    }
+
+    .create-form .right-col {
+        width: 100%;
+        float: none;
+    }
+
+    .create-form .loader {
+        margin: 0 auto;
+        width: 280px;
+
+    }
+
+    .create-form-mobile-logo {
+        position: absolute;
+        top: 40px;
+        left: 40px;
+        width: 96px;
+    }
+
+    .create-form-mobile-plate {
+        position: absolute;
+        bottom: 58px;
+        right: 20px;
+        width: 186px;
+    }
+
+    .create-form-plate-stylename {
+        top: 294px;
+        left: 120px;
+        font-size: 17px;
+    }
+
+    .create-form-plate-ig_username {
+        top: 309px;
+        left: 120px;
+        font-size: 13px;
+    }
+
+    .create-form .nav-stepper p:last-child {
+        margin: 0 !important;
+        padding: 20px 0 !important;
+    }
+}
+
+@media (min-width: 480px) {
+
+    .create-form-mobile-logo,
+    .create-form-mobile-plate {
+        display: none;
+    }
+
+    .create-form-logo,
+    .create-form-plate {
+        display: block;
+    }    
+
+}

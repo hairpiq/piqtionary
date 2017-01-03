@@ -3,12 +3,25 @@ import { render } from 'react-dom';
 import AutoComplete from 'material-ui/AutoComplete';
 import FlatButton from 'material-ui/FlatButton';
 import {orange700} from 'material-ui/styles/colors';
-import Services from '../services/'
+import Services from '../services/';
+import SearchIcon from 'material-ui/svg-icons/action/search';
+import Autosuggest from 'react-autosuggest';
+import { browserHistory } from 'react-router';
+import TouchRipple from 'material-ui/internal/TouchRipple';
 
-const styles = {
-  autoComplete: {
-    width: '90%',
+// https://developer.mozilla.org/en/docs/Web/JavaScript/Guide/Regular_Expressions#Using_Special_Characters
+function escapeRegexCharacters(str) {
+  return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function getSuggestionValue(suggestion) {
+    return suggestion.name;
   }
+
+function renderSuggestion(suggestion) {
+  return (
+    <span>{suggestion.name}</span>
+  );
 }
 
 class SearchBar extends Component {
@@ -17,76 +30,153 @@ class SearchBar extends Component {
     super(props);
 
     this.state = {
-      dataSource: [],
+      term: '',
+      value: '',
+      suggestions: []
     };
+
+    this.linkTo = this.linkTo.bind(this);
+
+  }
+
+  linkTo(params) {
+
+    browserHistory.push(params);
+    
+  }
+
+  onChange = (event, { newValue, method }) => {
+    this.setState({
+      value: newValue
+    });
+  };
+
+  onSuggestionsFetchRequested = ({ value }) => {
+    this.setState({
+      suggestions: this.getSuggestions(value)
+    });
+  };
+
+  onSuggestionsClearRequested = () => {
+    this.setState({
+      suggestions: []
+    });
+  };
+
+  getSuggestions(value) {
+    const escapedValue = escapeRegexCharacters(value.trim());
+    
+    if (escapedValue === '') {
+      return [];
+    }
+
+    const regex = new RegExp('^' + escapedValue, 'i');
+
+    return this.state.keywords.filter(keyword => regex.test(keyword.name));
   }
 
   componentDidMount() {
-   
+
     var _this = this;
 
     // get keywords for AutoComplete
     Services.getKeywords().then(function(result) {
 
-      _this.setState({ dataSource: result });
+      var keywords = [];
+      for (var i in result)
+        keywords.push({name: result[i]});
+
+      _this.setState({ keywords: keywords});
 
     }).catch(function(error) {
       console.log(error);
       reject(new Error(error));
     });
 
-    // update keyword state in parent container
-    $(".search-button").click(function() {
-
-      _this.props.updateKeyword(input.attr('value'));
-
-    });
-
     // on focus, highlight the search field
-    var input = $(".search-bar input");
-    var search_bar = $(".search-bar");
+    var input = $(".react-autosuggest__input");
+    var search_bar_container = $(".search-bar-container");
     
     input.focus(function() {
     
-      search_bar.addClass("focused");
+      search_bar_container.addClass("focused");
     
     });
     
     input.blur(function() {
     
-      search_bar.removeClass("focused");
+      search_bar_container.removeClass("focused");
     
     });
+
+    // when enter button is pressed, perform search
+    input.keydown(function (e) {
+
+      var keypressed = e.keyCode || e.which;
+      if (keypressed == 13) {
+
+        const destination = (_this.state.value.length > 0 ? '/search?q=' + _this.state.value : '/');
+
+        _this.linkTo(destination);
+
+      }
+
+    });
+
+    // set the state here so that the term is loaded on page refresh
+    this.setState({value: this.props.term});
+
+  }
+
+  componentWillReceiveProps(nextProps) {
     
+    if (nextProps.hasOwnProperty('term'))
+      this.setState({
+        value: nextProps.term
+      })
+
+  }
+
+  resetStateForTerm(term) {
+    this.setState({
+      term: term,
+      value: term
+    });
   }
 
   render() {
 
-    const icon = (
-      <svg viewBox="0 0 24 24">
-          <path fill="#ffffff" d="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.43,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.43C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,14C11.11,14 12.5,13.15 13.32,11.88C12.5,10.75 11.11,10 9.5,10C7.89,10 6.5,10.75 5.68,11.88C6.5,13.15 7.89,14 9.5,14M9.5,5A1.75,1.75 0 0,0 7.75,6.75A1.75,1.75 0 0,0 9.5,8.5A1.75,1.75 0 0,0 11.25,6.75A1.75,1.75 0 0,0 9.5,5Z" />
-      </svg>
-    );
+    const { value, suggestions } = this.state;
+
+    const inputProps = {
+      placeholder: "search for a hairstyle",
+      value,
+      onChange: this.onChange
+    };
+
+    const destination = (this.state.value.length > 0 ? '/search?q=' + this.state.value : '/');
 
     return (
       
       <div className="search-bar-container">
 
-	       <AutoComplete
-	        style={styles.autoComplete}
-          floatingLabelText="what are you looking for?"
-	        className="search-bar"
-	        dataSource={this.state.dataSource}
-	        filter={AutoComplete.caseInsensitiveFilter}
-	        fullWidth={true}
-	      />
+        <Autosuggest
+          suggestions={suggestions}
+          onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
+          onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+          getSuggestionValue={getSuggestionValue}
+          renderSuggestion={renderSuggestion}
+          inputProps={inputProps}
+        />
+        <a className="search-button-link" onTouchTap={() => this.linkTo(destination)}>
 	      <FlatButton
 	        className="search-button"
 	        backgroundColor={orange700}
 	        hoverColor="#faba79"
-	        icon={icon}
+          rippleColor="#ffffff"
+	        icon={<SearchIcon className='icon' />}
 	        />
-
+        </a>
       </div>
     );
   }

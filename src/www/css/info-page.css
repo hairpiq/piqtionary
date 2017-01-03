@@ -1,0 +1,55 @@
+.info-page .content-container {
+	margin-top: 12px;
+	padding: 50px;
+}
+
+.info-page .content {
+	max-width: 500px;
+}
+
+.info-page .ava-vision-tear-sheet {
+	padding: 20px;
+}
+
+.info-page .ava-vision-icon {
+	margin-left: 10px;
+}
+
+.info-page .team-member {
+	min-height: 116px;
+}
+
+.info-page .team-member-info {
+	margin-left: 60px;
+	line-height: 20px;
+}
+
+@media (max-width: 767px) {
+	.info-page-button {
+		display: none !important;
+	}
+	
+	.info-page {
+
+	    margin-top: -65px;
+
+	}
+
+	.info-page .team-member {
+		padding: 20px 16px 20px !important;
+	}
+
+	.info-page .team-member-info {
+		margin: 100px 0 0;
+	}
+}
+
+@media (min-width: 768px) {
+	.info-page .content-container {
+		margin-top: 80px;
+	}
+
+	.info-page .content {
+		margin: 0 auto;
+	}
+}

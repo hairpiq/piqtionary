@@ -1,0 +1,59 @@
+.hero-space {
+	margin-top: 40px;
+}
+
+.hero-space.open .uk-container.uk-container-center {
+	padding: 0;
+}
+
+.hero-space .uk-accordion-title {
+	text-align: center;
+    text-decoration: underline;
+    margin-top: 25px;
+    margin-bottom: 0;
+    padding-bottom: 10px;
+    border-radius: 10px;
+    background: #e2e2e2;
+    color: #212121;
+}
+
+.hero-space .uk-accordion-title.uk-active {
+	margin-top: 0;
+	display: none;
+}
+
+.hero-space .uk-accordion-content {
+	margin-top:25px;
+	position: relative;
+	padding: 0;
+}
+
+.hero-space .uk-accordion-content .uk-grid {
+	max-width: 768px;
+	margin: 0 auto;
+}
+
+.hero-space .close-button {
+	position: absolute;
+	top: 0;
+	right: 0;
+}
+
+.no-hero-space {
+	margin-top: 60px;
+}
+
+@media (max-width: 767px) {
+
+	.hero-space,
+	.no-hero-space {
+    	margin-top: -25px;
+  	}
+}
+
+@media (min-width: 960px) {
+	.hero-space .close-button {
+		top: 25px;
+		right: 25px;
+	}
+}

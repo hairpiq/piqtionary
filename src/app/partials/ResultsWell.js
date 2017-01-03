@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
-import Paper from 'material-ui/Paper';
-import Divider from 'material-ui/Divider';
-import { Link } from 'react-router';
 import InfiniteScroll from 'react-infinite-scroller';
-import Services from '../services/'
+import Services from '../services/';
+import ResultItem from './ResultItem';
+import CircularProgress from 'material-ui/CircularProgress';
+import {grey400, orange700} from 'material-ui/styles/colors';
+import FlatButton from 'material-ui/FlatButton';
+import { browserHistory } from 'react-router';
+import Paper from 'material-ui/Paper';
 
 class ResultsWell extends Component {
 
@@ -16,9 +19,19 @@ class ResultsWell extends Component {
           hairpiqs: [],
           page_num: 0,
           hasMoreItems: true,
-          keyword: ''
+          term: this.props.term,
+          result_status: ''
       };
+  }
 
+  linkTo(returnToPathname) {
+    browserHistory.push({
+        pathname: '/survey',
+        state: {
+          modal: true,
+          returnTo: returnToPathname
+        }
+    });
   }
 
   loadItems(page) {
@@ -33,19 +46,20 @@ class ResultsWell extends Component {
       page_num: this.state.page_num
     }
 
-    // if the keyword state has changed, include it
-    if(this.state.keyword.length > 0)
-      params.keyword = this.state.keyword;
+    // if the term state has changed, include it
+    if(this.state.term !== undefined && this.state.term.length > 0)
+      params.term = this.state.term;
 
 
     Services.getList(params).then(function(result) {
-      
+
       if(result.length > 0) {
         result.map((hairpiq) => {
           
             hairpiqs.push(hairpiq);
           
           });
+
 
         _this.setState({
           hairpiqs: hairpiqs,
@@ -57,58 +71,62 @@ class ResultsWell extends Component {
         });
       }
 
+      let result_status = (_this.state.hairpiqs.length === 0 && result.length === 0 ? 'none' : 'results-found');
+      _this.setState({
+        result_status: result_status
+      });   
+
     }).catch(function(error) {
       console.log(error);
-      reject(new Error(error));
     });
+  }
+
+  componentWillReceiveProps(nextProps) {
+
+
+    this.setState({
+        result_status: ''
+      });
+
   }
 
   // resetting the state forces the InfiniteScroll Component to re-render
   // with the below values
   
-  resetStateForKeyword(keyword) {
+  resetStateForTerm(term) {
     this.setState({
       hairpiqs: [],
       page_num: 0,
       hasMoreItems: true,
-      keyword: keyword
+      term: term,
+      result_status: ''
     });
   }
 
   render() {
 
-    // if the keyword that is passed as a prop is DIFFERENT than the keyword in this component state
-      // reset this component state with this new keyword.
-    if (this.state.keyword !== this.props.keyword)
-      this.resetStateForKeyword(this.props.keyword);
+    // if the term that is passed as a prop is DIFFERENT than the term in this component state
+      // reset this component state with this new ter,.
+    if (this.state.term !== this.props.term)
+      this.resetStateForTerm(this.props.term);
 
-    const loader = <div className="loader">Loading ...</div>;
+    const loader = (
+      <div className="loader">
+        <CircularProgress color={grey400} />
+      </div>
+    );
 
     var items = [];
       this.state.hairpiqs.map((listItem, i) => {
         items.push(
             
             <div className="hairpiq-paper-container uk-width-small-1-3 uk-width-medium-1-4">
-              <Paper key={i} className="hairpiq-paper">
-                <Link to={"/p/" + listItem._id + '/'}><img src={listItem.s3_url} /></Link>
-                <div className="hairpiq-data">
-                  <div className="title">
-                    Style Name
-                  </div>
-                  <div className="text">
-                    {listItem.stylename}
-                  </div>
-                </div>
-                <Divider />
-                <div className="hairpiq-data">
-                  <div className="title">
-                    IG Profile
-                  </div>
-                  <div className="text">
-                    {listItem.ig_username}
-                  </div>
-                </div>            
-              </Paper>
+              <ResultItem
+                key={i}
+                listItem={listItem}
+                location={this.props.location}
+                hairpiqs={this.state.hairpiqs}
+              />
             </div>
 
         );
@@ -120,6 +138,30 @@ class ResultsWell extends Component {
 
         <div className="results-well-container">
 
+          {this.state.result_status === 'none' ?
+
+          <div className="uk-grid uk-grid-margin" data-uk-grid-match data-uk-grid-margin>
+            <div className="uk-width-medium-6-10 uk-push-2-10">
+              <Paper>
+                <div className="uk-alert uk-alert-success">
+                  <p>We're sorry that nothing returned, and are actively working to improve our search results.</p>
+                  <p>Please take a moment to tell us what you'd like to see on hairpiq.com.</p>
+                  <p>
+                    <FlatButton
+                      onTouchTap={() => this.linkTo(this.props.location.pathname)}
+                      className="survey-button"
+                      label="Tell Us"
+                      backgroundColor={orange700}
+                      hoverColor="#faba79"
+                      rippleColor="#ffffff" />
+                  </p>
+                </div>
+              </Paper>
+            </div>
+          </div>
+
+          :
+
           <InfiniteScroll
               pageStart={0}
               loadMore={this.loadItems.bind(this)}
@@ -130,6 +172,8 @@ class ResultsWell extends Component {
                   {items}
               </div>
           </InfiniteScroll>
+
+          }
         
         </div>
 

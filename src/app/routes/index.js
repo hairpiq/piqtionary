@@ -4,13 +4,8 @@ var ExpressRouter = require('express').Router();
 var ReactRouter = require('react-router');
 
 // site containers
-import HTML from '../containers/HTML';
+import HTMLDocShell from './HTMLDocShell';
 import Main from '../containers/Main';
-
-// Needed for onTouchTap
-// http://stackoverflow.com/a/34015469/988941
-import injectTapEventPlugin from 'react-tap-event-plugin';
-injectTapEventPlugin();
 
 ExpressRouter.get('*', function(req, res) {
 	
@@ -28,7 +23,7 @@ ExpressRouter.get('*', function(req, res) {
 					}} />
 			);
 
-		  var html = HTML(markup);
+		  var html = HTMLDocShell(markup);
 
 			res.send(html);
 		} else {
