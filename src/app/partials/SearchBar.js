@@ -115,7 +115,7 @@ class SearchBar extends Component {
       var keypressed = e.keyCode || e.which;
       if (keypressed == 13) {
 
-        const destination = (_this.state.value.length > 0 ? '/q/' + _this.state.value : '/');
+        const destination = (_this.state.value.length > 0 ? '/search?q=' + _this.state.value : '/');
 
         _this.linkTo(destination);
 
@@ -154,7 +154,7 @@ class SearchBar extends Component {
       onChange: this.onChange
     };
 
-    const destination = (this.state.value.length > 0 ? '/q/' + this.state.value : '/');
+    const destination = (this.state.value.length > 0 ? '/search?q=' + this.state.value : '/');
 
     return (
       
