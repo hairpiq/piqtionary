@@ -88,7 +88,7 @@ class DetailCard extends Component {
     			<div className="message-bubble">
     				<CircularProgress className="progress" size={20} /> analyzing hair...
     			</div>
-    			<div className="message-author">Ava</div>
+    			<div className="message-author">Ava Vision</div>
     		</div>
     		)
 
