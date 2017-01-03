@@ -138,3 +138,24 @@
 	margin-left: 10px;
 }
 
+@media (max-width: 767px) {
+
+	.detail-card {
+		padding-top: 0;
+    	margin-top: -25px;
+	}
+	
+	.detail-card .left-col {
+		width: 100%;
+	}
+
+	.detail-card .photo {
+		border-top-right-radius: 5px;
+		border-bottom-left-radius: 0;
+	}
+
+	.detail-card .right-col {
+		width: 100%;
+	}
+}
+
