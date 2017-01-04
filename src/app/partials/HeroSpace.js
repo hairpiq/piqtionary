@@ -125,7 +125,7 @@ class HeroSpace extends Component {
 				animate: false
 			},
 			data: [{
-				title: 'Get $10 Off The Black Love Experience',
+				title: 'Get $10 Off The Black Love Experience by 1/15/2017',
 				content: black_love_experience_content
 			},
 			/*{
