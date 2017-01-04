@@ -8,6 +8,7 @@
 
 .info-page .content {
 	max-width: 500px;
+	margin: 0 auto;
 }
 
 .info-page .ava-vision-tear-sheet {
@@ -27,7 +28,24 @@
 	line-height: 20px;
 }
 
+.info-page .benefit {
+	margin-bottom: 25px;
+}
+
+.info-page iframe {
+	position: relative !important;
+	border-bottom: 1px solid #bdbdbd;
+}
+
+.info-page .benefit h3 {
+	padding: 0 20px 0;
+}
+.info-page .benefit p {
+	padding: 0 20px 20px;
+}
+
 @media (max-width: 767px) {
+
 	.info-page-button {
 		display: none !important;
 	}
