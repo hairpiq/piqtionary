@@ -6,7 +6,7 @@ module.exports = function(markup) {
 	        '<meta charset="utf-8"/>',
 	        '<meta http-equiv="X-UA-Compatible" content="IE=edge">',
     		'<title>Hairpiq</title>',
-	        '<meta name="description" content="intelligent hair services">',
+	        '<meta name="description" content="a search engine for people who love hair.">',
 	        // <!-- Use minimum-scale=1 to enable GPU rasterization -->
 	        '<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0, maximum-scale=1, minimum-scale=1">',
 	        // <!-- Google Site Verification -->
