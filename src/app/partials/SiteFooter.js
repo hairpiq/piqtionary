@@ -17,7 +17,7 @@ class SiteFooter extends Component {
 			<footer>
 
 				<div className="footer">
-					<p>Powered by <a onTouchTap={() => this.linkTo('/info#')}>Hairpiq&reg; Ava Vision <ImageRemoveRedEye className="ava-vision-icon" color="#555555" /></a></p>
+					<p>Powered by <a onTouchTap={() => this.linkTo('/info')}>Hairpiq&reg; Ava Vision <ImageRemoveRedEye className="ava-vision-icon" color="#555555" /></a></p>
 					<p>&copy; 2012-{new Date().getFullYear()} Hairpiq. All rights reserved.</p>
 				</div>
 
