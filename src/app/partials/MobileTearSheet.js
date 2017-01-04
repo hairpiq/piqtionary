@@ -15,6 +15,24 @@ class MobileTearSheet extends Component {
     muiTheme: PropTypes.object.isRequired,
   };
 
+  renderSVGImage(obj) {
+    
+    return (
+
+      <div dangerouslySetInnerHTML={
+
+        {__html:
+
+        '<img style=' + {obj} + ' src="images/bottom-tear.svg" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-us" />'
+
+        }
+
+      }/>
+
+    )
+  
+  }
+
   render() {
     const {
       prepareStyles,
@@ -49,6 +67,9 @@ class MobileTearSheet extends Component {
           {this.props.children}
         </div>
         <img style={prepareStyles(styles.bottomTear)} src="images/bottom-tear.svg" />
+        
+        {/*this.renderSVGImage(prepareStyles(styles.bottomTear))*/}
+
       </div>
     );
   }

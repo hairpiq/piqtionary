@@ -8,6 +8,7 @@ import Divider from 'material-ui/Divider';
 import Avatar from 'material-ui/Avatar';
 import List from 'material-ui/List/List';
 import ListItem from 'material-ui/List/ListItem';
+var Iframe = require("../../../customized_node_modules/react-iframe-for-youtube");
 
 class Info extends Component {
 
@@ -30,7 +31,7 @@ class Info extends Component {
 
               <div className="content">
                 <h1>Company Info</h1>
-                <p>Hairpiq provides the portion of 3 billion internet users who have trouble finding hair care information suitable to them with the most comprehensive high-quality and accurate hair care information relevant to their specific needs.</p>
+                <p>Hairpiq provides people who love hair but who also have trouble finding suitable hair care information with the most comprehensive high-quality and accurate information relevant to their specific needs.</p>
                  <p>And we're able to do that because of Ava Vision.</p>
                  <MobileTearSheet>
                   <div className="ava-vision-tear-sheet">
@@ -41,6 +42,81 @@ class Info extends Component {
                   </div>
                 </MobileTearSheet>
 
+                <h2>Benefits</h2>
+                
+                <div className="uk-grid uk-grid-margin">
+
+                  <div className="uk-width-medium-1-2">
+
+                    <Paper className="benefit">
+
+                      <Iframe
+                        url="//www.youtube.com/embed/svSC_plPjmI"
+                        width='100%'
+                        height='315px' />
+
+                        <h3>Your Hairstyle Search Engine</h3>
+                        <p>Search unique and interesting hairstyle inspiration with credit to the creators and/or wearers (No stealing photos).</p>
+
+                    </Paper>
+
+                  </div>
+
+                  <div className="uk-width-medium-1-2">
+
+                    <Paper className="benefit">
+
+                      <Iframe
+                        url="//www.youtube.com/embed/Y8t_3xDlXaE"
+                        width='100%'
+                        height='315px' />
+
+                        <h3>Hairpiq Ava Vision</h3>
+                        <p>Powered by Hairpiq Ava Vision, our Artifically Intelligent Hairstyle Analysis Software detects a hairstyle in a photograph AUTOMATICALLY, making hashtags a thing of the past.</p>
+
+                    </Paper>
+
+                  </div>
+
+                  <div className="uk-width-medium-1-2">
+
+                    <Paper className="benefit">
+
+                      <Iframe
+                        url="//www.youtube.com/embed/xZRRy5PkD5U"
+                        width='100%'
+                        height='315px' />
+
+                        <h3>Create A Hairpiq</h3>
+                        <p>You can now create your own Hairpiq, with your own photos. Keep for yourself, your social network or for your portfolio. You can also apply to have your Hairpiq featured on hairpiq.com, home to all the styles you know and love.</p>
+
+                    </Paper>
+
+                  </div>
+
+                  <div className="uk-width-medium-1-2">
+
+                    <Paper className="benefit">
+
+                      <Iframe
+                        url="//www.youtube.com/embed/NFy_ueq-5ko"
+                        width='100%'
+                        height='315px' />
+
+                        <h3>Discover Unique Events</h3>
+                        <p>With countless events going on, it can be hard to find out what's poppin'. Hairpiq is here for the culture and will be highlighting unique events and exclusive deals!</p>
+
+                    </Paper>
+
+                  </div>
+
+                </div>
+
+                <h2>Contact Info</h2>
+                <Divider />
+                <p>For all business related enquires, please email:<br /><a href="mailto:info@hairpiq.com">info@hairpiq.com</a></p>
+                <p>Or call:<br /><a href="tel:+14434247747">+1-443-424-7747</a></p>
+                
                 <h2>Team</h2>
 
                 <List>
@@ -57,7 +133,7 @@ class Info extends Component {
                   > 
                     <div className="team-member-info">
                       <p><strong>Avery Smith</strong> <br />
-                        Tech Lead, CEO, Founder <br />
+                        CTO/CEO, Founder <br />
                         <a href="mailto:avery@hairpiq.com">avery@hairpiq.com</a>
                       </p>
                     </div>
@@ -154,12 +230,6 @@ class Info extends Component {
                   </ListItem>
                   <Divider />
                 </List>
-
-                <h2>Contact Info</h2>
-                <p>For all business related enquires, please email:</p>
-                <p><a href="mailto:info@hairpiq.com">info@hairpiq.com</a></p>
-                <p>Or call:</p>
-                <p><a href="tel:+14434247747">+1-443-424-7747</a></p>
 
               </div>
 
