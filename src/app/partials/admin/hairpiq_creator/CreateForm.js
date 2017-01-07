@@ -199,15 +199,24 @@ class CreateForm extends Component {
 
 	cropImage(state) {
 
-		let crop_type = ($('.cropper img')[0].naturalWidth === 1080 && $('.cropper img')[0].naturalHeight === 1350 ? 'fill' : 'crop');
 		let croppedImage = this.refs.cropper.crop();
 		let croppedValues = this.refs.cropper.values();
+		let crop_type = ($('.cropper img')[0].naturalWidth === 1080 && $('.cropper img')[0].naturalHeight === 1350 ? 'fill' : 'crop');
+
+		var perc = $('.cropper img')[0].naturalWidth/$('.cropper').width();
+
+		var scaledValues = {
+			x: Math.round(croppedValues.x * perc),
+			y: Math.round(croppedValues.y * perc),
+			width: Math.round(croppedValues.width * perc),
+			height: Math.round(croppedValues.height * perc)
+		}
 		
 		this.setState({
 			cropper: {
 				image: croppedImage,
 				imageLoaded: true,
-				values: croppedValues,
+				values: scaledValues,
 				crop_type: crop_type
 			}
 		});

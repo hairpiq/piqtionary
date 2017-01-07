@@ -114,17 +114,7 @@ function addTransformations(obj) {
 
 	if(obj.options.hasOwnProperty('crop_data')) {
 		
-		// compensate for percentage difference between original photo
-		// and user crop tool
-
-		
-		
-		// first, normalize image width to client's width
-		transformations.push({
-			width: obj.options.client_width
-		});
-		
-		// next, crop out the identified portion of the image
+		// crop out the identified portion of the image
 		let crop_data = obj.options.crop_data;
 		crop_data.crop = obj.options.crop_type;
 		transformations.push(crop_data);
