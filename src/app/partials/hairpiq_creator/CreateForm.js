@@ -40,8 +40,7 @@ class CreateForm extends Component {
 				image: undefined,
             	imageLoaded: false,
             	values: {},
-            	crop_type: '',
-            	client_width: 0
+            	crop_type: ''
 			},
 			logo: {
 				color: 'white',
@@ -207,15 +206,22 @@ class CreateForm extends Component {
 		let croppedImage = this.refs.cropper.crop();
 		let croppedValues = this.refs.cropper.values();
 		let crop_type = ($('.cropper img')[0].naturalWidth === 1080 && $('.cropper img')[0].naturalHeight === 1350 ? 'fill' : 'crop');
-		let client_width = $('.cropper').width();
+
+		var perc = $('.cropper img')[0].naturalWidth/$('.cropper').width();
+
+		var scaledValues = {
+			x: Math.round(croppedValues.x * perc),
+			y: Math.round(croppedValues.y * perc),
+			width: Math.round(croppedValues.width * perc),
+			height: Math.round(croppedValues.height * perc)
+		}
 
 		this.setState({
 			cropper: {
 				image: croppedImage,
 				imageLoaded: true,
-				values: croppedValues,
-				crop_type: crop_type,
-				client_width: client_width
+				values: scaledValues,
+				crop_type: crop_type
 			}
 		});
 
@@ -248,8 +254,7 @@ class CreateForm extends Component {
 				image: undefined,
 				imageLoaded: false,
 				values: {},
-				crop_type: '',
-				client_width: 0
+				crop_type: ''
 			},
 			isApplyToggled: true
 		});
@@ -400,7 +405,6 @@ class CreateForm extends Component {
 		params.options = JSON.stringify({
 			crop_type: this.state.cropper.crop_type,
 			crop_data: this.state.cropper.values,
-			client_width: this.state.cropper.client_width,
 			logo: this.state.logo,
 			plate: this.state.plate,
 
