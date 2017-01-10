@@ -336,7 +336,7 @@ class CreateForm extends Component {
 
 	handleIGUsernameChange(e) {
 
-		var checkForUsernameFormat = new RegExp('^[a-z0-9_-]{3,30}$');
+		var checkForUsernameFormat = new RegExp('^[a-z0-9._-]{3,30}$');
 		var username = e.target.value.split('@')[1];
 
 		if (!checkForUsernameFormat.test(username)) {
