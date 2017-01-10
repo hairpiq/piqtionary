@@ -193,7 +193,8 @@ function determineWhatNSFW(response) {
 
     response.data.outputs.forEach(function (output) {
         output.data.concepts.forEach(function (tag) {
-            if (tag.name === 'sfw' &&  Math.ceil(tag.value * 100) > 95) {
+
+            if (tag.name === 'sfw' &&  Math.ceil(tag.value * 100) > 90) {
                 status = true;
                 return status;
             }
