@@ -142,7 +142,7 @@ function getTopRatedTagHandler(response) {
     var maxRecord = {};
 
     response.data.outputs.forEach(function (output) {
-        //console.log(output.data.concepts);
+
         output.data.concepts.forEach(function (tag) {
             tag.value = Math.ceil(tag.value * 100);
             if (tag.value > maxValue) {
@@ -194,10 +194,15 @@ function determineWhatNSFW(response) {
     response.data.outputs.forEach(function (output) {
         output.data.concepts.forEach(function (tag) {
 
-            if (tag.name === 'sfw' &&  Math.ceil(tag.value * 100) > 90) {
+            console.log('AA');
+            console.log(tag.name);
+            console.log(tag.value);
+
+            if (tag.name === 'sfw' &&  Math.ceil(tag.value * 100) > 70) {
                 status = true;
                 return status;
             }
+
         });
     });
     return status;
