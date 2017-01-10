@@ -149,14 +149,14 @@ class NavStepper extends Component {
 				            		<div>
 							            {image_valid === '' ?
 										<p>
-											In the left drop zone area, drop a selfie or headshot image or click to select a file to upload.
+											In the outlined drop zone area, drop a selfie or headshot image or click to select a file to upload.
 										</p>
 										: null}
 
 										{image_valid === 'invalid' ?
 										<div className="uk-alert-danger">
 											<p>Uh, oh. This photo seems to contain content that doesn't fit the requirements of our site. We focus exclusively on semi-close-up photos of people that have their hairstyle on display.</p>
-											<p>In the left drop zone area, drop a selfie or headshot image or click to select a file to upload.</p>
+											<p>In the outlined drop zone area, drop a selfie or headshot image or click to select a file to upload.</p>
 										</div>
 										: null}
 									</div>
