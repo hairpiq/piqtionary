@@ -1,3 +1,6 @@
+// start new relic
+var nr = require('newrelic');
+
 require('dotenv').config();
 const config = process.env;
 
