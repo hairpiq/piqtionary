@@ -2,6 +2,7 @@ var ObjectID = require("mongodb").ObjectID;
 var assert = require('assert');
 var config = process.env;
 var request = require('request');
+var validator = require('validator');
 
 module.exports = function(app, db) {
 
@@ -16,11 +17,11 @@ module.exports = function(app, db) {
 		console.log('B - called: /api/piqtionary/submit');
 
 		var item = {
-			rendered_url: req.body.rendered_url,
-			orig_photo_url: req.body.orig_photo_url,
-			s3_url: req.body.s3_url,
-			stylename: req.body.stylename,
-			ig_username: req.body.ig_username
+			rendered_url: validator.escape(req.body.rendered_url),
+			orig_photo_url: validator.escape(req.body.orig_photo_url),
+			s3_url: validator.escape(req.body.s3_url),
+			stylename: validator.escape(req.body.stylename),
+			ig_username: validator.escape(req.body.ig_username)
 		};
 
 		if (req.body.options !== undefined)
@@ -60,9 +61,9 @@ module.exports = function(app, db) {
 		var pending_id = { _id: ObjectID(req.body.pending_id) };
 
 		var item = {
-			s3_url: req.body.s3_url,
-			stylename: req.body.stylename,
-			ig_username: req.body.ig_username,
+			s3_url: validator.escape(req.body.s3_url),
+			stylename: validator.escape(req.body.stylename),
+			ig_username: validator.escape(req.body.ig_username),
 			publish_status: "unpublished",
 			trained_status: "untrained"
 		}
@@ -81,9 +82,9 @@ module.exports = function(app, db) {
 
 		} else {
 
-			item.orig_photo_url = req.body.orig_photo_url;
-			item.rendered_url = req.body.rendered_url;
-			item.pending_id = pending_id._id;
+			item.orig_photo_url =  validator.escape(req.body.orig_photo_url);
+			item.rendered_url =  validator.escape(req.body.rendered_url);
+			item.pending_id =  validator.escape(pending_id._id);
 
 			console.log('Item is rejected');
 
@@ -311,7 +312,7 @@ module.exports = function(app, db) {
 
 			// if a keyword is included, add it to the query
 			if (req.body.term) {
-				query.$text = { $search: req.body.term };
+				query.$text = { $search: validator.escape(req.body.term) };
 				//query.score = { $meta: "textScore" };
 				//sort = { score: { $meta:"textScore" } };
 			}
@@ -457,9 +458,9 @@ module.exports = function(app, db) {
 		console.log('B - called: /api/piqtionary/update');
 
 		var params = {
-			orig_photo_url: req.body.orig_photo_url,
-			stylename: req.body.updated_stylename,
-			ig_username: req.body.updated_ig_username
+			orig_photo_url: validator.escape(req.body.orig_photo_url),
+			stylename: validator.escape(req.body.updated_stylename),
+			ig_username: validator.escape(req.body.updated_ig_username)
 		}
 
 		if (req.body.options !== undefined)
@@ -518,8 +519,8 @@ module.exports = function(app, db) {
 		var query = {'publish_status': 'unpublished'};
 
 		if (req.body.limit !== undefined && req.body.limit.length > 0) {
-			var limit = Number(req.body.limit);
-			var skip = Number(req.body.page_num) * Number(req.body.limit);
+			var limit = Number(validator.escape(req.body.limit));
+			var skip = Number(validator.escape(req.body.page_num)) * Number(validator.escape(req.body.limit));
 
 			var cursor = db.collection('approved_hairpiqs').find(query).skip(skip).sort({ _id : -1}).limit(limit);
 
@@ -558,8 +559,8 @@ module.exports = function(app, db) {
 		var resultArray = [];
 
 		if (req.body.limit !== undefined && req.body.limit.length > 0) {
-			var limit = Number(req.body.limit);
-			var skip = Number(req.body.page_num) * Number(req.body.limit);
+			var limit = Number(validator.escape(req.body.limit));
+			var skip = Number(validator.escape(req.body.page_num)) * Number(validator.escape(req.body.limit));
 
 			var cursor = db.collection('removed_hairpiqs').find().skip(skip).sort({ _id : -1}).limit(limit);
 
@@ -608,13 +609,13 @@ module.exports = function(app, db) {
 		if (req.body.approved_id !== undefined) {
 			
 			var approved_id = { _id: ObjectID(req.body.approved_id) };
-			item._id = approved_id._id;
+			item._id = validator.escape(approved_id._id);
 			restored_collection = 'approved_hairpiqs';
 
 		} else if (req.body.pending_id !== undefined) {
 
 			var pending_id = { _id: ObjectID(req.body.pending_id) };
-			item._id = pending_id._id;
+			item._id = validator.escape(pending_id._id);
 			restored_collection = 'pending_hairpiqs';
 
 		}
@@ -657,7 +658,7 @@ module.exports = function(app, db) {
 		var query = {'trained_status': 'untrained'};
 
 		if (req.body.limit !== undefined && req.body.limit.length > 0) {
-			var limit = Number(req.body.limit);
+			var limit = Number(validator.escape(req.body.limit));
 
 			var cursor = db.collection('approved_hairpiqs').find(query).sort({ _id : -1}).limit(limit);
 
@@ -699,11 +700,11 @@ module.exports = function(app, db) {
 			// - publish_status
 
 		var id = {
-			_id: ObjectID(req.body._id)
+			_id: ObjectID(validator.escape(req.body._id))
 		};
 
 		var item = {
-			trained_status: req.body.trained_status
+			trained_status:  validator.escape(req.body.trained_status)
 		};
 		
 		db.collection('approved_hairpiqs').update(id, { $set: item }, function(err, result) {
