@@ -7,7 +7,7 @@ import AppBar from 'material-ui/AppBar';
 import { Link } from 'react-router';
 import IconButton from 'material-ui/IconButton';
 
-import ImagePhotoLibrary from 'material-ui/svg-icons/image/photo-library';
+import NavigationRefresh from 'material-ui/svg-icons/navigation/refresh';
 import AVVideoLibrary from 'material-ui/svg-icons/av/video-library';
 import ActionLaunch from 'material-ui/svg-icons/action/launch';
 import NavigationMenu from 'material-ui/svg-icons/navigation/menu';
@@ -19,6 +19,9 @@ import NavTabs from '../../partials/admin/NavTabs';
 import Modal from '../../partials/admin/Modal';
 import CreateButton from '../../partials/admin/hairpiq_creator/CreateButton';
 
+import Services from '../../services/admin/';
+import CircularProgress from 'material-ui/CircularProgress';
+import Snackbar from 'material-ui/Snackbar';
 
 var RetinaImage = require('react-retina-image');
 
@@ -65,11 +68,14 @@ class Main extends Component {
     
     this.state = {
       initialSelectedIndex: initialSelectedIndex,
-      open: false
+      open: false,
+      updatingKeywords: false,
+      keywordsRefreshed: false
     };
 
     this.linkTo = this.linkTo.bind(this);
     this.openLiveSite = this.openLiveSite.bind(this);
+    this.refreshKeywords = this.refreshKeywords.bind(this);
   }
 
   linkTo(route) {
@@ -82,6 +88,31 @@ class Main extends Component {
     
     window.open("/", "_blank");
 
+  }
+
+  refreshKeywords() {
+
+    let _this = this;
+
+    this.setState({
+      updatingKeywords: true
+    });
+    
+    Services.refreshKeywords().then(function(result) {
+      
+      _this.setState({
+        keywordsRefreshed: true
+      });
+
+    });
+
+  }
+
+  handleKeywordsRefreshedRequestClose = () => {
+    this.setState({
+      keywordsRefreshed: false,
+      updatingKeywords: false
+    });
   }
 
   componentDidMount() {
@@ -127,13 +158,21 @@ class Main extends Component {
 
     const standard_actions = (
       <div>
-        {/*
-        <IconButton iconStyle={styles.appBarIconButton} tooltip="Photos"><ImagePhotoLibrary /></IconButton>
-        */}
+        <IconButton 
+          onTouchTap={() => this.refreshKeywords()}
+          iconStyle={styles.appBarIconButton}
+          tooltip="Refresh Keywords"
+          disabled={this.state.updatingKeywords}>
+          {this.state.updatingKeywords ? 
+            <CircularProgress size={20} color={styles.appBarIconButton.color} />
+          : <NavigationRefresh /> }
+        </IconButton>
         <IconButton
           onTouchTap={() => this.openLiveSite()}
           iconStyle={styles.appBarIconButton}
-          tooltip="Live Site"><ActionLaunch /></IconButton>
+          tooltip="Live Site">
+          <ActionLaunch />
+        </IconButton>
       </div>
     )
 
@@ -178,6 +217,13 @@ class Main extends Component {
                 open={this.state.open}
                 onRequestChange={(open) => this.setState({open})}
                 handleClose={() => this.handleClose()}
+              />
+
+              <Snackbar
+                open={this.state.keywordsRefreshed}
+                message="Keywords Refreshed"
+                autoHideDuration={4000}
+                onRequestClose={this.handleKeywordsRefreshedRequestClose}
               />
 
             </div>
