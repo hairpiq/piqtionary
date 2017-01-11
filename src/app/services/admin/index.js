@@ -86,6 +86,11 @@ module.exports = {
 		return execute('//' + config.HOSTNAME + '/api/piqtionary/untrained', params);
 		
 	},
+	refreshKeywords: function() {
+
+		return execute('//' + config.HOSTNAME + '/api/piqtionary/refresh_keywords', {});
+
+	},
 	hairpiqCreator: {
 		validate: function(params) {
 
