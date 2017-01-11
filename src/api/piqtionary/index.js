@@ -719,4 +719,69 @@ module.exports = function(app, db) {
 
 	});
 
+	/*
+		train hairpiq.com
+	*/
+
+	app.post('/api/piqtionary/refresh_keywords', function(req, res, next) {
+
+		console.log('B - called: /api/piqtionary/refresh_keywords');
+
+		db.collection('word_count').drop(function(err, result) {
+
+			assert.equal(null, err);
+
+			var map = function() {
+			
+				if(this.publish_status === 'published') {
+					var summary = this.stylename;
+					if (summary) { 
+						// quick lowercase to normalize per your requirements
+						summary = summary.toLowerCase().split(" ");
+						for (var i = summary.length - 1; i >= 0; i--) {
+						// might want to remove punctuation, etc. here
+						if (summary[i])  {
+							// make sure there's something
+							emit(summary[i], 1); // store a 1 for each word
+							}
+						}
+					}
+
+					summary = this.ig_username;
+					if (summary) { 
+						// quick lowercase to normalize per your requirements
+						summary = summary.toLowerCase().split(" ");
+						for (var i = summary.length - 1; i >= 0; i--) {
+						// might want to remove punctuation, etc. here
+						if (summary[i])  {
+							// make sure there's something
+							emit(summary[i], 1); // store a 1 for each word
+							}
+						}
+					}
+				
+				}
+			};
+
+			var reduce = function( key, values ) {    
+			    var count = 0;    
+			    values.forEach(function(v) {            
+			        count +=v;    
+			    });
+			    return count;
+			}
+
+			db.collection('approved_hairpiqs').mapReduce(map, reduce, {out: "word_count" }, function(err, result) {
+						
+				assert.equal(null, err);
+				console.log('C - Updated word_count in approved_hairpiqs');
+
+				res.send(JSON.stringify('success'));
+			
+			});
+		
+		});
+
+	});
+
 }
