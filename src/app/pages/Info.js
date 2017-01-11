@@ -46,7 +46,7 @@ class Info extends Component {
                 
                 <div className="uk-grid uk-grid-margin">
 
-                  <div className="uk-width-medium-1-2">
+                  <div className="uk-width-medium-1-1">
 
                     <Paper className="benefit">
 
@@ -62,7 +62,7 @@ class Info extends Component {
 
                   </div>
 
-                  <div className="uk-width-medium-1-2">
+                  <div className="uk-width-medium-1-1">
 
                     <Paper className="benefit">
 
@@ -78,7 +78,7 @@ class Info extends Component {
 
                   </div>
 
-                  <div className="uk-width-medium-1-2">
+                  <div className="uk-width-medium-1-1">
 
                     <Paper className="benefit">
 
@@ -94,7 +94,7 @@ class Info extends Component {
 
                   </div>
 
-                  <div className="uk-width-medium-1-2">
+                  <div className="uk-width-medium-1-1">
 
                     <Paper className="benefit">
 
