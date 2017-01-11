@@ -7,3 +7,5 @@ test
 hairpiq/s3-queue
 .env
 public
+tools
+newrelic_agent.log
