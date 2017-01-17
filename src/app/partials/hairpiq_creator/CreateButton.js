@@ -20,6 +20,18 @@ class CreateButton extends Component {
 	            	returnTo: this.props.location.pathname
 	            }
 	        });
+
+		// report step metric
+		var test = {
+		  hitType: 'event',
+		  eventCategory: 'Hairpiq Creator',
+		  eventAction: 'open-hairpiq-creator',
+		  eventLabel: 'Open the Hairpiq Creator'
+		};
+
+		console.log(test);
+		
+		ga('send', test);
 	}
 
 	mobileLinkTo(route) {

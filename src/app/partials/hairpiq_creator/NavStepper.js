@@ -49,6 +49,15 @@ class NavStepper extends Component {
 			  stepIndex: stepIndex + 1,
 			});
 
+		// report step metric
+		ga('send', {
+		  hitType: 'event',
+		  eventCategory: 'Hairpiq Creator',
+		  eventAction: 'move-to-next-screen',
+		  eventLabel: 'Create a Hairpiq',
+		  eventValue: stepIndex
+		});
+
 	};
 
 	handlePrev = () => {
@@ -58,6 +67,15 @@ class NavStepper extends Component {
 		if (stepIndex > 0) {
 		  this.setState({stepIndex: stepIndex - 1});
 		}
+
+		// report step metric
+		ga('send', {
+		  hitType: 'event',
+		  eventCategory: 'Hairpiq Creator',
+		  eventAction: 'move-to-previous-screen',
+		  eventLabel: 'Move to Previous Screen',
+		  eventValue: stepIndex
+		});
 
 	};
 
@@ -296,6 +314,16 @@ class NavStepper extends Component {
 							backgroundColor={orange700}
 							hoverColor="#faba79"
 					      	target="_blank"
+					      	onTouchTap={() => {
+
+					      		ga('send', {
+								  hitType: 'event',
+								  eventCategory: 'Hairpiq Creator',
+								  eventAction: 'download',
+								  eventLabel: 'Download Custom Hairpiq'
+								});
+
+					      	}}
 					      	icon={<FontIcon color="#ffffff" className="icon-download" />}
 						    />
 						</a>
