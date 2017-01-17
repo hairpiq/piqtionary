@@ -95,7 +95,6 @@ class HeroSpace extends Component {
 				                backgroundColor="#f7e6ea"
 				                onTouchTap={() => this.openLiveSite('https://blacklove.splashthat.com/')}
 				                />
-				            <p>Use Code <span>SANKBLKLV</span> for <span>$10 Off</span> General Admission</p>
 						</div>
 
 						<div className="uk-width-medium-6-10">

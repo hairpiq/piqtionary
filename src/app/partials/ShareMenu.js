@@ -41,6 +41,16 @@ class ShareMenu extends Component {
 						backgroundColor={orange700}
 						hoverColor="#faba79"
 				      	target="_blank"
+				      	onTouchTap={() => {
+
+				      		ga('send', {
+							  hitType: 'event',
+							  eventCategory: 'Share Menu',
+							  eventAction: 'download',
+							  eventLabel: 'Download Hairpiq'
+							});
+
+				      	}}
 				      	icon={<FontIcon className="icon-download" />}
 				    />
 			    </a>
