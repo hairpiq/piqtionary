@@ -120,6 +120,14 @@ class CreateForm extends Component {
 		});
 
 		this.handleImageUpload(files[0]);
+
+		// report step metric
+		ga('send', {
+		  hitType: 'event',
+		  eventCategory: 'Hairpiq Creator',
+		  eventAction: 'source-photo-uploaded',
+		  eventLabel: 'Source Photo Uploaded'
+		});
 	}
 
 	handleImageUpload(file) {
@@ -160,13 +168,20 @@ class CreateForm extends Component {
 							}
 						});
 
+						// report step metric
+						ga('send', {
+						  hitType: 'event',
+						  eventCategory: 'Hairpiq Creator',
+						  eventAction: 'source-photo-valid',
+						  eventLabel: 'Valid Photo Uploaded'
+						});
+
 					} else {
 
 						const pieces = temp_url.split('/');
 						params = {
 							cloudinary_id: pieces[ pieces.length - 1].split('.')[0]
 						}
-
 
 						Services.hairpiqCreator.delete(params).then(function (result) {
 
@@ -178,6 +193,14 @@ class CreateForm extends Component {
 									valid: 'invalid',
 									isUploading: false
 								}
+							});
+
+							// report step metric
+							ga('send', {
+							  hitType: 'event',
+							  eventCategory: 'Hairpiq Creator',
+							  eventAction: 'source-photo-invalid',
+							  eventLabel: 'Invalid Photo Uploaded'
 							});
 
 						});
@@ -197,6 +220,14 @@ class CreateForm extends Component {
 			cropper: {
 				[state + 'Loaded']: true
 			}
+		});
+
+		// report step metric
+		ga('send', {
+		  hitType: 'event',
+		  eventCategory: 'Hairpiq Creator',
+		  eventAction: 'image-loaded-into-cropper',
+		  eventLabel: 'Image Loaded into Cropper'
 		});
 
 	}
@@ -225,6 +256,14 @@ class CreateForm extends Component {
 			}
 		});
 
+		// report step metric
+		ga('send', {
+		  hitType: 'event',
+		  eventCategory: 'Hairpiq Creator',
+		  eventAction: 'image-cropped',
+		  eventLabel: 'Image Cropped'
+		});
+
 	}
 
 	clearCrop() {
@@ -234,6 +273,14 @@ class CreateForm extends Component {
 				image: undefined,
 				values: {}
 			}
+		});
+
+		// report step metric
+		ga('send', {
+		  hitType: 'event',
+		  eventCategory: 'Hairpiq Creator',
+		  eventAction: 'clear-crop',
+		  eventLabel: 'Clear Crop'
 		});
 
 	}
@@ -257,6 +304,14 @@ class CreateForm extends Component {
 				crop_type: ''
 			},
 			isApplyToggled: true
+		});
+
+		// report step metric
+		ga('send', {
+		  hitType: 'event',
+		  eventCategory: 'Hairpiq Creator',
+		  eventAction: 'clear-image',
+		  eventLabel: 'Clear Image'
 		});
 	}
 
@@ -432,6 +487,19 @@ class CreateForm extends Component {
 			_this.handleClose();
 
 		});
+
+
+		// record user activity
+		if (this.state.isApplyToggled) {
+		
+			ga('send', {
+			  hitType: 'event',
+			  eventCategory: 'Hairpiq Creator',
+			  eventAction: 'custom-hairpiq-submitted',
+			  eventLabel: 'Custom Hairpiq Submitted'
+			});
+
+		}
 
 	}
 
