@@ -7,7 +7,27 @@ import HeroSpace from '../partials/HeroSpace';
 
 class Index extends Component {
 
+  constructor() {
+    super();
+
+    this.state = {
+      is_logged_in: false
+    }
+
+  }
+
+  componentDidMount() {
+
+    this.setState({
+      is_logged_in: this.props.route.auth.loggedIn()
+    });
+
+  }
+
   render() {
+
+    console.log('A');
+    console.log('is_logged_in: ' + this.state.is_logged_in);
 
     return (
       <div>

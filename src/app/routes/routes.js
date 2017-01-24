@@ -1,5 +1,6 @@
 import React from 'react';
 var ReactRouter = require('react-router');
+const config = process.env;
 
 // Router keeps the ui and url in sync
 // Route maps the url path to the specific Component
@@ -11,6 +12,7 @@ var Route = ReactRouter.Route;
 var IndexRoute = ReactRouter.IndexRoute;
 var browserHistory = ReactRouter.browserHistory;
 var Redirect = ReactRouter.Redirect;
+var IndexRedirect = ReactRouter.IndexRedirect;
 
 // site container and page components
 import Main from '../containers/Main';
@@ -19,6 +21,26 @@ import Photo from '../pages/Photo';
 import Create from '../pages/Create';
 import Survey from '../pages/Survey';
 import Info from '../pages/Info';
+
+// authenticate user
+import Home from '../pages/Home';
+import Login from '../pages/Login';
+import AuthService from '../services/AuthService';
+const auth = new AuthService(config.AUTH0_CLIENT_ID, config.AUTH0_DOMAIN);
+
+// onEnter callback to validate authentication in private routes
+const requireAuth = (nextState, replace) => {
+  if (!auth.loggedIn()) {
+    replace({ pathname: '/login' })
+  }
+}
+
+const parseAuthHash = (nextState, replace) => {
+  if (/access_token|id_token|error/.test(nextState.location.hash)) {
+    auth.parseHash(nextState.location.hash)
+  }
+}
+
 
 // admin container and page components
 import AdminMain from '../containers/admin/Main';
@@ -38,15 +60,18 @@ injectTapEventPlugin();
 module.exports = (
     <Router history={browserHistory}>
 		<Route path="/">
-			
+
 			<Route component={Main}>
-				<IndexRoute component={Index}/>
-				<Route path="search" component={Index}/>
-				<Route path="p/:id" component={Photo}/>
+
+				<IndexRoute component={Index} auth={auth} />
+			    <Route path="login" component={Login} onEnter={parseAuthHash}/>
+				<Route path="search" component={Index} onEnter={requireAuth}/>
+				<Route path="p/:id" component={Photo} onEnter={requireAuth}/>
 				<Redirect from="p/:id/" to="p/:id"/>
-				<Route path="create" component={Create}/>
-				<Route path="survey" component={Survey}/>
+				<Route path="create" component={Create} onEnter={requireAuth}/>
+				<Route path="survey" component={Survey} />
 				<Route path="info" component={Info}/>
+
 			</Route>
 
 			<Route path="admin" component={AdminMain}>

@@ -25,6 +25,9 @@ const config = {
         'CLOUDINARY_UPLOAD_PRESET': JSON.stringify(process.env.CLOUDINARY_UPLOAD_PRESET),
         'CLARIFAI_MODEL_ID': JSON.stringify(process.env.CLARIFAI_MODEL_ID),
         'S3_BUCKET_NAME': JSON.stringify(process.env.S3_BUCKET_NAME),
+        'AUTH0_CLIENT_ID': JSON.stringify(process.env.AUTH0_CLIENT_ID),
+        'AUTH0_DOMAIN': JSON.stringify(process.env.AUTH0_DOMAIN),
+        'AUTH0_REDIRECT_URI': JSON.stringify(process.env.AUTH0_REDIRECT_URI),
       }
     }),
     // Minify the bundle
