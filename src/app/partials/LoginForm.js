@@ -4,7 +4,8 @@ import {browserHistory} from 'react-router';
 import TextField from 'material-ui/TextField';
 import Divider from 'material-ui/Divider';
 import FlatButton from 'material-ui/FlatButton';
-import {orange700} from 'material-ui/styles/colors';
+import {orange700, orange900} from 'material-ui/styles/colors';
+import FontIcon from 'material-ui/FontIcon';
 
 var RetinaImage = require('react-retina-image');
 
@@ -35,24 +36,18 @@ class LoginForm extends Component {
 								className="textfield"
 						    	hintText="Full Name"
 						     	fullWidth={true}
-						    	underlineShow={false}
 						    />
-						    <Divider />
 						    <TextField
 						    	className="textfield"
 						    	hintText="Username"
 						    	fullWidth={true}
-						    	underlineShow={false}
 						    />
-						    <Divider />
 						    <TextField
 						    	className="textfield"
 						    	hintText="Password"
 						    	type="password"
 						    	fullWidth={true}
-						    	underlineShow={false}
 						    />
-						    <Divider />
 						    <FlatButton
 						    	className="signup-button"
 						    	label="Sign Up"
@@ -73,9 +68,10 @@ class LoginForm extends Component {
 						<FlatButton
 					    	className="login-button"
 					    	label="Log Into Hairpiq"
-					    	backgroundColor={orange700}
+					    	backgroundColor={orange900}
 					        hoverColor="#faba79"
 				          	rippleColor="#ffffff"
+				          	icon={<FontIcon className="icon-hairpiq2" />}
 					    />
 
 						<FlatButton
@@ -84,6 +80,7 @@ class LoginForm extends Component {
 					    	backgroundColor="#3b5998"
 							hoverColor="#98a8c9"
 				          	rippleColor="#ffffff"
+				          	icon={<FontIcon className="icon-facebook2" />}
 					    />
 
 						<FlatButton
@@ -92,6 +89,7 @@ class LoginForm extends Component {
 					    	backgroundColor="#3a7af3"
 					        hoverColor="#6195f5"
 				          	rippleColor="#ffffff"
+				          	icon={<FontIcon className="icon-google2" />}
 					    />
 
 					</div>

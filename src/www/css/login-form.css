@@ -41,10 +41,6 @@
 	display: inline-block;
 }
 
-.login-form-container .textfield {
-	margin-left: 20px;
-}
-
 .login-form-container .signup-button {
 	border-radius: 5px !important;
 	color: #ffffff !important;
@@ -67,6 +63,14 @@
 
 .login-form-container .google-button {
 	margin-bottom: 0 !important;
+}
+
+
+.login-form-container  [class^="icon-"] {
+	color: #ffffff !important;
+	position: absolute !important;
+    top: 7px;
+    left: 0;
 }
 
 
