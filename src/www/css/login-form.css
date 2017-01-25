@@ -2,6 +2,8 @@
 	border-radius: 10px;
 	background: #fff;
 	text-align: center;
+	width: 400px;
+    margin: 0 auto;
 }
 
 .login-form-container h1 {

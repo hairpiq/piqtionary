@@ -5,7 +5,7 @@ import Paper from 'material-ui/Paper';
 import Divider from 'material-ui/Divider';
 import LazyLoad from 'react-lazyload';
 
-class ResultItem extends Component {
+class SplashItem extends Component {
 
   constructor() {
     super();
@@ -27,9 +27,6 @@ class ResultItem extends Component {
 
   render() {
     const listItem = this.props.listItem;
-
-    console.log('A');
-    console.log(listItem);
 
     return (
       <Paper key={this.props.key} className="hairpiq-paper">
@@ -65,4 +62,4 @@ class ResultItem extends Component {
   }
 }
 
-export default ResultItem;
+export default SplashItem;

@@ -3,6 +3,7 @@ import { render } from 'react-dom';
 import ResultsWell from '../partials/ResultsWell';
 import Helmet from 'react-helmet';
 import HeroSpace from '../partials/HeroSpace';
+import SplashItem from '../partials/SplashItem';
 import LoginForm from '../partials/LoginForm';
 import SiteFooter from '../partials/SiteFooter';
 
@@ -70,21 +71,92 @@ class Index extends Component {
         :
 
         <div className="splash-page">
-          <div className="uk-grid">
 
-            <div className="uk-width-medium-1-5 uk-push-1-5">
-              Photo Strip
+          <div className="left-col">
+            <div className="strip">
+              <SplashItem
+                listItem={{
+                  _id: "5884ffd28516685c6087d544",
+                  ig_username: "@curlyyhair.killa",
+                  publish_status: "published",
+                  s3_url: "https://dev-piqtionary.s3.amazonaws.com/exbclo4ytos9zbg8yttz.jpg",
+                  stylename: "Twist Bangs and Puff",
+                }}
+              />
+              <SplashItem
+                listItem={{
+                  _id: "5884ffd28516685c6087d544",
+                  ig_username: "@curlyyhair.killa",
+                  publish_status: "published",
+                  s3_url: "https://dev-piqtionary.s3.amazonaws.com/v4drwif6adude07bobmt.jpg",
+                  stylename: "Twist Bangs and Puff",
+                }}
+              />
+              <SplashItem
+                listItem={{
+                  _id: "5884ffd28516685c6087d544",
+                  ig_username: "@curlyyhair.killa",
+                  publish_status: "published",
+                  s3_url: "https://dev-piqtionary.s3.amazonaws.com/llhsufy0edxlam7d68km.jpg",
+                  stylename: "Twist Bangs and Puff",
+                }}
+              />
+              <SplashItem
+                listItem={{
+                  _id: "5884ffd28516685c6087d544",
+                  ig_username: "@curlyyhair.killa",
+                  publish_status: "published",
+                  s3_url: "https://dev-piqtionary.s3.amazonaws.com/qm8ssoz2jjk1yl4uyhvp.jpg",
+                  stylename: "Twist Bangs and Puff",
+                }}
+              />
+              <SplashItem
+                listItem={{
+                  _id: "5884ffd28516685c6087d544",
+                  ig_username: "@curlyyhair.killa",
+                  publish_status: "published",
+                  s3_url: "https://dev-piqtionary.s3.amazonaws.com/exbclo4ytos9zbg8yttz.jpg",
+                  stylename: "Twist Bangs and Puff",
+                }}
+              />
+              <SplashItem
+                listItem={{
+                  _id: "5884ffd28516685c6087d544",
+                  ig_username: "@curlyyhair.killa",
+                  publish_status: "published",
+                  s3_url: "https://dev-piqtionary.s3.amazonaws.com/v4drwif6adude07bobmt.jpg",
+                  stylename: "Twist Bangs and Puff",
+                }}
+              />
+              <SplashItem
+                listItem={{
+                  _id: "5884ffd28516685c6087d544",
+                  ig_username: "@curlyyhair.killa",
+                  publish_status: "published",
+                  s3_url: "https://dev-piqtionary.s3.amazonaws.com/llhsufy0edxlam7d68km.jpg",
+                  stylename: "Twist Bangs and Puff",
+                }}
+              />
+              <SplashItem
+                listItem={{
+                  _id: "5884ffd28516685c6087d544",
+                  ig_username: "@curlyyhair.killa",
+                  publish_status: "published",
+                  s3_url: "https://dev-piqtionary.s3.amazonaws.com/qm8ssoz2jjk1yl4uyhvp.jpg",
+                  stylename: "Twist Bangs and Puff",
+                }}
+              />
             </div>
+          </div>
 
-            <div className="uk-width-medium-2-5 uk-push-1-5">
-              
-              <LoginForm />
+          <div className="right-col">
+            
+            <LoginForm />
 
-              <SiteFooter />
-
-            </div>
+            <SiteFooter />
 
           </div>
+
         </div>
 
         }
