@@ -93,6 +93,15 @@ footer {
 	margin: 0;
 }
 
+.splash-page footer {
+	background: none;
+}
+
+.splash-page .footer {
+	background: none;
+	padding: 20px 0;
+}
+
 
 @media (max-width: 767px) {
   	.main .app_bar {

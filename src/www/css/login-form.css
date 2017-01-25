@@ -1,0 +1,71 @@
+.login-form-container {
+	border-radius: 10px;
+	background: #fff;
+	text-align: center;
+}
+
+.login-form-container h1 {
+	line-height: 0;
+}
+
+.login-form-container h1 span {
+	display: none;
+}
+
+.login-form-container h2 {
+	font-family: "Montserrat";
+	font-size: 22px;
+}
+
+.login-form-container .logo {
+	width: 128px;
+	margin-top: 14px;
+}
+
+.login-form-container .inner-container {
+	padding: 28px 35px;
+}
+
+.login-form-container .dashed {
+	border-bottom: 1px dashed #bdbdbd !important;
+    background-color: #fff !important;
+    margin-bottom: -10px !important;
+}
+
+.login-form-container .or {
+	background: #fff;
+	padding: 0 20px;
+	font-family: "Montserrat";
+	display: inline-block;
+}
+
+.login-form-container .textfield {
+	margin-left: 20px;
+}
+
+.login-form-container .signup-button {
+	border-radius: 5px !important;
+	color: #ffffff !important;
+	margin-top: 25px !important;
+    width: 100%;
+}
+
+.login-form-container .login-button {
+	margin-top: -10px !important;
+}
+
+.login-form-container .login-button,
+.login-form-container .facebook-login-button,
+.login-form-container .google-login-button {
+	border-radius: 5px !important;
+	color: #ffffff !important;
+    width: 100%;
+    margin-bottom: 15px !important;
+}
+
+.login-form-container .google-button {
+	margin-bottom: 0 !important;
+}
+
+
+

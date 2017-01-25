@@ -47,7 +47,8 @@ class Main extends Component {
     super();
 
     this.state = {
-      indexChildren: {}
+      indexChildren: {},
+      is_logged_in: false
     }
 
     this.linkTo = this.linkTo.bind(this);
@@ -65,6 +66,10 @@ class Main extends Component {
     // compensate for javascript ugly page loading by removing
     // the loading class when this component finally mounts to page.
     $("#app").removeClass('loading');
+
+    this.setState({
+      is_logged_in: this.props.route.auth.loggedIn()
+    });
     
   }
 
@@ -127,33 +132,49 @@ class Main extends Component {
 
             <div>
 
-              <AppBar
-                className="app_bar"
-                showMenuIconButton={false}
-                title={logo}
-                children={search_bar}
-                iconElementRight={standard_actions}
-              />
+              {this.state.is_logged_in ?
 
-              <div className="main-container">
+              <div>
 
-              {isModal ?
-                this.state.indexChildren :
-                this.props.children
-              }
+                <AppBar
+                  className="app_bar"
+                  showMenuIconButton={false}
+                  title={logo}
+                  children={search_bar}
+                  iconElementRight={standard_actions}
+                />
+
+                <div className="main-container">
+
+                {isModal ?
+                  this.state.indexChildren :
+                  this.props.children
+                }
+
+                </div>
+
+                {isModal && (
+                  <Modal isOpen={true} returnTo={location.state.returnTo} pathname={location.pathname} hairpiqs={location.state.hairpiqs}>
+                    {this.props.children}
+                  </Modal>
+                )}
+
+                {this.props.location.pathname !== '/create' && this.props.location.pathname !== '/survey' ?
+                <CreateButton location={this.props.location} /> : null }
+
+                <SiteFooter />
 
               </div>
 
-              {isModal && (
-                <Modal isOpen={true} returnTo={location.state.returnTo} pathname={location.pathname} hairpiqs={location.state.hairpiqs}>
-                  {this.props.children}
-                </Modal>
-              )}
+              :
 
-              {this.props.location.pathname !== '/create' && this.props.location.pathname !== '/survey' ?
-              <CreateButton location={this.props.location} /> : null }
+              <div className="main-container">
+              
+                {this.props.children}
 
-              <SiteFooter />
+              </div>
+
+              }
 
             </div>
 

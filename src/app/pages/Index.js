@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
-import SearchBar from '../partials/SearchBar';
 import ResultsWell from '../partials/ResultsWell';
 import Helmet from 'react-helmet';
 import HeroSpace from '../partials/HeroSpace';
+import LoginForm from '../partials/LoginForm';
+import SiteFooter from '../partials/SiteFooter';
 
 class Index extends Component {
 
@@ -26,15 +27,11 @@ class Index extends Component {
 
   render() {
 
-    console.log('A');
-    console.log('is_logged_in: ' + this.state.is_logged_in);
+    let {is_logged_in} = this.state;
 
-    return (
+    const home_layout = (
+
       <div>
-
-        <Helmet
-          defaultTitle="Hairpiq"
-        />
 
         {this.props.location.pathname === '/' ?
         <HeroSpace />
@@ -52,8 +49,45 @@ class Index extends Component {
             />
 
           </div>
-        
+      
         </div>
+
+      </div>
+
+    )
+
+    return (
+      <div>
+
+        <Helmet
+          defaultTitle="Hairpiq"
+        />
+
+        {is_logged_in ?
+
+          {home_layout} 
+        
+        :
+
+        <div className="splash-page">
+          <div className="uk-grid">
+
+            <div className="uk-width-medium-1-5 uk-push-1-5">
+              Photo Strip
+            </div>
+
+            <div className="uk-width-medium-2-5 uk-push-1-5">
+              
+              <LoginForm />
+
+              <SiteFooter />
+
+            </div>
+
+          </div>
+        </div>
+
+        }
 
       </div>
     );

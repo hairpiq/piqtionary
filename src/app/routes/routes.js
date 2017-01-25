@@ -61,7 +61,7 @@ module.exports = (
     <Router history={browserHistory}>
 		<Route path="/">
 
-			<Route component={Main}>
+			<Route component={Main} auth={auth}>
 
 				<IndexRoute component={Index} auth={auth} />
 			    <Route path="login" component={Login} onEnter={parseAuthHash}/>
