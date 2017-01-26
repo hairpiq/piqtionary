@@ -17,11 +17,19 @@ class LoginForm extends Component {
 		super();
 
 		this.state = {
+			emailErrorText: '',
+			email: '',
+			is_email_valid: false,
+			fullnameErrorText: '',
+			fullname: '',
+			is_fullname_valid: true,
 			usernameErrorText: '',
 			username: '',
 			is_username_valid: false,
 			meter_value: 0,
-			passwordErrorText: ''
+			passwordErrorText: '',
+			is_password_valid: false,
+			password_score: 0
 		}
 	}
 	
@@ -57,33 +65,99 @@ class LoginForm extends Component {
 	}
 
 	handleEmailChange = (e) =>  {
-		console.log(e.target.value);
+		
+		var checkForEmailFormat = new RegExp('[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$');
+		var email = e.target.value;
+
+		console.log('email: ' + email);
+
+		if (email.length === 0) {
+			this.setState({
+				emailErrorText: 'This field is required.',
+				email: email,
+				is_email_valid: false
+			});
+		} else if (email.length > 0 && email.length < 3) {
+			this.setState({
+				emailErrorText: 'Email is Too Short',
+				email: email,
+				is_email_valid: false
+			});
+		} else if (!checkForEmailFormat.test(email)) {
+			this.setState({
+				emailErrorText: 'Invalid format',
+				email: email,
+				is_email_valid: false
+			});
+		} else {
+			this.setState({
+				emailErrorText: '',
+				email: email,
+				is_email_valid: true
+			});
+		}
+
 	}
 
 	handleFullnameChange = (e) =>  {
-		console.log(e.target.value);
+		
+		var checkForFullnameFormat = new RegExp("^[a-zA-Z-'. ]+$");
+		var fullname = e.target.value.replace(/\.+/g, '.');
+
+		if (fullname.length === 0) {
+			this.setState({
+				fullnameErrorText: 'This field is required.',
+				fullname: fullname,
+				is_fullname_valid: false
+			});
+		} else if (fullname.length > 0 && fullname.length < 3) {
+			this.setState({
+				fullnameErrorText: 'Full Name is Too Short',
+				fullname: fullname,
+				is_fullname_valid: false
+			});
+		} else if (!checkForFullnameFormat.test(fullname)) {
+			this.setState({
+				fullnameErrorText: 'Invalid format',
+				fullname: fullname,
+				is_fullname_valid: false
+			});
+		} else {
+			this.setState({
+				fullnameErrorText: '',
+				fullname: fullname,
+				is_fullname_valid: true
+			});
+		}
 	}
 
 	handleUsernameChange = (e) =>  {
 
 		var checkForUsernameFormat = new RegExp('^[a-z0-9._-]{3,30}$');
+		var username = e.target.value.replace(/\.+/g, '.');
 
-		if (!checkForUsernameFormat.test(username)) {
-			this.setState({
-				usernameErrorText: 'Invalid format: your_username',
-				username: '@' + username,
-				is_username_valid: false
-			});
-		} else if (e.target.value.length === 0) {
+		if (username.length === 0) {
 			this.setState({
 				usernameErrorText: 'This field is required.',
-				username: e.target.value,
+				username: username,
+				is_username_valid: false
+			});
+		} else if (username.length > 0 && username.length < 3) {
+			this.setState({
+				usernameErrorText: 'Username is Too Short',
+				username: username,
+				is_username_valid: false
+			});
+		} else if (!checkForUsernameFormat.test(username)) {
+			this.setState({
+				usernameErrorText: 'Invalid format',
+				username: username,
 				is_username_valid: false
 			});
 		} else {
 			this.setState({
 				usernameErrorText: '',
-				username: e.target.value,
+				username: username,
 				is_username_valid: true
 			});
 		}
@@ -106,11 +180,23 @@ class LoginForm extends Component {
 
   		this.setState({
   			meter_value: result.score,
-  			passwordErrorText: e.target.value.length === 0 ? '' : strength[result.score]
+  			passwordErrorText: e.target.value.length === 0 ? '' : strength[result.score],
+  			is_password_valid: !(result.score === 0),
+  			password_score: result.score
   		});
 	}
 
 	render() {
+
+		let is_valid = (
+			
+			this.state.is_email_valid &&
+			this.state.is_fullname_valid &&
+			this.state.is_username_valid &&
+			this.state.is_password_valid &&
+			this.state.password_score >= 3
+
+		);
 
 		return (
 
@@ -131,40 +217,48 @@ class LoginForm extends Component {
 								className="textfield"
 						    	hintText="Email"
 						     	fullWidth={true}
+						     	value={this.state.email}
+						     	errorText={this.state.emailErrorText}
 						     	onChange={this.handleEmailChange.bind(this)}
 						    />
 							<TextField
 								className="textfield"
 						    	hintText="Full Name"
 						     	fullWidth={true}
+						     	value={this.state.fullname}
+						     	errorText={this.state.fullnameErrorText}
 						     	onChange={this.handleFullnameChange.bind(this)}
 						    />
 						    <TextField
 						    	className="textfield"
 						    	hintText="Username"
 						    	fullWidth={true}
+						    	maxLength="31"
+						    	value={this.state.username}
 						    	errorText={this.state.usernameErrorText}
 						    	onChange={this.handleUsernameChange.bind(this)}
 						    />
-						    <TextField
-						    	className="textfield"
-						    	hintText="Password"
-						    	type="password"
-						    	errorText={this.state.passwordErrorText}
-						    	fullWidth={true}
-						    	onChange={this.handlePasswordChange.bind(this)}
-						    />
-						    
-						    {this.state.passwordErrorText.length > 0 ?
-						    <meter max="4" id="password-strength-meter" value={this.state.meter_value}></meter>
-						    : null }
+						    <div className="password-container">
+							    <TextField
+							    	className="textfield"
+							    	hintText="Password"
+							    	type="password"
+							    	errorText={this.state.passwordErrorText}
+							    	fullWidth={true}
+							    	onChange={this.handlePasswordChange.bind(this)}
+							    	underlineShow={false}
+							    />
+							    <meter max="4" id="password-strength-meter" value={this.state.meter_value}></meter>
+
+						    </div>
 
 						    <FlatButton
-						    	className="signup-button"
+						    	className={ is_valid ? "signup-button " : "signup-button disabled"}
 						    	label="Sign Up"
 						    	backgroundColor={orange700}
 						        hoverColor="#faba79"
 					          	rippleColor="#ffffff"
+					          	disabled={!is_valid}
 						    />
 						</div>
 
