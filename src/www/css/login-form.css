@@ -28,6 +28,46 @@
 	padding: 28px 35px;
 }
 
+.login-form-container .textfield {
+	text-align: left;
+}
+
+meter {
+  /* Reset the default appearance */
+ /* -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;*/
+
+  margin: 0 auto 1em;
+  width: 100%;
+  height: 0.5em;
+
+  /* Applicable only to Firefox */
+  background: none;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+meter::-webkit-meter-bar {
+  background: none;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Webkit based browsers */
+meter[value="1"]::-webkit-meter-optimum-value { background: #E53935; }
+meter[value="2"]::-webkit-meter-optimum-value { background: #FFEB3B; }
+meter[value="3"]::-webkit-meter-optimum-value { background: #FFAB00; }
+meter[value="4"]::-webkit-meter-optimum-value { background: #4CAF50; }
+
+/* Gecko based browsers */
+meter[value="1"]::-moz-meter-bar { background: #E53935; }
+meter[value="2"]::-moz-meter-bar { background: #FFEB3B; }
+meter[value="3"]::-moz-meter-bar { background: #FFAB00; }
+meter[value="4"]::-moz-meter-bar { background: #4CAF50; }
+
+.login-form-container .inner-container.login-buttons {
+	padding: 28px 0;
+}
+
 .login-form-container .dashed {
 	border-bottom: 1px dashed #bdbdbd !important;
     background-color: #fff !important;
@@ -57,11 +97,13 @@
 .login-form-container .google-login-button {
 	border-radius: 5px !important;
 	color: #ffffff !important;
-    width: 100%;
+    width: 30%;
+    margin:0 4px !important;
     margin-bottom: 15px !important;
 }
 
 .login-form-container .google-button {
+	margin-right:0;
 	margin-bottom: 0 !important;
 }
 
@@ -71,6 +113,15 @@
 	position: absolute !important;
     top: 7px;
     left: 0;
+}
+
+.login-form-container .login-button span:last-child,
+.login-form-container .facebook-login-button span:last-child,
+.login-form-container .google-login-button span:last-child {
+	
+	top: 0;
+    left: 20px;
+
 }
 
 @media (max-width: 767px) {
