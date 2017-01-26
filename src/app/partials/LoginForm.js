@@ -68,7 +68,7 @@ class LoginForm extends Component {
 						<FlatButton
 					    	className="login-button"
 					    	label="Log Into Hairpiq"
-					    	backgroundColor={orange900}
+					    	backgroundColor={orange700}
 					        hoverColor="#faba79"
 				          	rippleColor="#ffffff"
 				          	icon={<FontIcon className="icon-hairpiq2" />}

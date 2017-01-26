@@ -18,8 +18,8 @@
 }
 
 @keyframes slide-strip {
-    from {top: 0;}
-    to {top: -1779px;}
+    from { transform: translateY(0);}
+    to {transform: translateY(-1779px);}
 }
 
 .splash-page .strip {
@@ -35,4 +35,21 @@
 .splash-page .hairpiq-paper {
 	width:280px;
 	margin: 0 auto 20px;
+}
+
+@media (max-width: 767px) {
+
+	.splash-page {
+		width:100%;
+		margin-top: -25px;
+	}
+
+	.splash-page .left-col {
+		display: none;
+	}
+
+	.splash-page .right-col {
+		width: 100%;
+	}
+
 }

@@ -73,5 +73,12 @@
     left: 0;
 }
 
+@media (max-width: 767px) {
+
+	.login-form-container {
+		width: 100%;
+	}
+
+}
 
 
