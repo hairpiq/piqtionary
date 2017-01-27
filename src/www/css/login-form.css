@@ -81,10 +81,6 @@ meter[value="2"]::-moz-meter-bar { background: #FFD600; }
 meter[value="3"]::-moz-meter-bar { background: #FFAB00; }
 meter[value="4"]::-moz-meter-bar { background: #4CAF50; }
 
-.login-form-container .inner-container.login-buttons {
-	padding: 28px 0;
-}
-
 .login-form-container .dashed {
 	border-bottom: 1px dashed #bdbdbd !important;
     background-color: #fff !important;
@@ -137,13 +133,45 @@ meter[value="4"]::-moz-meter-bar { background: #4CAF50; }
     left: 0;
 }
 
-.login-form-container .login-button span:last-child,
-.login-form-container .facebook-login-button span:last-child,
-.login-form-container .google-login-button span:last-child {
-	
-	top: 0;
-    left: 20px;
+@media (max-width: 479px) {
 
+	.login-form-container .login-button,
+	.login-form-container .facebook-login-button,
+	.login-form-container .google-login-button {
+
+		margin:0 0 15px !important;
+		width:100%;
+
+	}
+
+	.login-form-container .google-button {
+		margin-bottom: 0 !important;
+	}
+
+	.login-form-container .login-button span:last-child,
+	.login-form-container .facebook-login-button span:last-child,
+	.login-form-container .google-login-button span:last-child {
+		
+		padding-left: 15px !important;
+
+	}
+
+}
+
+@media (min-width: 480px) {
+
+	.login-form-container .inner-container.login-buttons {
+		padding: 28px 0;
+	}
+
+	.login-form-container .login-button span:last-child,
+	.login-form-container .facebook-login-button span:last-child,
+	.login-form-container .google-login-button span:last-child {
+		
+		top: 0;
+	    left: 20px;
+
+	}
 }
 
 @media (max-width: 767px) {
@@ -153,5 +181,6 @@ meter[value="4"]::-moz-meter-bar { background: #4CAF50; }
 	}
 
 }
+
 
 

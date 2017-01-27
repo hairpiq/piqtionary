@@ -4,8 +4,9 @@ import AuthService from '../services/AuthService';
 import TextField from 'material-ui/TextField';
 import Divider from 'material-ui/Divider';
 import FlatButton from 'material-ui/FlatButton';
-import {orange700, orange900} from 'material-ui/styles/colors';
+import {grey400, orange700, orange900} from 'material-ui/styles/colors';
 import FontIcon from 'material-ui/FontIcon';
+import CircularProgress from 'material-ui/CircularProgress';
 
 var RetinaImage = require('react-retina-image');
 var zxcvbn = require('zxcvbn');
@@ -29,7 +30,8 @@ class LoginForm extends Component {
 			passwordErrorText: '',
 			is_password_valid: false,
 			password_score: 0,
-			password: ''
+			password: '',
+			is_authenticating: false
 		}
 	}
 	
@@ -56,8 +58,26 @@ class LoginForm extends Component {
 	}
 
 	signup() {
+		
 		const { email, password } = this.getAuthParams()
-		this.props.auth.signup(email, password)
+		
+		let _this = this;
+
+		this.props.auth.signup(email, password).catch(function(result) {
+
+			_this.setState({
+				is_authenticating: false
+			});
+
+		});
+
+		this.setState({
+			is_authenticating: true
+		});
+	}
+
+	loginWithFacebook() {
+		this.props.auth.loginWithFacebook();
 	}
 
 	loginWithGoogle() {
@@ -250,6 +270,14 @@ class LoginForm extends Component {
 
 						    </div>
 
+						    {this.state.is_authenticating ?
+							
+							<div className="loader">
+						       <CircularProgress color={grey400} size={20} />
+						    </div>
+
+						    :
+
 						    <FlatButton
 						    	className={ is_valid ? "signup-button " : "signup-button disabled"}
 						    	label="Sign Up"
@@ -259,6 +287,8 @@ class LoginForm extends Component {
 					          	disabled={!is_valid}
 					          	onTouchTap={() => this.signup()}
 						    />
+
+							}
 						</div>
 
 					</div>
@@ -285,6 +315,7 @@ class LoginForm extends Component {
 							hoverColor="#98a8c9"
 				          	rippleColor="#ffffff"
 				          	icon={<FontIcon className="icon-facebook2" />}
+				          	onTouchTap={() => this.loginWithFacebook()}
 					    />
 
 						<FlatButton
@@ -294,6 +325,7 @@ class LoginForm extends Component {
 					        hoverColor="#6195f5"
 				          	rippleColor="#ffffff"
 				          	icon={<FontIcon className="icon-google2" />}
+				          	onTouchTap={() => this.loginWithGoogle()}
 					    />
 
 					</div>

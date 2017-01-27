@@ -27,28 +27,18 @@ class Index extends Component {
 
   }
 
-  parseAuthHash = (nextState, replace) => {
-    if (/access_token|id_token|error/.test(nextState.location.hash)) {
-      this.props.route.auth.parseHash(nextState.location.hash)
-    }
-  }
-
   componentWillReceiveProps(nextProps) {
 
     this.setState({logged_in_status: ''});
 
-    console.log('A');
-
     if (nextProps.location.pathname === '/') {
-
-      console.log('B');
       
       this.setState({
         logged_in_status: this.props.route.auth.loggedIn() ? 'logged_in' : 'logged_out'
       });
 
-    } if (nextProps.location.pathname === '/login' && nextProps.location.hasOwnProperty('hash'))
-      this.parseAuthHash(nextProps)
+    }
+
   }
 
   render() {
@@ -191,8 +181,6 @@ class Index extends Component {
         </div>
 
         : null }
-
-        }
 
       </div>
     );

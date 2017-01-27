@@ -24,21 +24,37 @@ import Info from '../pages/Info';
 
 // authenticate user
 import AuthService from '../services/AuthService';
+import LoggedIn from '../pages/LoggedIn';
 import LoggedOut from '../pages/LoggedOut';
 const auth = new AuthService(config.AUTH0_CLIENT_ID, config.AUTH0_DOMAIN);
 
 // onEnter callback to validate authentication in private routes
+
+
 const requireAuth = (nextState, replace) => {
-  if (!auth.loggedIn()) {
-    replace({ pathname: '/login' })
-  }
+
+	if (typeof window === 'object') {
+
+		if (!auth.loggedIn()) {
+			replace({ pathname: '/' })
+		}
+
+	}
 }
 
 const parseAuthHash = (nextState, replace) => {
-  if (/access_token|id_token|error/.test(nextState.location.hash)) {
-    auth.parseHash(nextState.location.hash)
-  }
+	
+	if (typeof window === 'object') {
+		
+		if (/access_token|id_token|error/.test(nextState.location.hash)) {
+			auth.parseHash(nextState.location.hash)
+		}
+
+	}
+
 }
+
+
 
 
 // admin container and page components
@@ -63,7 +79,7 @@ module.exports = (
 			<Route component={Main} auth={auth}>
 
 				<IndexRoute component={Index} auth={auth} />
-			    <Route path="login" component={Index} auth={auth} />
+			    <Route path="login" component={LoggedIn} onEnter={parseAuthHash} />
 			    <Route path="logout" component={LoggedOut} />
 
 				<Route path="search" component={Index} onEnter={requireAuth}/>

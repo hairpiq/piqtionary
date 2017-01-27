@@ -1,3 +1,6 @@
+require('dotenv').config();
+const config = process.env;
+
 module.exports = function(markup) {
 	var html = [
 	    '<!DOCTYPE html>',
@@ -10,7 +13,7 @@ module.exports = function(markup) {
 	        // <!-- Use minimum-scale=1 to enable GPU rasterization -->
 	        '<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0, maximum-scale=1, minimum-scale=1">',
 	        // <!-- Google Site Verification -->
-	        '<meta name="google-site-verification" content="nhsuVYUKQtmHlNyJWNzD2JLLnIKfyoQwnWRHjbUjQgg" />',
+	        '<meta name="google-site-verification" content="' + config.GOOGLE_SITE_VERIFICATION + '" />',
 	        '<link href="/images/favicon.ico" rel="shortcut icon">',
 	        '<link rel="stylesheet" href="/css/styles.css"></link>',
 	        '<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">',

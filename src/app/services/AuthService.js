@@ -17,6 +17,7 @@ export default class AuthService extends EventEmitter {
 
     this.login = this.login.bind(this)
     this.signup = this.signup.bind(this)
+    this.loginWithFacebook = this.loginWithFacebook.bind(this)
     this.loginWithGoogle = this.loginWithGoogle.bind(this)
   }
 
@@ -38,14 +39,30 @@ export default class AuthService extends EventEmitter {
   }
 
   signup(email, password){
-    this.auth0.redirect.signupAndLogin({
-      connection: 'Username-Password-Authentication',
-      email,
-      password,
-    }, function(err) {
-      if (err) {
-        alert('Error: ' + err.description)
-      }
+
+    let _this = this;
+
+    return new Promise (function(resolve, reject) {
+
+      _this.auth0.redirect.signupAndLogin({
+        connection: 'Username-Password-Authentication',
+        email,
+        password,
+      }, function(err) {
+        if (err) {
+          reject(err.description);
+          alert('Error: ' + err.description)
+        }
+
+        resolve('success');
+      });
+
+    });
+  }
+
+  loginWithFacebook() {
+    this.auth0.authorize({
+      connection: 'facebook'
     })
   }
 
@@ -59,7 +76,12 @@ export default class AuthService extends EventEmitter {
     this.auth0.parseHash({ hash }, (err, authResult) => {
       if (authResult && authResult.accessToken && authResult.idToken) {
         this.setToken(authResult.accessToken, authResult.idToken)
-        browserHistory.replace('/')
+        try {
+          //history.pushState('', document.title, window.location.pathname);
+          browserHistory.replace('http://' + config.HOSTNAME);
+        } catch (e) {
+          console.log(e.message);
+        }
         this.auth0.client.userInfo(authResult.accessToken, (error, profile) => {
           if (error) {
             console.log('Error loading the Profile', error)
