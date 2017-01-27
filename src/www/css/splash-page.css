@@ -44,10 +44,23 @@
 	.splash-page {
 		width:100%;
 		margin-top: -25px;
+
+	}
+
+	.splash-page .hairpiq-paper {
+		width:100%;
 	}
 
 	.splash-page .left-col {
-		display: none;
+		width:100%;
+		position:absolute;
+		height: 300px !important;
+		min-height: 0;
+		margin-top:0;
+	}
+
+	.splash-page .strip {
+		left: 0;
 	}
 
 	.splash-page .right-col {

@@ -31,7 +31,9 @@ class SplashItem extends Component {
     return (
       <Paper key={this.props.key} className="hairpiq-paper">
         <div>
+          <LazyLoad height={200} offset={100} once>
             <img src={this.proxyUrl(listItem.s3_url)} />
+          </LazyLoad>
         </div>
         <div className="hairpiq-data">
           <div className="title">

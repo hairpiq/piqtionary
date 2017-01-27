@@ -19,23 +19,41 @@ export default class AuthService extends EventEmitter {
     this.signup = this.signup.bind(this)
     this.loginWithFacebook = this.loginWithFacebook.bind(this)
     this.loginWithGoogle = this.loginWithGoogle.bind(this)
+    this.resetPassword = this.resetPassword.bind(this)
   }
 
   login(username, password) {
-    this.auth0.client.login({
-      realm: 'Username-Password-Authentication',
-      username,
-      password
-    }, (err, authResult) => {
-      if (err) {
-        alert('Error: ' + err.description)
-        return
-      }
-      if (authResult && authResult.idToken && authResult.accessToken) {
-        this.setToken(authResult.accessToken, authResult.idToken)
-        browserHistory.replace('/')
-      }
-    })
+
+    let _this = this;
+
+    return new Promise (function(resolve, reject) {
+      
+      _this.auth0.client.login({
+        realm: 'Username-Password-Authentication',
+        username,
+        password
+      }, (err, authResult) => {
+        if (err) {
+          
+          reject(err.description);
+          
+          alert('Error: ' + err.description)
+          
+          return
+        }
+
+        if (authResult && authResult.idToken && authResult.accessToken) {
+          
+          _this.setToken(authResult.accessToken, authResult.idToken)
+          
+          resolve('success');
+
+          browserHistory.replace('/')
+
+        }
+      })
+
+    });
   }
 
   signup(email, password){
@@ -77,7 +95,6 @@ export default class AuthService extends EventEmitter {
       if (authResult && authResult.accessToken && authResult.idToken) {
         this.setToken(authResult.accessToken, authResult.idToken)
         try {
-          //history.pushState('', document.title, window.location.pathname);
           browserHistory.replace('http://' + config.HOSTNAME);
         } catch (e) {
           console.log(e.message);
@@ -129,5 +146,35 @@ export default class AuthService extends EventEmitter {
     // Clear user token and profile data from localStorage
     localStorage.removeItem('id_token')
     localStorage.removeItem('profile')
+  }
+
+  resetPassword(email) {
+
+    console.log('A');
+    console.log(email);
+
+    let _this = this;
+
+    return new Promise (function(resolve, reject) {
+
+      _this.auth0.changePassword({
+        connection: 'Username-Password-Authentication',
+        email: email
+      }, function (err, resp) {
+        if(err){
+          
+          console.log(err.message);
+          reject(err.message);
+
+        }else{
+
+          console.log(resp);
+          resolve(resp);
+          
+        }
+      });
+
+    });
+
   }
 }

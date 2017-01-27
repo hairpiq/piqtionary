@@ -95,6 +95,12 @@ meter[value="4"]::-moz-meter-bar { background: #4CAF50; }
 	text-transform: uppercase;
 }
 
+.login-form-container .inner-container.signup-form,
+.login-form-container .inner-container.reset-password-form {
+	padding-top: 10px;
+}
+
+
 .login-form-container .signup-button {
 	border-radius: 5px !important;
 	color: #ffffff !important;
@@ -117,7 +123,7 @@ meter[value="4"]::-moz-meter-bar { background: #4CAF50; }
 	color: #ffffff !important;
     width: 30%;
     margin:0 4px !important;
-    margin-bottom: 15px !important;
+    margin-bottom: 10px !important;
 }
 
 .login-form-container .google-button {
@@ -131,6 +137,19 @@ meter[value="4"]::-moz-meter-bar { background: #4CAF50; }
 	position: absolute !important;
     top: 7px;
     left: 0;
+}
+
+.login-form-container .login-submit-button,
+.login-form-container .reset-password-submit-button {
+	border-radius: 5px !important;
+	color: #ffffff !important;
+	margin-top: 25px !important;
+    width: 100%;
+}
+
+.login-form-container .login-submit-button.disabled,
+.login-form-container .reset-password-submit-button.disabled {
+	opacity: .5;
 }
 
 @media (max-width: 479px) {
@@ -158,6 +177,17 @@ meter[value="4"]::-moz-meter-bar { background: #4CAF50; }
 
 }
 
+.login-form-container .inner-container.login-buttons .loader {
+	height: 36px;
+	margin-top:5px;
+	margin-bottom: 5px;
+}
+
+.login-form-container .inner-container.login-form .loader,
+.login-form-container .inner-container.reset-password-form .loader {
+	margin-top: 25px;
+}
+
 @media (min-width: 480px) {
 
 	.login-form-container .inner-container.login-buttons {
@@ -178,6 +208,17 @@ meter[value="4"]::-moz-meter-bar { background: #4CAF50; }
 
 	.login-form-container {
 		width: 100%;
+		position: relative;
+
+		background: none;
+
+
+		/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+0,ffffff+99&0+0,1+34 */
+		background: -moz-linear-gradient(top,  rgba(255,255,255,0.7) 0%, rgba(255,255,255,1) 20%, rgba(255,255,255,1) 99%); /* FF3.6-15 */
+		background: -webkit-linear-gradient(top,  rgba(255,255,255,0.7) 0%,rgba(255,255,255,1) 20%,rgba(255,255,255,1) 99%); /* Chrome10-25,Safari5.1-6 */
+		background: linear-gradient(to bottom,  rgba(255,255,255,0.7) 0%,rgba(255,255,255,1) 20%,rgba(255,255,255,1) 99%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */
+
 	}
 
 }
