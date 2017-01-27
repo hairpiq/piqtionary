@@ -23,9 +23,8 @@ import Survey from '../pages/Survey';
 import Info from '../pages/Info';
 
 // authenticate user
-import Home from '../pages/Home';
-import Login from '../pages/Login';
 import AuthService from '../services/AuthService';
+import LoggedOut from '../pages/LoggedOut';
 const auth = new AuthService(config.AUTH0_CLIENT_ID, config.AUTH0_DOMAIN);
 
 // onEnter callback to validate authentication in private routes
@@ -64,7 +63,9 @@ module.exports = (
 			<Route component={Main} auth={auth}>
 
 				<IndexRoute component={Index} auth={auth} />
-			    <Route path="login" component={Login} onEnter={parseAuthHash}/>
+			    <Route path="login" component={Index} auth={auth} />
+			    <Route path="logout" component={LoggedOut} />
+
 				<Route path="search" component={Index} onEnter={requireAuth}/>
 				<Route path="p/:id" component={Photo} onEnter={requireAuth}/>
 				<Redirect from="p/:id/" to="p/:id"/>

@@ -32,7 +32,7 @@ export default class AuthService extends EventEmitter {
       }
       if (authResult && authResult.idToken && authResult.accessToken) {
         this.setToken(authResult.accessToken, authResult.idToken)
-        browserHistory.replace('/home')
+        browserHistory.replace('/')
       }
     })
   }
@@ -59,7 +59,7 @@ export default class AuthService extends EventEmitter {
     this.auth0.parseHash({ hash }, (err, authResult) => {
       if (authResult && authResult.accessToken && authResult.idToken) {
         this.setToken(authResult.accessToken, authResult.idToken)
-        browserHistory.replace('/home')
+        browserHistory.replace('/')
         this.auth0.client.userInfo(authResult.accessToken, (error, profile) => {
           if (error) {
             console.log('Error loading the Profile', error)

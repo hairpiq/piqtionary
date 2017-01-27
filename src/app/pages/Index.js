@@ -6,6 +6,7 @@ import HeroSpace from '../partials/HeroSpace';
 import SplashItem from '../partials/SplashItem';
 import LoginForm from '../partials/LoginForm';
 import SiteFooter from '../partials/SiteFooter';
+import {browserHistory} from 'react-router';
 
 class Index extends Component {
 
@@ -13,7 +14,7 @@ class Index extends Component {
     super();
 
     this.state = {
-      is_logged_in: false
+      logged_in_status: ''
     }
 
   }
@@ -21,14 +22,38 @@ class Index extends Component {
   componentDidMount() {
 
     this.setState({
-      is_logged_in: this.props.route.auth.loggedIn()
+      logged_in_status: this.props.route.auth.loggedIn() ? 'logged_in' : 'logged_out'
     });
 
   }
 
+  parseAuthHash = (nextState, replace) => {
+    if (/access_token|id_token|error/.test(nextState.location.hash)) {
+      this.props.route.auth.parseHash(nextState.location.hash)
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+
+    this.setState({logged_in_status: ''});
+
+    console.log('A');
+
+    if (nextProps.location.pathname === '/') {
+
+      console.log('B');
+      
+      this.setState({
+        logged_in_status: this.props.route.auth.loggedIn() ? 'logged_in' : 'logged_out'
+      });
+
+    } if (nextProps.location.pathname === '/login' && nextProps.location.hasOwnProperty('hash'))
+      this.parseAuthHash(nextProps)
+  }
+
   render() {
 
-    let {is_logged_in} = this.state;
+    let {logged_in_status} = this.state;
 
     const home_layout = (
 
@@ -64,12 +89,18 @@ class Index extends Component {
           defaultTitle="Hairpiq"
         />
 
-        {is_logged_in ?
+        {logged_in_status === 'logged_in' ?
 
-          {home_layout} 
+          <div>
+
+            {home_layout} 
+
+          </div>
         
-        :
+        : null }
 
+        {logged_in_status === 'logged_out' ?
+          
         <div className="splash-page">
 
           <div className="left-col">
@@ -151,13 +182,15 @@ class Index extends Component {
 
           <div className="right-col">
             
-            <LoginForm />
+            <LoginForm auth={this.props.route.auth} />
 
             <SiteFooter />
 
           </div>
 
         </div>
+
+        : null }
 
         }
 

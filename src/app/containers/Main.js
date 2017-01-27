@@ -5,15 +5,19 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
 import {browserHistory} from 'react-router';
+
 import IconButton from 'material-ui/IconButton';
+import IconMenu from 'material-ui/IconMenu';
+import MenuItem from 'material-ui/MenuItem';
+import SettingsIcon from 'material-ui/svg-icons/action/settings';
 import PhotoLibraryIcon from 'material-ui/svg-icons/image/photo-library';
 import VideoLibraryIcon from 'material-ui/svg-icons/av/video-library';
 import InfoIcon from 'material-ui/svg-icons/action/info';
+
 import Modal from '../partials/Modal';
 import SearchBar from '../partials/SearchBar';
 import CreateButton from '../partials/hairpiq_creator/CreateButton';
 import SiteFooter from '../partials/SiteFooter';
-
 
 var RetinaImage = require('react-retina-image');
 
@@ -52,6 +56,7 @@ class Main extends Component {
     }
 
     this.linkTo = this.linkTo.bind(this);
+    this.logout = this.logout.bind(this);
 
   }
 
@@ -59,6 +64,11 @@ class Main extends Component {
 
     browserHistory.push(route);
     
+  }
+
+  logout() {
+    this.props.route.auth.logout();
+    this.linkTo('/logout');
   }
 
   componentDidMount() {
@@ -74,6 +84,11 @@ class Main extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+
+    this.setState({
+      is_logged_in: this.props.route.auth.loggedIn()
+    });
+
     // if we changed routes...
     if ((
       nextProps.location.key !== this.props.location.key &&
@@ -114,7 +129,6 @@ class Main extends Component {
       <div>
         {/*
         <IconButton iconStyle={styles.appBarIconButton} tooltip="Photos"><PhotoLibraryIcon /></IconButton>
-        <IconButton iconStyle={styles.appBarIconButton} tooltip="Videos"><VideoLibraryIcon /></IconButton>
         */}
         <IconButton
           className="info-page-button"
@@ -123,6 +137,20 @@ class Main extends Component {
           tooltip="More Info">
           <InfoIcon />
         </IconButton>
+        <IconMenu
+          iconButtonElement={<IconButton iconStyle={styles.appBarIconButton} tooltip="Menu"><SettingsIcon /></IconButton>}
+          anchorOrigin={{horizontal: 'right', vertical: 'top'}}
+          targetOrigin={{horizontal: 'right', vertical: 'top'}}
+        >
+          <MenuItem primaryText="Refresh" />
+          <MenuItem primaryText="Send feedback" />
+          <MenuItem primaryText="Settings" />
+          <MenuItem primaryText="Help" />
+          <MenuItem
+            primaryText="Logout"
+            onTouchTap={() => this.logout()}
+          />
+        </IconMenu>
       </div>
     )
 

@@ -1,7 +1,6 @@
 import React, { Component, PropTypes as T } from 'react';
-import ReactDOM, { render } from 'react-dom';
+import { render } from 'react-dom';
 import AuthService from '../services/AuthService';
-import {browserHistory} from 'react-router';
 import TextField from 'material-ui/TextField';
 import Divider from 'material-ui/Divider';
 import FlatButton from 'material-ui/FlatButton';
@@ -29,7 +28,8 @@ class LoginForm extends Component {
 			meter_value: 0,
 			passwordErrorText: '',
 			is_password_valid: false,
-			password_score: 0
+			password_score: 0,
+			password: ''
 		}
 	}
 	
@@ -44,8 +44,8 @@ class LoginForm extends Component {
 
 	getAuthParams() {
 		return {
-	  		email: ReactDOM.findDOMNode(this.refs.email).value,
-	  		password: ReactDOM.findDOMNode(this.refs.password).value
+	  		email: this.state.email,
+	  		password: this.state.password
 		}
 	}
 
@@ -68,8 +68,6 @@ class LoginForm extends Component {
 		
 		var checkForEmailFormat = new RegExp('[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$');
 		var email = e.target.value;
-
-		console.log('email: ' + email);
 
 		if (email.length === 0) {
 			this.setState({
@@ -182,7 +180,8 @@ class LoginForm extends Component {
   			meter_value: result.score,
   			passwordErrorText: e.target.value.length === 0 ? '' : strength[result.score],
   			is_password_valid: !(result.score === 0),
-  			password_score: result.score
+  			password_score: result.score,
+  			password: e.target.value
   		});
 	}
 
@@ -193,8 +192,7 @@ class LoginForm extends Component {
 			this.state.is_email_valid &&
 			this.state.is_fullname_valid &&
 			this.state.is_username_valid &&
-			this.state.is_password_valid &&
-			this.state.password_score >= 3
+			this.state.is_password_valid
 
 		);
 
@@ -259,6 +257,7 @@ class LoginForm extends Component {
 						        hoverColor="#faba79"
 					          	rippleColor="#ffffff"
 					          	disabled={!is_valid}
+					          	onTouchTap={() => this.signup()}
 						    />
 						</div>
 

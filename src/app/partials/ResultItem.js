@@ -28,9 +28,6 @@ class ResultItem extends Component {
   render() {
     const listItem = this.props.listItem;
 
-    console.log('A');
-    console.log(listItem);
-
     return (
       <Paper key={this.props.key} className="hairpiq-paper">
         <div>

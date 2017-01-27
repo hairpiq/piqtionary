@@ -8,7 +8,9 @@
 	vertical-align: top;
 	display: inline-block;
 	position: relative;
+	margin-top:-25px;
 	height: 100vh;
+	min-height: 700px;
 	overflow: hidden;
 }
 
@@ -19,7 +21,7 @@
 
 @keyframes slide-strip {
     from { transform: translateY(0);}
-    to {transform: translateY(-1779px);}
+    to {transform: translateY(-1781px);}
 }
 
 .splash-page .strip {
