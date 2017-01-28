@@ -63,9 +63,7 @@ class LoginForm extends Component {
 		}
 	}
 
-	login(e) {
-		
-		e.preventDefault()
+	login() {
 		
 		const { email, password } = this.getAuthParams()
 
@@ -429,13 +427,20 @@ class LoginForm extends Component {
 									    />
 									    <div className="password-container">
 										    <TextField
-										    	className="textfield"
+										    	className="textfield password"
 										    	hintText="Password"
 										    	type="password"
 										    	errorText={this.state.passwordErrorText}
 										    	fullWidth={true}
 										    	onChange={this.handlePasswordChange.bind(this)}
 										    	underlineShow={false}
+										    	onKeyDown={(e) => {
+
+										    		var keypressed = e.keyCode || e.which;
+													if (keypressed == 13)
+														if (is_signup_valid)
+															this.signup();
+										    	}}
 										    />
 										    <meter max="4" id="password-strength-meter" value={this.state.meter_value}></meter>
 
@@ -484,7 +489,7 @@ class LoginForm extends Component {
 
 							<div>
 							    <TextField
-									className="textfield"
+									className="textfield email"
 							    	hintText="Email"
 							     	fullWidth={true}
 							     	value={this.state.email}
@@ -498,6 +503,14 @@ class LoginForm extends Component {
 							    	errorText={this.state.passwordErrorText}
 							    	fullWidth={true}
 							    	onChange={this.handlePasswordChange.bind(this)}
+							    	onKeyDown={(e) => {
+
+							    		var keypressed = e.keyCode || e.which;
+										if (keypressed == 13)
+											if (is_login_valid)
+												this.login();
+
+							    	}}
 							    />
 
 							    {this.state.is_authenticating ?
@@ -515,7 +528,7 @@ class LoginForm extends Component {
 							        hoverColor="#faba79"
 						          	rippleColor="#ffffff"
 						          	disabled={!is_login_valid}
-						          	onTouchTap={this.login.bind(this)}
+						          	onTouchTap={() => this.login()}
 							    />
 
 								}
@@ -552,12 +565,20 @@ class LoginForm extends Component {
 
 							<div>
 								<TextField
-									className="textfield"
+									className="textfield email"
 							    	hintText="Email"
 							     	fullWidth={true}
 							     	value={this.state.email}
 							     	errorText={this.state.emailErrorText}
 							     	onChange={this.handleEmailChange.bind(this)}
+							     	onKeyDown={(e) => {
+
+							    		var keypressed = e.keyCode || e.which;
+										if (keypressed == 13)
+											if (this.state.is_email_valid)
+												this.resetPassword();
+
+							    	}}
 							    />
 
 							    {this.state.is_sending_reset_password_request ?
@@ -575,7 +596,7 @@ class LoginForm extends Component {
 							        hoverColor="#faba79"
 						          	rippleColor="#ffffff"
 						          	disabled={!this.state.is_email_valid}
-						          	onTouchTap={this.resetPassword.bind(this)}
+						          	onTouchTap={() => this.resetPassword()}
 							    />
 
 								}

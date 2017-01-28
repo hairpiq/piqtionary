@@ -45,18 +45,16 @@ const muiTheme = getMuiTheme({
   }
 });
 
-class Main extends Component {
+class Tertiary extends Component {
 
   constructor() {
     super();
 
     this.state = {
-      indexChildren: {},
-      is_logged_in: false
+      indexChildren: {}
     }
 
     this.linkTo = this.linkTo.bind(this);
-    this.logout = this.logout.bind(this);
 
   }
 
@@ -66,28 +64,15 @@ class Main extends Component {
     
   }
 
-  logout() {
-    this.props.route.auth.logout();
-    this.linkTo('/logout');
-  }
-
   componentDidMount() {
 
     // compensate for javascript ugly page loading by removing
     // the loading class when this component finally mounts to page.
     $("#app").removeClass('loading');
-
-    this.setState({
-      is_logged_in: this.props.route.auth.loggedIn()
-    });
     
   }
 
   componentWillReceiveProps(nextProps) {
-
-    this.setState({
-      is_logged_in: this.props.route.auth.loggedIn()
-    });
 
     // if we changed routes...
     if ((
@@ -121,10 +106,6 @@ class Main extends Component {
       </a>
     );
 
-    const search_bar = (
-      <SearchBar term={this.props.location.query.q ? this.props.location.query.q : ''} />
-    );
-
     const standard_actions = (
       <div>
         {/*
@@ -137,20 +118,6 @@ class Main extends Component {
           tooltip="More Info">
           <InfoIcon />
         </IconButton>
-        <IconMenu
-          iconButtonElement={<IconButton iconStyle={styles.appBarIconButton} tooltip="Menu"><SettingsIcon /></IconButton>}
-          anchorOrigin={{horizontal: 'right', vertical: 'top'}}
-          targetOrigin={{horizontal: 'right', vertical: 'top'}}
-        >
-          <MenuItem primaryText="Refresh" />
-          <MenuItem primaryText="Send feedback" />
-          <MenuItem primaryText="Settings" />
-          <MenuItem primaryText="Help" />
-          <MenuItem
-            primaryText="Logout"
-            onTouchTap={() => this.logout()}
-          />
-        </IconMenu>
       </div>
     )
 
@@ -160,86 +127,29 @@ class Main extends Component {
 
             <div>
 
-              {this.state.is_logged_in ?
+              <AppBar
+                className="app_bar"
+                showMenuIconButton={false}
+                title={logo}
+                iconElementRight={standard_actions}
+              />
 
-              <div>
+              <div className="main-container">
 
-                <AppBar
-                  className="app_bar"
-                  showMenuIconButton={false}
-                  title={logo}
-                  children={search_bar}
-                  iconElementRight={standard_actions}
-                />
-
-                <div className="main-container">
-
-                {isModal ?
-                  this.state.indexChildren :
-                  this.props.children
-                }
-
-                </div>
-
-                {isModal && (
-                  <Modal isOpen={true} returnTo={location.state.returnTo} pathname={location.pathname} hairpiqs={location.state.hairpiqs}>
-                    {this.props.children}
-                  </Modal>
-                )}
-
-                {this.props.location.pathname !== '/create' && this.props.location.pathname !== '/survey' ?
-                <CreateButton location={this.props.location} /> : null }
-
-                <SiteFooter />
-
-              </div>
-
-              :
-
-              <div>
-
-                {!this.props.location.pathname === '/' ?
-                
-                <div>
-
-                  <AppBar
-                    className="app_bar"
-                    showMenuIconButton={false}
-                    title={logo}
-                  />
-
-                  <div className="main-container">
-
-                  {isModal ?
-                    this.state.indexChildren :
-                    this.props.children
-                  }
-
-                  </div>
-
-                  {isModal && (
-                    <Modal isOpen={true} returnTo={location.state.returnTo} pathname={location.pathname} hairpiqs={location.state.hairpiqs}>
-                      {this.props.children}
-                    </Modal>
-                  )}
-
-                  <SiteFooter />
-
-                </div>
-
-                :
-
-                <div className="main-container">
-                
-                  {this.props.children}
-
-                </div>
-
-                }
-
-              </div>
-
+              {isModal ?
+                this.state.indexChildren :
+                this.props.children
               }
+
+              </div>
+
+              {isModal && (
+                <Modal isOpen={true} returnTo={location.state.returnTo} pathname={location.pathname} hairpiqs={location.state.hairpiqs}>
+                  {this.props.children}
+                </Modal>
+              )}
+
+              <SiteFooter />
 
             </div>
 
@@ -249,4 +159,4 @@ class Main extends Component {
   }
 };
 
-export default Main;
+export default Tertiary;

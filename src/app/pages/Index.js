@@ -31,13 +31,9 @@ class Index extends Component {
 
     this.setState({logged_in_status: ''});
 
-    if (nextProps.location.pathname === '/') {
-      
-      this.setState({
-        logged_in_status: this.props.route.auth.loggedIn() ? 'logged_in' : 'logged_out'
-      });
-
-    }
+    this.setState({
+      logged_in_status: this.props.route.auth.loggedIn() ? 'logged_in' : 'logged_out'
+    });
 
   }
 
