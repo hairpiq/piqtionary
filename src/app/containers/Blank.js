@@ -30,6 +30,14 @@ const muiTheme = getMuiTheme({
 
 class Blank extends Component {
 
+  componentDidMount() {
+
+    // compensate for javascript ugly page loading by removing
+    // the loading class when this component finally mounts to page.
+    $("#app").removeClass('loading');
+    
+  }
+
   render() {
 
     return (
@@ -38,7 +46,11 @@ class Blank extends Component {
 
             <div>
 
-              {this.props.children}
+              <div className="main-container">
+                
+                {this.props.children}
+
+              </div>
 
             </div>
 
