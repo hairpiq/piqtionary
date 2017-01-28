@@ -10,9 +10,15 @@ import IconButton from 'material-ui/IconButton';
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 import SettingsIcon from 'material-ui/svg-icons/action/settings';
+import QuestionAnswerIcon from 'material-ui/svg-icons/action/question-answer';
+import AccountCircleIcon from 'material-ui/svg-icons/action/account-circle';
+import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import PhotoLibraryIcon from 'material-ui/svg-icons/image/photo-library';
 import VideoLibraryIcon from 'material-ui/svg-icons/av/video-library';
 import InfoIcon from 'material-ui/svg-icons/action/info';
+import ActionLockIcon from 'material-ui/svg-icons/action/lock';
+import HelpIcon from 'material-ui/svg-icons/action/help';
+import Divider from 'material-ui/Divider';
 
 import Modal from '../partials/Modal';
 import SearchBar from '../partials/SearchBar';
@@ -132,20 +138,49 @@ class Main extends Component {
         */}
         <IconButton
           className="info-page-button"
-          onTouchTap={() => this.linkTo('/info')}
+          onTouchTap={() => this.linkTo('/collection')}
           iconStyle={styles.appBarIconButton}
-          tooltip="More Info">
-          <InfoIcon />
+          tooltip="My Collection">
+          <PhotoLibraryIcon />
         </IconButton>
         <IconMenu
-          iconButtonElement={<IconButton iconStyle={styles.appBarIconButton} tooltip="Menu"><SettingsIcon /></IconButton>}
+          iconButtonElement={<IconButton iconStyle={styles.appBarIconButton} tooltip="Menu"><MoreVertIcon /></IconButton>}
           anchorOrigin={{horizontal: 'right', vertical: 'top'}}
           targetOrigin={{horizontal: 'right', vertical: 'top'}}
+          width={200}
         >
-          <MenuItem primaryText="Refresh" />
-          <MenuItem primaryText="Send feedback" />
-          <MenuItem primaryText="Settings" />
-          <MenuItem primaryText="Help" />
+          <MenuItem
+            primaryText="My Account"
+            rightIcon={<AccountCircleIcon />}
+            onTouchTap={() => this.linkTo('/account')}
+          />
+          <MenuItem
+            primaryText="My Collection"
+            rightIcon={<PhotoLibraryIcon />}
+            onTouchTap={() => this.linkTo('/collection')}
+          />
+          <MenuItem
+            primaryText="Settings"
+            rightIcon={<SettingsIcon />}
+            onTouchTap={() => this.linkTo('/settings')}
+          />
+          <Divider />
+          <MenuItem
+            primaryText="Help"
+            rightIcon={<HelpIcon />}
+            onTouchTap={() => this.linkTo('/faq')}
+          />
+          <MenuItem
+            primaryText="Send Feedback"
+            rightIcon={<QuestionAnswerIcon />}
+            onTouchTap={() => this.linkTo('/survey')}
+          />
+          <MenuItem
+            primaryText="Info"
+            rightIcon={<InfoIcon />}
+            onTouchTap={() => this.linkTo('/info')}
+          />
+          <Divider />
           <MenuItem
             primaryText="Logout"
             onTouchTap={() => this.logout()}
@@ -153,6 +188,16 @@ class Main extends Component {
         </IconMenu>
       </div>
     )
+
+    const login_button = (
+      <IconButton
+          className="login-button"
+          onTouchTap={() => this.linkTo('/')}
+          iconStyle={styles.appBarIconButton}
+          tooltip="Login">
+          <ActionLockIcon />
+        </IconButton>
+    );
 
     return (
       <div className="main">       
@@ -198,7 +243,7 @@ class Main extends Component {
 
               <div>
 
-                {!this.props.location.pathname === '/' ?
+                {this.props.location.pathname !== '/' ?
                 
                 <div>
 
@@ -206,6 +251,7 @@ class Main extends Component {
                     className="app_bar"
                     showMenuIconButton={false}
                     title={logo}
+                    iconElementRight={login_button}
                   />
 
                   <div className="main-container">

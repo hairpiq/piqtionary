@@ -46,7 +46,7 @@ class Blank extends Component {
 
             <div>
 
-              <div className="main-container">
+              <div className="main-container blank">
                 
                 {this.props.children}
 

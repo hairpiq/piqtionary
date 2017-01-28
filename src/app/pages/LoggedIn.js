@@ -9,7 +9,7 @@ class LoggedIn extends Component {
 		return (
 			
 			<div>
-				<p><a href= {"http://" + config.HOSTNAME}>Click here if not forwarded...</a></p>
+				<p><a href= {"//" + config.HOSTNAME}>Click here if not forwarded...</a></p>
 			</div>
 		)
 	}

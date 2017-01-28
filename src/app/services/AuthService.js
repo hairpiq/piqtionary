@@ -95,7 +95,7 @@ export default class AuthService extends EventEmitter {
       if (authResult && authResult.accessToken && authResult.idToken) {
         this.setToken(authResult.accessToken, authResult.idToken)
         try {
-          browserHistory.replace('http://' + config.HOSTNAME);
+          browserHistory.replace('//' + config.HOSTNAME);
         } catch (e) {
           console.log(e.message);
         }

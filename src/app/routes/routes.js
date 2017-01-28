@@ -16,7 +16,6 @@ var IndexRedirect = ReactRouter.IndexRedirect;
 
 // site container and page components
 import Main from '../containers/Main';
-import Tertiary from '../containers/Tertiary';
 import Blank from '../containers/Blank';
 import Index from '../pages/Index';
 import Photo from '../pages/Photo';
@@ -82,22 +81,19 @@ module.exports = (
 
 				<IndexRoute component={Index} auth={auth} />
 				<Route path="search" component={Index} auth={auth} onEnter={requireAuth}/>
-				<Route path="p/:id" component={Photo} auth={auth} onEnter={requireAuth}/>
+				<Route path="p/:id" component={Photo} />
 				<Redirect from="p/:id/" to="p/:id"/>
 				<Route path="create" component={Create} auth={auth} onEnter={requireAuth}/>
+				<Route path="info" component={Info} />
+				<Route path="survey" component={Survey} />
 
 			</Route>
 
 			<Route component={Blank}>
+
 				<Route path="login" component={LoggedIn} onEnter={parseAuthHash} />
 			    <Route path="logout" component={LoggedOut} />
-			</Route>
-
-			<Route component={Tertiary}>
-
-				<Route path="info" component={Info}/>
-				<Route path="survey" component={Survey} />
-
+			    
 			</Route>
 
 			<Route path="admin" component={AdminMain}>
