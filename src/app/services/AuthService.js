@@ -2,6 +2,8 @@ import { EventEmitter } from 'events';
 import { isTokenExpired } from './jwtHelper';
 import { browserHistory } from 'react-router';
 import auth0 from 'auth0-js';
+import Services from './';
+
 const config = process.env;
 
 export default class AuthService extends EventEmitter {
@@ -20,6 +22,9 @@ export default class AuthService extends EventEmitter {
     this.loginWithFacebook = this.loginWithFacebook.bind(this)
     this.loginWithGoogle = this.loginWithGoogle.bind(this)
     this.resetPassword = this.resetPassword.bind(this)
+    this.getProfile = this.getProfile.bind(this)
+    this.updateProfile = this.updateProfile.bind(this)
+
   }
 
   login(username, password) {
@@ -45,7 +50,16 @@ export default class AuthService extends EventEmitter {
         if (authResult && authResult.idToken && authResult.accessToken) {
           
           _this.setToken(authResult.accessToken, authResult.idToken)
-          
+
+          _this.auth0.client.userInfo(authResult.accessToken, (error, profile) => {
+
+            if (error) {
+              console.log('Error loading the Profile', error)
+            } else {
+              _this.setProfile(profile)
+            }
+          })
+
           resolve('success');
 
           browserHistory.replace('/')
@@ -56,7 +70,7 @@ export default class AuthService extends EventEmitter {
     });
   }
 
-  signup(email, password){
+  signup(email, password, username, fullname) {
 
     let _this = this;
 
@@ -73,6 +87,7 @@ export default class AuthService extends EventEmitter {
         }
 
         resolve('success');
+
       });
 
     });
@@ -91,6 +106,7 @@ export default class AuthService extends EventEmitter {
   }
 
   parseHash(hash) {
+
     this.auth0.parseHash({ hash }, (err, authResult) => {
       if (authResult && authResult.accessToken && authResult.idToken) {
         this.setToken(authResult.accessToken, authResult.idToken)
@@ -103,13 +119,32 @@ export default class AuthService extends EventEmitter {
           if (error) {
             console.log('Error loading the Profile', error)
           } else {
+
             this.setProfile(profile)
+
+            let params = {
+
+              auth0_user_id: profile.sub,
+              username: localStorage.getItem('username'),
+              fullname: localStorage.getItem('fullname')
+            
+            };
+
+            Services.addUserMetadata(params).then(function(result) {
+
+              // these values are set in the login-in form signup method
+              localStorage.removeItem('username');
+              localStorage.removeItem('fullname');
+
+            });
+
           }
         })
       } else if (authResult && authResult.error) {
         alert('Error: ' + authResult.error)
       }
-    })
+    });
+
   }
 
   loggedIn() {
@@ -125,6 +160,7 @@ export default class AuthService extends EventEmitter {
   }
 
   setProfile(profile) {
+
     // Saves profile data to localStorage
     localStorage.setItem('profile', JSON.stringify(profile))
     // Triggers profile_updated event to update the UI
@@ -150,9 +186,6 @@ export default class AuthService extends EventEmitter {
 
   resetPassword(email) {
 
-    console.log('A');
-    console.log(email);
-
     let _this = this;
 
     return new Promise (function(resolve, reject) {
@@ -177,4 +210,22 @@ export default class AuthService extends EventEmitter {
     });
 
   }
+
+  // the new updateProfile
+  updateProfile(userId, data) {
+    const headers = {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + this.getToken() //setting authorization header
+    }
+    // making the PATCH http request to auth0 api
+    return fetch(`https://${config.AUTH0_DOMAIN}/api/v2/users/${userId}`, {
+      method: 'PATCH',
+      headers: headers,
+      body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(newProfile => this.setProfile(newProfile)) //updating current profile
+  }
+
 }

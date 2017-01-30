@@ -20,6 +20,7 @@ import Blank from '../containers/Blank';
 import Index from '../pages/Index';
 import Photo from '../pages/Photo';
 import Create from '../pages/Create';
+import UserAccount from '../pages/UserAccount';
 import Survey from '../pages/Survey';
 import Info from '../pages/Info';
 
@@ -48,15 +49,12 @@ const parseAuthHash = (nextState, replace) => {
 	if (typeof window === 'object') {
 		
 		if (/access_token|id_token|error/.test(nextState.location.hash)) {
-			auth.parseHash(nextState.location.hash)
+			auth.parseHash(nextState.location.hash);
 		}
 
 	}
 
 }
-
-
-
 
 // admin container and page components
 import AdminMain from '../containers/admin/Main';
@@ -84,6 +82,7 @@ module.exports = (
 				<Route path="p/:id" component={Photo} />
 				<Redirect from="p/:id/" to="p/:id"/>
 				<Route path="create" component={Create} auth={auth} onEnter={requireAuth}/>
+				<Route path="account" component={UserAccount} auth={auth} onEnter={requireAuth}/>
 				<Route path="info" component={Info} />
 				<Route path="survey" component={Survey} />
 
@@ -91,9 +90,9 @@ module.exports = (
 
 			<Route component={Blank}>
 
-				<Route path="login" component={LoggedIn} onEnter={parseAuthHash} />
+				<Route path="login" component={LoggedIn} auth={auth} onEnter={parseAuthHash} />
 			    <Route path="logout" component={LoggedOut} />
-			    
+
 			</Route>
 
 			<Route path="admin" component={AdminMain}>

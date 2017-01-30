@@ -85,10 +85,22 @@ class LoginForm extends Component {
 	signup() {
 		
 		const { email, password } = this.getAuthParams()
-		
+		let fullname = this.state.fullname;
+		let username =  this.state.username;
 		let _this = this;
 
-		this.props.auth.signup(email, password).catch(function(result) {
+		// if success, these values are deleted in the AuthService parseHash method
+		localStorage.setItem('username', username);
+       	localStorage.setItem('fullname', fullname);
+
+       	// if failure, remove in the catch below
+
+		this.props.auth.signup(email, password, username, fullname).then(function(result) {
+
+		}).catch(function(result) {
+
+			localStorage.removeItem('username', username);
+       		localStorage.removeItem('fullname', fullname);
 
 			_this.setState({
 				is_authenticating: false
@@ -320,7 +332,7 @@ class LoginForm extends Component {
 							<RetinaImage className="logo" alt="Hairpiq Logo" src={["/images/hairpiq-splash-logo.png", "/images/2x/hairpiq-splash-logo.png"]} />
 						</h1>
 
-						<h2>a search engine for people<br /> who love hair</h2>
+						<h2>capture your style,<br /> learn new looks</h2>
 
 					</div>
 
