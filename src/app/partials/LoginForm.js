@@ -36,7 +36,10 @@ class LoginForm extends Component {
 			is_authenticating_with_google: false,
 			form_mode: 'signup',
 			is_sending_reset_password_request: false,
-			reset_password_result_message: ''
+			reset_password_result_message: '',
+			usernameOrEmailErrorText: '',
+			usernameOrEmail: '',
+			is_username_or_email_valid: false
 		}
 	}
 
@@ -65,11 +68,12 @@ class LoginForm extends Component {
 
 	login() {
 		
-		const { email, password } = this.getAuthParams()
+		let usernameOrEmail = this.state.usernameOrEmail;
+		let password = this.state.password;
 
 		let _this = this;
 		
-		this.props.auth.login(email, password).catch(function(result) {
+		this.props.auth.login(usernameOrEmail, password).catch(function(result) {
 
 			_this.setState({
 				is_authenticating: false
@@ -90,7 +94,6 @@ class LoginForm extends Component {
 		let _this = this;
 
 		// if success, these values are deleted in the AuthService parseHash method
-		localStorage.setItem('username', username);
        	localStorage.setItem('fullname', fullname);
 
        	// if failure, remove in the catch below
@@ -99,7 +102,6 @@ class LoginForm extends Component {
 
 		}).catch(function(result) {
 
-			localStorage.removeItem('username', username);
        		localStorage.removeItem('fullname', fullname);
 
 			_this.setState({
@@ -148,7 +150,10 @@ class LoginForm extends Component {
 			is_password_valid: false,
 			password_score: 0,
 			password: '',
-			reset_password_result_message: ''
+			reset_password_result_message: '',
+			usernameOrEmailErrorText: '',
+			usernameOrEmail: '',
+			is_username_or_email_valid: true
 		});
 
 	}
@@ -156,7 +161,7 @@ class LoginForm extends Component {
 	handleEmailChange = (e) =>  {
 		
 		var checkForEmailFormat = new RegExp('[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$');
-		var email = e.target.value;
+		var email = e.target.value.replace(/\.+/g, '.');
 
 		if (email.length === 0) {
 			this.setState({
@@ -250,6 +255,39 @@ class LoginForm extends Component {
 		}
 	}
 
+	handleUsernameOrEmailChange = (e) =>  {
+
+		var checkForUsernameFormat = new RegExp('^[a-z0-9._-]{3,30}$');
+		var checkForEmailFormat = new RegExp('[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$');
+		var usernameOrEmail = e.target.value.replace(/\.+/g, '.');
+
+		if (usernameOrEmail.length === 0) {
+			this.setState({
+				usernameOrEmailErrorText: 'This field is required.',
+				usernameOrEmail: usernameOrEmail,
+				is_username_or_email_valid: false
+			});
+		} else if (usernameOrEmail.length > 0 && usernameOrEmail.length < 3) {
+			this.setState({
+				usernameOrEmailErrorText: 'Entry is Too Short',
+				usernameOrEmail: usernameOrEmail,
+				is_username_or_email_valid: false
+			});
+		} else if (!checkForUsernameFormat.test(usernameOrEmail) && !checkForEmailFormat.test(usernameOrEmail)) {
+			this.setState({
+				usernameOrEmailErrorText: 'Invalid format',
+				usernameOrEmail: usernameOrEmail,
+				is_username_or_email_valid: false
+			});
+		} else {
+			this.setState({
+				usernameOrEmailErrorText: '',
+				usernameOrEmail: usernameOrEmail,
+				is_username_or_email_valid: true
+			});
+		}
+	}
+
 	handlePasswordChange = (e) =>  {
 		
 		let result = zxcvbn(e.target.value);
@@ -316,7 +354,7 @@ class LoginForm extends Component {
 		);
 
 		let is_login_valid = (
-			this.state.is_email_valid &&
+			this.state.is_username_or_email_valid &&
 			this.state.is_password_valid
 		)
 
@@ -502,11 +540,11 @@ class LoginForm extends Component {
 							<div>
 							    <TextField
 									className="textfield email"
-							    	hintText="Email"
+							    	hintText="Username Or Email"
 							     	fullWidth={true}
-							     	value={this.state.email}
-							     	errorText={this.state.emailErrorText}
-							     	onChange={this.handleEmailChange.bind(this)}
+							     	value={this.state.usernameOrEmail}
+							     	errorText={this.state.usernameOrEmailErrorText}
+							     	onChange={this.handleUsernameOrEmailChange.bind(this)}
 							    />
 							    <TextField
 							    	className="textfield password"

@@ -143,6 +143,20 @@ class Main extends Component {
           tooltip="My Collection">
           <PhotoLibraryIcon />
         </IconButton>
+        <IconButton
+          className="profile-page-button"
+          onTouchTap={() => {
+
+            let username = this.props.route.auth.getProfile().username;
+            this.linkTo('/' + username);
+
+          }}
+          iconStyle={styles.appBarIconButton}
+          tooltip="My Collection">
+          <AccountCircleIcon />
+        </IconButton>
+
+
         <IconMenu
           iconButtonElement={<IconButton iconStyle={styles.appBarIconButton} tooltip="Menu"><MoreVertIcon /></IconButton>}
           anchorOrigin={{horizontal: 'right', vertical: 'top'}}
@@ -150,17 +164,7 @@ class Main extends Component {
           width={200}
         >
           <MenuItem
-            primaryText="My Account"
-            rightIcon={<AccountCircleIcon />}
-            onTouchTap={() => this.linkTo('/account')}
-          />
-          <MenuItem
-            primaryText="My Collection"
-            rightIcon={<PhotoLibraryIcon />}
-            onTouchTap={() => this.linkTo('/collection')}
-          />
-          <MenuItem
-            primaryText="Settings"
+            primaryText="Account Settings"
             rightIcon={<SettingsIcon />}
             onTouchTap={() => this.linkTo('/settings')}
           />

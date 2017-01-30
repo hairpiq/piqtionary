@@ -79,6 +79,7 @@ export default class AuthService extends EventEmitter {
       _this.auth0.redirect.signupAndLogin({
         connection: 'Username-Password-Authentication',
         email,
+        username,
         password,
       }, function(err) {
         if (err) {
@@ -122,18 +123,14 @@ export default class AuthService extends EventEmitter {
 
             this.setProfile(profile)
 
-            let params = {
+            this.updateProfile(profile.sub, {
+              user_metadata: {
+                fullname: localStorage.getItem('fullname')
+              }
+            }).then(function(result) {
 
-              auth0_user_id: profile.sub,
-              username: localStorage.getItem('username'),
-              fullname: localStorage.getItem('fullname')
-            
-            };
-
-            Services.addUserMetadata(params).then(function(result) {
-
-              // these values are set in the login-in form signup method
-              localStorage.removeItem('username');
+              console.log('AA');
+              console.log('profile updated in auth0');
               localStorage.removeItem('fullname');
 
             });
@@ -213,19 +210,48 @@ export default class AuthService extends EventEmitter {
 
   // the new updateProfile
   updateProfile(userId, data) {
-    const headers = {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + this.getToken() //setting authorization header
-    }
-    // making the PATCH http request to auth0 api
-    return fetch(`https://${config.AUTH0_DOMAIN}/api/v2/users/${userId}`, {
-      method: 'PATCH',
-      headers: headers,
-      body: JSON.stringify(data)
-    })
-    .then(response => response.json())
-    .then(newProfile => this.setProfile(newProfile)) //updating current profile
+
+    let _this = this;
+
+    var settings = {
+      "async": true,
+      "crossDomain": true,
+      "url": "https://" + config.AUTH0_DOMAIN + "/oauth/token",
+      "method": "POST",
+      "headers": {
+        "content-type": "application/json"
+      },
+        //"data": "{\"client_id\":\"O45MML8Li13d2DwyaGQi5infiBSWP66w\",\"client_secret\":\"qoNoj2c9TrCcRsRYOcQmIEMZRz5z4me8u4ZGBtzSgy4UVahVvGkeeCPjBt30JPuy\",\"audience\":\"https://hairpiq.auth0.com/api/v2/\",\"grant_type\":\"client_credentials\"}"
+        data: JSON.stringify({
+          client_id: config.AUTH0_MANAGEMENT_CLIENT_ID,
+          client_secret: config.AUTH0_MANAGEMENT_CLIENT_SECRET,
+          audience: 'https://' + config.AUTH0_DOMAIN + '/api/v2/',
+          grant_type: 'client_credentials'
+        })
+      }
+
+    return new Promise(function(resolve, reject){
+
+      $.ajax(settings).done(function (response) {
+        
+        var options = {
+          method: 'PATCH',
+          url: `https://${config.AUTH0_DOMAIN}/api/v2/users/${userId}`,
+          headers: { authorization: 'Bearer ' + response.access_token},
+          json: data
+        }
+
+        var params = {
+          options : JSON.stringify(options)
+        }
+
+        Services.auth0.updateUser(params)
+        .then(newProfile => _this.setProfile(newProfile))
+
+      });
+
+    });
+
   }
 
 }

@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
-import Helmet from 'react-helmet';
 import Services from '../services/';
+import Helmet from 'react-helmet';
+import Paper from 'material-ui/Paper';
 
-class UserAccount extends Component {
+
+class Settings extends Component {
 
 	constructor() {
 		super();
@@ -15,14 +17,10 @@ class UserAccount extends Component {
 
 	componentDidMount() {
 
-		let auth0_user_id = this.props.route.auth.getProfile().user_id;
+		let user_id = this.props.route.auth.getProfile().user_id;
 
-		Services.getUserMetadata({auth0_user_id: auth0_user_id}).then(function(result) {
-
-			console.log('A');
-			console.log(result);
-
-		});
+		console.log('A');
+		console.log(user_id);
 
 	}
 
@@ -30,10 +28,10 @@ class UserAccount extends Component {
 
 		return (
 
-			<div className="account-page">
+			<div className="settings-page">
         
 		        <Helmet
-		          title="My Account"
+		          title="My Settings"
 		          titleTemplate="%s - Hairpiq"
 		          defaultTitle="Hairpiq"
 		        />
@@ -46,7 +44,7 @@ class UserAccount extends Component {
 
 		              <div className="content">
 		                
-		                Account Info
+		                Account Settings
 
 		              </div>
 
@@ -63,4 +61,4 @@ class UserAccount extends Component {
 	}
 }
 
-export default UserAccount;
+export default Settings;

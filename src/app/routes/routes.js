@@ -20,7 +20,8 @@ import Blank from '../containers/Blank';
 import Index from '../pages/Index';
 import Photo from '../pages/Photo';
 import Create from '../pages/Create';
-import UserAccount from '../pages/UserAccount';
+import Profile from '../pages/Profile';
+import Settings from '../pages/Settings';
 import Survey from '../pages/Survey';
 import Info from '../pages/Info';
 
@@ -73,6 +74,7 @@ injectTapEventPlugin();
 // match routes to components
 module.exports = (
     <Router history={browserHistory}>
+		
 		<Route path="/">
 
 			<Route component={Main} auth={auth}>
@@ -82,7 +84,7 @@ module.exports = (
 				<Route path="p/:id" component={Photo} />
 				<Redirect from="p/:id/" to="p/:id"/>
 				<Route path="create" component={Create} auth={auth} onEnter={requireAuth}/>
-				<Route path="account" component={UserAccount} auth={auth} onEnter={requireAuth}/>
+				<Route path="settings" component={Settings} auth={auth} onEnter={requireAuth}/>
 				<Route path="info" component={Info} />
 				<Route path="survey" component={Survey} />
 
@@ -107,5 +109,16 @@ module.exports = (
 			</Route>
 
 		</Route>
+		
+		<Route path="/:username">
+
+			<Route component={Main} auth={auth}>
+    	
+    			<IndexRoute component={Profile} auth={auth} />
+
+    		</Route>
+    	
+    	</Route>
+
     </Router>
 )

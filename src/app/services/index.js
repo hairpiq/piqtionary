@@ -32,20 +32,12 @@ module.exports = {
 		return execute('//' + config.HOSTNAME + '/api/piqtionary/get_by_id', params);
 
 	},
-	addUserMetadata: function(params) {
+	auth0: {
+		updateUser: function(params) {
 
-		return execute('//' + config.HOSTNAME + '/api/piqtionary/add_user_metadata', params);
+			return execute('//' + config.HOSTNAME + '/api/auth0_management/update', params);
 
-	},
-	setUserMetadata: function(params) {
-
-		return execute('//' + config.HOSTNAME + '/api/piqtionary/set_user_metadata', params);
-
-	},
-	getUserMetadata: function(params) {
-
-		return execute('//' + config.HOSTNAME + '/api/piqtionary/get_user_metadata', params);
-
+		}
 	},
 	hairpiqCreator: {
 
