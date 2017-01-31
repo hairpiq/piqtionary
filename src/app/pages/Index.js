@@ -39,9 +39,6 @@ class Index extends Component {
 
   render() {
 
-    console.log('A')
-    console.log(process.env)
-
     let {logged_in_status} = this.state;
 
     const home_layout = (
