@@ -4,6 +4,7 @@ import { browserHistory } from 'react-router';
 import auth0 from 'auth0-js';
 import Services from './';
 
+require('dotenv').config();
 const config = process.env;
 
 export default class AuthService extends EventEmitter {
