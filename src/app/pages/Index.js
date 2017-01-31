@@ -25,6 +25,9 @@ class Index extends Component {
       logged_in_status: this.props.route.auth.loggedIn() ? 'logged_in' : 'logged_out'
     });
 
+    console.log('A')
+    console.log(process.env)
+
   }
 
   componentWillReceiveProps(nextProps) {
