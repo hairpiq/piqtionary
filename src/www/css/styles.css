@@ -10,5 +10,9 @@
 @import url('related-items.css');
 @import url('create-form.css');
 @import url('info-page.css');
+@import url('profile-page.css');
+@import url('settings-page.css');
+@import url('splash-page.css');
+@import url('login-form.css');
 @import url('hero-space/styles.css');
 @import url('admin/styles.css');

@@ -5,15 +5,25 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
 import {browserHistory} from 'react-router';
+
 import IconButton from 'material-ui/IconButton';
+import IconMenu from 'material-ui/IconMenu';
+import MenuItem from 'material-ui/MenuItem';
+import SettingsIcon from 'material-ui/svg-icons/action/settings';
+import QuestionAnswerIcon from 'material-ui/svg-icons/action/question-answer';
+import AccountCircleIcon from 'material-ui/svg-icons/action/account-circle';
+import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import PhotoLibraryIcon from 'material-ui/svg-icons/image/photo-library';
 import VideoLibraryIcon from 'material-ui/svg-icons/av/video-library';
 import InfoIcon from 'material-ui/svg-icons/action/info';
+import ActionLockIcon from 'material-ui/svg-icons/action/lock';
+import HelpIcon from 'material-ui/svg-icons/action/help';
+import Divider from 'material-ui/Divider';
+
 import Modal from '../partials/Modal';
 import SearchBar from '../partials/SearchBar';
 import CreateButton from '../partials/hairpiq_creator/CreateButton';
 import SiteFooter from '../partials/SiteFooter';
-
 
 var RetinaImage = require('react-retina-image');
 
@@ -47,10 +57,13 @@ class Main extends Component {
     super();
 
     this.state = {
-      indexChildren: {}
+      indexChildren: {},
+      is_logged_in: false,
+      profile: {}
     }
 
     this.linkTo = this.linkTo.bind(this);
+    this.logout = this.logout.bind(this);
 
   }
 
@@ -60,15 +73,74 @@ class Main extends Component {
     
   }
 
+  logout() {
+    this.props.route.auth.logout();
+    this.linkTo('/logout');
+  }
+
   componentDidMount() {
 
     // compensate for javascript ugly page loading by removing
     // the loading class when this component finally mounts to page.
     $("#app").removeClass('loading');
+
+    let auth = this.props.route.auth;
+
+    this.setState({
+      is_logged_in: auth.loggedIn()
+    });
+
+    let _this = this;
+
+    if (auth.loggedIn()) {
+      
+      // if user_id not set, save into localStorage
+      if (localStorage.getItem('profile') === null) {
+      
+        auth.on('profile_updated', function(e) {
+          _this.setState({
+            profile: auth.getProfile()
+          })
+        })
+
+      } else {
+      
+        _this.setState({
+          profile: auth.getProfile()
+        })
+      
+      }
+
+    }
     
   }
 
   componentWillReceiveProps(nextProps) {
+
+    let auth = this.props.route.auth;
+    let _this = this;
+
+    if (auth.loggedIn()) {
+      
+      // if user_id not set, save into localStorage
+      if (localStorage.getItem('profile') === null) {
+      
+        auth.removeAllListeners()
+        auth.on('profile_updated', function(e) {
+          
+          _this.setState({
+            profile: auth.getProfile()
+          })
+
+        })
+      
+      }
+    }
+
+    this.setState({
+      is_logged_in: this.props.route.auth.loggedIn()
+    });
+
     // if we changed routes...
     if ((
       nextProps.location.key !== this.props.location.key &&
@@ -109,17 +181,68 @@ class Main extends Component {
       <div>
         {/*
         <IconButton iconStyle={styles.appBarIconButton} tooltip="Photos"><PhotoLibraryIcon /></IconButton>
-        <IconButton iconStyle={styles.appBarIconButton} tooltip="Videos"><VideoLibraryIcon /></IconButton>
         */}
         <IconButton
           className="info-page-button"
-          onTouchTap={() => this.linkTo('/info')}
+          onTouchTap={() => this.linkTo('/collection')}
           iconStyle={styles.appBarIconButton}
-          tooltip="More Info">
-          <InfoIcon />
+          tooltip="My Collection">
+          <PhotoLibraryIcon />
         </IconButton>
+        <IconButton
+          className="profile-page-button"
+          onTouchTap={() => this.linkTo('/' + this.state.profile.username)}
+          iconStyle={styles.appBarIconButton}
+          tooltip="My Collection">
+          <AccountCircleIcon />
+        </IconButton>
+
+
+        <IconMenu
+          iconButtonElement={<IconButton iconStyle={styles.appBarIconButton} tooltip="Menu"><MoreVertIcon /></IconButton>}
+          anchorOrigin={{horizontal: 'right', vertical: 'top'}}
+          targetOrigin={{horizontal: 'right', vertical: 'top'}}
+          width={200}
+        >
+          <MenuItem
+            primaryText="Account Settings"
+            rightIcon={<SettingsIcon />}
+            onTouchTap={() => this.linkTo('/settings')}
+          />
+          <Divider />
+          <MenuItem
+            primaryText="Help"
+            rightIcon={<HelpIcon />}
+            onTouchTap={() => this.linkTo('/faq')}
+          />
+          <MenuItem
+            primaryText="Send Feedback"
+            rightIcon={<QuestionAnswerIcon />}
+            onTouchTap={() => this.linkTo('/survey')}
+          />
+          <MenuItem
+            primaryText="Info"
+            rightIcon={<InfoIcon />}
+            onTouchTap={() => this.linkTo('/info')}
+          />
+          <Divider />
+          <MenuItem
+            primaryText="Logout"
+            onTouchTap={() => this.logout()}
+          />
+        </IconMenu>
       </div>
     )
+
+    const login_button = (
+      <IconButton
+          className="login-button"
+          onTouchTap={() => this.linkTo('/')}
+          iconStyle={styles.appBarIconButton}
+          tooltip="Login">
+          <ActionLockIcon />
+        </IconButton>
+    );
 
     return (
       <div className="main">       
@@ -127,33 +250,87 @@ class Main extends Component {
 
             <div>
 
-              <AppBar
-                className="app_bar"
-                showMenuIconButton={false}
-                title={logo}
-                children={search_bar}
-                iconElementRight={standard_actions}
-              />
+              {this.state.is_logged_in ?
 
-              <div className="main-container">
+              <div>
 
-              {isModal ?
-                this.state.indexChildren :
-                this.props.children
-              }
+                <AppBar
+                  className="app_bar"
+                  showMenuIconButton={false}
+                  title={logo}
+                  children={search_bar}
+                  iconElementRight={standard_actions}
+                />
+
+                <div className="main-container">
+
+                {isModal ?
+                  this.state.indexChildren :
+                  this.props.children
+                }
+
+                </div>
+
+                {isModal && (
+                  <Modal isOpen={true} returnTo={location.state.returnTo} pathname={location.pathname} hairpiqs={location.state.hairpiqs}>
+                    {this.props.children}
+                  </Modal>
+                )}
+
+                {this.props.location.pathname !== '/create' && this.props.location.pathname !== '/survey' ?
+                <CreateButton location={this.props.location} /> : null }
+
+                <SiteFooter />
 
               </div>
 
-              {isModal && (
-                <Modal isOpen={true} returnTo={location.state.returnTo} pathname={location.pathname} hairpiqs={location.state.hairpiqs}>
+              :
+
+              <div>
+
+                {this.props.location.pathname !== '/' ?
+                
+                <div>
+
+                  <AppBar
+                    className="app_bar"
+                    showMenuIconButton={false}
+                    title={logo}
+                    iconElementRight={login_button}
+                  />
+
+                  <div className="main-container">
+
+                  {isModal ?
+                    this.state.indexChildren :
+                    this.props.children
+                  }
+
+                  </div>
+
+                  {isModal && (
+                    <Modal isOpen={true} returnTo={location.state.returnTo} pathname={location.pathname} hairpiqs={location.state.hairpiqs}>
+                      {this.props.children}
+                    </Modal>
+                  )}
+
+                  <SiteFooter />
+
+                </div>
+
+                :
+
+                <div className="main-container">
+                
                   {this.props.children}
-                </Modal>
-              )}
 
-              {this.props.location.pathname !== '/create' && this.props.location.pathname !== '/survey' ?
-              <CreateButton location={this.props.location} /> : null }
+                </div>
 
-              <SiteFooter />
+                }
+
+              </div>
+
+              }
 
             </div>
 

@@ -1,0 +1,227 @@
+.login-form-container {
+	border-radius: 10px;
+	background: #fff;
+	text-align: center;
+	width: 400px;
+    margin: 0 auto;
+}
+
+.login-form-container h1 {
+	line-height: 0;
+}
+
+.login-form-container h1 span {
+	display: none;
+}
+
+.login-form-container h2 {
+	font-family: "Montserrat";
+	font-size: 22px;
+}
+
+.login-form-container .logo {
+	width: 128px;
+	margin-top: 14px;
+}
+
+.login-form-container .inner-container {
+	padding: 28px 35px;
+}
+
+.login-form-container .textfield {
+	text-align: left;
+}
+
+.login-form-container .password-container {
+	position: relative;
+}
+
+meter {
+
+	position: absolute;
+	top: 38px;
+	left: 0;
+
+  /* Reset the default appearance */
+ /* -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;*/
+
+  margin: 0 auto 1em;
+  width: 100%;
+  height: 2px;
+
+  /* Applicable only to Firefox */
+  background: none;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+meter[value="0"] {
+	height: 1px;
+	background: #bdbdbd;
+	opacity: 0.85;
+}
+
+meter::-webkit-meter-bar {
+  background: none;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Webkit based browsers */
+meter[value="0"]::-webkit-meter-optimum-value { background: #bdbdbd; }
+meter[value="1"]::-webkit-meter-optimum-value { background: #E53935; }
+meter[value="2"]::-webkit-meter-optimum-value { background: #FFD600; }
+meter[value="3"]::-webkit-meter-optimum-value { background: #FFAB00; }
+meter[value="4"]::-webkit-meter-optimum-value { background: #4CAF50; }
+
+/* Gecko based browsers */
+meter[value="0"]::-moz-meter-bar { background: #bdbdbd; }
+meter[value="1"]::-moz-meter-bar { background: #E53935; }
+meter[value="2"]::-moz-meter-bar { background: #FFD600; }
+meter[value="3"]::-moz-meter-bar { background: #FFAB00; }
+meter[value="4"]::-moz-meter-bar { background: #4CAF50; }
+
+.login-form-container .dashed {
+	border-bottom: 1px dashed #bdbdbd !important;
+    background-color: #fff !important;
+    margin-bottom: -10px !important;
+}
+
+.login-form-container .or {
+	background: #fff;
+	padding: 0 20px;
+	font-family: "Montserrat";
+	display: inline-block;
+	text-transform: uppercase;
+}
+
+.login-form-container .inner-container.signup-form,
+.login-form-container .inner-container.reset-password-form {
+	padding-top: 10px;
+}
+
+
+.login-form-container .signup-button {
+	border-radius: 5px !important;
+	color: #ffffff !important;
+	margin-top: 25px !important;
+    width: 100%;
+}
+
+.login-form-container .signup-button.disabled {
+	opacity: .5;
+}
+
+.login-form-container .login-button {
+	margin-top: -10px !important;
+}
+
+.login-form-container .login-button,
+.login-form-container .facebook-login-button,
+.login-form-container .google-login-button {
+	border-radius: 5px !important;
+	color: #ffffff !important;
+    width: 30%;
+    margin:0 4px !important;
+    margin-bottom: 10px !important;
+}
+
+.login-form-container .google-button {
+	margin-right:0;
+	margin-bottom: 0 !important;
+}
+
+
+.login-form-container  [class^="icon-"] {
+	color: #ffffff !important;
+	position: absolute !important;
+    top: 7px;
+    left: 0;
+}
+
+.login-form-container .login-submit-button,
+.login-form-container .reset-password-submit-button {
+	border-radius: 5px !important;
+	color: #ffffff !important;
+	margin-top: 25px !important;
+    width: 100%;
+}
+
+.login-form-container .login-submit-button.disabled,
+.login-form-container .reset-password-submit-button.disabled {
+	opacity: .5;
+}
+
+@media (max-width: 479px) {
+
+	.login-form-container .login-button,
+	.login-form-container .facebook-login-button,
+	.login-form-container .google-login-button {
+
+		margin:0 0 15px !important;
+		width:100%;
+
+	}
+
+	.login-form-container .google-button {
+		margin-bottom: 0 !important;
+	}
+
+	.login-form-container .login-button span:last-child,
+	.login-form-container .facebook-login-button span:last-child,
+	.login-form-container .google-login-button span:last-child {
+		
+		padding-left: 15px !important;
+
+	}
+
+}
+
+.login-form-container .inner-container.login-buttons .loader {
+	height: 36px;
+	margin-top:5px;
+	margin-bottom: 5px;
+}
+
+.login-form-container .inner-container.login-form .loader,
+.login-form-container .inner-container.reset-password-form .loader {
+	margin-top: 25px;
+}
+
+@media (min-width: 480px) {
+
+	.login-form-container .inner-container.login-buttons {
+		padding: 28px 0;
+	}
+
+	.login-form-container .login-button span:last-child,
+	.login-form-container .facebook-login-button span:last-child,
+	.login-form-container .google-login-button span:last-child {
+		
+		top: 0;
+	    left: 20px;
+
+	}
+}
+
+@media (max-width: 767px) {
+
+	.login-form-container {
+		width: 100%;
+		position: relative;
+
+		background: none;
+
+
+		/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+0,ffffff+99&0+0,1+34 */
+		background: -moz-linear-gradient(top,  rgba(255,255,255,0.7) 0%, rgba(255,255,255,1) 20%, rgba(255,255,255,1) 99%); /* FF3.6-15 */
+		background: -webkit-linear-gradient(top,  rgba(255,255,255,0.7) 0%,rgba(255,255,255,1) 20%,rgba(255,255,255,1) 99%); /* Chrome10-25,Safari5.1-6 */
+		background: linear-gradient(to bottom,  rgba(255,255,255,0.7) 0%,rgba(255,255,255,1) 20%,rgba(255,255,255,1) 99%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */
+
+	}
+
+}
+
+
+
