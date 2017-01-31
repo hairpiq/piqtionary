@@ -11,13 +11,13 @@ module.exports = function(app) {
 		let options = JSON.parse(req.body.options);
 
 		request(options, function (error, response, body) {
-		  if (error) throw new Error(error);
+			if (error) throw new Error(error);
 
-		  console.log('C - auth0 user record updated: ' + body.user_id);
+			console.log('C - auth0 user record updated: ' + body.user_id);
 
-		  //console.log(response.statusCode, body);
+			//console.log(response.statusCode, body);
 
-		  res.send(JSON.stringify(body));
+			res.send(JSON.stringify(body));
 
 		});
 
@@ -31,11 +31,11 @@ module.exports = function(app) {
 
 		request(options, function (error, response, body) {
 
-		  if (error) throw new Error(error);
+			if (error) throw new Error(error);
 
-		  //console.log(response.statusCode, body);
+			//console.log(response.statusCode, body);
 
-		  res.send(JSON.stringify(body));
+			res.send(JSON.stringify(body));
 
 		});
 

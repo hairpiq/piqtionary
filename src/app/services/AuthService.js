@@ -171,12 +171,27 @@ export default class AuthService extends EventEmitter {
     let id = profile.sub || profile.user_id;
     let _this = this;
 
-    this.getProfileById(id).then(function(result) {
+    this.getProfileById(id).then(function(p){
+      
+      // sync user data to piqtionary db
+      // so that username can be looked up without being logged in
+      // this is needed for profile links to work (ie: hairpiq.com/shinavia)
 
-      // Saves profile data to localStorage
-      localStorage.setItem('profile', JSON.stringify(result))
-      // Triggers profile_updated event to update the UI
-      _this.emit('profile_updated', result)
+      let params = {
+        auth0_user_id: id,
+        username: p.username || '',
+        fullname: p.user_metadata.fullname,
+        picture: p.picture || ''
+      }
+
+      Services.setUserData(params).then(function(result) {
+
+        // Saves profile data to localStorage
+        localStorage.setItem('profile', JSON.stringify(p))
+        // Triggers profile_updated event to update the UI
+        _this.emit('profile_updated', p)
+
+      })
 
     })
 

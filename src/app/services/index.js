@@ -32,6 +32,16 @@ module.exports = {
 		return execute('//' + config.HOSTNAME + '/api/piqtionary/get_by_id', params);
 
 	},
+	setUserData: function(params) {
+
+		return execute('//' + config.HOSTNAME + '/api/piqtionary/set_user_data', params);
+
+	},
+	getUserData: function(params) {
+
+		return execute('//' + config.HOSTNAME + '/api/piqtionary/get_user_data', params);
+
+	},
 	auth0: {
 		updateUser: function(params) {
 
