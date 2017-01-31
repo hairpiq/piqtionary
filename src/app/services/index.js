@@ -37,6 +37,11 @@ module.exports = {
 
 			return execute('//' + config.HOSTNAME + '/api/auth0_management/update', params);
 
+		},
+		getUser: function(params) {
+
+			return execute('//' + config.HOSTNAME + '/api/auth0_management/get', params);
+
 		}
 	},
 	hairpiqCreator: {

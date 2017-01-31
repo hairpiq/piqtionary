@@ -17,11 +17,6 @@ class Settings extends Component {
 
 	componentDidMount() {
 
-		let user_id = this.props.route.auth.getProfile().user_id;
-
-		console.log('A');
-		console.log(user_id);
-
 	}
 
 	render() {

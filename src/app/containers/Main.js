@@ -58,7 +58,8 @@ class Main extends Component {
 
     this.state = {
       indexChildren: {},
-      is_logged_in: false
+      is_logged_in: false,
+      profile: {}
     }
 
     this.linkTo = this.linkTo.bind(this);
@@ -83,13 +84,58 @@ class Main extends Component {
     // the loading class when this component finally mounts to page.
     $("#app").removeClass('loading');
 
+    let auth = this.props.route.auth;
+
     this.setState({
-      is_logged_in: this.props.route.auth.loggedIn()
+      is_logged_in: auth.loggedIn()
     });
+
+    let _this = this;
+
+    if (auth.loggedIn()) {
+      
+      // if user_id not set, save into localStorage
+      if (localStorage.getItem('profile') === null) {
+      
+        auth.on('profile_updated', function(e) {
+          _this.setState({
+            profile: auth.getProfile()
+          })
+        })
+
+      } else {
+      
+        _this.setState({
+          profile: auth.getProfile()
+        })
+      
+      }
+
+    }
     
   }
 
   componentWillReceiveProps(nextProps) {
+
+    let auth = this.props.route.auth;
+    let _this = this;
+
+    if (auth.loggedIn()) {
+      
+      // if user_id not set, save into localStorage
+      if (localStorage.getItem('profile') === null) {
+      
+        auth.removeAllListeners()
+        auth.on('profile_updated', function(e) {
+          
+          _this.setState({
+            profile: auth.getProfile()
+          })
+
+        })
+      
+      }
+    }
 
     this.setState({
       is_logged_in: this.props.route.auth.loggedIn()
@@ -145,12 +191,7 @@ class Main extends Component {
         </IconButton>
         <IconButton
           className="profile-page-button"
-          onTouchTap={() => {
-
-            let username = this.props.route.auth.getProfile().username;
-            this.linkTo('/' + username);
-
-          }}
+          onTouchTap={() => this.linkTo('/' + this.state.profile.username)}
           iconStyle={styles.appBarIconButton}
           tooltip="My Collection">
           <AccountCircleIcon />

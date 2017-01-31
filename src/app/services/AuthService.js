@@ -22,8 +22,11 @@ export default class AuthService extends EventEmitter {
     this.loginWithFacebook = this.loginWithFacebook.bind(this)
     this.loginWithGoogle = this.loginWithGoogle.bind(this)
     this.resetPassword = this.resetPassword.bind(this)
+
+    this.getManagementAccessToken = this.getManagementAccessToken.bind(this);
     this.getProfile = this.getProfile.bind(this)
     this.updateProfile = this.updateProfile.bind(this)
+    this.getProfileById = this.getProfileById.bind(this)
 
   }
 
@@ -123,14 +126,21 @@ export default class AuthService extends EventEmitter {
 
             this.setProfile(profile)
 
-            this.updateProfile(profile.sub, {
+            var data = {
               user_metadata: {
                 fullname: localStorage.getItem('fullname')
               }
-            }).then(function(result) {
+            }
 
-              console.log('AA');
-              console.log('profile updated in auth0');
+            // set role
+
+            if (profile.email !== undefined)
+              data.app_metadata = {
+                roles: [( profile.email.indexOf('@hairpiq.com') > -1 ? 'admin' : 'user')]
+              }
+
+            this.updateProfile(profile.sub, data).then(function(result) {
+
               localStorage.removeItem('fullname');
 
             });
@@ -158,13 +168,23 @@ export default class AuthService extends EventEmitter {
 
   setProfile(profile) {
 
-    // Saves profile data to localStorage
-    localStorage.setItem('profile', JSON.stringify(profile))
-    // Triggers profile_updated event to update the UI
-    this.emit('profile_updated', profile)
+    let id = profile.sub || profile.user_id;
+    let _this = this;
+
+    this.getProfileById(id).then(function(result) {
+
+      // Saves profile data to localStorage
+      localStorage.setItem('profile', JSON.stringify(result))
+      // Triggers profile_updated event to update the UI
+      _this.emit('profile_updated', result)
+
+    })
+
+    
   }
 
   getProfile() {
+
     // Retrieves the profile data from localStorage
     const profile = localStorage.getItem('profile')
     return profile ? JSON.parse(localStorage.profile) : {}
@@ -208,10 +228,7 @@ export default class AuthService extends EventEmitter {
 
   }
 
-  // the new updateProfile
-  updateProfile(userId, data) {
-
-    let _this = this;
+  getManagementAccessToken() {
 
     var settings = {
       "async": true,
@@ -221,7 +238,6 @@ export default class AuthService extends EventEmitter {
       "headers": {
         "content-type": "application/json"
       },
-        //"data": "{\"client_id\":\"O45MML8Li13d2DwyaGQi5infiBSWP66w\",\"client_secret\":\"qoNoj2c9TrCcRsRYOcQmIEMZRz5z4me8u4ZGBtzSgy4UVahVvGkeeCPjBt30JPuy\",\"audience\":\"https://hairpiq.auth0.com/api/v2/\",\"grant_type\":\"client_credentials\"}"
         data: JSON.stringify({
           client_id: config.AUTH0_MANAGEMENT_CLIENT_ID,
           client_secret: config.AUTH0_MANAGEMENT_CLIENT_SECRET,
@@ -233,11 +249,28 @@ export default class AuthService extends EventEmitter {
     return new Promise(function(resolve, reject){
 
       $.ajax(settings).done(function (response) {
-        
+
+        resolve(response);
+
+      });
+
+    });
+
+  }
+
+  // the new updateProfile
+  updateProfile(userId, data) {
+
+    let _this = this;
+
+    return new Promise(function(resolve, reject){
+
+      _this.getManagementAccessToken().then(function(result) {
+          
         var options = {
           method: 'PATCH',
           url: `https://${config.AUTH0_DOMAIN}/api/v2/users/${userId}`,
-          headers: { authorization: 'Bearer ' + response.access_token},
+          headers: { authorization: 'Bearer ' + result.access_token},
           json: data
         }
 
@@ -250,7 +283,41 @@ export default class AuthService extends EventEmitter {
 
       });
 
-    });
+     })
+
+  }
+
+  // the new updateProfile
+  getProfileById(userId) {
+
+    let _this = this;
+
+    return new Promise(function(resolve, reject){
+
+      _this.getManagementAccessToken().then(function(result) {
+          
+        var options = {
+          method: 'GET',
+          url: `https://${config.AUTH0_DOMAIN}/api/v2/users/${userId}`,
+          headers: { authorization: 'Bearer ' + result.access_token}
+        }
+
+        var params = {
+          options : JSON.stringify(options)
+        }
+
+        Services.auth0.getUser(params)
+        .then(newProfile => {
+
+          let p = JSON.parse(newProfile)
+          
+          resolve(p);
+
+        });
+
+      });
+
+     })
 
   }
 

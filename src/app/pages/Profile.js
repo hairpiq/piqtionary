@@ -17,12 +17,6 @@ class Profile extends Component {
 
 	componentDidMount() {
 
-
-		let user_id = this.props.route.auth.getProfile().user_id;
-
-		console.log('B');
-		console.log(user_id);
-
 	}
 
 	render() {
