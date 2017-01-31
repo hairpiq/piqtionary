@@ -1,3 +1,4 @@
+require('dotenv').config();
 const config = process.env;
 
 module.exports = {
@@ -14,7 +15,7 @@ module.exports = {
 
 			$.ajax({
 			  	type: "POST",
-			  	url: '//' + process.env.HOSTNAME + '/api/piqtionary/keywords',
+			  	url: '//' + config.HOSTNAME + '/api/piqtionary/keywords',
 			  	success: function(result) {
 					resolve(result);
 				},
