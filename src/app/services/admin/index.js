@@ -1,3 +1,4 @@
+require('dotenv').config();
 var config = process.env;
 
 module.exports = {
