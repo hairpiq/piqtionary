@@ -784,4 +784,127 @@ module.exports = function(app, db) {
 
 	});
 
+	/*
+		udpate a user's data
+	*/
+
+	app.post('/api/piqtionary/set_user_data', function(req, res, next) {
+
+		console.log('B - called: /api/piqtionary/set_user_data');
+
+		// set a user's data
+			// find user record in user_data collection
+				// if exists
+					// update record
+				// else
+					// create new record
+
+			// data needed
+			// - auth0_user_id
+			// - username
+			// - fullname
+
+		var query = {
+			auth0_user_id: req.body.auth0_user_id
+		};
+
+		var item = {};
+		if (req.body.username !== undefined)
+			item.username = req.body.username
+
+		if (req.body.fullname !== undefined)
+			item.fullname = req.body.fullname
+
+		if (req.body.picture !== undefined)
+			item.picture = req.body.picture
+
+		var resultArray = []
+		var cursor = db.collection('user_data').find(query)
+		
+		cursor.forEach(function(doc, err) {
+					
+			console.log('C.A - Retrieved document in user_data: ' + doc._id);
+			//assert.equal(null, err);
+			resultArray.push(doc);
+
+		}, function() {
+
+			if (resultArray.length > 0) {
+				
+				if (resultArray[0].username !== item.username ||
+					resultArray[0].fullname !== item.fullname ||
+					resultArray[0].picture !== item.picture ) {
+					
+					db.collection('user_data').update(query, { $set: item }, function(err, result) {
+								
+						assert.equal(null, err);
+						console.log('C.B - Updated document in user_data: ' + query.auth0_user_id);
+
+						res.send(JSON.stringify('success'));
+					
+					});
+				} else {
+
+					console.log('C.B - nothing to update: ' + query.auth0_user_id);
+
+					res.send(JSON.stringify('nothing to update'));
+
+				}
+
+			} else {
+
+				item.auth0_user_id = req.body.auth0_user_id
+
+				db.collection('user_data').insertOne(item, function(err, result) {
+							
+					assert.equal(null, err);
+					console.log('C.B - Item inserted into user_data: ' + result.insertedId);
+
+					res.send(JSON.stringify('success'));
+				
+				});
+
+			}
+
+		});
+		
+	});
+
+	/*
+		get user's metadata
+	*/
+
+	app.post('/api/piqtionary/get_user_data', function(req, res, next) {
+
+		console.log('B - called: /api/piqtionary/get_user_data');
+
+		// get user data
+			// find doc in user_data collection
+
+			// data needed
+			// - username
+
+		var query = {
+			username: req.body.username
+		};
+
+		var resultArray = [];
+
+		var cursor = db.collection('user_data').find(query);
+
+		cursor.forEach(function(doc, err) {
+				
+			console.log('C - Retrieved document in user_data: ' + doc._id);
+			assert.equal(null, err);
+			resultArray.push(doc);
+
+		}, function() {
+							
+			res.setHeader('Content-Type', 'application/json');
+			res.send(JSON.stringify(resultArray));
+
+		});
+
+	});
+
 }

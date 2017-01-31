@@ -32,6 +32,28 @@ module.exports = {
 		return execute('//' + config.HOSTNAME + '/api/piqtionary/get_by_id', params);
 
 	},
+	setUserData: function(params) {
+
+		return execute('//' + config.HOSTNAME + '/api/piqtionary/set_user_data', params);
+
+	},
+	getUserData: function(params) {
+
+		return execute('//' + config.HOSTNAME + '/api/piqtionary/get_user_data', params);
+
+	},
+	auth0: {
+		updateUser: function(params) {
+
+			return execute('//' + config.HOSTNAME + '/api/auth0_management/update', params);
+
+		},
+		getUser: function(params) {
+
+			return execute('//' + config.HOSTNAME + '/api/auth0_management/get', params);
+
+		}
+	},
 	hairpiqCreator: {
 
 		validate: function(params) {
