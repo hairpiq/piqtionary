@@ -26,7 +26,7 @@ import Survey from '../pages/Survey';
 import Info from '../pages/Info';
 
 // authenticate user
-import AuthService from '../services/AuthService';
+import AuthService from '../services/auth0/';
 import LoggedIn from '../pages/LoggedIn';
 import LoggedOut from '../pages/LoggedOut';
 const auth = new AuthService(config.AUTH0_CLIENT_ID, config.AUTH0_DOMAIN);
