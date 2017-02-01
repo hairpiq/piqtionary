@@ -82,6 +82,15 @@ class Main extends Component {
     this.linkTo('/logout');
   }
 
+  openAdminSite() {
+
+    browserHistory.push({
+      pathname: '/admin',
+      state: { role: 'admin' }
+    })
+
+  }
+
   componentDidMount() {
 
     // compensate for javascript ugly page loading by removing
@@ -227,7 +236,7 @@ class Main extends Component {
             <MenuItem
               primaryText="Admin Area"
               rightIcon={<CloudIcon />}
-              onTouchTap={() => this.linkTo('/admin')}
+              onTouchTap={() => this.openAdminSite()}
             />
 
             <Divider />
