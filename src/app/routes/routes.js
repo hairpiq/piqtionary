@@ -1,6 +1,5 @@
 import React from 'react';
 var ReactRouter = require('react-router');
-require('dotenv').config();
 const config = process.env;
 
 // Router keeps the ui and url in sync

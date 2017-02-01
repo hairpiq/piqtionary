@@ -11,6 +11,41 @@
 	margin: 0 auto;
 }
 
+.settings-page .update-button,
+.settings-page .reset-password-button {
+	border-radius: 5px !important;
+	margin-top: 25px !important;
+    width: 256px;
+}
+
+.settings-page .update-button.disabled,
+.settings-page .reset-password-button.disabled {
+	opacity: .5;
+}
+
+.settings-page .loader {
+	width: 256px;
+    text-align: center;
+    margin-top: 25px;
+}
+
+.settings-page .content.user-data {
+	padding-bottom: 50px;
+}
+
+.settings-page .dashed {
+	border-bottom: 1px dashed #bdbdbd !important;
+    background-color: #fff !important;
+    margin-bottom: -10px !important;
+}
+
+.settings-page .content.reset-password {
+	padding-top: 25px;
+}
+
+.settings-page .reset-password-result-message {
+	margin-top: 25px;
+}
 
 @media (max-width: 767px) {
 	
@@ -19,6 +54,14 @@
 	    margin-top: -70px;
 	    margin-bottom: 0;
 
+	}
+
+	.settings-page .update-button {
+		width: 100%;
+	}
+
+	.settings-page .loader {
+		width: 100%;
 	}
 
 }

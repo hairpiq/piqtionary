@@ -19,7 +19,6 @@ import LinearProgress from 'material-ui/LinearProgress';
 
 import Services from '../../services/';
 
-require('dotenv').config();
 const config = process.env;
 const CLOUDINARY_UPLOAD_URL = 'https://api.cloudinary.com/v1_1/' + config.CLOUDINARY_CLOUD_NAME + '/image/upload';
 
