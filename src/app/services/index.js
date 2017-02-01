@@ -45,12 +45,12 @@ module.exports = {
 	auth0: {
 		updateUser: function(params) {
 
-			return execute('//' + config.HOSTNAME + '/api/auth0_management/update', params);
+			return execute('//' + config.HOSTNAME + '/api/auth0/update', params);
 
 		},
 		getUser: function(params) {
 
-			return execute('//' + config.HOSTNAME + '/api/auth0_management/get', params);
+			return execute('//' + config.HOSTNAME + '/api/auth0/get', params);
 
 		}
 	},
