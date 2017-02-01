@@ -11,6 +11,10 @@
 	word-wrap: break-word;
 }
 
+.profile-page h2 {
+	margin-top: 10px;
+}
+
 .profile-page .content-container {
 	margin-top: 12px;
 	padding: 50px;
@@ -39,6 +43,11 @@
 .profile-page .right-col {
 	width: 60%;
 	display:inline-block;
+}
+
+.profile-page .edit-button {
+	border-radius: 5px !important;
+	margin-top: 20px !important;
 }
 
 .profile-page .dashed {

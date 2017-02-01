@@ -5,6 +5,9 @@ import Helmet from 'react-helmet';
 import Paper from 'material-ui/Paper';
 import Avatar from 'material-ui/Avatar';
 import Divider from 'material-ui/Divider';
+import FlatButton from 'material-ui/FlatButton';
+import {grey300, orange700, orange900} from 'material-ui/styles/colors';
+import {browserHistory} from 'react-router';
 
 class Profile extends Component {
 
@@ -16,6 +19,12 @@ class Profile extends Component {
 			'profile': {},
 			'is_logged_in': false
 		}
+	}
+
+	linkTo(route) {
+
+		browserHistory.push(route);
+
 	}
 
 	componentDidMount() {
@@ -98,11 +107,18 @@ class Profile extends Component {
 									</div>
 									<div className="right-col">
 										<h1>{profile.username}</h1>
-										<h2>{profile.fullname}</h2>
+										<h2>{profile.user_metadata.fullname}</h2>
+										<FlatButton
+									    	className="edit-button"
+									    	label="Edit"
+									    	backgroundColor={grey300}
+								          	onTouchTap={() => this.linkTo('/settings')}
+									    />
 									</div>
 								</div>
 
 				            </div>
+
 
 				            <Divider className="dashed"/>
 

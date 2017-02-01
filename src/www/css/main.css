@@ -46,6 +46,10 @@ a:hover {
 	fill: #616161 !important;
 }
 
+.main .app_bar .profile-page-button img {
+	height: auto !important;
+}
+
 
 .margin-top-20 {
 	margin-top:20px;
