@@ -293,8 +293,13 @@ export default class AuthService extends EventEmitter {
           options : JSON.stringify(options)
         }
 
-        Services.auth0.updateUser(params)
-        .then(newProfile => _this.setProfile(newProfile))
+        Services.auth0.updateUser(params).then(newProfile => { 
+          
+          _this.setProfile(newProfile)
+
+          resolve(newProfile)
+
+        });
 
       });
 
