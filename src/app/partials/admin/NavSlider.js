@@ -24,14 +24,20 @@ class Nav extends Component {
  					<Subheader>Admin Area</Subheader>
 			        <MenuItem
 			          onTouchTap={this.props.handleClose}
-			          containerElement={<Link to="/admin" />}
+			          containerElement={<Link to={{
+											      pathname: "/admin",
+											      state: { role: 'admin' }
+											    }} />}
 			          leftIcon={<NotificationMMS />}
 			        >
 			          Moderate
 			        </MenuItem>
 			        <MenuItem
 			          onTouchTap={this.props.handleClose}
-			          containerElement={<Link to="/admin/ava-vision" />}
+			          containerElement={<Link to={{
+											      pathname: "/admin/ava-vision",
+											      state: { role: 'admin' }
+											    }} />}
 			          leftIcon={<ImageRemoveRedEye />}
 			        >
 			          Ava Vision
