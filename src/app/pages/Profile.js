@@ -65,18 +65,11 @@ class Profile extends Component {
 		// else
 			// load the url username
 
-
-		console.log('AA')
-
 		if(localStorage.getItem('profile') !== null) {
-
-			console.log('BB')
 
 			let profile = JSON.parse(localStorage.getItem('profile'))
 
 			if (username === profile.app_metadata.username) {
-
-				console.log('CC')
 
 				profile.username = profile.app_metadata.username;
 				profile.fullname = profile.user_metadata.fullname;
@@ -84,12 +77,10 @@ class Profile extends Component {
 				this.setState({
 					is_profile_loaded: true,
 					profile: profile,
-					do_usernames_match: true
+					does_url_and_profile_match: true
 				})
 
 			} else {
-
-				console.log('DD')
 
 				getUserData(username)
 
@@ -115,8 +106,6 @@ class Profile extends Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-
-		console.log('B')
 
 		this.getData(nextProps.params.username)
 
