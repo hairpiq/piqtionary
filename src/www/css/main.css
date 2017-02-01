@@ -25,6 +25,10 @@ a:hover {
 	display: none;
 }
 
+#app.loading .main-container {
+	min-height: 100vh;
+}
+
 .app_bar {
 	position: fixed !important;
 	top:0;

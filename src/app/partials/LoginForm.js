@@ -1,6 +1,6 @@
 import React, { Component, PropTypes as T } from 'react';
 import { render } from 'react-dom';
-import AuthService from '../services/AuthService';
+import AuthService from '../services/auth0/';
 import TextField from 'material-ui/TextField';
 import Divider from 'material-ui/Divider';
 import FlatButton from 'material-ui/FlatButton';

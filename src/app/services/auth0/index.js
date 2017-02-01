@@ -2,7 +2,7 @@ import { EventEmitter } from 'events';
 import { isTokenExpired } from './jwtHelper';
 import { browserHistory } from 'react-router';
 import auth0 from 'auth0-js';
-import Services from './';
+import Services from '../';
 
 const config = process.env;
 
@@ -27,6 +27,7 @@ export default class AuthService extends EventEmitter {
     this.getProfile = this.getProfile.bind(this)
     this.updateProfile = this.updateProfile.bind(this)
     this.getProfileById = this.getProfileById.bind(this)
+    this.generateUIDNotMoreThan1million = this.generateUIDNotMoreThan1million.bind(this)
 
   }
 
@@ -126,18 +127,48 @@ export default class AuthService extends EventEmitter {
 
             this.setProfile(profile)
 
-            var data = {
-              user_metadata: {
-                fullname: localStorage.getItem('fullname')
+            var data = {}
+
+            if (profile.user_metadata)
+              data.user_metadata = profile.user_metadata
+            else {
+              
+              // if a user signed up, then the full name is in local storage
+              // if the user logged in through facebook or google, then the full name is a property in the profile
+              let name = localStorage.getItem('fullname') || profile.name
+
+              data.user_metadata = {
+                fullname: name
               }
+
             }
 
-            // set role
 
-            if (profile.email !== undefined)
-              data.app_metadata = {
-                roles: [( profile.email.indexOf('@hairpiq.com') > -1 ? 'admin' : 'user')]
+            if (profile.user_metadata)
+              data.app_metadata = profile.app_metadata
+            else {
+              
+              data.app_metadata = {}
+
+              // if user logged in with facebook or google
+              // if username is not set
+                // set their username as a variation of their email address
+              if (profile.user_id !== undefined) {
+                if (profile.user_id.indexOf('facebook') !== -1 || profile.user_id.indexOf('google') !== -1) {
+                    let default_username = profile.given_name + '_' + profile.family_name
+                    default_username = default_username.toLowerCase().replace(/[ .]/g,'_') + '_' + this.generateUIDNotMoreThan1million()
+                    //data.username = default_username
+                    data.app_metadata.username = default_username
+                } else
+                  data.app_metadata.username = profile.username
               }
+
+              // set role
+
+              if (profile.email !== undefined)
+                data.app_metadata.roles = [( profile.email.indexOf('@hairpiq.com') > -1 ? 'admin' : 'user')]
+
+            }
 
             this.updateProfile(profile.sub, data).then(function(result) {
 
@@ -166,7 +197,7 @@ export default class AuthService extends EventEmitter {
     localStorage.setItem('id_token', idToken)
   }
 
-  setProfile(profile) {
+  setProfile(profile, suppressSetUseDataCall = false) {
 
     let id = profile.sub || profile.user_id;
     let _this = this;
@@ -179,19 +210,33 @@ export default class AuthService extends EventEmitter {
 
       let params = {
         auth0_user_id: id,
-        username: p.username || '',
-        fullname: p.user_metadata.fullname || '',
+        username: p.app_metadata !== undefined ? p.app_metadata.username : '',
+        fullname: p.user_metadata !== undefined ? p.user_metadata.fullname : '',
         picture: p.picture || ''
       }
 
-      Services.setUserData(params).then(function(result) {
+      // suppressSetUseDataCall is true when setProfile is called from the Settings Page
+      
+      if (!suppressSetUseDataCall) {
+
+
+        Services.setUserData(params).then(function(result) {
+
+          // Saves profile data to localStorage
+          localStorage.setItem('profile', JSON.stringify(p))
+          // Triggers profile_updated event to update the UI
+          _this.emit('profile_updated', p)
+
+        })
+
+      } else {
 
         // Saves profile data to localStorage
         localStorage.setItem('profile', JSON.stringify(p))
         // Triggers profile_updated event to update the UI
         _this.emit('profile_updated', p)
 
-      })
+      }
 
     })
 
@@ -275,7 +320,7 @@ export default class AuthService extends EventEmitter {
   }
 
   // the new updateProfile
-  updateProfile(userId, data) {
+  updateProfile(userId, data, suppressSetUseDataCall = false) {
 
     let _this = this;
 
@@ -296,7 +341,7 @@ export default class AuthService extends EventEmitter {
 
         Services.auth0.updateUser(params).then(newProfile => { 
           
-          _this.setProfile(newProfile)
+          _this.setProfile(newProfile, suppressSetUseDataCall)
 
           resolve(newProfile)
 
@@ -340,6 +385,10 @@ export default class AuthService extends EventEmitter {
 
      })
 
+  }
+
+  generateUIDNotMoreThan1million() {
+    return ("0000" + (Math.random()*Math.pow(36,4) << 0).toString(36)).slice(-4)
   }
 
 }

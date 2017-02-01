@@ -17,7 +17,11 @@ class Profile extends Component {
 		this.state = {
 			'is_profile_loaded': false,
 			'profile': {},
-			'is_logged_in': false
+			'username': '',
+			'fullname': '',
+			'picture': '',
+			'is_logged_in': false,
+			'does_url_and_profile_match': false
 		}
 	}
 
@@ -27,44 +31,83 @@ class Profile extends Component {
 
 	}
 
-	componentDidMount() {
+	getData(username) {
 
 		let _this = this;
-		let auth = this.props.route.auth;
 
-		if(localStorage.getItem('profile') !== null)
-			this.setState({
-				is_profile_loaded: true,
-				profile: JSON.parse(localStorage.getItem('profile'))
-			})
-		else {
+		// get user data reference from piqtionary
+			// this enables user to see other profiles based on the
+			// url, ie: I'm logged in as avery but want to see hairpiq.com/shinavia
+
+		function getUserData(u) {
 			
-			console.log(this.props.params.username)
-
 			let params = {
-				username: this.props.params.username
+				username: u
 			}
 
 			Services.getUserData(params).then(function(result) {
 
-				console.log(result[0]);
-
 				_this.setState({
 					is_profile_loaded: true,
-					profile: result[0]
+					profile: result[0],
+					does_url_and_profile_match: false
 				})
-
 
 			});
 		}
 
-	    this.setState({
+		// if the user profile is in local storage
+			// parse the object
+				// if the url username (this.props.params.username) equals the profile.username
+					// Then load the profile object for the profile username
+				// else
+					// load the url username
+		// else
+			// load the url username
+
+		if(localStorage.getItem('profile') !== null) {
+
+			let profile = JSON.parse(localStorage.getItem('profile'))
+
+			if (username === profile.app_metadata.username) {
+
+				profile.username = profile.app_metadata.username;
+				profile.fullname = profile.user_metadata.fullname;
+
+				this.setState({
+					is_profile_loaded: true,
+					profile: profile,
+					does_url_and_profile_match: true
+				})
+
+			} else {
+
+				getUserData(username)
+
+			}
+
+		} else {
+			
+			getUserData(username)
+		}
+
+	}
+
+	componentDidMount() {
+
+		let auth = this.props.route.auth;
+
+		this.setState({
 	      is_logged_in: auth.loggedIn()
 	    });
+
+	    this.getData(this.props.params.username)
 
 	}
 
 	componentWillReceiveProps(nextProps) {
+
+		this.getData(nextProps.params.username)
 
 	}
 
@@ -73,7 +116,8 @@ class Profile extends Component {
 		let { 
 			is_logged_in,
 			is_profile_loaded,
-			profile
+			profile,
+			does_url_and_profile_match
 		} = this.state;
 
 		return (
@@ -85,7 +129,7 @@ class Profile extends Component {
 				<div>
         
 			        <Helmet
-			          title={ is_logged_in ? 'My Profile' : this.state.profile.username }
+			          title={ does_url_and_profile_match ? 'My Profile' : profile.username }
 			          titleTemplate="%s - Hairpiq"
 			          defaultTitle="Hairpiq"
 			        />
@@ -107,13 +151,17 @@ class Profile extends Component {
 									</div>
 									<div className="right-col">
 										<h1>{profile.username}</h1>
-										<h2>{profile.user_metadata.fullname}</h2>
+										<h2>{profile.fullname}</h2>
+
+										{ does_url_and_profile_match ?
+										
 										<FlatButton
 									    	className="edit-button"
 									    	label="Edit"
 									    	backgroundColor={grey300}
 								          	onTouchTap={() => this.linkTo('/settings')}
-									    />
+									    /> : null }
+
 									</div>
 								</div>
 

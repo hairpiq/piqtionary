@@ -2,11 +2,11 @@ var request = require('request');
 
 module.exports = function(app) {
 
-	console.log('auth0 management api started');
+	console.log('auth0 api started');
 	
-	app.post('/api/auth0_management/update', function(req, res) {
+	app.post('/api/auth0/update', function(req, res) {
 
-		console.log('B - called: /api/auth0_management/update');
+		console.log('B - called: /api/auth0/update');
 
 		let options = JSON.parse(req.body.options);
 
@@ -23,9 +23,9 @@ module.exports = function(app) {
 
 	});
 
-	app.post('/api/auth0_management/get', function(req, res) {
+	app.post('/api/auth0/get', function(req, res) {
 
-		console.log('B - called: /api/auth0_management/get');
+		console.log('B - called: /api/auth0/get');
 
 		let options = JSON.parse(req.body.options);
 
