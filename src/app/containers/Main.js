@@ -20,6 +20,8 @@ import ActionLockIcon from 'material-ui/svg-icons/action/lock';
 import HelpIcon from 'material-ui/svg-icons/action/help';
 import Divider from 'material-ui/Divider';
 
+import Avatar from 'material-ui/Avatar';
+
 import Modal from '../partials/Modal';
 import SearchBar from '../partials/SearchBar';
 import CreateButton from '../partials/hairpiq_creator/CreateButton';
@@ -193,8 +195,10 @@ class Main extends Component {
           className="profile-page-button"
           onTouchTap={() => this.linkTo('/' + this.state.profile.username)}
           iconStyle={styles.appBarIconButton}
-          tooltip="My Collection">
-          <AccountCircleIcon />
+          tooltip="My Profile">
+          <Avatar
+            src={this.state.profile.picture}
+          />
         </IconButton>
 
 
@@ -204,17 +208,6 @@ class Main extends Component {
           targetOrigin={{horizontal: 'right', vertical: 'top'}}
           width={200}
         >
-          <MenuItem
-            primaryText="Account Settings"
-            rightIcon={<SettingsIcon />}
-            onTouchTap={() => this.linkTo('/settings')}
-          />
-          <Divider />
-          <MenuItem
-            primaryText="Help"
-            rightIcon={<HelpIcon />}
-            onTouchTap={() => this.linkTo('/faq')}
-          />
           <MenuItem
             primaryText="Send Feedback"
             rightIcon={<QuestionAnswerIcon />}
@@ -277,7 +270,11 @@ class Main extends Component {
                   </Modal>
                 )}
 
-                {this.props.location.pathname !== '/create' && this.props.location.pathname !== '/survey' ?
+                {
+                  this.props.location.pathname !== '/create' &&
+                  this.props.location.pathname !== '/survey' &&
+                  this.props.location.pathname !== '/settings' ?
+
                 <CreateButton location={this.props.location} /> : null }
 
                 <SiteFooter />
