@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
 import Services from '../services/';
+import {browserHistory} from 'react-router';
 import Helmet from 'react-helmet';
 import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
@@ -10,6 +11,7 @@ import CircularProgress from 'material-ui/CircularProgress';
 import Snackbar from 'material-ui/Snackbar';
 import Dialog from 'material-ui/Dialog';
 import Divider from 'material-ui/Divider';
+
 
 class Settings extends Component {
 
@@ -151,46 +153,42 @@ class Settings extends Component {
 		let auth = this.props.route.auth;
 		var arr = [];
 
-		if (this.state.username !== this.state.orig.username) 
-			arr.push(auth.updateProfile(user_id, {
-				username: this.state.username
-			}));
+		if (this.state.username !== this.state.orig.username) {
+
+			let is_username_updated = true
+			
+			let _username = {
+				app_metadata: {
+					username: this.state.username
+				}
+			}
+
+			if (user_id.indexOf('facebook') === -1 && user_id.indexOf('google') === -1)
+				_username.username = this.state.username
+
+			arr.push(auth.updateProfile(user_id, _username, true));
+			
+		}
 
 		if (this.state.email !== this.state.orig.email) 
 			arr.push(auth.updateProfile(user_id, {
 				email: this.state.email
-			}));
+			}, true));
 
 		if (this.state.fullname !== this.state.orig.fullname) 
 			arr.push(auth.updateProfile(user_id, {
 				user_metadata: {
 					fullname: this.state.fullname
 				}
-			}));
+			}, true));
 
-		let user_data_params = {};
-		let did_values_change = false;
-		
-		if (this.state.username !== this.state.orig.username) {
-		
-			did_values_change = true;
-			user_data_params.username = this.state.username;
-		
-		}
+		let user_data_params = {
+			auth0_user_id: this.state.user_id,
+			username: this.state.username,
+			fullname: this.state.fullname
+		};
 
-		if (this.state.fullname !== this.state.orig.fullname) {
-		
-			did_values_change = true
-			user_data_params.fullname = this.state.fullname;
-
-		}
-
-		if (did_values_change) {
-			
-			user_data_params.auth0_user_id = this.state.user_id;
-			arr.push(Services.setUserData(user_data_params))
-
-		}
+		arr.push(Services.setUserData(user_data_params))
 
 		Promise.all(arr).then(function(result) {
 
@@ -224,7 +222,7 @@ class Settings extends Component {
 		let profile = JSON.parse(localStorage.getItem('profile'));
 
 		let fullname = profile.user_metadata.fullname;
-		let username = profile.username;
+		let username = profile.app_metadata.username ;
 		let email = profile.email;
 
 		this.setState( {
@@ -292,7 +290,7 @@ class Settings extends Component {
 		let profile = JSON.parse(localStorage.getItem('profile'));
 		let user_id = profile.sub || profile.user_id;
 		let fullname = profile.user_metadata.fullname;
-		let username = profile.username;
+		let username = profile.app_metadata.username;
 		let email = profile.email;
 
 		this.setState({
@@ -377,13 +375,18 @@ class Settings extends Component {
 							onChange={this.handleUsernameChange.bind(this)}
 						/><br />
 
-						<TextField
-							value={this.state.email}
-							floatingLabelFixed={true}
-							floatingLabelText="Email"
-							errorText={this.state.emailErrorText}
-							onChange={this.handleEmailChange.bind(this)}
-						/><br />
+						{this.state.email !== undefined ?
+
+						<div>
+							<TextField
+								value={this.state.email}
+								floatingLabelFixed={true}
+								floatingLabelText="Email"
+								errorText={this.state.emailErrorText}
+								onChange={this.handleEmailChange.bind(this)}
+							/><br />
+						</div>
+						: null }
 
 						{this.state.is_authenticating ?
 										

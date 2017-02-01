@@ -177,8 +177,10 @@ class Main extends Component {
     let is_admin = false;
     
     if (is_profile_loaded)
-      if (profile.app_metadata.roles[0] === 'admin' && profile.email_verified)
-        is_admin = true;
+        if (profile.app_metadata !== undefined)
+          if (profile.app_metadata.roles !== undefined)
+            if (profile.app_metadata.roles[0] === 'admin' && profile.email_verified)
+              is_admin = true;
 
     let { location } = this.props
 
@@ -212,9 +214,11 @@ class Main extends Component {
           tooltip="My Collection">
           <PhotoLibraryIcon />
         </IconButton>
+
+
         <IconButton
           className="profile-page-button"
-          onTouchTap={() => this.linkTo('/' + this.state.profile.username)}
+          onTouchTap={() => this.linkTo('/' + this.props.route.auth.getProfile().app_metadata.username)}
           iconStyle={styles.appBarIconButton}
           tooltip="My Profile">
           <Avatar
@@ -284,37 +288,44 @@ class Main extends Component {
 
               <div>
 
-                <AppBar
-                  className="app_bar"
-                  showMenuIconButton={false}
-                  title={logo}
-                  children={search_bar}
-                  iconElementRight={standard_actions}
-                />
+                {is_profile_loaded ?
 
-                <div className="main-container">
+                  <div>
+                    
+                    <AppBar
+                      className="app_bar"
+                      showMenuIconButton={false}
+                      title={logo}
+                      children={search_bar}
+                      iconElementRight={standard_actions}
+                    />
 
-                {isModal ?
-                  this.state.indexChildren :
-                  this.props.children
-                }
+                    <div className="main-container">
 
-                </div>
+                    {isModal ?
+                      this.state.indexChildren :
+                      this.props.children
+                    }
 
-                {isModal && (
-                  <Modal isOpen={true} returnTo={location.state.returnTo} pathname={location.pathname} hairpiqs={location.state.hairpiqs}>
-                    {this.props.children}
-                  </Modal>
-                )}
+                    </div>
 
-                {
-                  this.props.location.pathname !== '/create' &&
-                  this.props.location.pathname !== '/survey' &&
-                  this.props.location.pathname !== '/settings' ?
+                    {isModal && (
+                      <Modal isOpen={true} returnTo={location.state.returnTo} pathname={location.pathname} hairpiqs={location.state.hairpiqs}>
+                        {this.props.children}
+                      </Modal>
+                    )}
 
-                <CreateButton location={this.props.location} /> : null }
+                    {
+                      this.props.location.pathname !== '/create' &&
+                      this.props.location.pathname !== '/survey' &&
+                      this.props.location.pathname !== '/settings' ?
 
-                <SiteFooter />
+                    <CreateButton location={this.props.location} /> : null }
+
+                    <SiteFooter />
+                  </div>
+
+                  : null }
 
               </div>
 
