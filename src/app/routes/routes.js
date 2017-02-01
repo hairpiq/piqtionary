@@ -97,14 +97,14 @@ module.exports = (
 
 			</Route>
 
-			<Route path="admin" component={AdminMain}>
+			<Route path="admin" component={AdminMain} auth={auth} onEnter={requireAuth}>
 
-				<IndexRoute component={AdminPending}/>
-				<Route path="unpublished" component={AdminUnpublished}/>
-				<Route path="published" component={AdminPublished}/>
-				<Route path="trash" component={AdminTrash}/>
-				<Route path="create" component={AdminCreate}/>
-				<Route path="ava-vision" component={AdminAvaVision}/>
+				<IndexRoute component={AdminPending} onEnter={requireAuth}/>
+				<Route path="unpublished" component={AdminUnpublished} onEnter={requireAuth}/>
+				<Route path="published" component={AdminPublished} onEnter={requireAuth}/>
+				<Route path="trash" component={AdminTrash} onEnter={requireAuth}/>
+				<Route path="create" component={AdminCreate} onEnter={requireAuth}/>
+				<Route path="ava-vision" component={AdminAvaVision} onEnter={requireAuth}/>
 
 			</Route>
 
