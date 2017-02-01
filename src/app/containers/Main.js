@@ -10,6 +10,7 @@ import IconButton from 'material-ui/IconButton';
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 import SettingsIcon from 'material-ui/svg-icons/action/settings';
+import CloudIcon from 'material-ui/svg-icons/file/cloud';
 import QuestionAnswerIcon from 'material-ui/svg-icons/action/question-answer';
 import AccountCircleIcon from 'material-ui/svg-icons/action/account-circle';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
@@ -61,7 +62,8 @@ class Main extends Component {
     this.state = {
       indexChildren: {},
       is_logged_in: false,
-      profile: {}
+      profile: {},
+      is_profile_loaded: false
     }
 
     this.linkTo = this.linkTo.bind(this);
@@ -101,14 +103,16 @@ class Main extends Component {
       
         auth.on('profile_updated', function(e) {
           _this.setState({
-            profile: auth.getProfile()
+            profile: auth.getProfile(),
+            is_profile_loaded: true
           })
         })
 
       } else {
       
         _this.setState({
-          profile: auth.getProfile()
+          profile: auth.getProfile(),
+          is_profile_loaded: true
         })
       
       }
@@ -131,7 +135,8 @@ class Main extends Component {
         auth.on('profile_updated', function(e) {
           
           _this.setState({
-            profile: auth.getProfile()
+            profile: auth.getProfile(),
+            is_profile_loaded: true
           })
 
         })
@@ -158,6 +163,13 @@ class Main extends Component {
   }
 
   render() {
+
+    let { is_profile_loaded, profile } = this.state;
+    let is_admin = false;
+    
+    if (is_profile_loaded)
+      if (profile.app_metadata.roles[0] === 'admin' && profile.email_verified)
+        is_admin = true;
 
     let { location } = this.props
 
@@ -208,6 +220,22 @@ class Main extends Component {
           targetOrigin={{horizontal: 'right', vertical: 'top'}}
           width={200}
         >
+          {is_admin ?
+
+          <div>
+
+            <MenuItem
+              primaryText="Admin Area"
+              rightIcon={<CloudIcon />}
+              onTouchTap={() => this.linkTo('/admin')}
+            />
+
+            <Divider />
+
+          </div>
+
+          : null }
+
           <MenuItem
             primaryText="Send Feedback"
             rightIcon={<QuestionAnswerIcon />}
