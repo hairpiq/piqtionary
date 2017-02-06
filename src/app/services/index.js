@@ -42,6 +42,21 @@ module.exports = {
 		return execute('//' + config.HOSTNAME + '/api/piqtionary/get_user_data', params);
 
 	},
+	addToFavorites: function (params) {
+		
+		return execute('//' + config.HOSTNAME + '/api/piqtionary/add_to_favorites', params);
+		
+	},
+	getFavorites: function (params) {
+
+		return execute('//' + config.HOSTNAME + '/api/piqtionary/get_favorites', params);
+
+	},
+	removeFromFavorites: function (params) {
+		
+		return execute('//' + config.HOSTNAME + '/api/piqtionary/remove_from_favorites', params);
+		
+	},
 	auth0: {
 		updateUser: function(params) {
 

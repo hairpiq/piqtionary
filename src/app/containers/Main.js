@@ -210,8 +210,7 @@ class Main extends Component {
         <IconButton
           className="info-page-button"
           onTouchTap={() => this.linkTo('/collection')}
-          iconStyle={styles.appBarIconButton}
-          tooltip="My Collection">
+          iconStyle={styles.appBarIconButton}>
           <PhotoLibraryIcon />
         </IconButton>
 
@@ -219,8 +218,7 @@ class Main extends Component {
         <IconButton
           className="profile-page-button"
           onTouchTap={() => this.linkTo('/' + this.props.route.auth.getProfile().app_metadata.username)}
-          iconStyle={styles.appBarIconButton}
-          tooltip="My Profile">
+          iconStyle={styles.appBarIconButton}>
           <Avatar
             src={this.state.profile.picture}
           />

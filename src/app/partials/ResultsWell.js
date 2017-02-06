@@ -20,8 +20,11 @@ class ResultsWell extends Component {
           page_num: 0,
           hasMoreItems: true,
           term: this.props.term,
-          result_status: ''
+          result_status: '',
+          auth0_user_id: '',
+          favorites: undefined
       };
+
   }
 
   linkTo(returnToPathname) {
@@ -81,12 +84,116 @@ class ResultsWell extends Component {
     });
   }
 
+  componentDidMount() {
+
+    ///*
+
+    let _this = this;
+
+    let auth0_user_id = JSON.parse(localStorage.getItem('profile')).user_id
+
+    let params = {
+      auth0_user_id: auth0_user_id,
+    }
+
+    Services.getFavorites(params).then(function(result){
+
+      console.log(result)
+
+      _this.setState({
+        favorites: result
+      })
+
+      // Gently notify the user of their limit.
+
+    });
+
+
+  }
+
   componentWillReceiveProps(nextProps) {
 
 
     this.setState({
         result_status: ''
       });
+
+  }
+
+  addToFavorites(hairpiq_id) {
+
+    let _this = this;
+    let auth0_user_id = JSON.parse(localStorage.getItem('profile')).user_id
+
+    let params = {
+      auth0_user_id: auth0_user_id,
+      hairpiq_id: hairpiq_id
+    }
+
+    return new Promise (function(resolve, reject) {
+
+      Services.addToFavorites(params).then(function(result){
+
+        console.log('C')
+        console.log(result)
+        console.log('"Added!" snackbar notification here')
+        // Gently notify the user of their limit.
+
+        _this.setState({
+          favorites: result
+        },
+        function() {
+
+          resolve(result)
+
+        })
+
+      }).catch(function(e) {
+
+        console.log(e)
+        reject(e)
+
+      })
+
+    })
+
+  }
+
+  removeFromFavorites(hairpiq_id) {
+
+    let _this = this;
+    let auth0_user_id = JSON.parse(localStorage.getItem('profile')).user_id
+
+   let params = {
+      auth0_user_id: auth0_user_id,
+      hairpiq_id: hairpiq_id
+    }
+
+    return new Promise (function(resolve, reject) {
+    
+      Services.removeFromFavorites(params).then(function(result){
+
+        console.log('D')
+        console.log(result)
+        console.log('"Removed!" snackbar notification here')
+
+        _this.setState({
+          favorites: result
+        },
+        function() {
+
+          resolve(result)
+
+        })
+
+      }).catch(function(e) {
+
+        console.log(e)
+        reject(e)
+
+      })
+
+    })
 
   }
 
@@ -116,21 +223,29 @@ class ResultsWell extends Component {
       </div>
     );
 
-    var items = [];
+   
+    if (this.state.favorites !== undefined) {
+
+      var items = [];
       this.state.hairpiqs.map((listItem, i) => {
         items.push(
             
             <div className="hairpiq-paper-container uk-width-small-1-3 uk-width-medium-1-4">
               <ResultItem
-                key={i}
+                key={listItem.id}
                 listItem={listItem}
                 location={this.props.location}
                 hairpiqs={this.state.hairpiqs}
+                favorites={this.state.favorites}
+                addToFavorites={this.addToFavorites.bind(this)}
+                removeFromFavorites={this.removeFromFavorites.bind(this)}
               />
             </div>
 
         );
-    });
+      });
+
+    }
 
     return (
       
@@ -162,16 +277,23 @@ class ResultsWell extends Component {
 
           :
 
-          <InfiniteScroll
-              pageStart={0}
-              loadMore={this.loadItems.bind(this)}
-              hasMore={this.state.hasMoreItems}
-              loader={loader}>
+          <div>
 
-              <div className="uk-grid uk-grid-margin" data-uk-grid-match data-uk-grid-margin>
-                  {items}
-              </div>
-          </InfiniteScroll>
+            {this.state.favorites !== undefined ?
+            <InfiniteScroll
+                pageStart={0}
+                loadMore={this.loadItems.bind(this)}
+                hasMore={this.state.hasMoreItems}
+                loader={loader}>
+
+                <div className="uk-grid uk-grid-margin" data-uk-grid-match data-uk-grid-margin>
+                    {items}
+                </div>
+            </InfiniteScroll>
+            :
+            null }
+
+          </div>
 
           }
         

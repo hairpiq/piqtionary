@@ -65,6 +65,19 @@
     color: #fff !important;
 }
 
+.results-well-container .dashed {
+	border-bottom: 1px dashed #bdbdbd !important;
+    background-color: #fff !important;
+}
+
+.results-well-container .hairpiq-paper .loader {
+	margin: 0 !important;
+	width: 48px;
+    padding: 12px;
+    float: left;
+    text-align: center;
+}
+
 @media (min-width: 480px) and (max-width: 767px) {
 
 	.hairpiq-data .title,
