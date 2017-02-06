@@ -176,9 +176,9 @@ class Profile extends Component {
 
 									<div className="content">
 
-										<h3>My Hairpiq Collection</h3>
+										<h3>My Hairpiqs</h3>
 
-										<p>images and hairtips here</p>
+										<p>my hairpiqs and hairtips here</p>
 
 									</div>
 
