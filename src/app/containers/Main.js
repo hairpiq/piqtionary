@@ -209,7 +209,7 @@ class Main extends Component {
         */}
         <IconButton
           className="info-page-button"
-          onTouchTap={() => this.linkTo('/collection')}
+          onTouchTap={() => this.linkTo('/favorites')}
           iconStyle={styles.appBarIconButton}>
           <PhotoLibraryIcon />
         </IconButton>
