@@ -8,6 +8,7 @@ import {grey400, orange700} from 'material-ui/styles/colors';
 import FlatButton from 'material-ui/FlatButton';
 import { browserHistory } from 'react-router';
 import Paper from 'material-ui/Paper';
+import Snackbar from 'material-ui/Snackbar';
 
 class ResultsWell extends Component {
 
@@ -22,7 +23,11 @@ class ResultsWell extends Component {
           term: this.props.term,
           result_status: '',
           auth0_user_id: '',
-          favorites: undefined
+          favorites: undefined,
+          snackbar: {
+            open: false,
+            message: ''
+          },
       };
 
   }
@@ -140,7 +145,11 @@ class ResultsWell extends Component {
         // Gently notify the user of their limit.
 
         _this.setState({
-          favorites: result
+          favorites: result,
+          snackbar: {
+              open: true,
+              message: 'added to favorites'
+          }
         },
         function() {
 
@@ -178,7 +187,11 @@ class ResultsWell extends Component {
         console.log('"Removed!" snackbar notification here')
 
         _this.setState({
-          favorites: result
+          favorites: result,
+          snackbar: {
+              open: true,
+              message: 'removed from favorites!'
+          }
         },
         function() {
 
@@ -196,6 +209,14 @@ class ResultsWell extends Component {
     })
 
   }
+
+  closeSnackbar = () => {
+    this.setState({
+        snackbar: { 
+        open: false
+      }
+    });
+  };
 
   // resetting the state forces the InfiniteScroll Component to re-render
   // with the below values
@@ -298,6 +319,14 @@ class ResultsWell extends Component {
           }
         
         </div>
+
+        <Snackbar
+          className="snackbar"
+          open={this.state.snackbar.open}
+          message={this.state.snackbar.message}
+          autoHideDuration={1000}
+          onRequestClose={this.closeSnackbar}
+        />
 
       </div>
     );
