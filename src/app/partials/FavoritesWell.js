@@ -8,6 +8,7 @@ import {grey400, orange700} from 'material-ui/styles/colors';
 import FlatButton from 'material-ui/FlatButton';
 import { browserHistory } from 'react-router';
 import Paper from 'material-ui/Paper';
+import Snackbar from 'material-ui/Snackbar';
 
 class FavoritesWell extends Component {
 
@@ -22,7 +23,11 @@ class FavoritesWell extends Component {
           term: this.props.term,
           result_status: '',
           auth0_user_id: '',
-          favorites: undefined
+          favorites: undefined,
+          snackbar: {
+            open: false,
+            message: ''
+          },
       };
 
   }
@@ -171,7 +176,11 @@ class FavoritesWell extends Component {
       Services.removeFromFavorites(params).then(function(result) {
 
         _this.setState({
-          favorites: result
+          favorites: result,
+          snackbar: {
+              open: true,
+              message: 'removed from favorites'
+          }
         },
         function() {
 
@@ -192,6 +201,14 @@ class FavoritesWell extends Component {
     })
 
   }
+
+  closeSnackbar = () => {
+    this.setState({
+        snackbar: { 
+        open: false
+      }
+    });
+  };
 
   // resetting the state forces the InfiniteScroll Component to re-render
   // with the below values
@@ -294,6 +311,14 @@ class FavoritesWell extends Component {
           }
         
         </div>
+
+        <Snackbar
+          className="snackbar"
+          open={this.state.snackbar.open}
+          message={this.state.snackbar.message}
+          autoHideDuration={1000}
+          onRequestClose={this.closeSnackbar}
+        />
 
       </div>
     );
