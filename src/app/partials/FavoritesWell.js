@@ -9,7 +9,7 @@ import FlatButton from 'material-ui/FlatButton';
 import { browserHistory } from 'react-router';
 import Paper from 'material-ui/Paper';
 
-class ResultsWell extends Component {
+class FavoritesWell extends Component {
 
   constructor(props) {
       
@@ -46,7 +46,9 @@ class ResultsWell extends Component {
 
     // add page_num
     var params = {
-      page_num: this.state.page_num
+      auth0_user_id: JSON.parse(localStorage.getItem('profile')).user_id,
+      page_num: this.state.page_num,
+      limit: 10
     }
 
     // if the term state has changed, include it
@@ -54,7 +56,7 @@ class ResultsWell extends Component {
       params.term = this.state.term;
 
 
-    Services.getList(params).then(function(result) {
+    Services.getListByFavorites(params).then(function(result) {
 
       if(result.length > 0) {
         result.map((hairpiq) => {
@@ -98,8 +100,6 @@ class ResultsWell extends Component {
 
     Services.getFavorites(params).then(function(result){
 
-      console.log(result)
-
       _this.setState({
         favorites: result
       })
@@ -132,11 +132,8 @@ class ResultsWell extends Component {
 
     return new Promise (function(resolve, reject) {
 
-      Services.addToFavorites(params).then(function(result){
+      Services.addToFavorites(params).then(function(result) {
 
-        console.log('C')
-        console.log(result)
-        console.log('"Added!" snackbar notification here')
         // Gently notify the user of their limit.
 
         _this.setState({
@@ -171,11 +168,7 @@ class ResultsWell extends Component {
 
     return new Promise (function(resolve, reject) {
     
-      Services.removeFromFavorites(params).then(function(result){
-
-        console.log('D')
-        console.log(result)
-        console.log('"Removed!" snackbar notification here')
+      Services.removeFromFavorites(params).then(function(result) {
 
         _this.setState({
           favorites: result
@@ -183,6 +176,9 @@ class ResultsWell extends Component {
         function() {
 
           resolve(result)
+
+          _this.resetStateForTerm('')
+          _this.loadItems()
 
         })
 
@@ -304,4 +300,4 @@ class ResultsWell extends Component {
   }
 }
 
-export default ResultsWell;
+export default FavoritesWell;

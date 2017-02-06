@@ -24,6 +24,7 @@ import Profile from '../pages/Profile';
 import Settings from '../pages/Settings';
 import Survey from '../pages/Survey';
 import Info from '../pages/Info';
+import Favorites from '../pages/Favorites';
 
 // authenticate user
 import AuthService from '../services/auth0/';
@@ -83,6 +84,7 @@ module.exports = (
 				<Route path="search" component={Index} auth={auth} onEnter={requireAuth}/>
 				<Route path="p/:id" component={Photo} />
 				<Redirect from="p/:id/" to="p/:id"/>
+				<Route path="favorites" component={Favorites} auth={auth} onEnter={requireAuth}/>
 				<Route path="create" component={Create} auth={auth} onEnter={requireAuth}/>
 				<Route path="settings" component={Settings} auth={auth} onEnter={requireAuth}/>
 				<Route path="info" component={Info} />
