@@ -8,6 +8,7 @@ import Divider from 'material-ui/Divider';
 import FlatButton from 'material-ui/FlatButton';
 import {grey300, orange700, orange900} from 'material-ui/styles/colors';
 import {browserHistory} from 'react-router';
+import FavoritesWell from '../partials/FavoritesWell';
 
 class Profile extends Component {
 
@@ -42,57 +43,45 @@ class Profile extends Component {
 
 		return (
 
-			<div className="profile-page">
+			<div>
 
-				{ is_profile_loaded ?
+			{ is_profile_loaded ?
 
 				<div>
-        
-			        <Helmet
-			          title="My Collection"
-			          titleTemplate="%s - Hairpiq"
-			          defaultTitle="Hairpiq"
-			        />
 
-			        <div className="uk-grid uk-grid-margin">
+					<div className="no-hero-space" />
 
-			          <div className="uk-width-medium-8-10 uk-push-1-10">
-			            
-			            <Paper>
+					<div className="favorites-page">
 
-			            	<div className="content-container profile-header">
+						<div>
+		        
+					        <Helmet
+					          title="My Favorites"
+					          titleTemplate="%s - Hairpiq"
+					          defaultTitle="Hairpiq"
+					        />
 
-								<div className="content">
+					        <div className="uk-grid uk-grid-margin">
+
+								<div className="uk-width-medium-8-10 uk-push-1-10">
+
 									<h1>My Favorites</h1>
-								</div>
 
-				            </div>
-
-				            <Divider className="dashed"/>
-
-				            <div className="content-container hairpiq-collection">
-
-								<div className="content">
-
-									<div className="content">
-
-										<h2>my favorite hairpiqs and hairtips</h2>
-										
-									</div>
+									<FavoritesWell
+									location={this.props.location}
+									/>
 
 								</div>
 
-							</div>
+					        </div>
 
-			            </Paper>
+					    </div>
 
-			          </div>
-
-			        </div>
+				    </div>
 
 			    </div>
 
-		    	: null }
+			    : null }
 
 		    </div>
 

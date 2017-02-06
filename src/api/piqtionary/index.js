@@ -983,7 +983,7 @@ module.exports = function(app, db) {
 
 		var resultArray = [];
 
-		var cursor = db.collection('user_favorites').find(id);
+		var	cursor = db.collection('user_favorites').find(id);
 
 		cursor.forEach(function(doc, err) {
 				
@@ -1053,6 +1053,67 @@ module.exports = function(app, db) {
 
 			});
 			
+		}
+
+	});
+
+	/*
+		get user favorites
+	*/
+
+	app.post('/api/piqtionary/list_by_favorites', function(req, res, next) {
+
+		console.log('B - called: /api/piqtionary/list_by_favorites');
+
+		// get the actual hairpiq docs that a user has favorited
+
+		// data needed
+		// - auth0_user_id : string
+		// 
+
+		var id = {
+			auth0_user_id: req.body.auth0_user_id
+		};
+
+		var resultArray = [];
+
+		if (req.body.limit !== undefined && req.body.limit.length > 0) {
+			var limit = Number(req.body.limit);
+			var skip = Number(req.body.page_num) * Number(req.body.limit);
+			var sort = { _id : -1};
+
+			var user_favorites_cursor = db.collection('user_favorites').find(id).skip(skip).sort(sort).limit(limit);
+
+			user_favorites_cursor.forEach(function(doc, err) {
+					
+				console.log('C - Retrieved document in user_favorites: ' + doc._id);
+				assert.equal(null, err);
+				resultArray.push(ObjectID(doc.hairpiq_id));
+
+			}, function() {
+							
+				var approved_hairpiqs_cursor = db.collection('approved_hairpiqs').find( { _id: { $in: resultArray }});
+
+				resultArray = []
+
+				approved_hairpiqs_cursor.forEach(function(doc, err) {
+						
+					console.log('C - Retrieved document in approved_hairpiqs: ' + doc._id);
+					assert.equal(null, err);
+					resultArray.push(doc);
+
+				}, function() {
+									
+					res.setHeader('Content-Type', 'application/json');
+					res.send(JSON.stringify(resultArray));
+
+				});
+
+			});
+
+		} else {
+			console.log('C.B - No limit supplied.');
+			res.send('No limit supplied.');
 		}
 
 	});
