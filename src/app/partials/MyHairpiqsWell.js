@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { render } from 'react-dom';
 import InfiniteScroll from 'react-infinite-scroller';
 import Services from '../services/';
-import ResultItem from './ResultItem';
+import MyHairpiqItem from './MyHairpiqItem';
 import CircularProgress from 'material-ui/CircularProgress';
 import {grey400, orange700} from 'material-ui/styles/colors';
 import FlatButton from 'material-ui/FlatButton';
@@ -10,7 +10,7 @@ import { browserHistory } from 'react-router';
 import Paper from 'material-ui/Paper';
 import Snackbar from 'material-ui/Snackbar';
 
-class FavoritesWell extends Component {
+class MyHairpiqsWell extends Component {
 
   constructor(props) {
       
@@ -48,20 +48,15 @@ class FavoritesWell extends Component {
 
     // get list of hairpiqs
     var hairpiqs = _this.state.hairpiqs;
+    let auth0_user_id = JSON.parse(localStorage.getItem('profile')).user_id
 
     // add page_num
     var params = {
-      auth0_user_id: JSON.parse(localStorage.getItem('profile')).user_id,
       page_num: this.state.page_num,
-      limit: 10
+      //auth0_user_id: auth0_user_id
     }
 
-    // if the term state has changed, include it
-    if(this.state.term !== undefined && this.state.term.length > 0)
-      params.term = this.state.term;
-
-
-    Services.getListByFavorites(params).then(function(result) {
+    Services.getList(params).then(function(result) {
 
       if(result.length > 0) {
         result.map((hairpiq) => {
@@ -137,12 +132,19 @@ class FavoritesWell extends Component {
 
     return new Promise (function(resolve, reject) {
 
-      Services.addToFavorites(params).then(function(result) {
+      Services.addToFavorites(params).then(function(result){
 
+        console.log('C')
+        console.log(result)
+        console.log('"Added!" snackbar notification here')
         // Gently notify the user of their limit.
 
         _this.setState({
-          favorites: result
+          favorites: result,
+          snackbar: {
+              open: true,
+              message: 'added to favorites'
+          }
         },
         function() {
 
@@ -173,21 +175,22 @@ class FavoritesWell extends Component {
 
     return new Promise (function(resolve, reject) {
     
-      Services.removeFromFavorites(params).then(function(result) {
+      Services.removeFromFavorites(params).then(function(result){
+
+        console.log('D')
+        console.log(result)
+        console.log('"Removed!" snackbar notification here')
 
         _this.setState({
           favorites: result,
           snackbar: {
               open: true,
-              message: 'removed from favorites'
+              message: 'removed from favorites!'
           }
         },
         function() {
 
           resolve(result)
-
-          _this.resetStateForTerm('')
-          _this.loadItems()
 
         })
 
@@ -243,8 +246,8 @@ class FavoritesWell extends Component {
       this.state.hairpiqs.map((listItem, i) => {
         items.push(
             
-            <div className="hairpiq-paper-container uk-width-small-1-3 uk-width-medium-1-4">
-              <ResultItem
+            <div className="hairpiq-paper-container uk-width-small-1-3">
+              <MyHairpiqItem
                 key={listItem.id}
                 listItem={listItem}
                 location={this.props.location}
@@ -325,4 +328,4 @@ class FavoritesWell extends Component {
   }
 }
 
-export default FavoritesWell;
+export default MyHairpiqsWell;

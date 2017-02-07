@@ -28,8 +28,6 @@ class CreateButton extends Component {
 		  eventAction: 'open-hairpiq-creator',
 		  eventLabel: 'Open the Hairpiq Creator'
 		};
-
-		console.log(test);
 		
 		ga('send', test);
 	}

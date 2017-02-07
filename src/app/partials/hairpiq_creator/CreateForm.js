@@ -450,11 +450,14 @@ class CreateForm extends Component {
 
 	handleSubmit() {
 
+		let auth0_user_id = JSON.parse(localStorage.getItem('profile')).user_id
+
 		let params = {
 			orig_photo_url: this.state.cloudinary.uploadedFileCloudinaryUrl,
 			stylename: this.state.stylename,
 			ig_username: this.state.ig_username,
 			add_to_pending_requests: this.state.isApplyToggled,
+			auth0_user_id: auth0_user_id
 		}
 
 		params.options = JSON.stringify({
