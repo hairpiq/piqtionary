@@ -1,0 +1,33 @@
+.fixed-edit-hairtip-form-width {
+	width: 768px;
+}
+
+.main-container.fixed-edit-hairtip-form-width {
+    margin: 0 auto;
+}
+
+.modal-inner.fixed-edit-hairtip-form-width .intro {
+    display: none;
+}
+
+.main-container.fixed-edit-hairtip-width .edit-hairtip-form,
+.main-container.fixed-edit-hairtip-width .edit-hairtip-form .photo {
+    background: #ffffff !important;
+}
+
+.edit-hairtip-form:after {
+
+	content: "";
+    display: block;
+    clear: both;
+}
+
+.edit-hairtip-form .left-col {
+	width: 40%;
+	float: left;
+}
+
+.edit-hairtip-form .right-col {
+	width: 60%;
+	float: left;
+}

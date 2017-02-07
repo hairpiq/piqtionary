@@ -25,6 +25,7 @@ import Settings from '../pages/Settings';
 import Survey from '../pages/Survey';
 import Info from '../pages/Info';
 import Favorites from '../pages/Favorites';
+import Hairtip from '../pages/Hairtip';
 
 // authenticate user
 import AuthService from '../services/auth0/';
@@ -87,6 +88,7 @@ module.exports = (
 				<Route path="favorites" component={Favorites} auth={auth} onEnter={requireAuth}/>
 				<Route path="create" component={Create} auth={auth} onEnter={requireAuth}/>
 				<Route path="settings" component={Settings} auth={auth} onEnter={requireAuth}/>
+				<Route path="edit-hairtip/:id" component={Hairtip} auth={auth} onEnter={requireAuth}/>
 				<Route path="info" component={Info} />
 				<Route path="survey" component={Survey} />
 
