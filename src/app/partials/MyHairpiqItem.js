@@ -38,15 +38,8 @@ class ResultItem extends Component {
   
   linkTo(id) {
     browserHistory.push({
-      pathname: `/p/${id}`,
-      state: { modal: true, returnTo: this.props.location.pathname, hairpiqs: this.props.hairpiqs }
-    });
-  }
-
-  editHairtip(id) {
-    browserHistory.push({
       pathname: `/edit-hairtip/${id}`,
-      state: { modal: true, returnTo: this.props.location.pathname }
+      state: { modal: true, returnTo: this.props.location.pathname, hairpiqs: this.props.hairpiqs }
     });
   }
 
@@ -96,7 +89,7 @@ class ResultItem extends Component {
 
         <IconButton
           onTouchTap={() => {
-                this.editHairtip(listItem._id)
+                this.linkTo(listItem._id)
               }}
           iconStyle={styles.appBarIconButton}>
           <ActionNoteAddIcon />

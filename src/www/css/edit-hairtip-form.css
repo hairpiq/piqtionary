@@ -23,11 +23,51 @@
 }
 
 .edit-hairtip-form .left-col {
-	width: 40%;
+	width: 50%;
 	float: left;
 }
 
 .edit-hairtip-form .right-col {
-	width: 60%;
+	width: 50%;
 	float: left;
+}
+
+.edit-hairtip-form .photo {
+	width:100%;
+	min-height: 350px;
+	padding: 20px;
+    background: #f5f5f5;
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.modal .edit-hairtip-form .photo {
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+.edit-hairtip-form h2 {
+	font-size: 150%;
+}
+
+.edit-hairtip-form .detail-info {
+	margin: 0 auto;
+	width:100%;
+	height: auto;
+	outline: none;
+	padding-top: 20px;
+}
+
+.edit-hairtip-form .data-container {
+	padding:15px 25px;
+}
+
+.edit-hairtip-form .submit-button {
+    float: right;
+	border-radius: 5px !important;
+	color: #ffffff !important;
+    width: 30%;
+    margin:25px 4px 0 !important;
+    margin-bottom: 25px !important;
 }

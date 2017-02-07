@@ -1,8 +1,60 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
+import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
+import FlatButton from 'material-ui/FlatButton';
+import {orange700} from 'material-ui/styles/colors';
 
 class EditForm extends Component {
+
+	constructor() {
+		super()
+
+		this.state = {
+			hairtipTextErrorText: '',
+			hairtipText: '',
+			is_hairtip_valid: false
+		}
+	}
+
+	proxyUrl = (s3_url) => {
+
+		if (s3_url)
+			return '/h/' + s3_url.split('.com/')[1];
+	
+	}
+
+	submitHairtip() {
+
+		console.log('A - Submit Hairtip')
+
+	}
+
+	handleHairtipTextChange = (e) =>  {
+		
+		var hairtipText = e.target.value.replace(/\<+|\>+/g, '');
+		var minCharLimit = 85;
+
+		if (hairtipText.length === 0) {
+			this.setState({
+				hairtipTextErrorText: 'This field is required.',
+				hairtipText: hairtipText,
+				is_hairtip_valid: false
+			});
+		} else if (hairtipText.length > 0 && hairtipText.length < minCharLimit) {
+			this.setState({
+				hairtipTextErrorText: 'Hairtip is ' + (minCharLimit - hairtipText.length) + ' characters too short.',
+				hairtipText: hairtipText,
+				is_hairtip_valid: false
+			});
+		} else {
+			this.setState({
+				hairtipTextErrorText: '',
+				hairtipText: hairtipText,
+				is_hairtip_valid: true
+			});
+		}
+	}
 
 	componentDidMount() {
 
@@ -12,6 +64,8 @@ class EditForm extends Component {
 
 	render() {
 
+		const params = this.props.data;
+
 		return (
 
 			<div className="edit-hairtip-form">
@@ -19,24 +73,46 @@ class EditForm extends Component {
 					
 				<div className="left-col">
 
-				photo
+					<div className="photo">
+
+						<Paper className="paper" zDepth={2}>
+							<img src={this.proxyUrl(params.s3_url)} onLoad={this.onImageLoaded}/>
+						</Paper>
+
+					</div>
 
 				</div>
 
 				<div className="right-col">
 
-				<p>What do you do to get the look?</p>
+					<div className="detail-info">
+							
+							<div className="data-container">
 
-				<div>
-					<TextField
-				      hintText="Message Field"
-				      errorText="This field is required."
-				      floatingLabelText=""
-				      floatingLabelFixed={true}
-				      multiLine={true}
-				      rows={2}
-				    /><br />
-				</div>
+							<h2>How did you get this look?</h2>
+
+							<div>
+								<TextField
+							      hintText="list your routine, products, and/or special tricks that make this look happen"
+							      errorText={this.state.hairtipTextErrorText}
+							      multiLine={true}
+							      rows={4}
+							      fullWidth={true}
+							      onChange={this.handleHairtipTextChange}
+							    /><br />
+							</div>
+
+							<FlatButton
+							    	className="submit-button"
+							    	label="Submit"
+							    	backgroundColor={orange700}
+							        hoverColor="#faba79"
+						          	rippleColor="#ffffff"
+						          	onTouchTap={() => this.submitHairtip()}
+							    />
+						</div>
+
+					</div>
 
 				</div>
 

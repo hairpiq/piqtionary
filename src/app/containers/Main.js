@@ -60,7 +60,7 @@ class Main extends Component {
     super();
 
     this.state = {
-      indexChildren: {},
+      previousChildren: {},
       is_logged_in: false,
       profile: {},
       is_profile_loaded: false
@@ -164,10 +164,9 @@ class Main extends Component {
       nextProps.location.state.modal
     )) {
 
-      if (this.state.indexChildren.props === undefined)
-          this.setState({
-            indexChildren: this.props.children
-          });
+        this.setState({
+          previousChildren: this.props.children
+        });
     }
   }
 
@@ -187,7 +186,7 @@ class Main extends Component {
     let isModal = (
       location.state &&
       location.state.modal &&
-      (this.state.indexChildren.props !== undefined)
+      (this.state.previousChildren.props !== undefined)
     )
 
     const logo = (
@@ -301,7 +300,7 @@ class Main extends Component {
                     <div className="main-container">
 
                     {isModal ?
-                      this.state.indexChildren :
+                      this.state.previousChildren :
                       this.props.children
                     }
 
@@ -345,7 +344,7 @@ class Main extends Component {
                   <div className="main-container">
 
                   {isModal ?
-                    this.state.indexChildren :
+                    this.state.previousChildren :
                     this.props.children
                   }
 

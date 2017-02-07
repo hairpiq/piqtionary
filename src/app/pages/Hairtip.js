@@ -5,45 +5,61 @@ import EditForm from '../partials/hairtip_editor/EditForm';
 
 class Hairtip extends Component {
 
-  componentDidMount() {
+	constructor() {
+		super();
 
-    // if not rendered in modal
-      // fix the width of the layout
-    if ($('.modal').length === 0)
-      $('.main-container').addClass('fixed-create-form-width');
+		this.state = {
+		  data: {}
+		}
+	}
 
-  }
+	proxyUrl = (s3_url) => {
 
-  componentWillUnmount() {
+		if (s3_url)
+		  return '/h/' + s3_url.split('.com/')[1];
 
-    // if not rendered in modal
-      // remove fixed width from main-container
-    if ($('.modal').length === 0)
-      $('.main-container').removeClass('fixed-create-form-width');
+	}
 
-  }
+	componentDidMount() {
 
-  render() {
+		// if not rendered in modal
+		  // fix the width of the layout
+		if ($('.modal').length === 0)
+		  $('.main-container').addClass('fixed-edit-hairpiq-form-width');
 
-    return (
-      <div>
+	}
 
-        <Helmet
-          title="Edit a Hairtip"
-          titleTemplate="%s - Hairpiq"
-          defaultTitle="Hairpiq"
-        />
+	componentWillUnmount() {
 
-        <div className="intro">
-			<h1>Create Your Own Hairtip</h1>
-			<p>Help other Hairpiqers save time, money and hassle by listing your routine, products, and/or special tricks that make this happen.</p>
-        </div>
+		// if not rendered in modal
+		  // remove fixed width from main-container
+		if ($('.modal').length === 0)
+		  $('.main-container').removeClass('fixed-edit-hairpiq-form-width');
 
-        <EditForm />
+	}
 
-      </div>
-    );
-  }
+	render() {
+
+	return (
+	  
+		<div>
+
+			<Helmet
+			  title="Edit a Hairtip"
+			  titleTemplate="%s - Hairpiq"
+			  defaultTitle="Hairpiq"
+			/>
+
+			<div className="intro">
+				<h1>Create Your Own Hairtip</h1>
+			</div>
+
+			<EditForm data={this.props.hairpiq || this.state.data} />
+
+		</div>
+
+		)
+	}
 }
 
 export default Hairtip;
