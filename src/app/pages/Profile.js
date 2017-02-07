@@ -8,6 +8,7 @@ import Divider from 'material-ui/Divider';
 import FlatButton from 'material-ui/FlatButton';
 import {grey300, orange700, orange900} from 'material-ui/styles/colors';
 import {browserHistory} from 'react-router';
+import MyHairpiqsWell from '../partials/MyHairpiqsWell';
 
 class Profile extends Component {
 
@@ -168,7 +169,7 @@ class Profile extends Component {
 				            </div>
 
 
-				            <Divider className="dashed"/>
+				            <Divider className="profile-header-dashed"/>
 
 				            <div className="content-container hairpiq-collection">
 
@@ -178,7 +179,15 @@ class Profile extends Component {
 
 										<h3>My Hairpiqs</h3>
 
-										<p>my hairpiqs and hairtips here</p>
+										<div className="uk-grid">
+
+								          <div className="uk-width-medium-10-10">
+								        
+								            <MyHairpiqsWell location={this.props.location} />
+
+								          </div>
+								      
+								        </div>
 
 									</div>
 

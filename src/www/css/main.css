@@ -25,7 +25,7 @@ a:hover {
 	display: none;
 }
 
-#app.loading .main-container {
+#app .main-container {
 	min-height: 100vh;
 }
 
