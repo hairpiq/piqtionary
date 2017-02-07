@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { render } from 'react-dom';
 import InfiniteScroll from 'react-infinite-scroller';
 import Services from '../services/';
-import ResultItem from './ResultItem';
+import MyHairpiqItem from './MyHairpiqItem';
 import CircularProgress from 'material-ui/CircularProgress';
 import {grey400, orange700} from 'material-ui/styles/colors';
 import FlatButton from 'material-ui/FlatButton';
@@ -10,7 +10,7 @@ import { browserHistory } from 'react-router';
 import Paper from 'material-ui/Paper';
 import Snackbar from 'material-ui/Snackbar';
 
-class ResultsWell extends Component {
+class MyHairpiqsWell extends Component {
 
   constructor(props) {
       
@@ -48,16 +48,13 @@ class ResultsWell extends Component {
 
     // get list of hairpiqs
     var hairpiqs = _this.state.hairpiqs;
+    let auth0_user_id = JSON.parse(localStorage.getItem('profile')).user_id
 
     // add page_num
     var params = {
-      page_num: this.state.page_num
+      page_num: this.state.page_num,
+      //auth0_user_id: auth0_user_id
     }
-
-    // if the term state has changed, include it
-    if(this.state.term !== undefined && this.state.term.length > 0)
-      params.term = this.state.term;
-
 
     Services.getList(params).then(function(result) {
 
@@ -249,8 +246,8 @@ class ResultsWell extends Component {
       this.state.hairpiqs.map((listItem, i) => {
         items.push(
             
-            <div className="hairpiq-paper-container uk-width-small-1-3 uk-width-medium-1-4">
-              <ResultItem
+            <div className="hairpiq-paper-container uk-width-small-1-3">
+              <MyHairpiqItem
                 key={listItem.id}
                 listItem={listItem}
                 location={this.props.location}
@@ -331,4 +328,4 @@ class ResultsWell extends Component {
   }
 }
 
-export default ResultsWell;
+export default MyHairpiqsWell;

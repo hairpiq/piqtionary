@@ -21,9 +21,10 @@ module.exports = function(app, db) {
 			orig_photo_url: req.body.orig_photo_url,
 			s3_url: req.body.s3_url,
 			stylename: validator.escape(req.body.stylename),
-			ig_username: validator.escape(req.body.ig_username)
+			ig_username: validator.escape(req.body.ig_username),
+			auth0_user_id: req.body.auth0_user_id
 		};
-
+		
 		if (req.body.options !== undefined)
 			item.options = req.body.options;
 
@@ -56,6 +57,7 @@ module.exports = function(app, db) {
 			// - stylename : string
 			// - ig_username : string
 			// - status : string ("'unpublished' by default")
+			// - auth0_user_id : string
 
 		var is_approved = req.body.is_approved;
 		var pending_id = { _id: ObjectID(req.body.pending_id) };
@@ -65,7 +67,8 @@ module.exports = function(app, db) {
 			stylename: validator.escape(req.body.stylename),
 			ig_username: validator.escape(req.body.ig_username),
 			publish_status: "unpublished",
-			trained_status: "untrained"
+			trained_status: "untrained",
+			auth0_user_id: req.body.auth0_user_id
 		}
 
 		if (is_approved === 'true') {
@@ -316,6 +319,9 @@ module.exports = function(app, db) {
 				//query.score = { $meta: "textScore" };
 				//sort = { score: { $meta:"textScore" } };
 			}
+
+			if (req.body.auth0_user_id)
+				query.auth0_user_id = req.body.auth0_user_id
 
 			var cursor = db.collection('approved_hairpiqs').find(query).skip(skip).sort(sort).limit(limit);
 
