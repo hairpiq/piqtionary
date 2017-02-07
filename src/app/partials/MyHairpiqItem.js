@@ -43,42 +43,11 @@ class ResultItem extends Component {
     });
   }
 
-  addToFavorites(id) {
-
-    let _this = this;
-
-    this.setState({
-      favorite_status: 'loading'
-    },function() {
-
-      _this.props.addToFavorites(id).then(function(result) {
-        
-        _this.setState({
-          favorite_status: 'added'
-        })
-
-      })
-
-    })
-  }
-
-  removeFromFavorites(id) {
-
-    let _this = this;
-
-    this.setState({
-      favorite_status: 'loading'
-    }, function() {
-
-      _this.props.removeFromFavorites(id).then(function(result) {
-      
-      _this.setState({
-          favorite_status: 'removed'
-        })
-
-      })
-
-    })
+  editHairtip(id) {
+    browserHistory.push({
+      pathname: `/edit-hairtip/${id}`,
+      state: { modal: true, returnTo: this.props.location.pathname }
+    });
   }
 
   render() {
@@ -127,7 +96,7 @@ class ResultItem extends Component {
 
         <IconButton
           onTouchTap={() => {
-                console.log('add a hairtip to: ' + listItem._id)
+                this.editHairtip(listItem._id)
               }}
           iconStyle={styles.appBarIconButton}>
           <ActionNoteAddIcon />
