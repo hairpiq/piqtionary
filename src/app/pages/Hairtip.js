@@ -89,6 +89,7 @@ class Hairtip extends Component {
 				<EditForm
 					data={this.props.hairpiq || this.state.data}
 					location={location}
+					returnTo={this.props.returnTo}
 				/>
 
 			</div>

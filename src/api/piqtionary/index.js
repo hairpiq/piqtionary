@@ -1193,4 +1193,104 @@ module.exports = function(app, db) {
 
 	});
 
+	/*
+		get hairtips by user
+	*/
+
+	app.post('/api/piqtionary/get_hairtip_by_hairpiq_id', function(req, res, next) {
+
+		console.log('B - called: /api/piqtionary/get_hairtip_by_hairpiq_id');
+
+		// insert a new hairtip into hairtips collection
+
+		// data needed
+		// - auth0_user_id : string
+		// - body_text : string
+
+		var item = {
+			hairpiq_id: req.body.hairpiq_id
+		}
+
+		var resultArray = []
+
+		var cursor = db.collection('hairtips').find(item)
+
+		cursor.forEach(function(doc, err) {
+					
+			console.log('C - Retrieved document in hairtips: ' + doc._id);
+			assert.equal(null, err);
+
+			doc.body_text = validator.unescape(doc.body_text)
+			
+			resultArray.push(doc);
+
+		}, function() {
+							
+			res.setHeader('Content-Type', 'application/json');
+			res.send(JSON.stringify(resultArray));
+
+		});
+
+	});
+
+	/*
+		edit hairtip
+	*/
+
+	app.post('/api/piqtionary/edit_hairtip', function(req, res, next) {
+
+		console.log('B - called: /api/piqtionary/edit_hairtip');
+
+		// insert a new hairtip into hairtips collection
+
+		// data needed
+		// - hairpiq_id : string
+
+		var query = {
+			hairpiq_id: req.body.hairpiq_id,
+		}
+
+		var item = {
+			body_text: validator.escape(req.body.body_text)
+		}
+
+		db.collection('hairtips').update(query, { $set: item }, function(err, result) {
+							
+			assert.equal(null, err);
+			console.log('C.A - Item edited in hairtips: ' + query.hairpiq_id);
+
+			res.send(JSON.stringify('success'));
+
+		});
+
+	});
+
+	/*
+		delete hairtip
+	*/
+
+	app.post('/api/piqtionary/delete_hairtip', function(req, res, next) {
+
+		console.log('B - called: /api/piqtionary/delete_hairtip');
+
+		// delete a hairtip from the hairtips collection
+
+		// data needed
+		// - hairpiq_id : string
+
+		var query = {
+			hairpiq_id: req.body.hairpiq_id,
+		}
+
+		db.collection('hairtips').remove(query, function(err, result) {
+					
+			assert.equal(null, err);
+			console.log('C - Deleted document from hairtips: ' + query.hairpiq_id);
+
+			res.send(JSON.stringify('success'));
+		
+		});
+
+	});
+
 }

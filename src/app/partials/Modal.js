@@ -116,7 +116,7 @@ class Modal extends Component {
 						        	{renderBeforeLink()}
 						        	{renderNextLink()}
 						        </div>
-				        		{React.cloneElement(this.props.children, { hairpiq: current_hairpiq })}
+				        		{React.cloneElement(this.props.children, { hairpiq: current_hairpiq, returnTo: this.props.returnTo })}
 				        	</div>
 				        : 	
 				        	this.props.children}

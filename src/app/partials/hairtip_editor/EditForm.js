@@ -3,10 +3,20 @@ import { render } from 'react-dom';
 import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
-import {grey400, orange700} from 'material-ui/styles/colors';
+import {grey400, grey700, orange700} from 'material-ui/styles/colors';
 import CircularProgress from 'material-ui/CircularProgress';
 import Snackbar from 'material-ui/Snackbar';
-import Services from '../../services/'
+import Services from '../../services/';
+import { browserHistory } from 'react-router';
+import ActionDeleteForever from 'material-ui/svg-icons/action/delete-forever';
+import IconButton from 'material-ui/IconButton';
+import Dialog from 'material-ui/Dialog';
+
+const styles = {
+  appBarIconButton : {
+    color: grey700
+  }
+};
 
 class EditForm extends Component {
 
@@ -18,6 +28,9 @@ class EditForm extends Component {
 			hairtipText: '',
 			is_hairtip_valid: false,
 			request_status: '',
+			dialog: {
+				open: false,
+			},
 			snackbar: {
               open: false,
               message: ''
@@ -37,10 +50,11 @@ class EditForm extends Component {
 
 		let _this = this;
 		let auth0_user_id = JSON.parse(localStorage.getItem('profile')).user_id
+		let hairpiq_id = this.props.data._id
 
 		let params = {
 			auth0_user_id: auth0_user_id,
-			hairpiq_id: this.props.data._id,
+			hairpiq_id: hairpiq_id,
 			body_text: this.state.hairtipText
 		}
 
@@ -48,20 +62,64 @@ class EditForm extends Component {
 	      request_status: 'loading'
 	    },function() {
 
-	      Services.hairtips.add(params).then(function(result) {
-	        
-	        _this.setState({
-	          request_status: 'loaded',
-		          snackbar: {
-	              open: true,
-	              message: 'added hairtip'
-	          }
-	        })
+	   	let method = (_this.state.form_mode === 'create' ? 'add' : 'edit')
 
 
-	      })
+		Services.hairtips[method](params).then(function(result) {
+
+			if (_this.state.form_mode === 'create') {
+				
+				_this.setFormMode('edit')
+
+			}
+
+			_this.setState({
+					request_status: 'loaded',
+					snackbar: {
+						open: true,
+						message: 'hairtip ' + method + 'ed'
+					}
+				})
+
+			})
 
 	    })
+
+	}
+
+	deleteHairtip () {
+
+		let _this = this;
+		let hairpiq_id = this.props.data._id;
+		let params = {
+			hairpiq_id: hairpiq_id
+		}
+
+		this.setState({
+	      request_status: 'loading',
+	      dialog: {
+				open: false
+			},
+	    }, function () {
+
+			Services.hairtips.delete(params).then(function(result) {
+
+	          	let url = ( _this.props.returnTo !== undefined ? _this.props.returnTo : '/add-hairtip/' + hairpiq_id )
+				browserHistory.replace(url)
+
+				_this.setState({
+					hairtipText: '',
+					form_mode: 'create',
+					request_status: 'loaded',
+					snackbar: {
+						open: true,
+						message: 'hairtip deleted'
+					}
+				})
+
+	        })
+
+		})
 
 	}
 
@@ -69,6 +127,7 @@ class EditForm extends Component {
 		
 		var hairtipText = e.target.value.replace(/\<+/g, '').replace(/\>+/g, '');
 		var minCharLimit = 85;
+		var maxCharLimit = 2000;
 
 		if (hairtipText.length === 0) {
 			this.setState({
@@ -79,6 +138,12 @@ class EditForm extends Component {
 		} else if (hairtipText.length > 0 && hairtipText.length < minCharLimit) {
 			this.setState({
 				hairtipTextErrorText: 'Hairtip is ' + (minCharLimit - hairtipText.length) + ' characters too short.',
+				hairtipText: hairtipText,
+				is_hairtip_valid: false
+			});
+		} else if (maxCharLimit <= hairtipText.length) {
+			this.setState({
+				hairtipTextErrorText: 'Hairtip is ' + (hairtipText.length - maxCharLimit) + ' characters too long.',
 				hairtipText: hairtipText,
 				is_hairtip_valid: false
 			});
@@ -113,14 +178,64 @@ class EditForm extends Component {
 
 		$('.modal-inner').addClass('fixed-edit-hairtip-form-width');
 
-		let form_mode = (location.pathname.split('/')[1] === 'add-hairtip' ? 'create' : 'edit')
+		let pieces = location.pathname.split('/')
+		let pathname = pieces[1]
+		let hairpiq_id = pieces[2]
+		let form_mode = (pathname === 'add-hairtip' ? 'create' : 'edit')
+		let _this = this;
 
 		this.setFormMode(form_mode)
+
+		let params = {
+			hairpiq_id: hairpiq_id
+		}
+
+		Services.hairtips.getHairtipByHairpiqId(params).then(function(result) {
+
+			if (result.length > 0) {
+
+				if (form_mode === 'create') {
+					
+					browserHistory.replace('/edit-hairtip/' + hairpiq_id)
+					_this.setFormMode('edit')
+
+				}
+
+				_this.setState({
+					hairtipText: result[0].body_text
+				})
+
+			}
+
+		});
+
 	}
+
+	handleOpen = () => {
+    	this.setState({dialog: {open: true}});
+	};
+
+	handleClose = () => {
+		this.setState({dialog: {open: false }});
+	};
 
 	render() {
 
 		const params = this.props.data;
+
+		const actions = [
+		<FlatButton
+			label="Cancel"
+			primary={true}
+			onTouchTap={this.handleClose}
+			/>,
+		<FlatButton
+			label="Submit"
+			primary={true}
+			keyboardFocused={true}
+			onTouchTap={this.deleteHairtip.bind(this)}
+			/>,
+		];
 
 		return (
 
@@ -207,9 +322,33 @@ class EditForm extends Component {
 
 						}
 
+						{ this.state.form_mode === 'edit' ?
+
+						<IconButton
+							className="delete button"
+							onTouchTap={() => this.handleOpen()}
+							iconStyle={styles.appBarIconButton}>
+							<ActionDeleteForever />
+						</IconButton>
+
+						: null }
+
 					</div>
 
 				</div>
+
+				<div>
+		          <Dialog
+		            title='Delete this Hairtip'
+		            actions={actions}
+		            modal={false}
+		            open={this.state.dialog.open}
+		            onRequestClose={this.handleClose}
+		            actionsContainerClassName="delete-hairtip-dialog"
+		            overlayClassName="dialog-overlay">
+		            <p>do you want to clear this hairtip? This can't be undone.</p>
+		          </Dialog>
+		        </div>
 
 				<Snackbar
 		          className="snackbar"

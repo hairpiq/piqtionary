@@ -18,7 +18,7 @@ const styles = {
   }
 };
 
-class ResultItem extends Component {
+class MyHairpiqItem extends Component {
 
   constructor() {
     super();
@@ -38,12 +38,14 @@ class ResultItem extends Component {
   
   linkTo(id) {
     browserHistory.push({
-      pathname: `/id/${id}`,
+      pathname: `/p/${id}`,
       state: { modal: true, returnTo: this.props.location.pathname, hairpiqs: this.props.hairpiqs }
     });
   }
 
   editHairtip(id) {
+
+
     browserHistory.push({
       pathname: `/edit-hairtip/${id}`,
       state: { modal: true, returnTo: this.props.location.pathname, hairpiqs: this.props.hairpiqs }
@@ -51,6 +53,8 @@ class ResultItem extends Component {
   }
 
   addHairtip(id) {
+
+    
     browserHistory.push({
       pathname: `/add-hairtip/${id}`,
       state: { modal: true, returnTo: this.props.location.pathname, hairpiqs: this.props.hairpiqs }
@@ -134,4 +138,4 @@ class ResultItem extends Component {
   }
 }
 
-export default ResultItem;
+export default MyHairpiqItem;
