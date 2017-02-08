@@ -10,8 +10,8 @@
     display: none;
 }
 
-.main-container.fixed-edit-hairtip-width .edit-hairtip-form,
-.main-container.fixed-edit-hairtip-width .edit-hairtip-form .photo {
+.main-container.fixed-edit-hairtip-form-width .edit-hairtip-form,
+.main-container.fixed-edit-hairtip-form-width .edit-hairtip-form .photo {
     background: #ffffff !important;
 }
 
@@ -51,6 +51,10 @@
 	font-size: 150%;
 }
 
+.edit-hairtip-form label {
+	font-size: 130%;
+}
+
 .edit-hairtip-form .detail-info {
 	margin: 0 auto;
 	width:100%;
@@ -63,6 +67,10 @@
 	padding:15px 25px;
 }
 
+.edit-hairtip-form .data-container > div > div:first-child {
+	min-height: 144px !important;
+}
+
 .edit-hairtip-form .submit-button {
     float: right;
 	border-radius: 5px !important;
@@ -70,4 +78,13 @@
     width: 30%;
     margin:25px 4px 0 !important;
     margin-bottom: 25px !important;
+}
+
+.edit-hairtip-form .submit-button.disabled {
+	opacity: .5;
+}
+
+.fixed-edit-hairtip-form-width .button.next,
+.fixed-edit-hairtip-form-width .button.before {
+	display: none !important;	
 }

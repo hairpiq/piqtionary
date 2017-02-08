@@ -32,7 +32,7 @@ class EditForm extends Component {
 
 	handleHairtipTextChange = (e) =>  {
 		
-		var hairtipText = e.target.value.replace(/\<+|\>+/g, '');
+		var hairtipText = e.target.value.replace(/\<+/g, '').replace(/\>+/g, '');
 		var minCharLimit = 85;
 
 		if (hairtipText.length === 0) {
@@ -89,10 +89,13 @@ class EditForm extends Component {
 							
 							<div className="data-container">
 
-							<h2>How did you get this look?</h2>
+							<h2>Add a Hairtip</h2>
 
 							<div>
 								<TextField
+								  id="hairtip-textfield"
+								  floatingLabelText="What did you do to get this look?"
+      							  floatingLabelFixed={true}
 							      hintText="list your routine, products, and/or special tricks that make this look happen"
 							      errorText={this.state.hairtipTextErrorText}
 							      multiLine={true}
@@ -103,11 +106,12 @@ class EditForm extends Component {
 							</div>
 
 							<FlatButton
-							    	className="submit-button"
+							    	className={ this.state.is_hairtip_valid ? "submit-button " : "submit-button disabled"}
 							    	label="Submit"
 							    	backgroundColor={orange700}
 							        hoverColor="#faba79"
 						          	rippleColor="#ffffff"
+						          	disabled={!this.state.is_hairtip_valid}
 						          	onTouchTap={() => this.submitHairtip()}
 							    />
 						</div>

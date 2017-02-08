@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { render } from 'react-dom';
 import Helmet from 'react-helmet';
 import EditForm from '../partials/hairtip_editor/EditForm';
+import Services from '../services/';
 
 class Hairtip extends Component {
 
@@ -25,7 +26,26 @@ class Hairtip extends Component {
 		// if not rendered in modal
 		  // fix the width of the layout
 		if ($('.modal').length === 0)
-		  $('.main-container').addClass('fixed-edit-hairpiq-form-width');
+		  $('.main-container').addClass('fixed-edit-hairtip-form-width');
+
+		if (this.props.hairpiq === undefined) {
+
+	      var _this = this;
+
+	      // add id
+	      var params = {
+	        _id: this.props.params.id
+	      }
+
+	      Services.getById(params).then(function(result) {
+
+	        _this.setState({ data: result[0]});
+
+	      }).catch(function(error) {
+	        console.log(error);
+	      });
+
+	    }
 
 	}
 
@@ -34,7 +54,7 @@ class Hairtip extends Component {
 		// if not rendered in modal
 		  // remove fixed width from main-container
 		if ($('.modal').length === 0)
-		  $('.main-container').removeClass('fixed-edit-hairpiq-form-width');
+		  $('.main-container').removeClass('fixed-edit-hairtip-form-width');
 
 	}
 
