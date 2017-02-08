@@ -1124,4 +1124,73 @@ module.exports = function(app, db) {
 
 	});
 
+	/*
+		add hairtip
+	*/
+
+	app.post('/api/piqtionary/add_hairtip', function(req, res, next) {
+
+		console.log('B - called: /api/piqtionary/add_hairtip');
+
+		// insert a new hairtip into hairtips collection
+
+		// data needed
+		// - auth0_user_id : string
+		// - hairpiq_id : string
+		// - body_text : string
+
+		var item = {
+			auth0_user_id: req.body.auth0_user_id,
+			hairpiq_id: req.body.hairpiq_id,
+			body_text: validator.escape(req.body.body_text)
+		}
+
+		db.collection('hairtips').insertOne(item, function(err, result) {
+							
+			assert.equal(null, err);
+			console.log('C.A - Item inserted into hairtips: ' + result.insertedId);
+
+			res.send(JSON.stringify('success'));
+
+		});
+
+	});
+
+	/*
+		get hairtips by user
+	*/
+
+	app.post('/api/piqtionary/get_hairtips', function(req, res, next) {
+
+		console.log('B - called: /api/piqtionary/get_hairtips');
+
+		// insert a new hairtip into hairtips collection
+
+		// data needed
+		// - auth0_user_id : string
+		// - body_text : string
+
+		var item = {
+			auth0_user_id: req.body.auth0_user_id
+		}
+
+		var resultArray = []
+
+		var cursor = db.collection('hairtips').find(item)
+
+		cursor.forEach(function(doc, err) {
+					
+			console.log('C - Retrieved document in hairtips: ' + doc._id);
+			assert.equal(null, err);
+			resultArray.push(doc);
+
+		}, function() {
+							
+			res.setHeader('Content-Type', 'application/json');
+			res.send(JSON.stringify(resultArray));
+
+		});
+
+	});
+
 }

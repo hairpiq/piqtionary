@@ -3,7 +3,10 @@ import { render } from 'react-dom';
 import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
-import {orange700} from 'material-ui/styles/colors';
+import {grey400, orange700} from 'material-ui/styles/colors';
+import CircularProgress from 'material-ui/CircularProgress';
+import Snackbar from 'material-ui/Snackbar';
+import Services from '../../services/'
 
 class EditForm extends Component {
 
@@ -13,7 +16,13 @@ class EditForm extends Component {
 		this.state = {
 			hairtipTextErrorText: '',
 			hairtipText: '',
-			is_hairtip_valid: false
+			is_hairtip_valid: false,
+			request_status: '',
+			snackbar: {
+              open: false,
+              message: ''
+          	},
+          	form_mode: '',
 		}
 	}
 
@@ -26,7 +35,33 @@ class EditForm extends Component {
 
 	submitHairtip() {
 
-		console.log('A - Submit Hairtip')
+		let _this = this;
+		let auth0_user_id = JSON.parse(localStorage.getItem('profile')).user_id
+
+		let params = {
+			auth0_user_id: auth0_user_id,
+			hairpiq_id: this.props.data._id,
+			body_text: this.state.hairtipText
+		}
+
+	    this.setState({
+	      request_status: 'loading'
+	    },function() {
+
+	      Services.hairtips.add(params).then(function(result) {
+	        
+	        _this.setState({
+	          request_status: 'loaded',
+		          snackbar: {
+	              open: true,
+	              message: 'added hairtip'
+	          }
+	        })
+
+
+	      })
+
+	    })
 
 	}
 
@@ -56,10 +91,31 @@ class EditForm extends Component {
 		}
 	}
 
+	closeSnackbar = () => {
+
+		this.setState({
+		    snackbar: { 
+		    open: false
+		  }
+		});
+
+	};
+
+	setFormMode = (mode) => {
+
+		this.setState({
+			form_mode: mode
+		})
+
+	}
+
 	componentDidMount() {
 
 		$('.modal-inner').addClass('fixed-edit-hairtip-form-width');
 
+		let form_mode = (location.pathname.split('/')[1] === 'add-hairtip' ? 'create' : 'edit')
+
+		this.setFormMode(form_mode)
 	}
 
 	render() {
@@ -89,7 +145,15 @@ class EditForm extends Component {
 							
 							<div className="data-container">
 
+							{ this.state.form_mode === 'create' ?
+
 							<h2>Add a Hairtip</h2>
+
+							:
+
+							<h2>Edit Your Hairtip</h2>
+
+							}
 
 							<div>
 								<TextField
@@ -98,6 +162,7 @@ class EditForm extends Component {
       							  floatingLabelFixed={true}
 							      hintText="list your routine, products, and/or special tricks that make this look happen"
 							      errorText={this.state.hairtipTextErrorText}
+							      value={this.state.hairtipText}
 							      multiLine={true}
 							      rows={4}
 							      fullWidth={true}
@@ -105,20 +170,54 @@ class EditForm extends Component {
 							    /><br />
 							</div>
 
-							<FlatButton
-							    	className={ this.state.is_hairtip_valid ? "submit-button " : "submit-button disabled"}
+						</div>
+
+						{ this.state.request_status === 'loading' ?
+
+						<div>
+
+					        <div className="loader">
+					           <CircularProgress color={grey400} size={20} />
+					        </div>
+
+					        <FlatButton
+							    	className="submit-button disabled"
 							    	label="Submit"
 							    	backgroundColor={orange700}
 							        hoverColor="#faba79"
 						          	rippleColor="#ffffff"
-						          	disabled={!this.state.is_hairtip_valid}
+						          	disabled={true}
 						          	onTouchTap={() => this.submitHairtip()}
 							    />
+
 						</div>
+
+
+				        :
+
+						<FlatButton
+						    	className={ this.state.is_hairtip_valid ? "submit-button " : "submit-button disabled"}
+						    	label="Submit"
+						    	backgroundColor={orange700}
+						        hoverColor="#faba79"
+					          	rippleColor="#ffffff"
+					          	disabled={!this.state.is_hairtip_valid}
+					          	onTouchTap={() => this.submitHairtip()}
+						    />
+
+						}
 
 					</div>
 
 				</div>
+
+				<Snackbar
+		          className="snackbar"
+		          open={this.state.snackbar.open}
+		          message={this.state.snackbar.message}
+		          autoHideDuration={4000}
+		          onRequestClose={this.closeSnackbar}
+		        />
 
 			</div>
 

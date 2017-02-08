@@ -109,6 +109,10 @@ footer {
 	margin: 0;
 }
 
+.snackbar {
+	text-align: center;
+}
+
 @media (max-width: 767px) {
   	.main .app_bar {
 		position: relative !important;

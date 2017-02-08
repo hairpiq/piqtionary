@@ -316,6 +316,8 @@ class Main extends Component {
                       this.props.location.pathname !== '/create' &&
                       this.props.location.pathname !== '/survey' &&
                       this.props.location.pathname !== '/settings' &&
+                      this.props.location.pathname !== '/add-hairtip' &&
+                      this.props.location.pathname.split('/')[1] !== 'add-hairtip' &&
                       this.props.location.pathname !== '/edit-hairtip' &&
                       this.props.location.pathname.split('/')[1] !== 'edit-hairtip' ?
 

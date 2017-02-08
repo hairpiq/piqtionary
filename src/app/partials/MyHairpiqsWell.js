@@ -24,6 +24,7 @@ class MyHairpiqsWell extends Component {
           result_status: '',
           auth0_user_id: '',
           favorites: undefined,
+          hairtips: undefined,
           snackbar: {
             open: false,
             message: ''
@@ -88,8 +89,6 @@ class MyHairpiqsWell extends Component {
 
   componentDidMount() {
 
-    ///*
-
     let _this = this;
 
     let auth0_user_id = JSON.parse(localStorage.getItem('profile')).user_id
@@ -98,16 +97,46 @@ class MyHairpiqsWell extends Component {
       auth0_user_id: auth0_user_id,
     }
 
-    Services.getFavorites(params).then(function(result){
+    let arr = []
 
-      _this.setState({
-        favorites: result
+    arr.push(new Promise(function(resolve, reject) {
+
+      Services.getFavorites(params).then(function(result) {
+
+        resolve(result)
+
+      }).catch(function(e) {
+        
+        console.log(e)
+        reject(e)
+
       })
 
-      // Gently notify the user of their limit.
+    }))
 
-    });
+    arr.push(new Promise(function(resolve, reject) {
 
+      Services.hairtips.getAll(params).then(function(result) {
+
+        resolve(result)
+
+      }).catch(function(e) {
+      
+        console.log(e)
+        reject(e)
+      
+      })
+
+    }))
+
+    Promise.all(arr).then( function(results) {
+
+      _this.setState({
+        favorites: results[0],
+        hairtips: results[1]
+      })
+      
+    })
 
   }
 
@@ -253,6 +282,7 @@ class MyHairpiqsWell extends Component {
                 location={this.props.location}
                 hairpiqs={this.state.hairpiqs}
                 favorites={this.state.favorites}
+                hairtips={this.state.hairtips}
                 addToFavorites={this.addToFavorites.bind(this)}
                 removeFromFavorites={this.removeFromFavorites.bind(this)}
               />

@@ -76,8 +76,7 @@
 	border-radius: 5px !important;
 	color: #ffffff !important;
     width: 30%;
-    margin:25px 4px 0 !important;
-    margin-bottom: 25px !important;
+    margin:25px 25px 25px 4px !important;
 }
 
 .edit-hairtip-form .submit-button.disabled {
@@ -88,3 +87,12 @@
 .fixed-edit-hairtip-form-width .button.before {
 	display: none !important;	
 }
+
+.fixed-edit-hairtip-form-width .loader {
+
+ 	display: inline-block;
+    margin-top: 33px;
+    margin-left: 200px;
+
+}
+
