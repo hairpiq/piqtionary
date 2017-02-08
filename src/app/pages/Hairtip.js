@@ -61,36 +61,56 @@ class Hairtip extends Component {
 	render() {
 
 		let location = this.props.location
+		let pathname = location.pathname.split('/')[1]
 
 		return (
 		  
 			<div>
 
-				<Helmet
-				  title="Edit a Hairtip"
-				  titleTemplate="%s - Hairpiq"
-				  defaultTitle="Hairpiq"
-				/>
+				{ pathname !== 'hairtip' ?
 
-				<div className="intro">
-					
-					{ location.pathname.split('/')[1] === 'add-hairtip' ?
-					
-					<h1>Create Your Own Hairtip</h1>
-					
-					:
+				<div>
 
-					<h1>Edit Your Hairtip</h1>
+					<Helmet
+					  title="Edit a Hairtip"
+					  titleTemplate="%s - Hairpiq"
+					  defaultTitle="Hairpiq"
+					/>
 
-					}
+					<div className="intro">
+						
+						{ location.pathname.split('/')[1] === 'add-hairtip' ?
+						
+						<h1>Create Your Own Hairtip</h1>
+						
+						:
+
+						<h1>Edit Your Hairtip</h1>
+
+						}
+
+					</div>
+
+					<EditForm
+						data={this.props.hairpiq || this.state.data}
+						location={location}
+						returnTo={this.props.returnTo}
+					/>
 
 				</div>
 
-				<EditForm
-					data={this.props.hairpiq || this.state.data}
-					location={location}
-					returnTo={this.props.returnTo}
-				/>
+				:
+
+				<div>
+					<Helmet
+						  title="Hairtip for "
+						  titleTemplate="%s - Hairpiq"
+						  defaultTitle="Hairpiq"
+						/>
+					display hairpiq with hairtip
+				</div>
+				
+				}
 
 			</div>
 

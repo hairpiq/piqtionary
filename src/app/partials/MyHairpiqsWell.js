@@ -87,7 +87,7 @@ class MyHairpiqsWell extends Component {
     });
   }
 
-  getInitialData() {
+  getTertiaryData() {
 
     let _this = this;
 
@@ -142,13 +142,11 @@ class MyHairpiqsWell extends Component {
 
   componentDidMount() {
 
-    this.getInitialData()
+    this.getTertiaryData()
 
   }
 
   componentWillReceiveProps(nextProps) {
-
-    console.log('AA')
 
     let _this = this;
 
@@ -156,8 +154,8 @@ class MyHairpiqsWell extends Component {
         result_status: ''
       }, function() {
 
-        _this.getInitialData()
-        
+        _this.getTertiaryData()
+
       });
 
   }

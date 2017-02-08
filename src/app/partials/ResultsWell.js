@@ -24,6 +24,7 @@ class ResultsWell extends Component {
           result_status: '',
           auth0_user_id: '',
           favorites: undefined,
+          hairtips: undefined,
           snackbar: {
             open: false,
             message: ''
@@ -89,9 +90,7 @@ class ResultsWell extends Component {
     });
   }
 
-  componentDidMount() {
-
-    ///*
+  getTertiaryData() {
 
     let _this = this;
 
@@ -101,24 +100,66 @@ class ResultsWell extends Component {
       auth0_user_id: auth0_user_id,
     }
 
-    Services.getFavorites(params).then(function(result){
+    let arr = []
 
-      _this.setState({
-        favorites: result
+    arr.push(new Promise(function(resolve, reject) {
+
+      Services.getFavorites(params).then(function(result) {
+
+        resolve(result)
+
+      }).catch(function(e) {
+        
+        console.log(e)
+        reject(e)
+
       })
 
-      // Gently notify the user of their limit.
+    }))
 
-    });
+    arr.push(new Promise(function(resolve, reject) {
 
+      Services.hairtips.getAll(params).then(function(result) {
+
+        resolve(result)
+
+      }).catch(function(e) {
+      
+        console.log(e)
+        reject(e)
+      
+      })
+
+    }))
+
+    Promise.all(arr).then( function(results) {
+
+      _this.setState({
+        favorites: results[0],
+        hairtips: results[1]
+      })
+      
+    })
+
+  }
+
+  componentDidMount() {
+
+    this.getTertiaryData()
 
   }
 
   componentWillReceiveProps(nextProps) {
 
 
+    let _this = this;
+
     this.setState({
         result_status: ''
+      }, function() {
+
+        _this.getTertiaryData()
+
       });
 
   }
@@ -256,6 +297,7 @@ class ResultsWell extends Component {
                 location={this.props.location}
                 hairpiqs={this.state.hairpiqs}
                 favorites={this.state.favorites}
+                hairtips={this.state.hairtips}
                 addToFavorites={this.addToFavorites.bind(this)}
                 removeFromFavorites={this.removeFromFavorites.bind(this)}
               />
