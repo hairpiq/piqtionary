@@ -46,7 +46,7 @@ class ResultItem extends Component {
 
 
     browserHistory.push({
-      pathname: `/hairtip/${id}`,
+      pathname: `/p/${id}/hairtip`,
       state: { modal: true, returnTo: this.props.location.pathname, hairpiqs: this.props.hairpiqs }
     });
 

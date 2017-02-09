@@ -86,6 +86,7 @@ module.exports = (
 				
 				<Route path="p/:id" component={Photo} />
 				<Redirect from="p/:id/" to="p/:id"/>
+				<Route path="p/:id/:hairtip" component={Photo} />
 				
 				<Route path="favorites" component={Favorites} auth={auth} onEnter={requireAuth}/>
 				<Route path="create" component={Create} auth={auth} onEnter={requireAuth}/>

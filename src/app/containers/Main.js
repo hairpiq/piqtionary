@@ -100,7 +100,7 @@ class Main extends Component {
     let auth = this.props.route.auth;
 
     this.setState({
-      is_logged_in: auth.loggedIn()
+      is_logged_in: auth.loggedIn(),
     });
 
     let _this = this;
@@ -157,17 +157,36 @@ class Main extends Component {
       is_logged_in: this.props.route.auth.loggedIn()
     });
 
-    // if we changed routes...
-    if ((
+      // if we changed routes...
+      if ((
       nextProps.location.key !== this.props.location.key &&
       nextProps.location.state &&
       nextProps.location.state.modal
-    )) {
+      )) {
 
-        this.setState({
-          previousChildren: this.props.children
-        });
-    }
+
+        if (nextProps.location.state.modal === true) {
+
+          // remember the previous page children to render under the modal     
+          if (this.state.previousChildren.props === undefined) {
+
+            this.setState({
+              previousChildren: this.props.children
+            });
+
+          }
+
+        }
+      }
+  }
+
+  onModalClose() {
+
+    // clear previous page children rendered under the modal
+    this.setState({
+      previousChildren: {}
+    })
+
   }
 
   render() {
@@ -307,7 +326,7 @@ class Main extends Component {
                     </div>
 
                     {isModal && (
-                      <Modal isOpen={true} returnTo={location.state.returnTo} pathname={location.pathname} hairpiqs={location.state.hairpiqs}>
+                      <Modal isOpen={true} returnTo={location.state.returnTo} pathname={location.pathname} hairpiqs={location.state.hairpiqs} onClose={this.onModalClose.bind(this)}>
                         {this.props.children}
                       </Modal>
                     )}
@@ -355,7 +374,7 @@ class Main extends Component {
                   </div>
 
                   {isModal && (
-                    <Modal isOpen={true} returnTo={location.state.returnTo} pathname={location.pathname} hairpiqs={location.state.hairpiqs}>
+                    <Modal isOpen={true} returnTo={location.state.returnTo} pathname={location.pathname} hairpiqs={location.state.hairpiqs} onClose={this.onModalClose.bind(this)}>
                       {this.props.children}
                     </Modal>
                   )}

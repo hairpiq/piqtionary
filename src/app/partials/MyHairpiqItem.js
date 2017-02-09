@@ -39,7 +39,7 @@ class MyHairpiqItem extends Component {
   linkTo(id) {
     browserHistory.push({
       pathname: `/p/${id}`,
-      state: { modal: true, returnTo: this.props.location.pathname, hairpiqs: this.props.hairpiqs }
+      state: { modal: true, returnTo: this.props.location.pathname, hairpiqs: this.props.hairpiqs, pageType: 'profile' }
     });
   }
 

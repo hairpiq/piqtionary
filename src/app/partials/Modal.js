@@ -13,17 +13,27 @@ class Modal extends Component {
 	constructor() {
 		super();
 
+		this.state = {
+			returnTo: ''
+		}
+
 		this.linkTo = this.linkTo.bind(this);
 	}
 
 	componentDidMount() {
 
 		$('body').addClass('modal-open');
+
+		this.setState({
+			returnTo: this.props.returnTo
+		})
 	}
 
 	componentWillUnmount() {
 
 		$('body').removeClass('modal-open');
+
+		this.props.onClose()
 	}
 
 	linkTo(params) {
@@ -66,7 +76,7 @@ class Modal extends Component {
 			        className="button before"
 			        onTouchTap={() => _this.linkTo({
 				        pathname: `/p/${before_id}`,
-				        state: { modal: true, returnTo: '/', hairpiqs: _this.props.hairpiqs }
+				        state: { modal: true, returnTo: _this.state.returnTo, hairpiqs: _this.props.hairpiqs }
 				    })}
 			        backgroundColor={grey300}
 			        hoverColor={grey100}
@@ -85,7 +95,7 @@ class Modal extends Component {
 			        className="button next"
 			        onTouchTap={() => _this.linkTo({
 				        pathname: `/p/${next_id}`,
-				        state: { modal: true, returnTo: '/', hairpiqs: _this.props.hairpiqs }
+				        state: { modal: true, returnTo: _this.state.returnTo, hairpiqs: _this.props.hairpiqs }
 				    })}
 			        backgroundColor={grey300}
 			        hoverColor={grey100}

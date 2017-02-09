@@ -89,6 +89,19 @@ class DetailCard extends Component {
 
 	}
 
+	componentDidUpdate() {
+
+		if (this.props.should_scroll_to_hairtip) {
+			if ($('.modal').length > 0) {
+				$('.modal').scrollTop(1035) // for mobile view port
+				$('.modal .right-col').scrollTop(281) // for desktop view port
+			}
+			else {
+				$('.right-col').scrollTop(350)
+			}
+		}
+	}
+
 	getHairtip() {
 
 		let pieces = location.pathname.split('/')
