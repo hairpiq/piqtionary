@@ -93,8 +93,6 @@ module.exports = (
 				
 				<Route path="add-hairtip/:id" component={Hairtip} auth={auth} onEnter={requireAuth}/>
 				<Route path="edit-hairtip/:id" component={Hairtip} auth={auth} onEnter={requireAuth}/>
-				<Route path="hairtip/:id" component={Hairtip} />
-				<Redirect from="hairtip/:id/" to="hairtip/:id"/>
 				
 				<Route path="info" component={Info} />
 				<Route path="survey" component={Survey} />

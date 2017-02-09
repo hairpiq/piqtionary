@@ -12,6 +12,10 @@ import ActionDeleteForever from 'material-ui/svg-icons/action/delete-forever';
 import IconButton from 'material-ui/IconButton';
 import Dialog from 'material-ui/Dialog';
 
+import {EditorState, convertToRaw, convertFromRaw} from 'draft-js'
+import Editor from 'draft-js-editor'
+import {convertToHTML, convertFromHTML} from 'draft-convert'
+
 const styles = {
   appBarIconButton : {
     color: grey700
@@ -36,6 +40,7 @@ class EditForm extends Component {
               message: ''
           	},
           	form_mode: '',
+          	editorState: EditorState.createEmpty()
 		}
 	}
 
@@ -51,11 +56,12 @@ class EditForm extends Component {
 		let _this = this;
 		let auth0_user_id = JSON.parse(localStorage.getItem('profile')).user_id
 		let hairpiq_id = this.props.data._id
+		let body_text = convertToHTML(this.state.editorState.getCurrentContent())
 
 		let params = {
 			auth0_user_id: auth0_user_id,
 			hairpiq_id: hairpiq_id,
-			body_text: this.state.hairtipText
+			body_text: body_text
 		}
 
 	    this.setState({
@@ -123,39 +129,6 @@ class EditForm extends Component {
 
 	}
 
-	handleHairtipTextChange = (e) =>  {
-		
-		var hairtipText = e.target.value.replace(/\<+/g, '').replace(/\>+/g, '');
-		var minCharLimit = 85;
-		var maxCharLimit = 2000;
-
-		if (hairtipText.length === 0) {
-			this.setState({
-				hairtipTextErrorText: 'This field is required.',
-				hairtipText: hairtipText,
-				is_hairtip_valid: false
-			});
-		} else if (hairtipText.length > 0 && hairtipText.length < minCharLimit) {
-			this.setState({
-				hairtipTextErrorText: 'Hairtip is ' + (minCharLimit - hairtipText.length) + ' characters too short.',
-				hairtipText: hairtipText,
-				is_hairtip_valid: false
-			});
-		} else if (maxCharLimit <= hairtipText.length) {
-			this.setState({
-				hairtipTextErrorText: 'Hairtip is ' + (hairtipText.length - maxCharLimit) + ' characters too long.',
-				hairtipText: hairtipText,
-				is_hairtip_valid: false
-			});
-		} else {
-			this.setState({
-				hairtipTextErrorText: '',
-				hairtipText: hairtipText,
-				is_hairtip_valid: true
-			});
-		}
-	}
-
 	closeSnackbar = () => {
 
 		this.setState({
@@ -201,13 +174,51 @@ class EditForm extends Component {
 
 				}
 
+
+				let raw = convertFromHTML(result[0].body_text)
+				let contentState = convertFromHTML(result[0].body_text)
+				let editorState = EditorState.createWithContent(contentState)
+
+				let hairtipText = ''
+				for (var i in raw.blocks) {
+					hairtipText += raw.blocks[i].text
+				}
+
 				_this.setState({
-					hairtipText: result[0].body_text
+					editorState: editorState,
+					hairtipText: hairtipText
 				})
 
 			}
 
 		});
+
+		// fix photo to left side when right column is longer than left column and the user is scrolling
+
+		if ($('.modal').length > 0) {
+
+			$('.modal').scroll(function(){
+
+				if ($('.modal').scrollTop() >= 50 && $('.right-col').height() > $('.left-col').height()) {
+					$('.paper').addClass('fixed');
+				} else {
+					$('.paper').removeClass('fixed');
+				}
+
+			});
+
+		} else {
+
+			$(window).scroll(function(){
+
+			if ($(document).scrollTop() >= 73 && $('.right-col').height() > $('.left-col').height()) {
+				$('.paper').addClass('fixed');
+			} else {
+				$('.paper').removeClass('fixed');
+			}
+
+			});
+		}
 
 	}
 
@@ -218,6 +229,56 @@ class EditForm extends Component {
 	handleClose = () => {
 		this.setState({dialog: {open: false }});
 	};
+
+	handleEditorState(editorState) {
+
+		this.setState({ editorState })
+
+		let contentState = editorState.getCurrentContent()
+		let raw = convertToRaw(contentState)
+
+		let hairtipText = ''
+		for (var i in raw.blocks) {
+			hairtipText += raw.blocks[i].text
+		}
+
+		this.handleHairtipTextChange(hairtipText)
+
+
+	}
+
+	handleHairtipTextChange = (e) =>  {
+		
+		var hairtipText = e;
+		var minCharLimit = 85;
+		var maxCharLimit = 2000;
+
+		if (hairtipText.length === 0) {
+			this.setState({
+				hairtipTextErrorText: 'This field is required.',
+				hairtipText: hairtipText,
+				is_hairtip_valid: false
+			});
+		} else if (hairtipText.length > 0 && hairtipText.length < minCharLimit) {
+			this.setState({
+				hairtipTextErrorText: 'Hairtip is ' + (minCharLimit - hairtipText.length) + ' characters too short.',
+				hairtipText: hairtipText,
+				is_hairtip_valid: false
+			});
+		} else if (maxCharLimit <= hairtipText.length) {
+			this.setState({
+				hairtipTextErrorText: 'Hairtip is ' + (hairtipText.length - maxCharLimit) + ' characters too long.',
+				hairtipText: hairtipText,
+				is_hairtip_valid: false
+			});
+		} else {
+			this.setState({
+				hairtipTextErrorText: '',
+				hairtipText: hairtipText,
+				is_hairtip_valid: true
+			});
+		}
+	}
 
 	render() {
 
@@ -254,6 +315,8 @@ class EditForm extends Component {
 
 				</div>
 
+				<div className="col-seperator" />
+
 				<div className="right-col">
 
 					<div className="detail-info">
@@ -271,18 +334,15 @@ class EditForm extends Component {
 							}
 
 							<div>
-								<TextField
-								  id="hairtip-textfield"
-								  floatingLabelText="What did you do to get this look?"
-      							  floatingLabelFixed={true}
-							      hintText="list your routine, products, and/or special tricks that make this look happen"
-							      errorText={this.state.hairtipTextErrorText}
-							      value={this.state.hairtipText}
-							      multiLine={true}
-							      rows={4}
-							      fullWidth={true}
-							      onChange={this.handleHairtipTextChange}
-							    /><br />
+								<h3>What did you do to get this look?</h3>
+								<Editor 
+									placeholder="start typing here..." 
+							        onChange={this.handleEditorState.bind(this)}
+							        editorState={this.state.editorState}
+							      />
+							    <div className='error-box'>
+							    	<p>{this.state.hairtipTextErrorText}</p>
+							    </div>
 							</div>
 
 						</div>

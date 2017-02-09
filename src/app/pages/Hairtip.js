@@ -61,13 +61,10 @@ class Hairtip extends Component {
 	render() {
 
 		let location = this.props.location
-		let pathname = location.pathname.split('/')[1]
 
 		return (
 		  
 			<div>
-
-				{ pathname !== 'hairtip' ?
 
 				<div>
 
@@ -98,19 +95,6 @@ class Hairtip extends Component {
 					/>
 
 				</div>
-
-				:
-
-				<div>
-					<Helmet
-						  title="Hairtip for "
-						  titleTemplate="%s - Hairpiq"
-						  defaultTitle="Hairpiq"
-						/>
-					display hairpiq with hairtip
-				</div>
-				
-				}
 
 			</div>
 

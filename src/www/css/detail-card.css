@@ -1,6 +1,7 @@
 .detail-card {
 	padding-top: 40px;
 	background: #ffffff;
+	position: relative;
 }
 
 .detail-card:after {
@@ -11,12 +12,12 @@
 }
 
 .detail-card .left-col {
-	width:60%;
+	width:50%;
 	float: left;
 }
 
 .detail-card .right-col {
-	width:40%;
+	width:50%;
 	float: left;
 
 }
@@ -43,6 +44,16 @@
 .modal .detail-card .photo {
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
+}
+
+.detail-card .paper.fixed {
+	position: fixed;
+	top: 109px;
+	width:344px;
+}
+
+.modal .detail-card .paper.fixed {
+	top: 20px;
 }
 
 .detail-card .detail-info {
@@ -142,6 +153,10 @@
 	margin-left: 5px;
 }
 
+#hairtip {
+	margin-bottom: 10px;
+}
+
 @media (max-width: 767px) {
 
 	.detail-card {
@@ -193,5 +208,34 @@
 		word-break: break-all;
 		vertical-align: top;
 	}
+}
+
+@media (min-width: 768px) {
+
+	.detail-card .col-seperator {
+		position: absolute;
+	    border-right: 1px dashed #ddd !important;
+	    top: 0;
+	    left: 50%;
+	    bottom: 0;
+	}
+
+	.detail-card .right-col {
+		
+		width: 50%;
+	    float: left;
+	    position: absolute;
+	    right: 0;
+	    bottom: 0;
+	    top: 0;
+	    overflow-y: scroll;
+	    padding: 50px 0;
+
+	}
+
+	.modal .detail-card .right-col {
+		padding: 0;
+	}
+
 }
 

@@ -20,7 +20,8 @@ class DetailCard extends Component {
 
 		this.state = {
 			
-			tags: []
+			tags: [],
+			hairtip: ''
 
 		}
 
@@ -60,12 +61,69 @@ class DetailCard extends Component {
 
 	}
 
-	componentWillReceiveProps(nextProps) {
+	componentDidMount() {
 
-		this.setState({
-			tags: []
+		let _this = this;
+
+		_this.setState({
+		  	tags: []
+		}, function() {
+
+			_this.getHairtip()
+		
 		})
 
+	}
+
+	componentWillReceiveProps(nextProps) {
+
+		let _this = this;
+
+		_this.setState({
+		  	tags: []
+		}, function() {
+
+			_this.getHairtip()
+		
+		})
+
+	}
+
+	getHairtip() {
+
+		let pieces = location.pathname.split('/')
+		let hairpiq_id = pieces[2]
+		let _this = this;
+
+		let params = {
+			hairpiq_id: hairpiq_id
+		}
+
+		this.setState({
+			hairtip: ''
+		}, function() {
+
+			Services.hairtips.getHairtipByHairpiqId(params).then(function(result) {
+
+				if (result.length > 0) {
+
+					_this.setState({
+						hairtip: result[0].body_text
+					})
+
+				}
+
+			});
+				
+		})
+
+		
+	}
+
+	formatHTML(html){
+	  return {
+	    __html : html
+	  }
 	}
 
 
@@ -113,6 +171,8 @@ class DetailCard extends Component {
 						</Paper>
 					</div>
 				</div>
+				<div className="col-seperator" />
+
 				<div className="right-col">
 					<div className="detail-info">
 						<div className="data-container">
@@ -143,6 +203,22 @@ class DetailCard extends Component {
 			                	data={params}
 			                />
 			            </div>
+
+			            { this.state.hairtip.length > 0 ?
+			            <div>
+			            	<Divider />
+			            	<div className="data-container">
+			            		<div id="hairtip" className="title">
+				                	The Hairtip
+				                </div>
+				                <div className="text">
+			            			<div dangerouslySetInnerHTML={this.formatHTML(this.state.hairtip)} />
+			            		</div>
+				            </div>
+			            </div>
+			            : null }
+
+
 			            {/*<Divider />
 			            <div className="data-container">
 							<div className="title">
