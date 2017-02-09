@@ -42,6 +42,13 @@ module.exports = {
 		return execute('//' + config.HOSTNAME + '/api/piqtionary/get_user_data', params);
 
 	},
+	getUserHairpiqs: function(params) {
+
+		params.limit = 10;
+
+		return execute('//' + config.HOSTNAME + '/api/piqtionary/get_user_hairpiqs', params);
+
+	},
 	addToFavorites: function (params) {
 		
 		return execute('//' + config.HOSTNAME + '/api/piqtionary/add_to_favorites', params);
