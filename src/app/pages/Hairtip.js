@@ -2,48 +2,104 @@ import React, { Component } from 'react';
 import { render } from 'react-dom';
 import Helmet from 'react-helmet';
 import EditForm from '../partials/hairtip_editor/EditForm';
+import Services from '../services/';
 
 class Hairtip extends Component {
 
-  componentDidMount() {
+	constructor() {
+		super();
 
-    // if not rendered in modal
-      // fix the width of the layout
-    if ($('.modal').length === 0)
-      $('.main-container').addClass('fixed-create-form-width');
+		this.state = {
+		  data: {}
+		}
+	}
 
-  }
+	proxyUrl = (s3_url) => {
 
-  componentWillUnmount() {
+		if (s3_url)
+		  return '/h/' + s3_url.split('.com/')[1];
 
-    // if not rendered in modal
-      // remove fixed width from main-container
-    if ($('.modal').length === 0)
-      $('.main-container').removeClass('fixed-create-form-width');
+	}
 
-  }
+	componentDidMount() {
 
-  render() {
+		// if not rendered in modal
+		  // fix the width of the layout
+		if ($('.modal').length === 0)
+		  $('.main-container').addClass('fixed-edit-hairtip-form-width');
 
-    return (
-      <div>
+		if (this.props.hairpiq === undefined) {
 
-        <Helmet
-          title="Edit a Hairtip"
-          titleTemplate="%s - Hairpiq"
-          defaultTitle="Hairpiq"
-        />
+	      var _this = this;
 
-        <div className="intro">
-			<h1>Create Your Own Hairtip</h1>
-			<p>Help other Hairpiqers save time, money and hassle by listing your routine, products, and/or special tricks that make this happen.</p>
-        </div>
+	      // add id
+	      var params = {
+	        _id: this.props.params.id
+	      }
 
-        <EditForm />
+	      Services.getById(params).then(function(result) {
 
-      </div>
-    );
-  }
+	        _this.setState({ data: result[0]});
+
+	      }).catch(function(error) {
+	        console.log(error);
+	      });
+
+	    }
+
+	}
+
+	componentWillUnmount() {
+
+		// if not rendered in modal
+		  // remove fixed width from main-container
+		if ($('.modal').length === 0)
+		  $('.main-container').removeClass('fixed-edit-hairtip-form-width');
+
+	}
+
+	render() {
+
+		let location = this.props.location
+
+		return (
+		  
+			<div>
+
+				<div>
+
+					<Helmet
+					  title="Edit a Hairtip"
+					  titleTemplate="%s - Hairpiq"
+					  defaultTitle="Hairpiq"
+					/>
+
+					<div className="intro">
+						
+						{ location.pathname.split('/')[1] === 'add-hairtip' ?
+						
+						<h1>Create Your Own Hairtip</h1>
+						
+						:
+
+						<h1>Edit Your Hairtip</h1>
+
+						}
+
+					</div>
+
+					<EditForm
+						data={this.props.hairpiq || this.state.data}
+						location={location}
+						returnTo={this.props.returnTo}
+					/>
+
+				</div>
+
+			</div>
+
+			)
+	}
 }
 
 export default Hairtip;

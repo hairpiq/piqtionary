@@ -109,6 +109,14 @@ footer {
 	margin: 0;
 }
 
+.snackbar {
+	text-align: center;
+}
+
+em {
+	color: #9a8973;
+}
+
 @media (max-width: 767px) {
   	.main .app_bar {
 		position: relative !important;
