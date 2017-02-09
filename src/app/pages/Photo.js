@@ -11,7 +11,8 @@ class Photo extends Component {
     super();
 
     this.state = {
-      data: {}
+      data: {},
+      should_scroll_to_hairtip: false
     }
   }
 
@@ -42,6 +43,11 @@ class Photo extends Component {
       });
 
     }
+
+    if (this.props.params.hairtip !== undefined)
+      this.setState({
+        should_scroll_to_hairtip: true
+      })
 
   }
 
@@ -83,6 +89,7 @@ class Photo extends Component {
           
           <DetailCard
             data={this.props.hairpiq || this.state.data}
+            should_scroll_to_hairtip={this.state.should_scroll_to_hairtip}
           />
 
       </div>

@@ -60,7 +60,7 @@ class Main extends Component {
     super();
 
     this.state = {
-      indexChildren: {},
+      previousChildren: {},
       is_logged_in: false,
       profile: {},
       is_profile_loaded: false
@@ -100,7 +100,7 @@ class Main extends Component {
     let auth = this.props.route.auth;
 
     this.setState({
-      is_logged_in: auth.loggedIn()
+      is_logged_in: auth.loggedIn(),
     });
 
     let _this = this;
@@ -157,18 +157,36 @@ class Main extends Component {
       is_logged_in: this.props.route.auth.loggedIn()
     });
 
-    // if we changed routes...
-    if ((
+      // if we changed routes...
+      if ((
       nextProps.location.key !== this.props.location.key &&
       nextProps.location.state &&
       nextProps.location.state.modal
-    )) {
+      )) {
 
-      if (this.state.indexChildren.props === undefined)
-          this.setState({
-            indexChildren: this.props.children
-          });
-    }
+
+        if (nextProps.location.state.modal === true) {
+
+          // remember the previous page children to render under the modal     
+          if (this.state.previousChildren.props === undefined) {
+
+            this.setState({
+              previousChildren: this.props.children
+            });
+
+          }
+
+        }
+      }
+  }
+
+  onModalClose() {
+
+    // clear previous page children rendered under the modal
+    this.setState({
+      previousChildren: {}
+    })
+
   }
 
   render() {
@@ -187,7 +205,7 @@ class Main extends Component {
     let isModal = (
       location.state &&
       location.state.modal &&
-      (this.state.indexChildren.props !== undefined)
+      (this.state.previousChildren.props !== undefined)
     )
 
     const logo = (
@@ -301,14 +319,14 @@ class Main extends Component {
                     <div className="main-container">
 
                     {isModal ?
-                      this.state.indexChildren :
+                      this.state.previousChildren :
                       this.props.children
                     }
 
                     </div>
 
                     {isModal && (
-                      <Modal isOpen={true} returnTo={location.state.returnTo} pathname={location.pathname} hairpiqs={location.state.hairpiqs}>
+                      <Modal isOpen={true} returnTo={location.state.returnTo} pathname={location.pathname} hairpiqs={location.state.hairpiqs} onClose={this.onModalClose.bind(this)}>
                         {this.props.children}
                       </Modal>
                     )}
@@ -316,7 +334,11 @@ class Main extends Component {
                     {
                       this.props.location.pathname !== '/create' &&
                       this.props.location.pathname !== '/survey' &&
-                      this.props.location.pathname !== '/settings' ?
+                      this.props.location.pathname !== '/settings' &&
+                      this.props.location.pathname !== '/add-hairtip' &&
+                      this.props.location.pathname.split('/')[1] !== 'add-hairtip' &&
+                      this.props.location.pathname !== '/edit-hairtip' &&
+                      this.props.location.pathname.split('/')[1] !== 'edit-hairtip' ?
 
                     <CreateButton location={this.props.location} /> : null }
 
@@ -345,14 +367,14 @@ class Main extends Component {
                   <div className="main-container">
 
                   {isModal ?
-                    this.state.indexChildren :
+                    this.state.previousChildren :
                     this.props.children
                   }
 
                   </div>
 
                   {isModal && (
-                    <Modal isOpen={true} returnTo={location.state.returnTo} pathname={location.pathname} hairpiqs={location.state.hairpiqs}>
+                    <Modal isOpen={true} returnTo={location.state.returnTo} pathname={location.pathname} hairpiqs={location.state.hairpiqs} onClose={this.onModalClose.bind(this)}>
                       {this.props.children}
                     </Modal>
                   )}

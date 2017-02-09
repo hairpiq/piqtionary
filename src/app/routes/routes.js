@@ -83,12 +83,18 @@ module.exports = (
 
 				<IndexRoute component={Index} auth={auth} />
 				<Route path="search" component={Index} auth={auth} onEnter={requireAuth}/>
+				
 				<Route path="p/:id" component={Photo} />
 				<Redirect from="p/:id/" to="p/:id"/>
+				<Route path="p/:id/:hairtip" component={Photo} />
+				
 				<Route path="favorites" component={Favorites} auth={auth} onEnter={requireAuth}/>
 				<Route path="create" component={Create} auth={auth} onEnter={requireAuth}/>
 				<Route path="settings" component={Settings} auth={auth} onEnter={requireAuth}/>
+				
+				<Route path="add-hairtip/:id" component={Hairtip} auth={auth} onEnter={requireAuth}/>
 				<Route path="edit-hairtip/:id" component={Hairtip} auth={auth} onEnter={requireAuth}/>
+				
 				<Route path="info" component={Info} />
 				<Route path="survey" component={Survey} />
 
