@@ -34,13 +34,27 @@ class MyHairpiqsWell extends Component {
   }
 
   linkTo(returnToPathname) {
-    browserHistory.push({
-        pathname: '/survey',
-        state: {
-          modal: true,
-          returnTo: returnToPathname
-        }
-    });
+    
+    if ($('body').width() < 768)
+      browserHistory.push('/create');
+    else
+      browserHistory.push({
+              pathname: '/create',
+              state: {
+                modal: true,
+                returnTo: this.props.location.pathname
+              }
+          });
+
+    // report step metric
+    var test = {
+      hitType: 'event',
+      eventCategory: 'Hairpiq Creator',
+      eventAction: 'open-hairpiq-creator',
+      eventLabel: 'Open the Hairpiq Creator'
+    };
+    
+    ga('send', test);
   }
 
   loadItems(page) {
@@ -54,10 +68,10 @@ class MyHairpiqsWell extends Component {
     // add page_num
     var params = {
       page_num: this.state.page_num,
-      //auth0_user_id: auth0_user_id
+      auth0_user_id: auth0_user_id
     }
 
-    Services.getList(params).then(function(result) {
+    Services.getUserHairpiqs(params).then(function(result) {
 
       if(result.length > 0) {
         result.map((hairpiq) => {
@@ -217,9 +231,6 @@ class MyHairpiqsWell extends Component {
     
       Services.removeFromFavorites(params).then(function(result){
 
-        console.log('D')
-        console.log(result)
-        console.log('"Removed!" snackbar notification here')
 
         _this.setState({
           favorites: result,
@@ -316,17 +327,17 @@ class MyHairpiqsWell extends Component {
             <div className="uk-width-medium-6-10 uk-push-2-10">
               <Paper>
                 <div className="uk-alert uk-alert-success">
-                  <p>We're sorry that nothing returned, and are actively working to improve our search results.</p>
-                  <p>Please take a moment to tell us what you'd like to see on hairpiq.com.</p>
+                  <p>Create your first Hairpiq!</p>
                   <p>
                     <FlatButton
-                      onTouchTap={() => this.linkTo(this.props.location.pathname)}
+                      onTouchTap={this.linkTo.bind(this)}
                       className="survey-button"
-                      label="Tell Us"
+                      label="Create A Hairpiq"
                       backgroundColor={orange700}
                       hoverColor="#faba79"
                       rippleColor="#ffffff" />
                   </p>
+                  <p>If you've already submitted one to be included on hairpiq, give us a moment while we review it first! :-D</p>
                 </div>
               </Paper>
             </div>
