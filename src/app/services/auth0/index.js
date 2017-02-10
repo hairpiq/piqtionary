@@ -27,6 +27,7 @@ export default class AuthService extends EventEmitter {
     this.getProfile = this.getProfile.bind(this)
     this.updateProfile = this.updateProfile.bind(this)
     this.getProfileById = this.getProfileById.bind(this)
+    this.doesUsernameExist = this.doesUsernameExist.bind(this)
     this.generateUIDNotMoreThan1million = this.generateUIDNotMoreThan1million.bind(this)
 
   }
@@ -378,6 +379,41 @@ export default class AuthService extends EventEmitter {
           let p = JSON.parse(newProfile)
           
           resolve(p);
+
+        });
+
+      });
+
+     })
+
+  }
+
+  // the new updateProfile
+  doesUsernameExist(username) {
+
+    let _this = this;
+
+    return new Promise(function(resolve, reject){
+
+      _this.getManagementAccessToken().then(function(result) {
+          
+        var options = {
+          method: 'GET',
+          url: `https://${config.AUTH0_DOMAIN}/api/v2/users?fields=app_metadata.username`,
+          headers: { authorization: 'Bearer ' + result.access_token}
+        }
+
+        var params = {
+          options : JSON.stringify(options),
+          username: username
+        }
+
+        Services.auth0.doesUsernameExist(params)
+        .then(result => {
+
+          let r = JSON.parse(result)
+          
+          resolve(r);
 
         });
 

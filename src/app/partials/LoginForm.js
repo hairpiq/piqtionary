@@ -43,13 +43,6 @@ class LoginForm extends Component {
 		}
 	}
 
-	componentDidMount() {
-		this.setState({
-			is_authenticating_with_facebook: false,
-			is_authenticating_with_google: false
-		});
-	}
-	
 	static contextTypes = {
 		router: T.object
 	}
@@ -57,6 +50,14 @@ class LoginForm extends Component {
 	static propTypes = {
 		location: T.object,
 		auth: T.instanceOf(AuthService)
+	}
+
+	componentDidMount() {
+		this.setState({
+			is_authenticating_with_facebook: false,
+			is_authenticating_with_google: false
+		});
+
 	}
 
 	getAuthParams() {
@@ -96,19 +97,35 @@ class LoginForm extends Component {
 		// if success, these values are deleted in the AuthService parseHash method
        	localStorage.setItem('fullname', fullname);
 
-       	// if failure, remove in the catch below
+       	this.props.auth.doesUsernameExist(username).then(function(result) {
+			
+       		if (result === true) {
 
-		this.props.auth.signup(email, password, username, fullname).then(function(result) {
+       			_this.setState({
+       				usernameErrorText: 'username already exists, please try another',
+					is_username_valid: false,
+					is_authenticating: false
+				})
 
-		}).catch(function(result) {
+       		} else {
 
-       		localStorage.removeItem('fullname', fullname);
+       			// if failure, remove in the catch below
 
-			_this.setState({
-				is_authenticating: false
-			});
+				_this.props.auth.signup(email, password, username, fullname).then(function(result) {
 
-		});
+				}).catch(function(result) {
+
+		       		localStorage.removeItem('fullname', fullname);
+
+					_this.setState({
+						is_authenticating: false
+					});
+
+				});
+
+			}
+
+		})
 
 		this.setState({
 			is_authenticating: true
@@ -227,6 +244,7 @@ class LoginForm extends Component {
 
 		var checkForUsernameFormat = new RegExp('^[a-z0-9._-]{3,30}$');
 		var username = e.target.value.replace(/\.+/g, '.');
+		username = username.toLowerCase()
 
 		if (username.length === 0) {
 			this.setState({
