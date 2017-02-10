@@ -3,6 +3,7 @@ import { render } from 'react-dom';
 import InfiniteScroll from 'react-infinite-scroller';
 import Services from '../services/';
 import MyHairpiqItem from './MyHairpiqItem';
+import ResultItem from './ResultItem';
 import CircularProgress from 'material-ui/CircularProgress';
 import {grey400, orange700} from 'material-ui/styles/colors';
 import FlatButton from 'material-ui/FlatButton';
@@ -63,7 +64,7 @@ class MyHairpiqsWell extends Component {
 
     // get list of hairpiqs
     var hairpiqs = _this.state.hairpiqs;
-    let auth0_user_id = JSON.parse(localStorage.getItem('profile')).user_id
+    let auth0_user_id = this.props.profile.user_id
 
     // add page_num
     var params = {
@@ -79,7 +80,6 @@ class MyHairpiqsWell extends Component {
             hairpiqs.push(hairpiq);
           
           });
-
 
         _this.setState({
           hairpiqs: hairpiqs,
@@ -105,7 +105,7 @@ class MyHairpiqsWell extends Component {
 
     let _this = this;
 
-    let auth0_user_id = JSON.parse(localStorage.getItem('profile')).user_id
+    let auth0_user_id = this.props.profile.user_id
 
     let params = {
       auth0_user_id: auth0_user_id,
@@ -160,24 +160,10 @@ class MyHairpiqsWell extends Component {
 
   }
 
-  componentWillReceiveProps(nextProps) {
-
-    let _this = this;
-
-    this.setState({
-        result_status: ''
-      }, function() {
-
-        _this.getTertiaryData()
-
-      });
-
-  }
-
   addToFavorites(hairpiq_id) {
 
     let _this = this;
-    let auth0_user_id = JSON.parse(localStorage.getItem('profile')).user_id
+    let auth0_user_id = this.props.user_id
 
     let params = {
       auth0_user_id: auth0_user_id,
@@ -187,11 +173,6 @@ class MyHairpiqsWell extends Component {
     return new Promise (function(resolve, reject) {
 
       Services.addToFavorites(params).then(function(result){
-
-        console.log('C')
-        console.log(result)
-        console.log('"Added!" snackbar notification here')
-        // Gently notify the user of their limit.
 
         _this.setState({
           favorites: result,
@@ -220,9 +201,9 @@ class MyHairpiqsWell extends Component {
   removeFromFavorites(hairpiq_id) {
 
     let _this = this;
-    let auth0_user_id = JSON.parse(localStorage.getItem('profile')).user_id
+    let auth0_user_id = this.props.profile.user_id
 
-   let params = {
+    let params = {
       auth0_user_id: auth0_user_id,
       hairpiq_id: hairpiq_id
     }
@@ -281,8 +262,8 @@ class MyHairpiqsWell extends Component {
 
     // if the term that is passed as a prop is DIFFERENT than the term in this component state
       // reset this component state with this new ter,.
-    if (this.state.term !== this.props.term)
-      this.resetStateForTerm(this.props.term);
+    //if (this.state.term !== this.props.term)
+      //this.resetStateForTerm(this.props.term);
 
     const loader = (
       <div className="loader">
@@ -298,6 +279,9 @@ class MyHairpiqsWell extends Component {
         items.push(
             
             <div className="hairpiq-paper-container uk-width-small-1-3">
+
+              { this.props.is_logged_in ?
+
               <MyHairpiqItem
                 key={listItem.id}
                 listItem={listItem}
@@ -308,6 +292,24 @@ class MyHairpiqsWell extends Component {
                 addToFavorites={this.addToFavorites.bind(this)}
                 removeFromFavorites={this.removeFromFavorites.bind(this)}
               />
+
+              :
+
+              <ResultItem
+                key={listItem.id}
+                is_logged_in={this.props.is_logged_in}
+                listItem={listItem}
+                location={this.props.location}
+                hairpiqs={this.state.hairpiqs}
+                favorites={this.state.favorites}
+                hairtips={this.state.hairtips}
+                is_logged_in={this.props.is_logged_in}
+                addToFavorites={this.addToFavorites.bind(this)}
+                removeFromFavorites={this.removeFromFavorites.bind(this)}
+              />
+
+              }
+
             </div>
 
         );

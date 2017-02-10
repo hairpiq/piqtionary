@@ -48,6 +48,9 @@ class Profile extends Component {
 
 			Services.getUserData(params).then(function(result) {
 
+				let profile = result[0]
+				profile.user_id = profile.auth0_user_id
+
 				_this.setState({
 					is_profile_loaded: true,
 					profile: result[0],
@@ -95,6 +98,7 @@ class Profile extends Component {
 	}
 
 	componentDidMount() {
+
 
 		let auth = this.props.route.auth;
 
@@ -183,7 +187,11 @@ class Profile extends Component {
 
 								          <div className="uk-width-medium-10-10">
 								        
-								            <MyHairpiqsWell location={this.props.location} />
+								            <MyHairpiqsWell
+								            	location={this.props.location}
+								            	profile={profile}
+								            	is_logged_in={is_logged_in}
+								            />
 
 								          </div>
 								      
