@@ -7,7 +7,7 @@ import Divider from 'material-ui/Divider';
 import LazyLoad from 'react-lazyload';
 import NavigationCheckIcon from 'material-ui/svg-icons/navigation/check';
 import AddToPhotosIcon from 'material-ui/svg-icons/image/add-to-photos';
-import HairtipsIcon from 'material-ui/svg-icons/editor/format-list-bulleted';
+import InsertDriveFileIcon from 'material-ui/svg-icons/editor/insert-drive-file';
 import ActionNoteAddIcon from 'material-ui/svg-icons/action/note-add';
 import IconButton from 'material-ui/IconButton';
 import CircularProgress from 'material-ui/CircularProgress';
@@ -18,7 +18,7 @@ const styles = {
   }
 };
 
-class ResultItem extends Component {
+class MyHairpiqItem extends Component {
 
   constructor() {
     super();
@@ -39,27 +39,45 @@ class ResultItem extends Component {
   linkTo(id) {
     browserHistory.push({
       pathname: `/p/${id}`,
-      state: { modal: true, returnTo: this.props.location.pathname, hairpiqs: this.props.hairpiqs }
+      state: { modal: true, returnTo: this.props.location.pathname, hairpiqs: this.props.hairpiqs, pageType: 'profile' }
     });
   }
 
   editHairtip(id) {
+
+
     browserHistory.push({
       pathname: `/edit-hairtip/${id}`,
-      state: { modal: true, returnTo: this.props.location.pathname }
+      state: { modal: true, returnTo: this.props.location.pathname, hairpiqs: this.props.hairpiqs }
+    });
+  }
+
+  addHairtip(id) {
+
+    
+    browserHistory.push({
+      pathname: `/add-hairtip/${id}`,
+      state: { modal: true, returnTo: this.props.location.pathname, hairpiqs: this.props.hairpiqs }
     });
   }
 
   render() {
     
-    const { listItem, favorites } = this.props;
+    const { listItem, favorites, hairtips } = this.props;
 
     let _this = this;
     let is_favorited = false
+    let has_hairtip = false
 
     for (var i in favorites)
       if (favorites[i].hairpiq_id === listItem._id) {
         is_favorited = true
+        break
+      }
+
+    for (var j in hairtips)
+      if (hairtips[j].hairpiq_id === listItem._id) {
+        has_hairtip = true
         break
       }
 
@@ -96,16 +114,28 @@ class ResultItem extends Component {
 
         <IconButton
           onTouchTap={() => {
-                this.editHairtip(listItem._id)
+                if (has_hairtip)
+                  this.editHairtip(listItem._id)
+                else
+                  this.addHairtip(listItem._id)
               }}
           iconStyle={styles.appBarIconButton}>
+          
+          { has_hairtip ?
+            
+          <InsertDriveFileIcon />
+          
+          :
+          
           <ActionNoteAddIcon />
+
+          }
+
         </IconButton>
         
-
       </Paper>
     )
   }
 }
 
-export default ResultItem;
+export default MyHairpiqItem;

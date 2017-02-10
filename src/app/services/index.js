@@ -42,6 +42,13 @@ module.exports = {
 		return execute('//' + config.HOSTNAME + '/api/piqtionary/get_user_data', params);
 
 	},
+	getUserHairpiqs: function(params) {
+
+		params.limit = 10;
+
+		return execute('//' + config.HOSTNAME + '/api/piqtionary/get_user_hairpiqs', params);
+
+	},
 	addToFavorites: function (params) {
 		
 		return execute('//' + config.HOSTNAME + '/api/piqtionary/add_to_favorites', params);
@@ -62,6 +69,33 @@ module.exports = {
 		return execute('//' + config.HOSTNAME + '/api/piqtionary/list_by_favorites', params);
 
 	},
+	hairtips: {
+		add: function(params) {
+
+			return execute('//' + config.HOSTNAME + '/api/piqtionary/add_hairtip', params);
+
+		},
+		getAll: function(params) {
+
+			return execute('//' + config.HOSTNAME + '/api/piqtionary/get_hairtips', params);
+
+		},
+		edit: function(params) {
+
+			return execute('//' + config.HOSTNAME + '/api/piqtionary/edit_hairtip', params);
+
+		},
+		getHairtipByHairpiqId: function(params) {
+
+			return execute('//' + config.HOSTNAME + '/api/piqtionary/get_hairtip_by_hairpiq_id', params);
+
+		},
+		delete: function(params) {
+
+			return execute('//' + config.HOSTNAME + '/api/piqtionary/delete_hairtip', params);
+
+		},
+	},
 	auth0: {
 		updateUser: function(params) {
 
@@ -71,6 +105,11 @@ module.exports = {
 		getUser: function(params) {
 
 			return execute('//' + config.HOSTNAME + '/api/auth0/get', params);
+
+		},
+		doesUsernameExist: function(params) {
+
+			return execute('//' + config.HOSTNAME + '/api/auth0/does_username_exist', params);
 
 		}
 	},
@@ -97,7 +136,7 @@ module.exports = {
 
 		}
 
-	}
+	},
 };
 
 function execute(url, params) {

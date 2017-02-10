@@ -153,63 +153,84 @@ class Settings extends Component {
 		let auth = this.props.route.auth;
 		var arr = [];
 
-		if (this.state.username !== this.state.orig.username) {
+		const updateVars = () => {
 
-			let is_username_updated = true
-			
-			let _username = {
-				app_metadata: {
-					username: this.state.username
-				}
-			}
+			if (this.state.email !== this.state.orig.email) 
+				arr.push(auth.updateProfile(user_id, {
+					email: this.state.email
+				}, true));
 
-			if (user_id.indexOf('facebook') === -1 && user_id.indexOf('google') === -1)
-				_username.username = this.state.username
+			if (this.state.fullname !== this.state.orig.fullname) 
+				arr.push(auth.updateProfile(user_id, {
+					user_metadata: {
+						fullname: this.state.fullname
+					}
+				}, true));
 
-			arr.push(auth.updateProfile(user_id, _username, true));
-			
+			let user_data_params = {
+				auth0_user_id: this.state.user_id,
+				username: this.state.username,
+				fullname: this.state.fullname
+			};
+
+			arr.push(Services.setUserData(user_data_params))
+
+			Promise.all(arr).then(function(result) {
+
+				_this.setState({
+						snackbar: {
+				        open: true,
+				    },
+				    is_authenticating: false,
+				    force_update_button_disabled: true
+			    });
+
+			});
+
+			auth.removeAllListeners()
+	        auth.on('profile_updated', function(e) {
+	          
+	          _this.updateOrigValues();
+
+	      	});
+
 		}
 
-		if (this.state.email !== this.state.orig.email) 
-			arr.push(auth.updateProfile(user_id, {
-				email: this.state.email
-			}, true));
+		if (this.state.username !== this.state.orig.username) {
 
-		if (this.state.fullname !== this.state.orig.fullname) 
-			arr.push(auth.updateProfile(user_id, {
-				user_metadata: {
-					fullname: this.state.fullname
+			auth.doesUsernameExist(this.state.username).then(function(result) {
+
+				if (result === true) {
+
+					_this.setState({
+	       				usernameErrorText: 'username already exists, please try another',
+						is_username_valid: false,
+						is_authenticating: false
+					})
+
+				} else {
+				
+					let _username = {
+						app_metadata: {
+							username: _this.state.username
+						}
+					}
+
+					if (user_id.indexOf('facebook') === -1 && user_id.indexOf('google') === -1)
+						_username.username = _this.state.username
+
+					arr.push(auth.updateProfile(user_id, _username, true));
+
+					updateVars()
+
 				}
-			}, true));
 
-		let user_data_params = {
-			auth0_user_id: this.state.user_id,
-			username: this.state.username,
-			fullname: this.state.fullname
-		};
+			})
+			
+		} else
+			updateVars()
 
-		arr.push(Services.setUserData(user_data_params))
-
-		Promise.all(arr).then(function(result) {
-
-			_this.setState({
-					snackbar: {
-			        open: true,
-			    },
-			    is_authenticating: false,
-			    force_update_button_disabled: true
-		    });
-
-		});
-
-		auth.removeAllListeners()
-        auth.on('profile_updated', function(e) {
-          
-          _this.updateOrigValues();
-
-      	});
-
-	    this.setState({
+		this.setState({
 	    	is_authenticating: true,
 	    })
 

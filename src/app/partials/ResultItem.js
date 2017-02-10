@@ -42,6 +42,16 @@ class ResultItem extends Component {
     });
   }
 
+  showHairtip(id) {
+
+
+    browserHistory.push({
+      pathname: `/p/${id}/hairtip`,
+      state: { modal: true, returnTo: this.props.location.pathname, hairpiqs: this.props.hairpiqs }
+    });
+
+  }
+
   addToFavorites(id) {
 
     let _this = this;
@@ -82,14 +92,21 @@ class ResultItem extends Component {
 
   render() {
     
-    const { listItem, favorites } = this.props;
+    const { listItem, favorites, hairtips } = this.props;
 
     let _this = this;
     let is_favorited = false
+    let has_hairtip = false
 
     for (var i in favorites)
       if (favorites[i].hairpiq_id === listItem._id) {
         is_favorited = true
+        break
+      }
+
+    for (var j in hairtips)
+      if (hairtips[j].hairpiq_id === listItem._id) {
+        has_hairtip = true
         break
       }
 
@@ -167,7 +184,15 @@ class ResultItem extends Component {
 
         }
 
-        <IconButton iconStyle={styles.appBarIconButton}><HairtipsIcon /></IconButton>
+        { has_hairtip ?
+
+        <IconButton
+          onTouchTap={() => this.showHairtip(listItem._id)}
+          iconStyle={styles.appBarIconButton}>
+          <HairtipsIcon />
+        </IconButton>
+
+        : null }
         
 
       </Paper>
