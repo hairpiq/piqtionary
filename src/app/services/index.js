@@ -106,6 +106,11 @@ module.exports = {
 
 			return execute('//' + config.HOSTNAME + '/api/auth0/get', params);
 
+		},
+		doesUsernameExist: function(params) {
+
+			return execute('//' + config.HOSTNAME + '/api/auth0/does_username_exist', params);
+
 		}
 	},
 	hairpiqCreator: {
