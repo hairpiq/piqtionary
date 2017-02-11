@@ -117,7 +117,8 @@ class Settings extends Component {
 	handleUsernameChange = (e) =>  {
 
 		var checkForUsernameFormat = new RegExp('^[a-z0-9._-]{3,30}$');
-		var username = e.target.value.replace(/\.+/g, '.');
+		var username = e.target.value.replace(/\.+/g, '.').replace(/\-+/g, '_')
+		username = username.toLowerCase()
 
 		if (username.length === 0) {
 			this.setState({
@@ -374,6 +375,10 @@ class Settings extends Component {
 		  	let user_id = this.state.user_id;
 		  	let _this = this;
 
+		  	this.setState({
+		  		is_deleting_profile: true
+		  	})
+
 		  	this.props.route.auth.deleteProfile(user_id).then(function(result) {
 
 		  		_this.setState({
@@ -429,6 +434,12 @@ class Settings extends Component {
 			}
 		});
 
+	}
+
+	componentWillUnmount() {
+		this.setState({
+	  		is_deleting_profile: false
+	  	})
 	}
 
 	render() {
