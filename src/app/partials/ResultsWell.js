@@ -178,9 +178,6 @@ class ResultsWell extends Component {
 
       Services.addToFavorites(params).then(function(result){
 
-        console.log('C')
-        console.log(result)
-        console.log('"Added!" snackbar notification here')
         // Gently notify the user of their limit.
 
         _this.setState({
@@ -220,10 +217,6 @@ class ResultsWell extends Component {
     return new Promise (function(resolve, reject) {
     
       Services.removeFromFavorites(params).then(function(result){
-
-        console.log('D')
-        console.log(result)
-        console.log('"Removed!" snackbar notification here')
 
         _this.setState({
           favorites: result,
@@ -300,6 +293,7 @@ class ResultsWell extends Component {
                 hairtips={this.state.hairtips}
                 addToFavorites={this.addToFavorites.bind(this)}
                 removeFromFavorites={this.removeFromFavorites.bind(this)}
+                is_logged_in={this.props.is_logged_in}
               />
             </div>
 

@@ -14,7 +14,7 @@ class Index extends Component {
     super();
 
     this.state = {
-      logged_in_status: ''
+      is_logged_in: false
     }
 
   }
@@ -22,24 +22,22 @@ class Index extends Component {
   componentDidMount() {
 
     this.setState({
-      logged_in_status: this.props.route.auth.loggedIn() ? 'logged_in' : 'logged_out'
+      is_logged_in: this.props.route.auth.loggedIn()
     });
 
   }
 
   componentWillReceiveProps(nextProps) {
 
-    this.setState({logged_in_status: ''});
-
     this.setState({
-      logged_in_status: this.props.route.auth.loggedIn() ? 'logged_in' : 'logged_out'
+      is_logged_in: this.props.route.auth.loggedIn()
     });
 
   }
 
   render() {
 
-    let {logged_in_status} = this.state;
+    let {is_logged_in} = this.state;
 
     const home_layout = (
 
@@ -58,6 +56,7 @@ class Index extends Component {
             <ResultsWell
               term={this.props.location.query.q ? this.props.location.query.q : ''}
               location={this.props.location}
+              is_logged_in={is_logged_in}
             />
 
           </div>
@@ -75,7 +74,7 @@ class Index extends Component {
           defaultTitle="Hairpiq"
         />
 
-        {logged_in_status === 'logged_in' ?
+        { is_logged_in ?
 
           <div>
 
@@ -85,7 +84,7 @@ class Index extends Component {
         
         : null }
 
-        {logged_in_status === 'logged_out' ?
+        { !is_logged_in ?
           
         <div className="splash-page">
 

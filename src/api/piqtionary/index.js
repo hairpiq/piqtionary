@@ -911,6 +911,36 @@ module.exports = function(app, db) {
 	});
 
 	/*
+		remove user's metadata
+	*/
+
+	app.post('/api/piqtionary/delete_user_data', function(req, res, next) {
+
+		console.log('B - called: /api/piqtionary/delete_user_data');
+
+		// get user data
+			// find doc in user_data collection
+
+			// data needed
+			// - username
+
+		var query = {
+			auth0_user_id: req.body.auth0_user_id
+		};
+
+		
+		db.collection('user_data').remove(query, function(err, result) {
+					
+			assert.equal(null, err);
+			console.log('C - Deleted document from user_data: ' + query.auth0_user_id);
+
+			res.send(JSON.stringify('success'));
+		
+		});
+
+	});
+
+	/*
 		add hairpiq to user favorites
 	*/
 
