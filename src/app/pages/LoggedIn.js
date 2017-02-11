@@ -5,6 +5,18 @@ const config = process.env;
 
 class LoggedIn extends Component {
 
+	componentDidMount() {
+
+		// report account activity metric
+	    ga('send', {
+			hitType: 'event',
+			eventCategory: 'Account Activity',
+			eventAction: 'logged-in',
+			eventLabel: 'Logged In'
+		});
+		
+	}
+
 	render() {
 		return (
 			

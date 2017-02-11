@@ -65,6 +65,14 @@ class ResultItem extends Component {
     },function() {
 
       _this.props.addToFavorites(id).then(function(result) {
+
+        // report account activity metric
+        ga('send', {
+          hitType: 'event',
+          eventCategory: 'Account Activity',
+          eventAction: 'add-to-favorites',
+          eventLabel: 'Add to Favorites'
+        });
         
         _this.setState({
           favorite_status: 'added'
@@ -84,10 +92,18 @@ class ResultItem extends Component {
     }, function() {
 
       _this.props.removeFromFavorites(id).then(function(result) {
-      
-      _this.setState({
-          favorite_status: 'removed'
-        })
+
+        // report account activity metric
+        ga('send', {
+          hitType: 'event',
+          eventCategory: 'Account Activity',
+          eventAction: 'remove-from-favorites',
+          eventLabel: 'Remove from Favorites'
+        });
+        
+        _this.setState({
+            favorite_status: 'removed'
+          })
 
       })
 

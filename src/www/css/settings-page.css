@@ -12,10 +12,19 @@
 }
 
 .settings-page .update-button,
-.settings-page .reset-password-button {
+.settings-page .reset-password-button,
+.settings-page .delete-profile-button {
 	border-radius: 5px !important;
 	margin-top: 25px !important;
     width: 256px;
+}
+
+.settings-page .delete-profile-button {
+	color: #fff !important;
+}
+
+.settings-page .delete-profile-button:hover {
+	color: #212121 !important;
 }
 
 .settings-page .update-button.disabled,
@@ -39,7 +48,8 @@
     margin-bottom: -10px !important;
 }
 
-.settings-page .content.reset-password {
+.settings-page .content.reset-password,
+.settings-page .content.delete-profile {
 	padding-top: 25px;
 }
 
