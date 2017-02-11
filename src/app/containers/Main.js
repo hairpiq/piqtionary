@@ -244,7 +244,7 @@ class Main extends Component {
 
 
         <IconMenu
-          iconButtonElement={<IconButton iconStyle={styles.appBarIconButton} tooltip="Menu"><MoreVertIcon /></IconButton>}
+          iconButtonElement={<IconButton iconStyle={styles.appBarIconButton}><MoreVertIcon /></IconButton>}
           anchorOrigin={{horizontal: 'right', vertical: 'top'}}
           targetOrigin={{horizontal: 'right', vertical: 'top'}}
           width={200}

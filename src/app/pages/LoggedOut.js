@@ -6,6 +6,14 @@ class LoggedOut extends Component {
 
 	componentDidMount() {
 
+		// report account activity metric
+	    ga('send', {
+			hitType: 'event',
+			eventCategory: 'Account Activity',
+			eventAction: 'logged-out',
+			eventLabel: 'Logged Out'
+		});
+
 		browserHistory.replace('/');
 
 	}
