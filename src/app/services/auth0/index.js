@@ -67,6 +67,14 @@ export default class AuthService extends EventEmitter {
 
           resolve('success');
 
+          // report account activity metric
+          ga('send', {
+            hitType: 'event',
+            eventCategory: 'Account Activity',
+            eventAction: 'logged-in',
+            eventLabel: 'Logged In'
+          });
+
           browserHistory.replace('/')
 
         }
@@ -171,6 +179,14 @@ export default class AuthService extends EventEmitter {
 
             }
 
+            // report account activity metric
+            ga('send', {
+              hitType: 'event',
+              eventCategory: 'Account Activity',
+              eventAction: 'account-created',
+              eventLabel: 'Account Created'
+            });
+
             this.updateProfile(profile.sub, data).then(function(result) {
 
               localStorage.removeItem('fullname');
@@ -198,7 +214,7 @@ export default class AuthService extends EventEmitter {
     localStorage.setItem('id_token', idToken)
   }
 
-  setProfile(profile, suppressSetUseDataCall = false) {
+  setProfile(profile, suppressSetUserDataCall = false) {
 
     let id = profile.sub || profile.user_id;
     let _this = this;
@@ -216,9 +232,9 @@ export default class AuthService extends EventEmitter {
         picture: p.picture || ''
       }
 
-      // suppressSetUseDataCall is true when setProfile is called from the Settings Page
+      // suppressSetUserDataCall is true when setProfile is called from the Settings Page
       
-      if (!suppressSetUseDataCall) {
+      if (!suppressSetUserDataCall) {
 
 
         Services.setUserData(params).then(function(result) {
@@ -280,7 +296,7 @@ export default class AuthService extends EventEmitter {
 
         }else{
 
-          console.log(resp);
+          //console.log(resp);
           resolve(resp);
           
         }
@@ -321,7 +337,7 @@ export default class AuthService extends EventEmitter {
   }
 
   // the new updateProfile
-  updateProfile(userId, data, suppressSetUseDataCall = false) {
+  updateProfile(userId, data, suppressSetUserDataCall = false) {
 
     let _this = this;
 
@@ -342,7 +358,7 @@ export default class AuthService extends EventEmitter {
 
         Services.auth0.updateUser(params).then(newProfile => { 
           
-          _this.setProfile(newProfile, suppressSetUseDataCall)
+          _this.setProfile(newProfile, suppressSetUserDataCall)
 
           resolve(newProfile)
 
@@ -414,6 +430,56 @@ export default class AuthService extends EventEmitter {
           let r = JSON.parse(result)
           
           resolve(r);
+
+        });
+
+      });
+
+     })
+
+  }
+
+  // the new updateProfile
+  deleteProfile(userId) {
+
+    let _this = this;
+
+    return new Promise(function(resolve, reject){
+
+      var _params = {
+        auth0_user_id: userId 
+      }
+
+      Services.deleteUserData(_params).then(function(result) {
+
+        _this.getManagementAccessToken().then(function(result) {
+            
+          var options = {
+            method: 'DELETE',
+            url: `https://${config.AUTH0_DOMAIN}/api/v2/users/${userId}`,
+            headers: { authorization: 'Bearer ' + result.access_token}
+          }
+
+          var params = {
+            options : JSON.stringify(options)
+          }
+
+          Services.auth0.deleteUser(params).then(() => { 
+
+            // report account activity metric
+            ga('send', {
+              hitType: 'event',
+              eventCategory: 'Account Activity',
+              eventAction: 'delete-acount',
+              eventLabel: 'Delete Account'
+            })
+            
+            _this.logout()
+            browserHistory.push('/logout');
+
+            resolve('deleted!')
+
+          });
 
         });
 

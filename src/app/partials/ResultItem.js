@@ -42,6 +42,10 @@ class ResultItem extends Component {
     });
   }
 
+  gotoLogin() {
+    browserHistory.push('/')
+  }
+
   showHairtip(id) {
 
 
@@ -61,6 +65,14 @@ class ResultItem extends Component {
     },function() {
 
       _this.props.addToFavorites(id).then(function(result) {
+
+        // report account activity metric
+        ga('send', {
+          hitType: 'event',
+          eventCategory: 'Account Activity',
+          eventAction: 'add-to-favorites',
+          eventLabel: 'Add to Favorites'
+        });
         
         _this.setState({
           favorite_status: 'added'
@@ -80,10 +92,18 @@ class ResultItem extends Component {
     }, function() {
 
       _this.props.removeFromFavorites(id).then(function(result) {
-      
-      _this.setState({
-          favorite_status: 'removed'
-        })
+
+        // report account activity metric
+        ga('send', {
+          hitType: 'event',
+          eventCategory: 'Account Activity',
+          eventAction: 'remove-from-favorites',
+          eventLabel: 'Remove from Favorites'
+        });
+        
+        _this.setState({
+            favorite_status: 'removed'
+          })
 
       })
 
@@ -92,7 +112,7 @@ class ResultItem extends Component {
 
   render() {
     
-    const { listItem, favorites, hairtips } = this.props;
+    const { listItem, favorites, hairtips, is_logged_in } = this.props;
 
     let _this = this;
     let is_favorited = false
@@ -168,7 +188,15 @@ class ResultItem extends Component {
 
             <IconButton
               onTouchTap={() => {
-                this.addToFavorites(listItem._id)
+
+                console.log('A')
+                console.log('is_logged_in: ' + is_logged_in)
+
+                if (is_logged_in)
+                  this.addToFavorites(listItem._id)
+                else
+                  this.gotoLogin()
+
               }}
               iconStyle={styles.appBarIconButton}>
               <AddToPhotosIcon />

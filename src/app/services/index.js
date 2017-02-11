@@ -42,6 +42,11 @@ module.exports = {
 		return execute('//' + config.HOSTNAME + '/api/piqtionary/get_user_data', params);
 
 	},
+	deleteUserData: function(params) {
+
+		return execute('//' + config.HOSTNAME + '/api/piqtionary/delete_user_data', params);		
+
+	},
 	getUserHairpiqs: function(params) {
 
 		params.limit = 10;
@@ -103,6 +108,11 @@ module.exports = {
 
 		},
 		getUser: function(params) {
+
+			return execute('//' + config.HOSTNAME + '/api/auth0/get', params);
+
+		},
+		deleteUser: function(params) {
 
 			return execute('//' + config.HOSTNAME + '/api/auth0/get', params);
 

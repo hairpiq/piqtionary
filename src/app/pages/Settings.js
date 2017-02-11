@@ -6,7 +6,7 @@ import Helmet from 'react-helmet';
 import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
-import {grey300, grey400, orange700, orange900} from 'material-ui/styles/colors';
+import {grey300, red400, red200, grey400, orange700, orange900} from 'material-ui/styles/colors';
 import CircularProgress from 'material-ui/CircularProgress';
 import Snackbar from 'material-ui/Snackbar';
 import Dialog from 'material-ui/Dialog';
@@ -43,7 +43,8 @@ class Settings extends Component {
 			},
 			is_sending_reset_password_request: false,
 			reset_password_result_message: '',
-			force_update_button_disabled: false
+			force_update_button_disabled: false,
+			is_deleting_profile: false
 		}
 
 	}
@@ -116,7 +117,8 @@ class Settings extends Component {
 	handleUsernameChange = (e) =>  {
 
 		var checkForUsernameFormat = new RegExp('^[a-z0-9._-]{3,30}$');
-		var username = e.target.value.replace(/\.+/g, '.');
+		var username = e.target.value.replace(/\.+/g, '.').replace(/\-+/g, '_')
+		username = username.toLowerCase()
 
 		if (username.length === 0) {
 			this.setState({
@@ -145,7 +147,7 @@ class Settings extends Component {
 		}
 	}
 
-	handleSubmit() {
+	updateUserProfile() {
 
 		let _this = this;
 		let user_id = this.state.user_id;
@@ -180,6 +182,8 @@ class Settings extends Component {
 				_this.setState({
 						snackbar: {
 				        open: true,
+				        message: 'information updated'
+
 				    },
 				    is_authenticating: false,
 				    force_update_button_disabled: true
@@ -256,13 +260,142 @@ class Settings extends Component {
 		})
 	}
 
+	resetPassword() {
+
+		let _this = this;
+		
+		this.props.route.auth.resetPassword(this.state.orig.email).then(function(result) {
+
+			_this.setState({
+				is_sending_reset_password_request: false,
+				reset_password_result_message: result,
+				snackbar: {
+			        open: true,
+			        message: 'password instructions sent'
+			      }
+			});
+
+		}).catch(function(result) {
+
+			_this.setState({
+				is_sending_reset_password_request: false
+			});
+
+		});
+
+		this.setState({
+			is_sending_reset_password_request: true
+		});
+
+	}
+
+	updateProfile() {
+
+		this.handleDialog({
+			action: 'UPDATE_PROFILE',
+		});
+
+	}
+
+	changePassword() {
+
+		this.handleDialog({
+			action: 'CHANGE_PASSWORD',
+		});
+
+	}
+
+	deleteProfile() {
+
+		this.handleDialog({
+			action: 'DELETE_PROFILE',
+		});
+
+	}
+
 	handleDialog(obj) {
+
+    var title;
+    var message;
+
+    switch (obj.action) {
+      case 'UPDATE_PROFILE':
+
+        title = 'UPDATE PROFILE';
+        message = 'Are you sure you want to update your settings?'
+
+        break;
+
+      case 'CHANGE_PASSWORD':
+
+        title = 'CHANGE PASSWORD';
+        message = 'Are you sure you want to change your password?';
+
+        break;
+
+      case 'DELETE_PROFILE':
+
+        title = 'DELETE YOUR PROFILE';
+        message = 'Are you sure you want to delete your account? This cannot be undone.';
+
+        break;
+    }
 
 		this.setState({
 		  dialog: {
-		    open: true
-		  }
+		    open: true,
+		    title: title,
+		    message: message,
+		    action: obj.action
+		  },
 		});
+
+	}
+
+  	handleSubmit() {
+
+		const action = this.state.dialog.action;
+
+		switch (action) {
+		  
+		  case 'UPDATE_PROFILE':
+
+		    this.updateUserProfile()
+
+		    break;
+
+		  case 'CHANGE_PASSWORD':
+
+		  	this.resetPassword();
+
+		    break;
+
+		  case 'DELETE_PROFILE':
+
+		  	let user_id = this.state.user_id;
+		  	let _this = this;
+
+		  	this.setState({
+		  		is_deleting_profile: true
+		  	})
+
+		  	this.props.route.auth.deleteProfile(user_id).then(function(result) {
+
+		  		_this.setState({
+		  			snackbar: {
+				        open: true,
+				        message: 'Profile deleted! Take care :-)'
+				      }
+			 	})
+
+
+		  	})
+
+		    break;
+
+		}
+
+		this.handleClose()
 	}
 
 	handleOpen = () => {
@@ -280,31 +413,6 @@ class Settings extends Component {
 			}
 		});
 	};
-
-	resetPassword() {
-
-		let _this = this;
-		
-		this.props.route.auth.resetPassword(this.state.orig.email).then(function(result) {
-
-			_this.setState({
-				is_sending_reset_password_request: false,
-				reset_password_result_message: result
-			});
-
-		}).catch(function(result) {
-
-			_this.setState({
-				is_sending_reset_password_request: false
-			});
-
-		});
-
-		this.setState({
-			is_sending_reset_password_request: true
-		});
-
-	}
 
 	componentDidMount() {
 
@@ -326,6 +434,12 @@ class Settings extends Component {
 			}
 		});
 
+	}
+
+	componentWillUnmount() {
+		this.setState({
+	  		is_deleting_profile: false
+	  	})
 	}
 
 	render() {
@@ -365,7 +479,7 @@ class Settings extends Component {
 			<div className="settings-page">
         
 		        <Helmet
-		          title="My Profile Settings"
+		          title="Profile Settings"
 		          titleTemplate="%s - Hairpiq"
 		          defaultTitle="Hairpiq"
 		        />
@@ -435,7 +549,7 @@ class Settings extends Component {
 								label="Update"
 								backgroundColor={grey300}
 								disabled={ ! ( did_values_change && is_update_valid ) }
-								onTouchTap={() => this.handleDialog()}
+								onTouchTap={() => this.updateProfile()}
 							/>
 
 							}
@@ -448,7 +562,7 @@ class Settings extends Component {
 
 		              <Divider className="dashed"/>
 
-		              <div className="content reset-password">
+		              <div className="content user-data reset-password">
 
 		              	{ this.state.reset_password_result_message.length > 0 ?
 
@@ -474,7 +588,7 @@ class Settings extends Component {
 								label="Reset Password"
 								backgroundColor={grey300}
 								disabled={ !(this.state.email && this.state.orig.email) }
-								onTouchTap={() => this.resetPassword()}
+								onTouchTap={() => this.changePassword()}
 							/>
 
 							}
@@ -485,6 +599,30 @@ class Settings extends Component {
 
 					  </div>
 
+					  <Divider className="dashed"/>
+
+		              <div className="content user-data delete-profile">
+
+		              	{this.state.is_deleting_profile ?
+
+						<div className="loader">
+							<CircularProgress color={grey400} size={20} />
+						</div>
+
+						:
+
+						<FlatButton
+							className="delete-profile-button"
+							label="Delete Profile"
+							backgroundColor={red400}
+							hoverColor={red200}
+							onTouchTap={() => this.deleteProfile()}
+						/>
+
+						}
+
+		              </div>
+
 		            </Paper>
 
 		          </div>
@@ -492,14 +630,14 @@ class Settings extends Component {
 		        </div>
 
 		        <Dialog
-		            title='UPDATE PROFILE SETTINGS'
+		            title={this.state.dialog.title}
 		            actions={actions}
 		            modal={false}
 		            open={this.state.dialog.open}
 		            onRequestClose={this.handleClose}
 		            actionsContainerClassName="settings-page-dialog"
 		            overlayClassName="main dialog-overlay">
-		            <p>Are you sure you want to update your settings? This cannot be undone.</p>
+		            <p>{this.state.dialog.message}</p>
 		        </Dialog>
 
 		        <Snackbar

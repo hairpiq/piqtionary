@@ -74,6 +74,14 @@ class EditForm extends Component {
 		Services.hairtips[method](params).then(function(result) {
 
 			if (_this.state.form_mode === 'create') {
+
+				// report account activity metric
+				ga('send', {
+				  hitType: 'event',
+				  eventCategory: 'Hairtip Creator',
+				  eventAction: 'create-a-hairtip',
+				  eventLabel: 'Create a Hairtip'
+				});
 				
 				_this.setFormMode('edit')
 

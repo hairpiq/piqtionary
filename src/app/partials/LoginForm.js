@@ -243,7 +243,7 @@ class LoginForm extends Component {
 	handleUsernameChange = (e) =>  {
 
 		var checkForUsernameFormat = new RegExp('^[a-z0-9._-]{3,30}$');
-		var username = e.target.value.replace(/\.+/g, '.');
+		var username = e.target.value.replace(/\.+/g, '.').replace(/\-+/g, '_');
 		username = username.toLowerCase()
 
 		if (username.length === 0) {

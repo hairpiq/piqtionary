@@ -9,6 +9,7 @@ import FlatButton from 'material-ui/FlatButton';
 import { browserHistory } from 'react-router';
 import Paper from 'material-ui/Paper';
 import Snackbar from 'material-ui/Snackbar';
+import AddToPhotosIcon from 'material-ui/svg-icons/image/add-to-photos';
 
 class FavoritesWell extends Component {
 
@@ -33,13 +34,7 @@ class FavoritesWell extends Component {
   }
 
   linkTo(returnToPathname) {
-    browserHistory.push({
-        pathname: '/survey',
-        state: {
-          modal: true,
-          returnTo: returnToPathname
-        }
-    });
+    browserHistory.push(returnToPathname);
   }
 
   loadItems(page) {
@@ -312,13 +307,12 @@ class FavoritesWell extends Component {
             <div className="uk-width-medium-6-10 uk-push-2-10">
               <Paper>
                 <div className="uk-alert uk-alert-success">
-                  <p>We're sorry that nothing returned, and are actively working to improve our search results.</p>
-                  <p>Please take a moment to tell us what you'd like to see on hairpiq.com.</p>
+                  <p>Hairpiqs where you press the <AddToPhotosIcon /> button will be added here.</p>
                   <p>
                     <FlatButton
-                      onTouchTap={() => this.linkTo(this.props.location.pathname)}
+                      onTouchTap={() => this.linkTo('/')}
                       className="survey-button"
-                      label="Tell Us"
+                      label="Start Collecting!"
                       backgroundColor={orange700}
                       hoverColor="#faba79"
                       rippleColor="#ffffff" />
