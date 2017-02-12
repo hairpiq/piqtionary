@@ -4,17 +4,49 @@ import FlatButton from 'material-ui/FlatButton';
 import FileDownloadIcon from 'material-ui/svg-icons/file/file-download';
 import {orange700} from 'material-ui/styles/colors';
 import FontIcon from 'material-ui/FontIcon';
+import Services from '../services/';
 
 class ShareMenu extends Component {
 
+	constructor() {
+		super()
+
+		this.state = {
+			tumblr_href: ''
+		}
+	}
+
 	componentDidMount() {
+
+		let params = {
+			url: location.href
+		}
+
+		let _this = this;
+
+		Services.hairpiqCreator.shortenUrl(params).then(function(result) {
    
-	    $(".button.facebook").click(function() {
-	    	FB.ui({
-			  method: 'share',
-			  href: 'https://developers.facebook.com/docs/',
-			}, function(response){});
-	    });
+		    $(".button.facebook").click(function() {
+		    	FB.ui({
+				  method: 'share',
+				  href: result.shortened_url,
+				}, function(response){});
+		    });
+
+		    // tumblr data
+			let tumblr_href = "http://www.tumblr.com/share/link?url=" + result.shortened_url;
+
+			if (_this.props.data) {
+			    let params = _this.props.data;
+			    let description = "Stylename: " + params.stylename + ", IG Username:" + params.ig_username;
+			    tumblr_href = tumblr_href + '&t=' + description;
+			}
+
+		    _this.setState({
+		    	tumblr_href: tumblr_href
+		    })
+
+	    })
 
 	}
 
@@ -27,10 +59,6 @@ class ShareMenu extends Component {
 	render() {
 
 		const params = this.props.data;
-
-		// tumblr data
-	    const description = "Stylename: " + params.stylename + ", IG Username:" + params.ig_username;
-		const tumblr_link = "http://www.tumblr.com/share/link?url=http://hairpiq.com/p/" + params.id + '&t=' + description;
 
 		return (
 
@@ -67,14 +95,13 @@ class ShareMenu extends Component {
 					backgroundColor="#3b5998"
 					hoverColor="#98a8c9"
 			      	href="#"
-			      	target="_blank"
 			      	icon={<FontIcon className="icon-facebook" />}
 			    />
 			    <FlatButton
 					className="button tumblr"
 					backgroundColor="#35465c"
 					hoverColor="#959eaa"
-			      	href={tumblr_link}
+			      	href={this.state.tumblr_href}
 			      	target="_blank"
 			      	icon={<FontIcon className="icon-tumblr" />}
 			    />
