@@ -26,7 +26,10 @@ class ShareMenu extends Component {
 
 		Services.hairpiqCreator.shortenUrl(params).then(function(result) {
    
-		    $(".button.facebook").click(function() {
+		    $(".button.facebook").click(function(e) {
+
+		    	e.preventDefault()
+
 		    	FB.ui({
 				  method: 'share',
 				  href: result.shortened_url,
