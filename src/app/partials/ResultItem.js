@@ -189,9 +189,6 @@ class ResultItem extends Component {
             <IconButton
               onTouchTap={() => {
 
-                console.log('A')
-                console.log('is_logged_in: ' + is_logged_in)
-
                 if (is_logged_in)
                   this.addToFavorites(listItem._id)
                 else

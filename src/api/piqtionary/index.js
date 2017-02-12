@@ -1240,9 +1240,38 @@ module.exports = function(app, db) {
 		get hairtips by user
 	*/
 
-	app.post('/api/piqtionary/get_hairtips', function(req, res, next) {
+	app.post('/api/piqtionary/get_all_hairtips', function(req, res, next) {
 
-		console.log('B - called: /api/piqtionary/get_hairtips');
+		console.log('B - called: /api/piqtionary/get_all_hairtips');
+
+		// get all hairtips
+
+		var resultArray = []
+
+		var cursor = db.collection('hairtips').find()
+
+		cursor.forEach(function(doc, err) {
+					
+			console.log('C - Retrieved document in hairtips: ' + doc._id);
+			assert.equal(null, err);
+			resultArray.push(doc);
+
+		}, function() {
+							
+			res.setHeader('Content-Type', 'application/json');
+			res.send(JSON.stringify(resultArray));
+
+		});
+
+	});
+
+	/*
+		get hairtips by user
+	*/
+
+	app.post('/api/piqtionary/get_hairtips_by_user_id', function(req, res, next) {
+
+		console.log('B - called: /api/piqtionary/get_hairtips_by_user_id');
 
 		// insert a new hairtip into hairtips collection
 

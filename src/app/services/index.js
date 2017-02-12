@@ -82,7 +82,12 @@ module.exports = {
 		},
 		getAll: function(params) {
 
-			return execute('//' + config.HOSTNAME + '/api/piqtionary/get_hairtips', params);
+			return execute('//' + config.HOSTNAME + '/api/piqtionary/get_all_hairtips', params);
+
+		},
+		getAllByUserId: function(params) {
+
+			return execute('//' + config.HOSTNAME + '/api/piqtionary/get_hairtips_by_user_id', params);
 
 		},
 		edit: function(params) {
