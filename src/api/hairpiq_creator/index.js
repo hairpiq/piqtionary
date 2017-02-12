@@ -353,6 +353,28 @@ module.exports = function(app) {
 		});
 	});
 
+
+	/*
+		create shortened url
+	*/
+
+	app.post('/api/hairpiq_creator/shorten_url', function(req, res) {
+
+
+		bitly.shortenLink(req.body.url).then(function(result) {
+
+			console.log("Bitly responded...");
+
+			result.shortened_url = result.url;
+
+			console.log(result.shortened_url);
+
+			res.send(JSON.stringify(result));
+			
+		});
+		
+	});
+
 }
 
 function create(photo_url, stylename, ig_username, options) {

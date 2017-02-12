@@ -144,7 +144,12 @@ module.exports = {
 
 			return execute('//' + config.HOSTNAME + '/api/hairpiq_creator/get_tags', params);
 
-		}
+		},
+		shortenUrl: function(params) {
+
+			return execute('//' + config.HOSTNAME + '/api/hairpiq_creator/shorten_url', params);
+
+		},
 
 	},
 };
