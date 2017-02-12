@@ -130,7 +130,7 @@ class MyHairpiqsWell extends Component {
 
     arr.push(new Promise(function(resolve, reject) {
 
-      Services.hairtips.getAll(params).then(function(result) {
+      Services.hairtips.getAllByUserId(params).then(function(result) {
 
         resolve(result)
 
