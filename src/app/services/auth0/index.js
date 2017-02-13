@@ -63,19 +63,20 @@ export default class AuthService extends EventEmitter {
             } else {
               _this.setProfile(profile)
             }
+
+            // report account activity metric
+            ga('send', {
+              hitType: 'event',
+              eventCategory: 'Account Activity',
+              eventAction: 'logged-in',
+              eventLabel: 'Logged In'
+            });
+
+            browserHistory.replace('/')
+
+            resolve('success');
+
           })
-
-          resolve('success');
-
-          // report account activity metric
-          ga('send', {
-            hitType: 'event',
-            eventCategory: 'Account Activity',
-            eventAction: 'logged-in',
-            eventLabel: 'Logged In'
-          });
-
-          browserHistory.replace('/')
 
         }
       })
