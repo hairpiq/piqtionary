@@ -179,6 +179,7 @@ class LoginForm extends Component {
 		
 		var checkForEmailFormat = new RegExp('[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$');
 		var email = e.target.value.replace(/\.+/g, '.');
+		email = email.toLowerCase()
 
 		if (email.length === 0) {
 			this.setState({
@@ -278,6 +279,7 @@ class LoginForm extends Component {
 		var checkForUsernameFormat = new RegExp('^[a-z0-9._-]{3,30}$');
 		var checkForEmailFormat = new RegExp('[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$');
 		var usernameOrEmail = e.target.value.replace(/\.+/g, '.');
+		usernameOrEmail = usernameOrEmail.toLowerCase()
 
 		if (usernameOrEmail.length === 0) {
 			this.setState({

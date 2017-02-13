@@ -242,45 +242,64 @@ class Main extends Component {
           />
         </IconButton>
 
+        <div className="more-menu">
+          
+          <IconMenu
+            iconButtonElement={<IconButton iconStyle={styles.appBarIconButton}><MoreVertIcon /></IconButton>}
+            anchorOrigin={{horizontal: 'right', vertical: 'top'}}
+            targetOrigin={{horizontal: 'right', vertical: 'top'}}
+            width={200}
+          >
+            {is_admin ?
 
-        <IconMenu
-          iconButtonElement={<IconButton iconStyle={styles.appBarIconButton}><MoreVertIcon /></IconButton>}
-          anchorOrigin={{horizontal: 'right', vertical: 'top'}}
-          targetOrigin={{horizontal: 'right', vertical: 'top'}}
-          width={200}
-        >
-          {is_admin ?
+            <div>
 
-          <div>
+              <MenuItem
+                primaryText="Admin Area"
+                rightIcon={<CloudIcon />}
+                onTouchTap={() => this.openAdminSite()}
+              />
+
+              <Divider />
+
+            </div>
+
+            : null }
 
             <MenuItem
-              primaryText="Admin Area"
-              rightIcon={<CloudIcon />}
-              onTouchTap={() => this.openAdminSite()}
+              className="mobile-info-page-button"
+              primaryText="My Favorites"
+              rightIcon={<PhotoLibraryIcon />}
+              onTouchTap={() => this.linkTo('/favorites')}
             />
 
+            <MenuItem
+              className="mobile-profile-page-button"
+              primaryText="My Profile"
+              rightIcon={<Avatar
+                          src={this.state.profile.picture}
+                        />}
+              onTouchTap={() => this.linkTo('/' + this.props.route.auth.getProfile().app_metadata.username)}
+            />
+
+            <MenuItem
+              primaryText="Send Feedback"
+              rightIcon={<QuestionAnswerIcon />}
+              onTouchTap={() => this.linkTo('/survey')}
+            />
+            <MenuItem
+              primaryText="Info"
+              rightIcon={<InfoIcon />}
+              onTouchTap={() => this.linkTo('/info')}
+            />
             <Divider />
+            <MenuItem
+              primaryText="Logout"
+              onTouchTap={() => this.logout()}
+            />
+          </IconMenu>
 
-          </div>
-
-          : null }
-
-          <MenuItem
-            primaryText="Send Feedback"
-            rightIcon={<QuestionAnswerIcon />}
-            onTouchTap={() => this.linkTo('/survey')}
-          />
-          <MenuItem
-            primaryText="Info"
-            rightIcon={<InfoIcon />}
-            onTouchTap={() => this.linkTo('/info')}
-          />
-          <Divider />
-          <MenuItem
-            primaryText="Logout"
-            onTouchTap={() => this.logout()}
-          />
-        </IconMenu>
+        </div>
       </div>
     )
 

@@ -54,7 +54,6 @@ a:hover {
 	height: auto !important;
 }
 
-
 .margin-top-20 {
 	margin-top:20px;
 }
@@ -117,6 +116,11 @@ em {
 	color: #9a8973;
 }
 
+.mobile-info-page-button,
+.mobile-profile-page-button {
+	display: none !important;
+}
+
 @media (max-width: 767px) {
   	.main .app_bar {
 		position: relative !important;
@@ -131,6 +135,23 @@ em {
 	.main .intro {
 		padding:0 25px;
 	}
+
+	.main .app_bar .info-page-button,
+	.main .app_bar .profile-page-button {
+		display: none !important;
+	}
+
+	.mobile-info-page-button,
+	.mobile-profile-page-button {
+		display: block !important;
+	}
+
+	.main .app_bar .more-menu {
+		position: absolute !important;
+		top: 8px;
+		right: 0;
+	}
+
 }
 
 @media (max-width: 849px) {
@@ -158,6 +179,10 @@ em {
 
 	.main .intro {
 		padding:80px 25px 0;
+	}
+
+	.main .app_bar .more-menu {
+		display: inline-block;
 	}
 
 }
