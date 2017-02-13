@@ -124,7 +124,7 @@ class HeroSpace extends Component {
 				animate: false
 			},
 			data: [{
-				title: 'Get $10 Off The Black Love Experience by 1/15/2017',
+				title: 'Buy Your Ticket for the Black Love Experience, this Saturday, 2/18/2017 in Washington, DC.',
 				content: black_love_experience_content
 			},
 			/*{
