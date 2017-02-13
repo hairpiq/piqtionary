@@ -7,6 +7,9 @@ import SplashItem from '../partials/SplashItem';
 import LoginForm from '../partials/LoginForm';
 import SiteFooter from '../partials/SiteFooter';
 import {browserHistory} from 'react-router';
+import CircularProgress from 'material-ui/CircularProgress';
+import {grey400, orange700} from 'material-ui/styles/colors';
+
 
 class Index extends Component {
 
@@ -82,9 +85,7 @@ class Index extends Component {
 
           </div>
         
-        : null }
-
-        { !is_logged_in ?
+        :
           
         <div className="splash-page">
 
@@ -175,7 +176,7 @@ class Index extends Component {
 
         </div>
 
-        : null }
+        }
 
       </div>
     );
