@@ -74,6 +74,66 @@ class Index extends Component {
 
       <div>
 
+        {/* 
+
+        <SplashItem
+          listItem={{
+            _id: "5884ffd28516685c6087d544",
+            ig_username: "@curlyyhair.killa",
+            publish_status: "published",
+            s3_url: "https://dev-piqtionary.s3.amazonaws.com/exbclo4ytos9zbg8yttz.jpg",
+            stylename: "Twist Bangs and Puff",
+          }}
+        />
+        <SplashItem
+          listItem={{
+            _id: "5884ffd28516685c6087d544",
+            ig_username: "@curlyyhair.killa",
+            publish_status: "published",
+            s3_url: "https://dev-piqtionary.s3.amazonaws.com/v4drwif6adude07bobmt.jpg",
+            stylename: "Twist Bangs and Puff",
+          }}
+        />
+        <SplashItem
+          listItem={{
+            _id: "5884ffd28516685c6087d544",
+            ig_username: "@curlyyhair.killa",
+            publish_status: "published",
+            s3_url: "https://dev-piqtionary.s3.amazonaws.com/llhsufy0edxlam7d68km.jpg",
+            stylename: "Twist Bangs and Puff",
+          }}
+        />
+        <SplashItem
+          listItem={{
+            _id: "5884ffd28516685c6087d544",
+            ig_username: "@curlyyhair.killa",
+            publish_status: "published",
+            s3_url: "https://dev-piqtionary.s3.amazonaws.com/qm8ssoz2jjk1yl4uyhvp.jpg",
+            stylename: "Twist Bangs and Puff",
+          }}
+        />
+
+        <SplashItem
+          listItem={{
+            _id: "5884ffd28516685c6087d544",
+            ig_username: "@curlyyhair.killa",
+            publish_status: "published",
+            s3_url: "https://dev-piqtionary.s3.amazonaws.com/galgzakzpg8kmhfybnej.jpg",
+            stylename: "Twist Bangs and Puff",
+          }}
+        />
+        <SplashItem
+          listItem={{
+            _id: "5884ffd28516685c6087d544",
+            ig_username: "@curlyyhair.killa",
+            publish_status: "published",
+            s3_url: "https://dev-piqtionary.s3.amazonaws.com/hq6wxjrebimfzuxokivq.jpg",
+            stylename: "Twist Bangs and Puff",
+          }}
+        />
+
+        */}
+
         <SplashItem
           listItem={{
             ig_username: "@naturallynefertiti",
@@ -100,6 +160,20 @@ class Index extends Component {
             ig_username: "@curlyyhair.killa",
             s3_url: "https://piqtionary.s3.amazonaws.com/tc286wiqkorb9pjqo93r.jpg",
             stylename: "Twist Bangs and Puff",
+          }}
+        />
+        <SplashItem
+          listItem={{
+            ig_username: "@tassie8",
+            s3_url: "https://piqtionary.s3.amazonaws.com/cgwzwike7kxdcgl5sgk9.jpg",
+            stylename: "Curls",
+          }}
+        />
+        <SplashItem
+          listItem={{
+            ig_username: "@huffbali_",
+            s3_url: "https://piqtionary.s3.amazonaws.com/ksl1ue4eoqhydncd8mkb.jpg",
+            stylename: "Twisted Locs",
           }}
         />
 
