@@ -1,0 +1,91 @@
+.profile-page {
+	margin-bottom:70px;
+}
+
+.profile-page h1,
+.profile-page h2 {
+	height: auto;
+}
+
+.profile-page h1 {
+	word-wrap: break-word;
+}
+
+.profile-page h2 {
+	margin-top: 10px;
+}
+
+.profile-page .content-container {
+	margin-top: 12px;
+	padding: 50px;
+}
+
+.profile-page .content-container.profile-header {
+	padding:0;
+}
+
+.profile-page .content {
+	margin: 0 auto;
+}
+
+.profile-page .content-container.profile-header .content {
+	max-width: 500px;
+	padding: 50px 0;	
+}
+
+.profile-page .left-col {
+	width: 40%;
+	display:inline-block;
+	text-align: center;
+    vertical-align: top;
+}
+
+.profile-page .right-col {
+	width: 60%;
+	display:inline-block;
+}
+
+.profile-page .edit-button {
+	border-radius: 5px !important;
+	margin-top: 20px !important;
+}
+
+.profile-page .profile-header-dashed {
+	border-bottom: 1px dashed #bdbdbd !important;
+    background-color: #fff !important;
+    margin-bottom: -10px !important;
+}
+
+.profile-page .hairpiq-collection {
+	margin-top: 0 !important;
+	padding: 0;
+}
+
+.profile-page .hairpiq-collection h3 {
+	padding: 25px 25px 10px;
+    margin: 20px 0 0;
+}
+
+
+@media (max-width: 767px) {
+	
+	.profile-page {
+
+	    margin-top: -70px;
+	    margin-bottom: 0;
+
+	}
+
+}
+
+@media (min-width: 768px) {
+	
+	.profile-page .content-container {
+		margin-top: 80px;
+	}
+
+	.profile-page .content {
+		margin: 0 auto;
+	}
+
+}

@@ -278,8 +278,12 @@ module.exports = function(app) {
 				s3_url: result.s3_url,
 				stylename: req.body.stylename,
 				ig_username: req.body.ig_username,
-				options: req.body.options
+				options: req.body.options,
+				auth0_user_id: req.body.auth0_user_id
 			}
+
+			console.log('AAA')
+			console.log('auth0_user_id: ' + req.body.auth0_user_id)
 
 			if (req.body.add_to_pending_requests)
 				submitForReview(params).then(function(resolve, reject) {
@@ -347,6 +351,28 @@ module.exports = function(app) {
 			res.send(JSON.stringify(result));
 
 		});
+	});
+
+
+	/*
+		create shortened url
+	*/
+
+	app.post('/api/hairpiq_creator/shorten_url', function(req, res) {
+
+
+		bitly.shortenLink(req.body.url).then(function(result) {
+
+			console.log("Bitly responded...");
+
+			result.shortened_url = result.url;
+
+			console.log(result.shortened_url);
+
+			res.send(JSON.stringify(result));
+			
+		});
+		
 	});
 
 }
@@ -646,8 +672,12 @@ function submitForReview(obj) {
 		orig_photo_url: obj.orig_photo_url,
 		s3_url: obj.s3_url,
 		stylename: obj.stylename,
-		ig_username: obj.ig_username
+		ig_username: obj.ig_username,
+		auth0_user_id: obj.auth0_user_id
 	}
+
+	console.log('BBB')
+	console.log('auth0_user_id: ' + obj.auth0_user_id)
 
 	if (obj.options !== undefined)
 		params.options = obj.options

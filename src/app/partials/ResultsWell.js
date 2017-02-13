@@ -8,6 +8,7 @@ import {grey400, orange700} from 'material-ui/styles/colors';
 import FlatButton from 'material-ui/FlatButton';
 import { browserHistory } from 'react-router';
 import Paper from 'material-ui/Paper';
+import Snackbar from 'material-ui/Snackbar';
 
 class ResultsWell extends Component {
 
@@ -20,8 +21,16 @@ class ResultsWell extends Component {
           page_num: 0,
           hasMoreItems: true,
           term: this.props.term,
-          result_status: ''
+          result_status: '',
+          auth0_user_id: '',
+          favorites: undefined,
+          hairtips: undefined,
+          snackbar: {
+            open: false,
+            message: ''
+          },
       };
+
   }
 
   linkTo(returnToPathname) {
@@ -81,14 +90,165 @@ class ResultsWell extends Component {
     });
   }
 
+  getTertiaryData() {
+
+    let _this = this;
+
+    let auth0_user_id = JSON.parse(localStorage.getItem('profile')).user_id
+
+    let params = {
+      auth0_user_id: auth0_user_id,
+    }
+
+    let arr = []
+
+    arr.push(new Promise(function(resolve, reject) {
+
+      Services.getFavorites(params).then(function(result) {
+
+        resolve(result)
+
+      }).catch(function(e) {
+        
+        console.log(e)
+        reject(e)
+
+      })
+
+    }))
+
+    arr.push(new Promise(function(resolve, reject) {
+
+      Services.hairtips.getAll(params).then(function(result) {
+
+        resolve(result)
+
+      }).catch(function(e) {
+      
+        console.log(e)
+        reject(e)
+      
+      })
+
+    }))
+
+    Promise.all(arr).then( function(results) {
+
+      _this.setState({
+        favorites: results[0],
+        hairtips: results[1]
+      })
+      
+    })
+
+  }
+
+  componentDidMount() {
+
+    this.getTertiaryData()
+
+  }
+
   componentWillReceiveProps(nextProps) {
 
 
+    let _this = this;
+
     this.setState({
         result_status: ''
+      }, function() {
+
+        _this.getTertiaryData()
+
       });
 
   }
+
+  addToFavorites(hairpiq_id) {
+
+    let _this = this;
+    let auth0_user_id = JSON.parse(localStorage.getItem('profile')).user_id
+
+    let params = {
+      auth0_user_id: auth0_user_id,
+      hairpiq_id: hairpiq_id
+    }
+
+    return new Promise (function(resolve, reject) {
+
+      Services.addToFavorites(params).then(function(result){
+
+        // Gently notify the user of their limit.
+
+        _this.setState({
+          favorites: result,
+          snackbar: {
+              open: true,
+              message: 'added to favorites'
+          }
+        },
+        function() {
+
+          resolve(result)
+
+        })
+
+      }).catch(function(e) {
+
+        console.log(e)
+        reject(e)
+
+      })
+
+    })
+
+  }
+
+  removeFromFavorites(hairpiq_id) {
+
+    let _this = this;
+    let auth0_user_id = JSON.parse(localStorage.getItem('profile')).user_id
+
+   let params = {
+      auth0_user_id: auth0_user_id,
+      hairpiq_id: hairpiq_id
+    }
+
+    return new Promise (function(resolve, reject) {
+    
+      Services.removeFromFavorites(params).then(function(result){
+
+        _this.setState({
+          favorites: result,
+          snackbar: {
+              open: true,
+              message: 'removed from favorites!'
+          }
+        },
+        function() {
+
+          resolve(result)
+
+        })
+
+      }).catch(function(e) {
+
+        console.log(e)
+        reject(e)
+
+      })
+
+    })
+
+  }
+
+  closeSnackbar = () => {
+    this.setState({
+        snackbar: { 
+        open: false
+      }
+    });
+  };
 
   // resetting the state forces the InfiniteScroll Component to re-render
   // with the below values
@@ -116,21 +276,31 @@ class ResultsWell extends Component {
       </div>
     );
 
-    var items = [];
+   
+    if (this.state.favorites !== undefined) {
+
+      var items = [];
       this.state.hairpiqs.map((listItem, i) => {
         items.push(
             
             <div className="hairpiq-paper-container uk-width-small-1-3 uk-width-medium-1-4">
               <ResultItem
-                key={i}
+                key={listItem.id}
                 listItem={listItem}
                 location={this.props.location}
                 hairpiqs={this.state.hairpiqs}
+                favorites={this.state.favorites}
+                hairtips={this.state.hairtips}
+                addToFavorites={this.addToFavorites.bind(this)}
+                removeFromFavorites={this.removeFromFavorites.bind(this)}
+                is_logged_in={this.props.is_logged_in}
               />
             </div>
 
         );
-    });
+      });
+
+    }
 
     return (
       
@@ -162,20 +332,35 @@ class ResultsWell extends Component {
 
           :
 
-          <InfiniteScroll
-              pageStart={0}
-              loadMore={this.loadItems.bind(this)}
-              hasMore={this.state.hasMoreItems}
-              loader={loader}>
+          <div>
 
-              <div className="uk-grid uk-grid-margin" data-uk-grid-match data-uk-grid-margin>
-                  {items}
-              </div>
-          </InfiniteScroll>
+            {this.state.favorites !== undefined ?
+            <InfiniteScroll
+                pageStart={0}
+                loadMore={this.loadItems.bind(this)}
+                hasMore={this.state.hasMoreItems}
+                loader={loader}>
+
+                <div className="uk-grid uk-grid-margin" data-uk-grid-match data-uk-grid-margin>
+                    {items}
+                </div>
+            </InfiniteScroll>
+            :
+            null }
+
+          </div>
 
           }
         
         </div>
+
+        <Snackbar
+          className="snackbar"
+          open={this.state.snackbar.open}
+          message={this.state.snackbar.message}
+          autoHideDuration={1000}
+          onRequestClose={this.closeSnackbar}
+        />
 
       </div>
     );

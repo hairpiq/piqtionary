@@ -1,3 +1,6 @@
+if (typeof window !== 'object')
+	require('dotenv').config();
+
 var config = process.env;
 
 module.exports = {

@@ -178,6 +178,62 @@
     margin: 20px 0 0 35px !important;
 }
 
+.create-form [data-action="nw"] span {
+    width: 16px !important;
+    height: 16px !important;
+    top: -8px !important;
+    left: -4px !important;
+}
+
+.create-form [data-action="n"] span {
+    width: 16px !important;
+    height: 16px !important;
+    top: -8px !important;
+    margin-left: -8px !important;
+}
+
+.create-form [data-action="ne"] span {
+    width: 16px !important;
+    height: 16px !important;
+    top: -8px !important;
+    right: -8px !important;
+}
+
+.create-form [data-action="w"] span {
+    width: 16px !important;
+    height: 16px !important;
+    left: -8px !important;
+    margin-top: -8px !important;
+}
+
+.create-form [data-action="e"] span {
+    width: 16px !important;
+    height: 16px !important;
+    right: -8px !important;
+    margin-top: -8px !important;
+}
+
+.create-form [data-action="sw"] span {
+    width: 16px !important;
+    height: 16px !important;
+    bottom: -8px !important;
+    left: -8px !important;
+}
+
+.create-form [data-action="s"] span {
+    width: 16px !important;
+    height: 16px !important;
+    bottom: -8px !important;
+    margin-bottom: 0px !important;
+}
+
+.create-form [data-action="se"] span {
+    width: 16px !important;
+    height: 16px !important;
+    bottom: -8px !important;
+    right: -8px !important;
+}
+
 @media (max-width: 479px) {
 
     .fixed-create-form-width {

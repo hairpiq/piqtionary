@@ -1,20 +1,50 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
-import SearchBar from '../partials/SearchBar';
 import ResultsWell from '../partials/ResultsWell';
 import Helmet from 'react-helmet';
 import HeroSpace from '../partials/HeroSpace';
+import SplashItem from '../partials/SplashItem';
+import LoginForm from '../partials/LoginForm';
+import SiteFooter from '../partials/SiteFooter';
+import {browserHistory} from 'react-router';
+import CircularProgress from 'material-ui/CircularProgress';
+import {grey400, orange700} from 'material-ui/styles/colors';
+
 
 class Index extends Component {
 
+  constructor() {
+    super();
+
+    this.state = {
+      is_logged_in: false
+    }
+
+  }
+
+  componentDidMount() {
+
+    this.setState({
+      is_logged_in: this.props.route.auth.loggedIn()
+    });
+
+  }
+
+  componentWillReceiveProps(nextProps) {
+
+    this.setState({
+      is_logged_in: this.props.route.auth.loggedIn()
+    });
+
+  }
+
   render() {
 
-    return (
-      <div>
+    let {is_logged_in} = this.state;
 
-        <Helmet
-          defaultTitle="Hairpiq"
-        />
+    const home_layout = (
+
+      <div>
 
         {this.props.location.pathname === '/' ?
         <HeroSpace />
@@ -29,11 +59,92 @@ class Index extends Component {
             <ResultsWell
               term={this.props.location.query.q ? this.props.location.query.q : ''}
               location={this.props.location}
+              is_logged_in={is_logged_in}
             />
 
           </div>
-        
+      
         </div>
+
+      </div>
+
+    )
+
+    const strip_entries = (
+
+      <div>
+
+        <SplashItem
+          listItem={{
+            ig_username: "@naturallynefertiti",
+            s3_url: "https://piqtionary.s3.amazonaws.com/ycda4hhudghrbokwujud.jpg",
+            stylename: "Afro",
+          }}
+        />
+        <SplashItem
+          listItem={{
+            ig_username: "@napturally_tamed",
+            s3_url: "https://piqtionary.s3.amazonaws.com/klnbxswlzglzpdzirudz.jpg",
+            stylename: "Perm Rod Set Updo",
+          }}
+        />
+        <SplashItem
+          listItem={{
+            ig_username: "@everythingmich",
+            s3_url: "https://piqtionary.s3.amazonaws.com/woshamxizv3b7avxgs2g.jpg",
+            stylename: "Side Updo",
+          }}
+        />
+        <SplashItem
+          listItem={{
+            ig_username: "@curlyyhair.killa",
+            s3_url: "https://piqtionary.s3.amazonaws.com/tc286wiqkorb9pjqo93r.jpg",
+            stylename: "Twist Bangs and Puff",
+          }}
+        />
+
+      </div>
+
+    )
+
+    return (
+      <div>
+
+        <Helmet
+          defaultTitle="Hairpiq"
+        />
+
+        { is_logged_in ?
+
+          <div>
+
+            {home_layout} 
+
+          </div>
+        
+        :
+          
+        <div className="splash-page">
+
+          <div className="left-col">
+            <div className="strip">
+              {strip_entries}
+              { /*repeat strip entries for smooth looping animation */}
+              {strip_entries}
+            </div>
+          </div>
+
+          <div className="right-col">
+            
+            <LoginForm auth={this.props.route.auth} />
+
+            <SiteFooter />
+
+          </div>
+
+        </div>
+
+        }
 
       </div>
     );

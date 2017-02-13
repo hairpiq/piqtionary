@@ -1,16 +1,33 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
+import {green600, grey400, grey700} from 'material-ui/styles/colors';
 import {browserHistory} from 'react-router';
 import Paper from 'material-ui/Paper';
 import Divider from 'material-ui/Divider';
 import LazyLoad from 'react-lazyload';
+import NavigationCheckIcon from 'material-ui/svg-icons/navigation/check';
+import AddToPhotosIcon from 'material-ui/svg-icons/image/add-to-photos';
+import HairtipsIcon from 'material-ui/svg-icons/editor/format-list-bulleted';
+import IconButton from 'material-ui/IconButton';
+import CircularProgress from 'material-ui/CircularProgress';
+
+const styles = {
+  appBarIconButton : {
+    color: grey700
+  }
+};
 
 class ResultItem extends Component {
 
   constructor() {
     super();
 
+    this.state = {
+      favorite_status: ''
+    }
+
     this.linkTo = this.linkTo.bind(this);
+
   }
 
   proxyUrl = (s3_url) => {
@@ -25,8 +42,93 @@ class ResultItem extends Component {
     });
   }
 
+  gotoLogin() {
+    browserHistory.push('/')
+  }
+
+  showHairtip(id) {
+
+
+    browserHistory.push({
+      pathname: `/p/${id}/hairtip`,
+      state: { modal: true, returnTo: this.props.location.pathname, hairpiqs: this.props.hairpiqs }
+    });
+
+  }
+
+  addToFavorites(id) {
+
+    let _this = this;
+
+    this.setState({
+      favorite_status: 'loading'
+    },function() {
+
+      _this.props.addToFavorites(id).then(function(result) {
+
+        // report account activity metric
+        ga('send', {
+          hitType: 'event',
+          eventCategory: 'Account Activity',
+          eventAction: 'add-to-favorites',
+          eventLabel: 'Add to Favorites'
+        });
+        
+        _this.setState({
+          favorite_status: 'added'
+        })
+
+      })
+
+    })
+  }
+
+  removeFromFavorites(id) {
+
+    let _this = this;
+
+    this.setState({
+      favorite_status: 'loading'
+    }, function() {
+
+      _this.props.removeFromFavorites(id).then(function(result) {
+
+        // report account activity metric
+        ga('send', {
+          hitType: 'event',
+          eventCategory: 'Account Activity',
+          eventAction: 'remove-from-favorites',
+          eventLabel: 'Remove from Favorites'
+        });
+        
+        _this.setState({
+            favorite_status: 'removed'
+          })
+
+      })
+
+    })
+  }
+
   render() {
-    const listItem = this.props.listItem;
+    
+    const { listItem, favorites, hairtips, is_logged_in } = this.props;
+
+    let _this = this;
+    let is_favorited = false
+    let has_hairtip = false
+
+    for (var i in favorites)
+      if (favorites[i].hairpiq_id === listItem._id) {
+        is_favorited = true
+        break
+      }
+
+    for (var j in hairtips)
+      if (hairtips[j].hairpiq_id === listItem._id) {
+        has_hairtip = true
+        break
+      }
 
     return (
       <Paper key={this.props.key} className="hairpiq-paper">
@@ -56,7 +158,68 @@ class ResultItem extends Component {
           <div className="text">
             {listItem.ig_username}
           </div>
-        </div>            
+        </div>
+        <div className="dashed"/>
+
+        { this.state.favorite_status === 'loading' ?
+
+        <div className="loader">
+           <CircularProgress color={grey400} size={20} />
+        </div>
+
+        :
+
+        <span>
+
+          { is_favorited || this.state.favorite_status === 'added' ?
+
+          <IconButton
+            onTouchTap={() => {
+              this.removeFromFavorites(listItem._id)
+            }}>
+            <NavigationCheckIcon color={green600} />
+          </IconButton>
+
+          :
+
+          <span>
+
+            { this.state.favorite_status === '' || this.state.favorite_status === 'removed' ?
+
+            <IconButton
+              onTouchTap={() => {
+
+                if (is_logged_in)
+                  this.addToFavorites(listItem._id)
+                else
+                  this.gotoLogin()
+
+              }}
+              iconStyle={styles.appBarIconButton}>
+              <AddToPhotosIcon />
+            </IconButton>
+
+            : null }
+
+          </span>
+
+          }
+
+        </span>
+
+        }
+
+        { has_hairtip ?
+
+        <IconButton
+          onTouchTap={() => this.showHairtip(listItem._id)}
+          iconStyle={styles.appBarIconButton}>
+          <HairtipsIcon />
+        </IconButton>
+
+        : null }
+        
+
       </Paper>
     )
   }

@@ -1,0 +1,149 @@
+.fixed-edit-hairtip-form-width {
+	width: 768px;
+}
+
+.main-container.fixed-edit-hairtip-form-width {
+    margin: 0 auto;
+}
+
+.modal-inner.fixed-edit-hairtip-form-width .intro {
+    display: none;
+}
+
+.main-container.fixed-edit-hairtip-form-width .edit-hairtip-form,
+.main-container.fixed-edit-hairtip-form-width .edit-hairtip-form .photo {
+    background: #ffffff; !important;
+}
+
+.edit-hairtip-form {
+	position: relative;
+	min-height: 470px;
+	border-radius: 5px;
+}
+
+.modal .edit-hairtip-form {
+	background: #f5f5f5 !important;
+}
+
+.edit-hairtip-form .error-box {
+    margin-top: 10px;
+    font-size: 90%;
+    color: #616161;
+    min-height:20px;
+    margin-bottom:15px;
+}
+
+.edit-hairtip-form .error-box p {
+	margin: 0;
+}
+
+.edit-hairtip-form:after {
+
+	content: "";
+    display: block;
+    clear: both;
+}
+
+.edit-hairtip-form .left-col {
+	width: 50%;
+	float: left;
+}
+
+.edit-hairtip-form .right-col {
+	width: 50%;
+	float: left;
+	background: #ffffff;
+	min-height: 469px;
+}
+
+.modal .edit-hairtip-form .right-col {
+	border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.edit-hairtip-form .photo {
+	width:100%;
+	min-height: 350px;
+	padding: 20px;
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.modal .edit-hairtip-form .photo {
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+.edit-hairtip-form label {
+	font-size: 130%;
+}
+
+.edit-hairtip-form .detail-info {
+	margin: 0 auto;
+	width:100%;
+	height: auto;
+	outline: none;
+	padding-top: 20px;
+	border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.edit-hairtip-form .data-container {
+	padding:15px 25px;
+}
+
+.edit-hairtip-form .DraftEditor-root {
+	min-height: 144px !important;
+    background: #eee !important;
+    border-radius: 5px;
+    padding: 15px;
+}
+
+.edit-hairtip-form .public-DraftEditorPlaceholder-root {
+	position: absolute;
+	color: #a9a9a9;
+}
+
+.edit-hairtip-form .public-DraftEditor-content {
+	color: #212121;
+}
+
+.edit-hairtip-form .col-seperator {
+	position: absolute;
+    border-right: 1px dashed #ddd !important;
+    top: 0;
+    left: 50%;
+    bottom: 0;
+}
+
+.edit-hairtip-form .submit-button {
+    float: right;
+	border-radius: 5px !important;
+	color: #ffffff !important;
+    width: 30%;
+    margin:25px 25px 25px 4px !important;
+}
+
+.edit-hairtip-form .submit-button.disabled {
+	opacity: .5;
+}
+
+.fixed-edit-hairtip-form-width .button.next,
+.fixed-edit-hairtip-form-width .button.before {
+	display: none !important;	
+}
+
+.fixed-edit-hairtip-form-width .loader {
+
+ 	display: inline-block;
+    margin-top: 33px;
+    margin-left: 200px;
+
+}
+
+.edit-hairtip-form .delete.button {
+	position: absolute !important;
+	top: 68px;
+    right: 9px;
+}

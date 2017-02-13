@@ -5,15 +5,28 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
 import {browserHistory} from 'react-router';
+
 import IconButton from 'material-ui/IconButton';
+import IconMenu from 'material-ui/IconMenu';
+import MenuItem from 'material-ui/MenuItem';
+import SettingsIcon from 'material-ui/svg-icons/action/settings';
+import CloudIcon from 'material-ui/svg-icons/file/cloud';
+import QuestionAnswerIcon from 'material-ui/svg-icons/action/question-answer';
+import AccountCircleIcon from 'material-ui/svg-icons/action/account-circle';
+import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import PhotoLibraryIcon from 'material-ui/svg-icons/image/photo-library';
 import VideoLibraryIcon from 'material-ui/svg-icons/av/video-library';
 import InfoIcon from 'material-ui/svg-icons/action/info';
+import ActionLockIcon from 'material-ui/svg-icons/action/lock';
+import HelpIcon from 'material-ui/svg-icons/action/help';
+import Divider from 'material-ui/Divider';
+
+import Avatar from 'material-ui/Avatar';
+
 import Modal from '../partials/Modal';
 import SearchBar from '../partials/SearchBar';
 import CreateButton from '../partials/hairpiq_creator/CreateButton';
 import SiteFooter from '../partials/SiteFooter';
-
 
 var RetinaImage = require('react-retina-image');
 
@@ -47,10 +60,14 @@ class Main extends Component {
     super();
 
     this.state = {
-      indexChildren: {}
+      previousChildren: {},
+      is_logged_in: false,
+      profile: {},
+      is_profile_loaded: false
     }
 
     this.linkTo = this.linkTo.bind(this);
+    this.logout = this.logout.bind(this);
 
   }
 
@@ -60,37 +77,135 @@ class Main extends Component {
     
   }
 
+  logout() {
+    this.props.route.auth.logout();
+    this.linkTo('/logout');
+  }
+
+  openAdminSite() {
+
+    browserHistory.push({
+      pathname: '/admin',
+      state: { role: 'admin' }
+    })
+
+  }
+
   componentDidMount() {
 
     // compensate for javascript ugly page loading by removing
     // the loading class when this component finally mounts to page.
     $("#app").removeClass('loading');
+
+    let auth = this.props.route.auth;
+
+    this.setState({
+      is_logged_in: auth.loggedIn(),
+    });
+
+    let _this = this;
+
+    if (auth.loggedIn()) {
+      
+      // if user_id not set, save into localStorage
+      if (localStorage.getItem('profile') === null) {
+      
+        auth.on('profile_updated', function(e) {
+          _this.setState({
+            profile: auth.getProfile(),
+            is_profile_loaded: true
+          })
+        })
+
+      } else {
+      
+        _this.setState({
+          profile: auth.getProfile(),
+          is_profile_loaded: true
+        })
+      
+      }
+
+    }
     
   }
 
   componentWillReceiveProps(nextProps) {
-    // if we changed routes...
-    if ((
+
+    let auth = this.props.route.auth;
+    let _this = this;
+
+    if (auth.loggedIn()) {
+      
+      // if user_id not set, save into localStorage
+      if (localStorage.getItem('profile') === null) {
+      
+        auth.removeAllListeners()
+        auth.on('profile_updated', function(e) {
+          
+          _this.setState({
+            profile: auth.getProfile(),
+            is_profile_loaded: true
+          })
+
+        })
+      
+      }
+    }
+
+    this.setState({
+      is_logged_in: this.props.route.auth.loggedIn()
+    });
+
+      // if we changed routes...
+      if ((
       nextProps.location.key !== this.props.location.key &&
       nextProps.location.state &&
       nextProps.location.state.modal
-    )) {
+      )) {
 
-      if (this.state.indexChildren.props === undefined)
-          this.setState({
-            indexChildren: this.props.children
-          });
-    }
+
+        if (nextProps.location.state.modal === true) {
+
+          // remember the previous page children to render under the modal     
+          if (this.state.previousChildren.props === undefined) {
+
+            this.setState({
+              previousChildren: this.props.children
+            });
+
+          }
+
+        }
+      }
+  }
+
+  onModalClose() {
+
+    // clear previous page children rendered under the modal
+    this.setState({
+      previousChildren: {}
+    })
+
   }
 
   render() {
+
+    let { is_profile_loaded, profile } = this.state;
+    let is_admin = false;
+    
+    if (is_profile_loaded)
+        if (profile.app_metadata !== undefined)
+          if (profile.app_metadata.roles !== undefined)
+            if (profile.app_metadata.roles[0] === 'admin' && profile.email_verified)
+              is_admin = true;
 
     let { location } = this.props
 
     let isModal = (
       location.state &&
       location.state.modal &&
-      (this.state.indexChildren.props !== undefined)
+      (this.state.previousChildren.props !== undefined)
     )
 
     const logo = (
@@ -109,17 +224,94 @@ class Main extends Component {
       <div>
         {/*
         <IconButton iconStyle={styles.appBarIconButton} tooltip="Photos"><PhotoLibraryIcon /></IconButton>
-        <IconButton iconStyle={styles.appBarIconButton} tooltip="Videos"><VideoLibraryIcon /></IconButton>
         */}
         <IconButton
           className="info-page-button"
-          onTouchTap={() => this.linkTo('/info')}
-          iconStyle={styles.appBarIconButton}
-          tooltip="More Info">
-          <InfoIcon />
+          onTouchTap={() => this.linkTo('/favorites')}
+          iconStyle={styles.appBarIconButton}>
+          <PhotoLibraryIcon />
         </IconButton>
+
+
+        <IconButton
+          className="profile-page-button"
+          onTouchTap={() => this.linkTo('/' + this.props.route.auth.getProfile().app_metadata.username)}
+          iconStyle={styles.appBarIconButton}>
+          <Avatar
+            src={this.state.profile.picture}
+          />
+        </IconButton>
+
+        <div className="more-menu">
+          
+          <IconMenu
+            iconButtonElement={<IconButton iconStyle={styles.appBarIconButton}><MoreVertIcon /></IconButton>}
+            anchorOrigin={{horizontal: 'right', vertical: 'top'}}
+            targetOrigin={{horizontal: 'right', vertical: 'top'}}
+            width={200}
+          >
+            {is_admin ?
+
+            <div>
+
+              <MenuItem
+                primaryText="Admin Area"
+                rightIcon={<CloudIcon />}
+                onTouchTap={() => this.openAdminSite()}
+              />
+
+              <Divider />
+
+            </div>
+
+            : null }
+
+            <MenuItem
+              className="mobile-info-page-button"
+              primaryText="My Favorites"
+              rightIcon={<PhotoLibraryIcon />}
+              onTouchTap={() => this.linkTo('/favorites')}
+            />
+
+            <MenuItem
+              className="mobile-profile-page-button"
+              primaryText="My Profile"
+              rightIcon={<Avatar
+                          src={this.state.profile.picture}
+                        />}
+              onTouchTap={() => this.linkTo('/' + this.props.route.auth.getProfile().app_metadata.username)}
+            />
+
+            <MenuItem
+              primaryText="Send Feedback"
+              rightIcon={<QuestionAnswerIcon />}
+              onTouchTap={() => this.linkTo('/survey')}
+            />
+            <MenuItem
+              primaryText="Info"
+              rightIcon={<InfoIcon />}
+              onTouchTap={() => this.linkTo('/info')}
+            />
+            <Divider />
+            <MenuItem
+              primaryText="Logout"
+              onTouchTap={() => this.logout()}
+            />
+          </IconMenu>
+
+        </div>
       </div>
     )
+
+    const login_button = (
+      <IconButton
+          className="login-button"
+          onTouchTap={() => this.linkTo('/')}
+          iconStyle={styles.appBarIconButton}
+          tooltip="Login">
+          <ActionLockIcon />
+        </IconButton>
+    );
 
     return (
       <div className="main">       
@@ -127,33 +319,102 @@ class Main extends Component {
 
             <div>
 
-              <AppBar
-                className="app_bar"
-                showMenuIconButton={false}
-                title={logo}
-                children={search_bar}
-                iconElementRight={standard_actions}
-              />
+              {this.state.is_logged_in ?
 
-              <div className="main-container">
+              <div>
 
-              {isModal ?
-                this.state.indexChildren :
-                this.props.children
-              }
+                {is_profile_loaded ?
+
+                  <div>
+                    
+                    <AppBar
+                      className="app_bar"
+                      showMenuIconButton={false}
+                      title={logo}
+                      children={search_bar}
+                      iconElementRight={standard_actions}
+                    />
+
+                    <div className="main-container">
+
+                    {isModal ?
+                      this.state.previousChildren :
+                      this.props.children
+                    }
+
+                    </div>
+
+                    {isModal && (
+                      <Modal isOpen={true} returnTo={location.state.returnTo} pathname={location.pathname} hairpiqs={location.state.hairpiqs} onClose={this.onModalClose.bind(this)}>
+                        {this.props.children}
+                      </Modal>
+                    )}
+
+                    {
+                      this.props.location.pathname !== '/create' &&
+                      this.props.location.pathname !== '/survey' &&
+                      this.props.location.pathname !== '/settings' &&
+                      this.props.location.pathname !== '/add-hairtip' &&
+                      this.props.location.pathname.split('/')[1] !== 'add-hairtip' &&
+                      this.props.location.pathname !== '/edit-hairtip' &&
+                      this.props.location.pathname.split('/')[1] !== 'edit-hairtip' ?
+
+                    <CreateButton location={this.props.location} /> : null }
+
+                    <SiteFooter />
+                  </div>
+
+                  : null }
 
               </div>
 
-              {isModal && (
-                <Modal isOpen={true} returnTo={location.state.returnTo} pathname={location.pathname} hairpiqs={location.state.hairpiqs}>
+              :
+
+              <div>
+
+                {this.props.location.pathname !== '/' ?
+                
+                <div>
+
+                  <AppBar
+                    className="app_bar"
+                    showMenuIconButton={false}
+                    title={logo}
+                    iconElementRight={login_button}
+                  />
+
+                  <div className="main-container">
+
+                  {isModal ?
+                    this.state.previousChildren :
+                    this.props.children
+                  }
+
+                  </div>
+
+                  {isModal && (
+                    <Modal isOpen={true} returnTo={location.state.returnTo} pathname={location.pathname} hairpiqs={location.state.hairpiqs} onClose={this.onModalClose.bind(this)}>
+                      {this.props.children}
+                    </Modal>
+                  )}
+
+                  <SiteFooter />
+
+                </div>
+
+                :
+
+                <div className="main-container">
+                
                   {this.props.children}
-                </Modal>
-              )}
 
-              {this.props.location.pathname !== '/create' && this.props.location.pathname !== '/survey' ?
-              <CreateButton location={this.props.location} /> : null }
+                </div>
 
-              <SiteFooter />
+                }
+
+              </div>
+
+              }
 
             </div>
 

@@ -14,7 +14,8 @@ class HeroSpace extends Component {
 		super();
 
 		this.state = {
-			open: false
+			open: false,
+			initialized: false
 		}
 
 		this.handleToggle = this.handleToggle.bind(this);
@@ -31,10 +32,16 @@ class HeroSpace extends Component {
 
 		setTimeout(function() {
 
-			$('.close-accordion').removeClass('disabled');
+			_this.setState({
+				open: false,
+				initialized: true
+			},
+			function() {
 
-			$('.uk-accordion-title.uk-active').click();
-			_this.setState({open: false });
+				$('.close-accordion').removeClass('disabled');
+				$('.uk-accordion-title.uk-active').click();
+
+			});
 
 		},10);
 
@@ -124,7 +131,7 @@ class HeroSpace extends Component {
 				animate: false
 			},
 			data: [{
-				title: 'Get $10 Off The Black Love Experience by 1/15/2017',
+				title: 'Buy Your Ticket for the Black Love Experience, this Saturday, 2/18/2017 in Washington, DC.',
 				content: black_love_experience_content
 			},
 			/*{
@@ -140,13 +147,26 @@ class HeroSpace extends Component {
 	
 		return (
 
-			<div className={this.state.open ? 'hero-space open' : 'hero-space'}>
 
-				<div className="uk-container uk-container-center">
+			<div>
 
-					<Accordion values={accordionsData} />
+				{ this.state.initialized ?
+
+				<div className={this.state.open ? 'hero-space open' : 'hero-space'}>
+
+					<div className="uk-container uk-container-center">
+
+						<Accordion values={accordionsData} />
+
+					</div>
 
 				</div>
+
+				:
+
+				<div className="no-hero-space" />
+
+				}
 
 			</div>
 

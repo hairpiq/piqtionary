@@ -80,7 +80,10 @@ class Main extends Component {
 
   linkTo(route) {
 
-    browserHistory.push(route);
+    browserHistory.push({
+      pathname: route,
+      state: { role: 'admin' }
+    })
     
   }
 
@@ -120,6 +123,20 @@ class Main extends Component {
     // compensate for javascript ugly page loading by removing
     // the loading class when this component finally mounts to page.
     $("#app").removeClass('loading');
+
+    // this area of the site is for admin's only
+    let location = this.props.location;
+
+    if (
+      location.state === undefined ||
+      location.state.role === undefined ||
+      location.state.role !== 'admin'
+      ) {
+      
+      this.linkTo('/')
+
+    } 
+
     
   }
 

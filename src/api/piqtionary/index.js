@@ -21,9 +21,10 @@ module.exports = function(app, db) {
 			orig_photo_url: req.body.orig_photo_url,
 			s3_url: req.body.s3_url,
 			stylename: validator.escape(req.body.stylename),
-			ig_username: validator.escape(req.body.ig_username)
+			ig_username: validator.escape(req.body.ig_username),
+			auth0_user_id: req.body.auth0_user_id
 		};
-
+		
 		if (req.body.options !== undefined)
 			item.options = req.body.options;
 
@@ -56,6 +57,7 @@ module.exports = function(app, db) {
 			// - stylename : string
 			// - ig_username : string
 			// - status : string ("'unpublished' by default")
+			// - auth0_user_id : string
 
 		var is_approved = req.body.is_approved;
 		var pending_id = { _id: ObjectID(req.body.pending_id) };
@@ -65,7 +67,8 @@ module.exports = function(app, db) {
 			stylename: validator.escape(req.body.stylename),
 			ig_username: validator.escape(req.body.ig_username),
 			publish_status: "unpublished",
-			trained_status: "untrained"
+			trained_status: "untrained",
+			auth0_user_id: req.body.auth0_user_id
 		}
 
 		if (is_approved === 'true') {
@@ -779,6 +782,621 @@ module.exports = function(app, db) {
 				res.send(JSON.stringify('success'));
 			
 			});
+		
+		});
+
+	});
+
+	/*
+		update a user's data
+	*/
+
+	app.post('/api/piqtionary/set_user_data', function(req, res, next) {
+
+		console.log('B - called: /api/piqtionary/set_user_data');
+
+		// set a user's data
+			// find user record in user_data collection
+				// if exists
+					// update record
+				// else
+					// create new record
+
+			// data needed
+			// - auth0_user_id
+			// - username
+			// - fullname
+
+		var query = {
+			auth0_user_id: req.body.auth0_user_id
+		};
+
+		var item = {};
+		if (req.body.username !== undefined)
+			item.username = req.body.username
+
+		if (req.body.fullname !== undefined)
+			item.fullname = req.body.fullname
+
+		if (req.body.picture !== undefined)
+			item.picture = req.body.picture
+
+		var resultArray = []
+		var cursor = db.collection('user_data').find(query)
+		
+		cursor.forEach(function(doc, err) {
+					
+			console.log('C.A - Retrieved document in user_data: ' + doc._id);
+			//assert.equal(null, err);
+			resultArray.push(doc);
+
+		}, function() {
+
+			if (resultArray.length > 0) {
+				
+				if (resultArray[0].username !== item.username ||
+					resultArray[0].fullname !== item.fullname ||
+					resultArray[0].picture !== item.picture ) {
+					
+					db.collection('user_data').update(query, { $set: item }, function(err, result) {
+								
+						assert.equal(null, err);
+						console.log('C.B - Updated document in user_data: ' + query.auth0_user_id);
+
+						res.send(JSON.stringify('success'));
+					
+					});
+				} else {
+
+					console.log('C.B - nothing to update: ' + query.auth0_user_id);
+
+					res.send(JSON.stringify('nothing to update'));
+
+				}
+
+			} else {
+
+				item.auth0_user_id = req.body.auth0_user_id
+
+				db.collection('user_data').insertOne(item, function(err, result) {
+							
+					assert.equal(null, err);
+					console.log('C.B - Item inserted into user_data: ' + result.insertedId);
+
+					res.send(JSON.stringify('success'));
+				
+				});
+
+			}
+
+		});
+		
+	});
+
+	/*
+		get user's metadata
+	*/
+
+	app.post('/api/piqtionary/get_user_data', function(req, res, next) {
+
+		console.log('B - called: /api/piqtionary/get_user_data');
+
+		// get user data
+			// find doc in user_data collection
+
+			// data needed
+			// - username
+
+		var query = {
+			username: req.body.username
+		};
+
+		var resultArray = [];
+
+		var cursor = db.collection('user_data').find(query);
+
+		cursor.forEach(function(doc, err) {
+				
+			console.log('C - Retrieved document in user_data: ' + doc._id);
+			assert.equal(null, err);
+			resultArray.push(doc);
+
+		}, function() {
+							
+			res.setHeader('Content-Type', 'application/json');
+			res.send(JSON.stringify(resultArray));
+
+		});
+
+	});
+
+	/*
+		remove user's metadata
+	*/
+
+	app.post('/api/piqtionary/delete_user_data', function(req, res, next) {
+
+		console.log('B - called: /api/piqtionary/delete_user_data');
+
+		// get user data
+			// find doc in user_data collection
+
+			// data needed
+			// - username
+
+		var query = {
+			auth0_user_id: req.body.auth0_user_id
+		};
+
+		
+		db.collection('user_data').remove(query, function(err, result) {
+					
+			assert.equal(null, err);
+			console.log('C - Deleted document from user_data: ' + query.auth0_user_id);
+
+			res.send(JSON.stringify('success'));
+		
+		});
+
+	});
+
+	/*
+		add hairpiq to user favorites
+	*/
+
+	app.post('/api/piqtionary/add_to_favorites', function(req, res, next) {
+
+		console.log('B - called: /api/piqtionary/add_to_favorites');
+
+		// insert new data into user_favorites collection
+
+		// data needed
+		// - auth0_user_id : string
+		// - hairpiq_id : string
+
+		var item = {
+			auth0_user_id: req.body.auth0_user_id,
+			hairpiq_id: req.body.hairpiq_id,
+		}
+
+		db.collection('user_favorites').insertOne(item, function(err, result) {
+							
+			assert.equal(null, err);
+			console.log('C.A - Item inserted into user_favorites: ' + result.insertedId);
+
+			//res.send(JSON.stringify('success'));
+
+			getFavorites()
+
+		});
+
+		function getFavorites() {
+
+			var id = {
+				auth0_user_id: req.body.auth0_user_id
+			};
+
+			var resultArray = [];
+
+			var cursor = db.collection('user_favorites').find(id);
+
+			cursor.forEach(function(doc, err) {
+					
+				console.log('C - Retrieved document in user_favorites: ' + doc._id);
+				assert.equal(null, err);
+				resultArray.push(doc);
+
+			}, function() {
+								
+				res.setHeader('Content-Type', 'application/json');
+				res.send(JSON.stringify(resultArray));
+
+			});
+			
+		}
+
+	});
+
+	/*
+		get user favorites
+	*/
+
+	app.post('/api/piqtionary/get_favorites', function(req, res, next) {
+
+		console.log('B - called: /api/piqtionary/get_favorites');
+
+		// insert new data into user_favorites collection
+
+		// data needed
+		// - auth0_user_id : string
+
+		var id = {
+			auth0_user_id: req.body.auth0_user_id
+		};
+
+		var resultArray = [];
+
+		var	cursor = db.collection('user_favorites').find(id);
+
+		cursor.forEach(function(doc, err) {
+				
+			console.log('C - Retrieved document in user_favorites: ' + doc._id);
+			assert.equal(null, err);
+			resultArray.push(doc);
+
+		}, function() {
+							
+			res.setHeader('Content-Type', 'application/json');
+			res.send(JSON.stringify(resultArray));
+
+		});
+
+	});
+
+	/*
+		remove hairpiq from user favorites
+	*/
+
+	app.post('/api/piqtionary/remove_from_favorites', function(req, res, next) {
+
+		console.log('B - called: /api/piqtionary/remove_from_favorites');
+
+		// insert new data into user_favorites collection
+
+		// data needed
+		// - auth0_user_id : string
+		// - hairpiq_id : string
+
+		var item = {
+			auth0_user_id: req.body.auth0_user_id,
+			hairpiq_id: req.body.hairpiq_id,
+		}
+
+		db.collection('user_favorites').remove(item, function(err, result) {
+							
+			assert.equal(null, err);
+			console.log('C.A - Item removed from user_favorites for auth0_user_id: ' + item.auth0_user_id);
+
+			//res.send(JSON.stringify('success'));
+
+			getFavorites()
+
+		});
+
+		function getFavorites() {
+
+			var id = {
+				auth0_user_id: req.body.auth0_user_id
+			};
+
+			var resultArray = [];
+
+			var cursor = db.collection('user_favorites').find(id);
+
+			cursor.forEach(function(doc, err) {
+					
+				console.log('C - Retrieved document in user_favorites: ' + doc._id);
+				assert.equal(null, err);
+				resultArray.push(doc);
+
+			}, function() {
+								
+				res.setHeader('Content-Type', 'application/json');
+				res.send(JSON.stringify(resultArray));
+
+			});
+			
+		}
+
+	});
+
+	/*
+		get user favorites
+	*/
+
+	app.post('/api/piqtionary/list_by_favorites', function(req, res, next) {
+
+		console.log('B - called: /api/piqtionary/list_by_favorites');
+
+		// get the actual hairpiq docs that a user has favorited
+
+		// data needed
+		// - auth0_user_id : string
+		// 
+
+		var id = {
+			auth0_user_id: req.body.auth0_user_id
+		};
+
+		var resultArray = [];
+
+		if (req.body.limit !== undefined && req.body.limit.length > 0) {
+			var limit = Number(req.body.limit);
+			var skip = Number(req.body.page_num) * Number(req.body.limit);
+			var sort = { _id : -1};
+
+			var user_favorites_cursor = db.collection('user_favorites').find(id).skip(skip).sort(sort).limit(limit);
+
+			user_favorites_cursor.forEach(function(doc, err) {
+					
+				console.log('C - Retrieved document in user_favorites: ' + doc._id);
+				assert.equal(null, err);
+				resultArray.push(ObjectID(doc.hairpiq_id));
+
+			}, function() {
+							
+				var approved_hairpiqs_cursor = db.collection('approved_hairpiqs').find( { _id: { $in: resultArray }});
+
+				resultArray = []
+
+				approved_hairpiqs_cursor.forEach(function(doc, err) {
+						
+					console.log('C - Retrieved document in approved_hairpiqs: ' + doc._id);
+					assert.equal(null, err);
+					resultArray.push(doc);
+
+				}, function() {
+									
+					res.setHeader('Content-Type', 'application/json');
+					res.send(JSON.stringify(resultArray));
+
+				});
+
+			});
+
+		} else {
+			console.log('C.B - No limit supplied.');
+			res.send('No limit supplied.');
+		}
+
+	});
+
+	/*
+		retrieve a list of user's hairpiqs
+	*/
+
+	app.post('/api/piqtionary/get_user_hairpiqs', function(req, res, next) {
+
+		console.log('B - called: /api/piqtionary/get_user_hairpiqs');
+
+		// find a collection of hairpiqs
+		// limit - the amount of docs to return
+		// page_num - the index of the set of docs to return
+
+		var resultArray = [];
+		var query = {
+			'publish_status': 'published',
+			'auth0_user_id': req.body.auth0_user_id};
+
+		if (req.body.limit !== undefined && req.body.limit.length > 0) {
+			var limit = Number(req.body.limit);
+			var skip = Number(req.body.page_num) * Number(req.body.limit);
+			var sort = { _id : -1};
+
+			//db.messages.find({$text: {$search: "cook"}}, {score: {$meta: "textScore"}}).sort({score:{$meta:"textScore"}})
+
+			// if a keyword is included, add it to the query
+			if (req.body.term) {
+				query.$text = { $search: validator.escape(req.body.term) };
+				//query.score = { $meta: "textScore" };
+				//sort = { score: { $meta:"textScore" } };
+			}
+
+			var cursor = db.collection('approved_hairpiqs').find(query).skip(skip).sort(sort).limit(limit);
+
+			cursor.forEach(function(doc, err) {
+					
+				console.log('C.A - Retrieved document in approved_hairpiqs: ' + doc._id);
+				assert.equal(null, err);
+				resultArray.push(doc);
+
+			}, function() {
+								
+				res.setHeader('Content-Type', 'application/json');
+				res.send(JSON.stringify(resultArray));
+
+			});
+
+		} else {
+			console.log('C.B - No limit supplied.');
+			res.send('No limit supplied.');
+		}
+
+	});
+
+	/*
+		add hairtip
+	*/
+
+	app.post('/api/piqtionary/add_hairtip', function(req, res, next) {
+
+		console.log('B - called: /api/piqtionary/add_hairtip');
+
+		// insert a new hairtip into hairtips collection
+
+		// data needed
+		// - auth0_user_id : string
+		// - hairpiq_id : string
+		// - body_text : string
+
+		var item = {
+			auth0_user_id: req.body.auth0_user_id,
+			hairpiq_id: req.body.hairpiq_id,
+			body_text: validator.escape(req.body.body_text)
+		}
+
+		db.collection('hairtips').insertOne(item, function(err, result) {
+							
+			assert.equal(null, err);
+			console.log('C.A - Item inserted into hairtips: ' + result.insertedId);
+
+			res.send(JSON.stringify('success'));
+
+		});
+
+	});
+
+	/*
+		get hairtips by user
+	*/
+
+	app.post('/api/piqtionary/get_all_hairtips', function(req, res, next) {
+
+		console.log('B - called: /api/piqtionary/get_all_hairtips');
+
+		// get all hairtips
+
+		var resultArray = []
+
+		var cursor = db.collection('hairtips').find()
+
+		cursor.forEach(function(doc, err) {
+					
+			console.log('C - Retrieved document in hairtips: ' + doc._id);
+			assert.equal(null, err);
+			resultArray.push(doc);
+
+		}, function() {
+							
+			res.setHeader('Content-Type', 'application/json');
+			res.send(JSON.stringify(resultArray));
+
+		});
+
+	});
+
+	/*
+		get hairtips by user
+	*/
+
+	app.post('/api/piqtionary/get_hairtips_by_user_id', function(req, res, next) {
+
+		console.log('B - called: /api/piqtionary/get_hairtips_by_user_id');
+
+		// insert a new hairtip into hairtips collection
+
+		// data needed
+		// - auth0_user_id : string
+		// - body_text : string
+
+		var item = {
+			auth0_user_id: req.body.auth0_user_id
+		}
+
+		var resultArray = []
+
+		var cursor = db.collection('hairtips').find(item)
+
+		cursor.forEach(function(doc, err) {
+					
+			console.log('C - Retrieved document in hairtips: ' + doc._id);
+			assert.equal(null, err);
+			resultArray.push(doc);
+
+		}, function() {
+							
+			res.setHeader('Content-Type', 'application/json');
+			res.send(JSON.stringify(resultArray));
+
+		});
+
+	});
+
+	/*
+		get hairtips by user
+	*/
+
+	app.post('/api/piqtionary/get_hairtip_by_hairpiq_id', function(req, res, next) {
+
+		console.log('B - called: /api/piqtionary/get_hairtip_by_hairpiq_id');
+
+		// insert a new hairtip into hairtips collection
+
+		// data needed
+		// - auth0_user_id : string
+		// - body_text : string
+
+		var item = {
+			hairpiq_id: req.body.hairpiq_id
+		}
+
+		var resultArray = []
+
+		var cursor = db.collection('hairtips').find(item)
+
+		cursor.forEach(function(doc, err) {
+					
+			console.log('C - Retrieved document in hairtips: ' + doc._id);
+			assert.equal(null, err);
+
+			doc.body_text = validator.unescape(doc.body_text)
+			
+			resultArray.push(doc);
+
+		}, function() {
+							
+			res.setHeader('Content-Type', 'application/json');
+			res.send(JSON.stringify(resultArray));
+
+		});
+
+	});
+
+	/*
+		edit hairtip
+	*/
+
+	app.post('/api/piqtionary/edit_hairtip', function(req, res, next) {
+
+		console.log('B - called: /api/piqtionary/edit_hairtip');
+
+		// insert a new hairtip into hairtips collection
+
+		// data needed
+		// - hairpiq_id : string
+
+		var query = {
+			hairpiq_id: req.body.hairpiq_id,
+		}
+
+		var item = {
+			body_text: validator.escape(req.body.body_text)
+		}
+
+		db.collection('hairtips').update(query, { $set: item }, function(err, result) {
+							
+			assert.equal(null, err);
+			console.log('C.A - Item edited in hairtips: ' + query.hairpiq_id);
+
+			res.send(JSON.stringify('success'));
+
+		});
+
+	});
+
+	/*
+		delete hairtip
+	*/
+
+	app.post('/api/piqtionary/delete_hairtip', function(req, res, next) {
+
+		console.log('B - called: /api/piqtionary/delete_hairtip');
+
+		// delete a hairtip from the hairtips collection
+
+		// data needed
+		// - hairpiq_id : string
+
+		var query = {
+			hairpiq_id: req.body.hairpiq_id,
+		}
+
+		db.collection('hairtips').remove(query, function(err, result) {
+					
+			assert.equal(null, err);
+			console.log('C - Deleted document from hairtips: ' + query.hairpiq_id);
+
+			res.send(JSON.stringify('success'));
 		
 		});
 
