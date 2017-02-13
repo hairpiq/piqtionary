@@ -85,6 +85,7 @@ class Settings extends Component {
 		
 		var checkForEmailFormat = new RegExp('[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$');
 		var email = e.target.value.replace(/\.+/g, '.');
+		email = email.toLowerCase()
 
 		if (email.length === 0) {
 			this.setState({

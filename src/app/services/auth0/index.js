@@ -278,6 +278,7 @@ export default class AuthService extends EventEmitter {
     localStorage.removeItem('id_token')
     localStorage.removeItem('profile')
     localStorage.removeItem('is_admin')
+    localStorage.clear()
   }
 
   resetPassword(email) {

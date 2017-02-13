@@ -34,7 +34,7 @@ class Accordion extends Component {
 	      	{
 	      		collapse: this.props.values.options.collapse,
 	      		animate: this.props.values.options.animate,
-	      		showFirst: this.props.values.options.showFirst
+	      		showFirst: false
 	      	}
 	    );
 	}
