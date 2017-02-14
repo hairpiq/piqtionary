@@ -151,7 +151,7 @@
 @media (max-width: 479px) {
 
 	.fixed-edit-hairtip-form-width {
-        width: 320px;
+        width: 100%;
     }
 
     .edit-hairtip-form .left-col {
@@ -178,7 +178,27 @@
     }
 
     .edit-hairtip-form h3 {
-    	font-size: 16px;
+        font-size: 16px;
+    }
+
+}
+
+@media (min-width: 480px) and (max-width: 767px) {
+
+    .fixed-edit-hairtip-form-width {
+        width: 100%;
+    }
+
+    .edit-hairtip-form .left-col {
+        width: 50%;
+    }
+
+    .edit-hairtip-form .right-col {
+        width: 50%;
+    }
+
+    .edit-hairtip-form h3 {
+        font-size: 16px;
     }
 
 }
