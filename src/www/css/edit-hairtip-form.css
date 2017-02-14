@@ -147,3 +147,58 @@
 	top: 68px;
     right: 9px;
 }
+
+@media (max-width: 479px) {
+
+	.fixed-edit-hairtip-form-width {
+        width: 100%;
+    }
+
+    .edit-hairtip-form .left-col {
+        width: 100%;
+        float: none;
+    }
+
+    .edit-hairtip-form .photo {
+        border-top-right-radius: 5px;
+        border-bottom-left-radius: 0;
+    }
+
+    .edit-hairtip-form .right-col {
+        width: 100%;
+        float: none;
+    }
+
+    .edit-hairtip-form .col-seperator {
+    	display: none;
+    }
+
+    .edit-hairtip-form .detail-info {
+    	position: relative;
+    }
+
+    .edit-hairtip-form h3 {
+        font-size: 16px;
+    }
+
+}
+
+@media (min-width: 480px) and (max-width: 767px) {
+
+    .fixed-edit-hairtip-form-width {
+        width: 100%;
+    }
+
+    .edit-hairtip-form .left-col {
+        width: 50%;
+    }
+
+    .edit-hairtip-form .right-col {
+        width: 50%;
+    }
+
+    .edit-hairtip-form h3 {
+        font-size: 16px;
+    }
+
+}
