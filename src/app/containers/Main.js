@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import { render } from 'react-dom';
-import {orange700, orange500, orange100, grey400, grey500, grey600, grey700, grey900} from 'material-ui/styles/colors';
+import {orange700, orange500, orange100, grey300, grey400, grey500, grey600, grey700, grey900} from 'material-ui/styles/colors';
+import FlatButton from 'material-ui/FlatButton';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
@@ -150,6 +151,11 @@ class Main extends Component {
 
         })
       
+      } else {
+        this.setState({
+            profile: JSON.parse(localStorage.getItem('profile')),
+            is_profile_loaded: true
+        })
       }
     }
 
@@ -225,22 +231,29 @@ class Main extends Component {
         {/*
         <IconButton iconStyle={styles.appBarIconButton} tooltip="Photos"><PhotoLibraryIcon /></IconButton>
         */}
-        <IconButton
-          className="info-page-button"
-          onTouchTap={() => this.linkTo('/favorites')}
-          iconStyle={styles.appBarIconButton}>
-          <PhotoLibraryIcon />
-        </IconButton>
+
+        {is_profile_loaded ? 
+
+          <span>
+
+            <IconButton
+              className="favorites-page-button"
+              onTouchTap={() => this.linkTo('/favorites')}
+              iconStyle={styles.appBarIconButton}>
+              <PhotoLibraryIcon />
+            </IconButton>
 
 
-        <IconButton
-          className="profile-page-button"
-          onTouchTap={() => this.linkTo('/' + this.props.route.auth.getProfile().app_metadata.username)}
-          iconStyle={styles.appBarIconButton}>
-          <Avatar
-            src={this.state.profile.picture}
-          />
-        </IconButton>
+            <IconButton
+              className="profile-page-button"
+              onTouchTap={() => this.linkTo('/' + this.props.route.auth.getProfile().app_metadata.username)}
+              iconStyle={styles.appBarIconButton}>
+              <Avatar
+                src={this.state.profile.picture}
+              />
+            </IconButton>
+
+          </span> : null }
 
         <div className="more-menu">
           
@@ -267,7 +280,7 @@ class Main extends Component {
             : null }
 
             <MenuItem
-              className="mobile-info-page-button"
+              className="mobile-favorites-page-button"
               primaryText="My Favorites"
               rightIcon={<PhotoLibraryIcon />}
               onTouchTap={() => this.linkTo('/favorites')}
@@ -303,118 +316,91 @@ class Main extends Component {
       </div>
     )
 
-    const login_button = (
-      <IconButton
+    const login_buttons = (
+      
+      <div className="login-buttons">
+
+        <FlatButton
+          className="signup-button"
+          label="Sign Up"
+          backgroundColor={orange700}
+          hoverColor="#faba79"
+          rippleColor="#ffffff"
+          onTouchTap={() => this.linkTo({
+            pathname: 'signin',
+            state: { modal: true, returnTo: this.props.location.pathname }
+          })}
+        />
+
+        <FlatButton
           className="login-button"
-          onTouchTap={() => this.linkTo('/')}
-          iconStyle={styles.appBarIconButton}
-          tooltip="Login">
-          <ActionLockIcon />
+          label="Log In"
+          backgroundColor={grey300}
+          onTouchTap={() => this.linkTo({
+            pathname: 'signin',
+            state: { modal: true, returnTo: this.props.location.pathname }
+          })}
+        />
+
+         <IconButton
+          className="info-page-button"
+          onTouchTap={() => this.linkTo('/info')}
+          iconStyle={styles.appBarIconButton}>
+          <InfoIcon />
         </IconButton>
+
+      </div>
     );
 
     return (
       <div className="main">       
           <MuiThemeProvider muiTheme={muiTheme}>
 
-            <div>
+            <div className={this.state.is_logged_in ? 'logged-in' : 'logged-out'}>
 
-              {this.state.is_logged_in ?
-
-              <div>
-
-                {is_profile_loaded ?
-
-                  <div>
+              {this.props.location.pathname !== '/signin' ?
                     
-                    <AppBar
-                      className="app_bar"
-                      showMenuIconButton={false}
-                      title={logo}
-                      children={search_bar}
-                      iconElementRight={standard_actions}
-                    />
+              <AppBar
+                className="app_bar"
+                showMenuIconButton={false}
+                title={logo}
+                children={search_bar}
+                iconElementRight={this.state.is_logged_in ? standard_actions : login_buttons}
+              /> : null }
 
-                    <div className="main-container">
+              <div className="main-container">
 
-                    {isModal ?
-                      this.state.previousChildren :
-                      this.props.children
-                    }
-
-                    </div>
-
-                    {isModal && (
-                      <Modal isOpen={true} returnTo={location.state.returnTo} pathname={location.pathname} hairpiqs={location.state.hairpiqs} onClose={this.onModalClose.bind(this)}>
-                        {this.props.children}
-                      </Modal>
-                    )}
-
-                    {
-                      this.props.location.pathname !== '/create' &&
-                      this.props.location.pathname !== '/survey' &&
-                      this.props.location.pathname !== '/settings' &&
-                      this.props.location.pathname !== '/add-hairtip' &&
-                      this.props.location.pathname.split('/')[1] !== 'add-hairtip' &&
-                      this.props.location.pathname !== '/edit-hairtip' &&
-                      this.props.location.pathname.split('/')[1] !== 'edit-hairtip' ?
-
-                    <CreateButton location={this.props.location} /> : null }
-
-                    <SiteFooter />
-                  </div>
-
-                  : null }
-
-              </div>
-
-              :
-
-              <div>
-
-                {this.props.location.pathname !== '/' ?
-                
-                <div>
-
-                  <AppBar
-                    className="app_bar"
-                    showMenuIconButton={false}
-                    title={logo}
-                    iconElementRight={login_button}
-                  />
-
-                  <div className="main-container">
-
-                  {isModal ?
-                    this.state.previousChildren :
-                    this.props.children
-                  }
-
-                  </div>
-
-                  {isModal && (
-                    <Modal isOpen={true} returnTo={location.state.returnTo} pathname={location.pathname} hairpiqs={location.state.hairpiqs} onClose={this.onModalClose.bind(this)}>
-                      {this.props.children}
-                    </Modal>
-                  )}
-
-                  <SiteFooter />
-
-                </div>
-
-                :
-
-                <div className="main-container">
-                
-                  {this.props.children}
-
-                </div>
-
-                }
-
-              </div>
-
+              {isModal ?
+                this.state.previousChildren :
+                this.props.children
               }
+
+              </div>
+
+              {isModal && (
+                <Modal isOpen={true} returnTo={location.state.returnTo} pathname={location.pathname} hairpiqs={location.state.hairpiqs} onClose={this.onModalClose.bind(this)}>
+                  {this.props.children}
+                </Modal>
+              )}
+
+              {
+                this.props.location.pathname !== '/create' &&
+                this.props.location.pathname !== '/survey' &&
+                this.props.location.pathname !== '/settings' &&
+                this.props.location.pathname !== '/signin' &&
+                this.props.location.pathname !== '/add-hairtip' &&
+                this.props.location.pathname.split('/')[1] !== 'add-hairtip' &&
+                this.props.location.pathname !== '/edit-hairtip' &&
+                this.props.location.pathname.split('/')[1] !== 'edit-hairtip' ?
+
+              <CreateButton
+                location={this.props.location}
+                is_logged_in={this.state.is_logged_in}
+              /> : null }
+
+              {this.props.location.pathname !== '/signin' ?
+
+              <SiteFooter /> : null }
 
             </div>
 

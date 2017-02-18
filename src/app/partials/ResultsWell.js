@@ -119,7 +119,7 @@ class ResultsWell extends Component {
 
     arr.push(new Promise(function(resolve, reject) {
 
-      Services.hairtips.getAll(params).then(function(result) {
+      Services.hairtips.getAll().then(function(result) {
 
         resolve(result)
 
@@ -145,62 +145,121 @@ class ResultsWell extends Component {
 
   componentDidMount() {
 
-    this.getTertiaryData()
+    let _this = this
+
+    if (JSON.parse(localStorage.getItem('profile')) !== null) {
+
+      this.setState({
+        hairpiqs: [],
+        page_num: 0
+      }, function() {
+        _this.getTertiaryData()
+      })
+
+    } else {
+
+      Services.hairtips.getAll().then(function(result) {
+
+         _this.setState({
+          hairtips: result
+        })
+
+      }).catch(function(e) {
+      
+        console.log(e)
+      
+      })
+
+    }
 
   }
 
   componentWillReceiveProps(nextProps) {
 
+   if (JSON.parse(localStorage.getItem('profile')) !== null) {
 
-    let _this = this;
+      let _this = this
 
-    this.setState({
-        result_status: ''
-      }, function() {
+      let auth0_user_id = JSON.parse(localStorage.getItem('profile')).user_id
 
-        _this.getTertiaryData()
+      let params = {
+        auth0_user_id: auth0_user_id,
+      }
 
-      });
+      let arr = []
+
+      arr.push(new Promise(function(resolve, reject) {
+
+        Services.getFavorites(params).then(function(result) {
+
+          _this.setState({
+            favorites: result,
+          })
+
+        }).catch(function(e) {
+          
+          console.log(e)
+
+        })
+
+      }))
+
+      
+    }
 
   }
 
   addToFavorites(hairpiq_id) {
 
-    let _this = this;
-    let auth0_user_id = JSON.parse(localStorage.getItem('profile')).user_id
 
-    let params = {
-      auth0_user_id: auth0_user_id,
-      hairpiq_id: hairpiq_id
-    }
+    if (hairpiq_id === 'not-logged-in') {
 
-    return new Promise (function(resolve, reject) {
+      this.setState({
+        snackbar: {
+            open: true,
+            message: 'log in to add to favorites!'
+        }
+      })
 
-      Services.addToFavorites(params).then(function(result){
+    } else {
 
-        // Gently notify the user of their limit.
+      let _this = this;
+      let auth0_user_id = JSON.parse(localStorage.getItem('profile')).user_id
 
-        _this.setState({
-          favorites: result,
-          snackbar: {
-              open: true,
-              message: 'added to favorites'
-          }
-        },
-        function() {
+      let params = {
+        auth0_user_id: auth0_user_id,
+        hairpiq_id: hairpiq_id
+      }
 
-          resolve(result)
+      return new Promise (function(resolve, reject) {
+
+        Services.addToFavorites(params).then(function(result){
+
+          // Gently notify the user of their limit.
+
+          _this.setState({
+            favorites: result,
+            snackbar: {
+                open: true,
+                message: 'added to favorites'
+            }
+          },
+          function() {
+
+            resolve(result)
+
+          })
+
+        }).catch(function(e) {
+
+          console.log(e)
+          reject(e)
 
         })
 
-      }).catch(function(e) {
-
-        console.log(e)
-        reject(e)
-
       })
 
-    })
+    }
 
   }
 
@@ -277,7 +336,32 @@ class ResultsWell extends Component {
     );
 
    
-    if (this.state.favorites !== undefined) {
+    if (this.state.is_logged_in && this.state.favorites !== undefined) {
+
+      var items = [];
+      this.state.hairpiqs.map((listItem, i) => {
+        items.push(
+            
+            <div className="hairpiq-paper-container uk-width-small-1-3 uk-width-medium-1-4">
+              <ResultItem
+                key={listItem.id}
+                listItem={listItem}
+                location={this.props.location}
+                hairpiqs={this.state.hairpiqs}
+                favorites={this.state.favorites}
+                hairtips={this.state.hairtips}
+                addToFavorites={this.addToFavorites.bind(this)}
+                removeFromFavorites={this.removeFromFavorites.bind(this)}
+                is_logged_in={this.props.is_logged_in}
+              />
+            </div>
+
+        );
+      });
+
+    }
+
+    if (!this.state.is_logged_in && this.state.hairtips !== undefined) {
 
       var items = [];
       this.state.hairpiqs.map((listItem, i) => {
@@ -334,7 +418,21 @@ class ResultsWell extends Component {
 
           <div>
 
-            {this.state.favorites !== undefined ?
+            {this.state.is_logged_in && this.state.favorites !== undefined ?
+            <InfiniteScroll
+                pageStart={0}
+                loadMore={this.loadItems.bind(this)}
+                hasMore={this.state.hasMoreItems}
+                loader={loader}>
+
+                <div className="uk-grid uk-grid-margin" data-uk-grid-match data-uk-grid-margin>
+                    {items}
+                </div>
+            </InfiniteScroll>
+            :
+            null }
+
+            {!this.state.is_logged_in && this.state.hairtips !== undefined ?
             <InfiniteScroll
                 pageStart={0}
                 loadMore={this.loadItems.bind(this)}
