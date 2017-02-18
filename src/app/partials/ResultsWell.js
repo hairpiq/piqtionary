@@ -119,7 +119,7 @@ class ResultsWell extends Component {
 
     arr.push(new Promise(function(resolve, reject) {
 
-      Services.hairtips.getAll(params).then(function(result) {
+      Services.hairtips.getAll().then(function(result) {
 
         resolve(result)
 
@@ -145,22 +145,25 @@ class ResultsWell extends Component {
 
   componentDidMount() {
 
-    this.getTertiaryData()
+    if (this.props.is_logged_in)
+      this.getTertiaryData()
+    else {
 
-  }
+      let _this = this;
 
-  componentWillReceiveProps(nextProps) {
+      Services.hairtips.getAll().then(function(result) {
 
+         _this.setState({
+          hairtips: result
+        })
 
-    let _this = this;
+      }).catch(function(e) {
+      
+        console.log(e)
+      
+      })
 
-    this.setState({
-        result_status: ''
-      }, function() {
-
-        _this.getTertiaryData()
-
-      });
+    }
 
   }
 
@@ -277,7 +280,32 @@ class ResultsWell extends Component {
     );
 
    
-    if (this.state.favorites !== undefined) {
+    if (this.state.is_logged_in && this.state.favorites !== undefined) {
+
+      var items = [];
+      this.state.hairpiqs.map((listItem, i) => {
+        items.push(
+            
+            <div className="hairpiq-paper-container uk-width-small-1-3 uk-width-medium-1-4">
+              <ResultItem
+                key={listItem.id}
+                listItem={listItem}
+                location={this.props.location}
+                hairpiqs={this.state.hairpiqs}
+                favorites={this.state.favorites}
+                hairtips={this.state.hairtips}
+                addToFavorites={this.addToFavorites.bind(this)}
+                removeFromFavorites={this.removeFromFavorites.bind(this)}
+                is_logged_in={this.props.is_logged_in}
+              />
+            </div>
+
+        );
+      });
+
+    }
+
+    if (!this.state.is_logged_in && this.state.hairtips !== undefined) {
 
       var items = [];
       this.state.hairpiqs.map((listItem, i) => {
@@ -334,7 +362,21 @@ class ResultsWell extends Component {
 
           <div>
 
-            {this.state.favorites !== undefined ?
+            {this.state.is_logged_in && this.state.favorites !== undefined ?
+            <InfiniteScroll
+                pageStart={0}
+                loadMore={this.loadItems.bind(this)}
+                hasMore={this.state.hasMoreItems}
+                loader={loader}>
+
+                <div className="uk-grid uk-grid-margin" data-uk-grid-match data-uk-grid-margin>
+                    {items}
+                </div>
+            </InfiniteScroll>
+            :
+            null }
+
+            {!this.state.is_logged_in && this.state.hairtips !== undefined ?
             <InfiniteScroll
                 pageStart={0}
                 loadMore={this.loadItems.bind(this)}
