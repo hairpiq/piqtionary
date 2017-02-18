@@ -151,6 +151,11 @@ class Main extends Component {
 
         })
       
+      } else {
+        this.setState({
+            profile: JSON.parse(localStorage.getItem('profile')),
+            is_profile_loaded: true
+        })
       }
     }
 
