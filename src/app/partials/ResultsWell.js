@@ -145,11 +145,18 @@ class ResultsWell extends Component {
 
   componentDidMount() {
 
-    if (this.props.is_logged_in)
-      this.getTertiaryData()
-    else {
+    let _this = this
 
-      let _this = this;
+    if (JSON.parse(localStorage.getItem('profile')) !== null) {
+
+      this.setState({
+        hairpiqs: [],
+        page_num: 0
+      }, function() {
+        _this.getTertiaryData()
+      })
+
+    } else {
 
       Services.hairtips.getAll().then(function(result) {
 
@@ -167,43 +174,92 @@ class ResultsWell extends Component {
 
   }
 
-  addToFavorites(hairpiq_id) {
+  componentWillReceiveProps(nextProps) {
 
-    let _this = this;
-    let auth0_user_id = JSON.parse(localStorage.getItem('profile')).user_id
+   if (JSON.parse(localStorage.getItem('profile')) !== null) {
 
-    let params = {
-      auth0_user_id: auth0_user_id,
-      hairpiq_id: hairpiq_id
-    }
+      let _this = this
 
-    return new Promise (function(resolve, reject) {
+      let auth0_user_id = JSON.parse(localStorage.getItem('profile')).user_id
 
-      Services.addToFavorites(params).then(function(result){
+      let params = {
+        auth0_user_id: auth0_user_id,
+      }
 
-        // Gently notify the user of their limit.
+      let arr = []
 
-        _this.setState({
-          favorites: result,
-          snackbar: {
-              open: true,
-              message: 'added to favorites'
-          }
-        },
-        function() {
+      arr.push(new Promise(function(resolve, reject) {
 
-          resolve(result)
+        Services.getFavorites(params).then(function(result) {
+
+          _this.setState({
+            favorites: result,
+          })
+
+        }).catch(function(e) {
+          
+          console.log(e)
 
         })
 
-      }).catch(function(e) {
+      }))
 
-        console.log(e)
-        reject(e)
+      
+    }
+
+  }
+
+  addToFavorites(hairpiq_id) {
+
+
+    if (hairpiq_id === 'not-logged-in') {
+
+      this.setState({
+        snackbar: {
+            open: true,
+            message: 'log in to add to favorites!'
+        }
+      })
+
+    } else {
+
+      let _this = this;
+      let auth0_user_id = JSON.parse(localStorage.getItem('profile')).user_id
+
+      let params = {
+        auth0_user_id: auth0_user_id,
+        hairpiq_id: hairpiq_id
+      }
+
+      return new Promise (function(resolve, reject) {
+
+        Services.addToFavorites(params).then(function(result){
+
+          // Gently notify the user of their limit.
+
+          _this.setState({
+            favorites: result,
+            snackbar: {
+                open: true,
+                message: 'added to favorites'
+            }
+          },
+          function() {
+
+            resolve(result)
+
+          })
+
+        }).catch(function(e) {
+
+          console.log(e)
+          reject(e)
+
+        })
 
       })
 
-    })
+    }
 
   }
 

@@ -60,27 +60,33 @@ class ResultItem extends Component {
 
     let _this = this;
 
-    this.setState({
-      favorite_status: 'loading'
-    },function() {
+    if (this.props.is_logged_in) {
 
-      _this.props.addToFavorites(id).then(function(result) {
+      this.setState({
+        favorite_status: 'loading'
+      },function() {
 
-        // report account activity metric
-        ga('send', {
-          hitType: 'event',
-          eventCategory: 'Account Activity',
-          eventAction: 'add-to-favorites',
-          eventLabel: 'Add to Favorites'
-        });
-        
-        _this.setState({
-          favorite_status: 'added'
+        _this.props.addToFavorites(id).then(function(result) {
+
+          // report account activity metric
+          ga('send', {
+            hitType: 'event',
+            eventCategory: 'Account Activity',
+            eventAction: 'add-to-favorites',
+            eventLabel: 'Add to Favorites'
+          });
+          
+          _this.setState({
+            favorite_status: 'added'
+          })
+
         })
 
       })
 
-    })
+    } else {
+      _this.props.addToFavorites('not-logged-in')
+    }
   }
 
   removeFromFavorites(id) {
@@ -112,7 +118,7 @@ class ResultItem extends Component {
 
   render() {
     
-    const { listItem, favorites, hairtips, is_logged_in } = this.props;
+    const { listItem, favorites, hairtips } = this.props;
 
     let _this = this;
     let is_favorited = false
@@ -188,12 +194,7 @@ class ResultItem extends Component {
 
             <IconButton
               onTouchTap={() => {
-
-                if (is_logged_in)
                   this.addToFavorites(listItem._id)
-                else
-                  this.gotoLogin()
-
               }}
               iconStyle={styles.appBarIconButton}>
               <AddToPhotosIcon />

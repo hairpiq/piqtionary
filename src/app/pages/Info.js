@@ -133,7 +133,7 @@ class Info extends Component {
                   > 
                     <div className="team-member-info">
                       <p><strong>Avery Smith</strong> <br />
-                        CTO/CEO, Founder <br />
+                        CTO/CEO <br />
                         <a href="mailto:avery@hairpiq.com">avery@hairpiq.com</a>
                       </p>
                     </div>
@@ -187,7 +187,7 @@ class Info extends Component {
                   > 
                     <div className="team-member-info">
                       <p><strong>Alvin Lowe</strong> <br />
-                        Lead Photographer <br />
+                        Director of Digital Media <br />
                         <a href="mailto:alvin@hairpiq.com">alvin@hairpiq.com</a>
                       </p>
                     </div>

@@ -388,7 +388,10 @@ class Main extends Component {
                 this.props.location.pathname !== '/edit-hairtip' &&
                 this.props.location.pathname.split('/')[1] !== 'edit-hairtip' ?
 
-              <CreateButton location={this.props.location} /> : null }
+              <CreateButton
+                location={this.props.location}
+                is_logged_in={this.state.is_logged_in}
+              /> : null }
 
               {this.props.location.pathname !== '/signin' ?
 

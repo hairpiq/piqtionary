@@ -162,39 +162,52 @@ class MyHairpiqsWell extends Component {
 
   addToFavorites(hairpiq_id) {
 
-    let _this = this;
-    let auth0_user_id = this.props.user_id
+    if (hairpiq_id === 'not-logged-in') {
 
-    let params = {
-      auth0_user_id: auth0_user_id,
-      hairpiq_id: hairpiq_id
-    }
+      this.setState({
+        snackbar: {
+            open: true,
+            message: 'log in to add to favorites!'
+        }
+      })
 
-    return new Promise (function(resolve, reject) {
+    } else {
 
-      Services.addToFavorites(params).then(function(result){
+      let _this = this;
+      let auth0_user_id = this.props.user_id
 
-        _this.setState({
-          favorites: result,
-          snackbar: {
-              open: true,
-              message: 'added to favorites'
-          }
-        },
-        function() {
+      let params = {
+        auth0_user_id: auth0_user_id,
+        hairpiq_id: hairpiq_id
+      }
 
-          resolve(result)
+      return new Promise (function(resolve, reject) {
+
+        Services.addToFavorites(params).then(function(result){
+
+          _this.setState({
+            favorites: result,
+            snackbar: {
+                open: true,
+                message: 'added to favorites'
+            }
+          },
+          function() {
+
+            resolve(result)
+
+          })
+
+        }).catch(function(e) {
+
+          console.log(e)
+          reject(e)
 
         })
 
-      }).catch(function(e) {
-
-        console.log(e)
-        reject(e)
-
       })
 
-    })
+    }
 
   }
 

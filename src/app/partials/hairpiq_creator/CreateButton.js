@@ -5,36 +5,68 @@ import ContentAdd from 'material-ui/svg-icons/content/add';
 import ImageAddAPhoto from 'material-ui/svg-icons/image/add-a-photo';
 import {orange700} from 'material-ui/styles/colors';
 import {browserHistory} from 'react-router';
+import Snackbar from 'material-ui/Snackbar';
 
 class CreateButton extends Component {
 
+	constructor() {
+		super()
+
+		this.state = {
+			snackbar: {
+	            open: false,
+	            message: ''
+	        },
+		}
+	}
+
 	linkTo(params) {
 
-		if ($('body').width() < 768)
-			browserHistory.push('/create');
-		else
-			browserHistory.push({
-	            pathname: '/create',
-	            state: {
-	            	modal: true,
-	            	returnTo: this.props.location.pathname
-	            }
-	        });
+		if (this.props.is_logged_in) {
 
-		// report step metric
-		var test = {
-		  hitType: 'event',
-		  eventCategory: 'Hairpiq Creator',
-		  eventAction: 'open-hairpiq-creator',
-		  eventLabel: 'Open the Hairpiq Creator'
-		};
-		
-		ga('send', test);
+			if ($('body').width() < 768)
+				browserHistory.push('/create');
+			else
+				browserHistory.push({
+		            pathname: '/create',
+		            state: {
+		            	modal: true,
+		            	returnTo: this.props.location.pathname
+		            }
+		        });
+
+			// report step metric
+			var test = {
+			  hitType: 'event',
+			  eventCategory: 'Hairpiq Creator',
+			  eventAction: 'open-hairpiq-creator',
+			  eventLabel: 'Open the Hairpiq Creator'
+			};
+			
+			ga('send', test);
+
+		} else {
+
+	      this.setState({
+	        snackbar: {
+	            open: true,
+	            message: 'Log in to use the Hairpiq Creator!'
+	        }
+	      })
+		}
 	}
 
 	mobileLinkTo(route) {
 		browserHistory.push('/create');
 	}
+
+	closeSnackbar = () => {
+	    this.setState({
+	        snackbar: { 
+	        	open: false
+	  		}
+		});
+	};
 
 	render() {
 
@@ -47,6 +79,15 @@ class CreateButton extends Component {
 					zDepth={5}>
 		          <ImageAddAPhoto />
 		        </FloatingActionButton>
+
+		         <Snackbar
+		          className="snackbar"
+		          open={this.state.snackbar.open}
+		          message={this.state.snackbar.message}
+		          autoHideDuration={4000}
+		          onRequestClose={this.closeSnackbar}
+		        />
+
 		    </div>
 		)
 	}
