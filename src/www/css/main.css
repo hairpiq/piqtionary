@@ -46,8 +46,25 @@ a:hover {
 	margin-top: -4px;
 }
 
-.main .app_bar .login-button svg {
-	fill: #616161 !important;
+.main .app_bar .signup-button,
+.main .app_bar .login-button {
+	border-radius: 5px !important;
+    width: 30%;
+    margin:6px 4px !important;
+    margin-bottom: 10px !important;
+}
+
+.main .app_bar .signup-button {
+	color: #ffffff !important;
+}
+
+.main .app_bar .login-button {
+	color: #212121 !important;
+}
+
+.main .app_bar .info-page-button {
+	display: block;
+	float: right;
 }
 
 .main .app_bar .profile-page-button img {
@@ -116,7 +133,7 @@ em {
 	color: #9a8973;
 }
 
-.mobile-info-page-button,
+.mobile-favorites-page-button,
 .mobile-profile-page-button {
 	display: none !important;
 }
@@ -136,14 +153,20 @@ em {
 		padding:0 25px;
 	}
 
-	.main .app_bar .info-page-button,
+	.main .app_bar .favorites-page-button,
 	.main .app_bar .profile-page-button {
 		display: none !important;
 	}
 
-	.mobile-info-page-button,
+	.mobile-favorites-page-button,
 	.mobile-profile-page-button {
 		display: block !important;
+	}
+
+	.main .app_bar .info-page-button {
+	    position: absolute !important;
+	    top: 7px;
+	    right: 2px;
 	}
 
 	.main .app_bar .more-menu {
@@ -164,6 +187,30 @@ em {
 	.app_bar .logo {
 		display: none;
 	}
+
+	.app_bar .login-buttons {
+
+		text-align: center;
+		margin-top: -15px;
+	
+	}
+
+	.main .app_bar .signup-button,
+	.main .app_bar .login-button {
+		border-radius: 5px !important;
+	    width: 48%;
+	}
+
+	.main .app_bar .signup-button {
+		margin-left: 0 !important;
+		margin-right: 5px !important;
+	}
+
+	.main .app_bar .login-button {
+		margin-left: 5px !important;
+		margin-right: 0 !important;
+	}
+	
 }
 
 @media (min-width: 768px) {
