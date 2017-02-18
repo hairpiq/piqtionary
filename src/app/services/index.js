@@ -80,7 +80,7 @@ module.exports = {
 			return execute('//' + config.HOSTNAME + '/api/piqtionary/add_hairtip', params);
 
 		},
-		getAll: function(params) {
+		getAll: function(params = {}) {
 
 			return execute('//' + config.HOSTNAME + '/api/piqtionary/get_all_hairtips', params);
 

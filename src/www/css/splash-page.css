@@ -48,7 +48,26 @@
 	padding: 20px 0;
 }
 
+.modal-inner.signin {
+	width:450px;
+}
+
+.modal .splash-page,
+.modal .splash-page .right-col,
+.modal .login-form-container {
+	width: 100%;
+}
+
+.modal .splash-page .left-col {
+	display: none;
+}
+
+
 @media (max-width: 767px) {
+
+	.modal-inner.signin {
+		width:100%;
+	}
 
 	.splash-page {
 		width:100%;

@@ -26,6 +26,7 @@ import Survey from '../pages/Survey';
 import Info from '../pages/Info';
 import Favorites from '../pages/Favorites';
 import Hairtip from '../pages/Hairtip';
+import Signin from '../pages/Signin';
 
 // authenticate user
 import AuthService from '../services/auth0/';
@@ -41,7 +42,7 @@ const requireAuth = (nextState, replace) => {
 	if (typeof window === 'object') {
 
 		if (!auth.loggedIn()) {
-			replace({ pathname: '/' })
+			replace({ pathname: '/signin' })
 		}
 
 	}
@@ -82,7 +83,8 @@ module.exports = (
 			<Route component={Main} auth={auth}>
 
 				<IndexRoute component={Index} auth={auth} />
-				<Route path="search" component={Index} auth={auth} onEnter={requireAuth}/>
+				<Route path="search" component={Index} auth={auth} />
+				<Route path="signin" component={Signin} auth={auth} />
 				
 				<Route path="p/:id" component={Photo} />
 				<Redirect from="p/:id/" to="p/:id"/>
