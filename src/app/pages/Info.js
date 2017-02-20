@@ -211,24 +211,6 @@ class Info extends Component {
                     </div>
                   </ListItem>
                   <Divider />
-                  <ListItem
-                    className="team-member"
-                    disabled={true}
-                    leftAvatar={
-                      <Avatar
-                        src="/images/info-page/avatar-jackson-gabriel.jpg"
-                        size={100}
-                      />
-                    }
-                  > 
-                    <div className="team-member-info">
-                      <p><strong>Jackson Gabriel</strong> <br />
-                        Senior Web Developer <br />
-                        <a href="mailto:jackson@hairpiq.com">jackson@hairpiq.com</a>
-                      </p>
-                    </div>
-                  </ListItem>
-                  <Divider />
                 </List>
 
               </div>
