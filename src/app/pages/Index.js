@@ -51,11 +51,13 @@ class Index extends Component {
 
         <div>
 
-          {this.props.location.pathname === '/' ?
+          {/*this.props.location.pathname === '/' ?
           <HeroSpace />
           :
           <div className="no-hero-space" />
-          }
+          }*/}
+
+          <div className="no-hero-space" />
 
           <div className="uk-grid">
 
