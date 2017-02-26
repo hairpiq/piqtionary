@@ -39,12 +39,14 @@
     clear: both;
 }
 
+.pending-request .identify-user-container,
 .pending-request .delete-request-container,
 .pending-request .reset-text-container {
 	position: relative;
     z-index:1;
 }
 
+.pending-request .identify-user-button,
 .pending-request .delete-request-button,
 .pending-request .reset-text-button {
 	display: block;
@@ -62,6 +64,11 @@
 
 .pending-request .reset-text.locked {
 	cursor: not-allowed !important;
+}
+
+.pending-request .identify-user {
+	position: absolute !important;
+	right: 100px;
 }
 
 .pending-request .toolbar {

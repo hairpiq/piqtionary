@@ -8,23 +8,9 @@ module.exports = {
 		return execute('//' + config.HOSTNAME + '/api/piqtionary/list', params);
 
 	},
-	getKeywords: function() {
+	getKeywords: function(params = null) {
 
-		return new Promise(function(resolve, reject) {
-
-			$.ajax({
-			  	type: "POST",
-			  	url: '//' + config.HOSTNAME + '/api/piqtionary/keywords',
-			  	success: function(result) {
-					resolve(result);
-				},
-			 	dataType: 'json',
-			 	beforeSend: function (xhr) {
-				    xhr.setRequestHeader ("Authorization", config.API_BASIC_AUTH);
-				}
-			});
-
-		});
+		return execute('//' + config.HOSTNAME + '/api/piqtionary/keywords', params);
 
 	},
 	getById: function(params) {
