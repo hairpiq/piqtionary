@@ -6,13 +6,13 @@
     box-shadow: rgba(0, 0, 0, 0.156863) 0px 3px 10px, rgba(0, 0, 0, 0.227451) 0px 3px 10px;
 }
 
-.react-autosuggest__container {
+.search-bar-container .react-autosuggest__container {
 	height: 43px !important;
 	background: #eeeeee !important;
 	border-radius: 5px;
 }
 
-.react-autosuggest__input {
+.search-bar-container .react-autosuggest__input {
 	width:90% !important;
 	padding-left:25px !important;
 	background: transparent;
@@ -23,11 +23,11 @@
     padding: 8px 20px;
 }
 
-.react-autosuggest__input:focus {
+.search-bar-container .react-autosuggest__input:focus {
 	outline: 0;
 }
 
-.react-autosuggest__suggestions-list {
+.search-bar-container .react-autosuggest__suggestions-list {
   margin: 3px 0 0;
   padding: 0;
   list-style-type: none;
@@ -37,19 +37,19 @@
   overflow-y: scroll;
 }
 
-.react-autosuggest__suggestion {
+.search-bar-container .react-autosuggest__suggestion {
   cursor: pointer;
   padding: 10px 20px;
   background: #ffffff;
 }
 
-.react-autosuggest__suggestion:last-child {
+.search-bar-container .react-autosuggest__suggestion:last-child {
 	border-bottom-left-radius: 5px !important;
 	border-bottom-right-radius: 5px !important;
 }
 
 
-.react-autosuggest__suggestion--focused {
+.search-bar-container .react-autosuggest__suggestion--focused {
   background-color: #E0E0E0;
 }
 

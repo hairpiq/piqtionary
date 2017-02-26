@@ -9,6 +9,7 @@ import ContentBackspace from 'material-ui/svg-icons/content/backspace';
 import {green600, grey100, grey600} from 'material-ui/styles/colors';
 import RaisedButton from 'material-ui/RaisedButton';
 import LazyLoad from 'react-lazyload';
+import SvgIcon from 'material-ui/SvgIcon';
 
 class PendingItem extends Component {
 
@@ -17,7 +18,8 @@ class PendingItem extends Component {
 
     this.state = {
       stylename: '',
-      ig_username: ''
+      ig_username: '',
+      user_data: undefined
     }
 
     this.rejectItem = this.rejectItem.bind(this);
@@ -31,9 +33,13 @@ class PendingItem extends Component {
 
   rejectItem() {
 
+    let hairpiq = Object.assign({},this.props.listItem)
+    if (this.state.user_data !== undefined)
+      hairpiq.auth0_user_id = this.state.user_data.auth0_user_id
+
     this.props.handleDialog({
         action: 'REJECT',
-        hairpiq: this.props.listItem
+        hairpiq: hairpiq
       });
   }
 
@@ -51,10 +57,35 @@ class PendingItem extends Component {
 
   approveItem() {
 
+    let hairpiq = Object.assign({},this.props.listItem)
+    if (this.state.user_data !== undefined)
+      hairpiq.auth0_user_id = this.state.user_data.auth0_user_id
+
     this.props.handleDialog({
         action: 'APPROVE',
-        hairpiq: this.props.listItem
+        hairpiq: hairpiq
       });
+  }
+
+  linkUser = () => {
+
+    let user_data  = this.state.user_data
+
+    this.props.handleDialog({
+      action: 'LINK_USER',
+      hairpiq: this.props.listItem,
+      user_data: user_data,
+      setUserData: (user_data) => this.setUserData(user_data)
+    });
+  
+  }
+
+  setUserData = (user_data) => {
+
+    this.setState({
+      user_data: user_data
+    })
+   
   }
 
   resetText() {
@@ -93,6 +124,51 @@ class PendingItem extends Component {
     const listItem = this.props.listItem;
     const isTextBeingEdited = (this.state.stylename !== listItem.stylename || this.state.ig_username !== listItem.ig_username)
     const isPrerendered = (listItem.rendered_url === undefined || listItem.rendered_url.length === 0);
+    const user_data = this.state.user_data
+
+    const LinkUserIcon = (props) => {
+
+       return (
+          
+          <SvgIcon {...props}>
+            <path d="M18,19H6V17.6C6,15.6 10,14.5 12,14.5C14,14.5 18,15.6 18,17.6M12,7A3,3 0 0,1 15,10A3,3 0 0,1 12,13A3,3 0 0,1 9,10A3,3 0 0,1 12,7M12,3A1,1 0 0,1 13,4A1,1 0 0,1 12,5A1,1 0 0,1 11,4A1,1 0 0,1 12,3M19,3H14.82C14.4,1.84 13.3,1 12,1C10.7,1 9.6,1.84 9.18,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3Z" />
+          </SvgIcon>
+          
+        )
+
+    }
+
+    const renderLinkUserButton = () => {
+
+      if (listItem.auth0_user_id === undefined || listItem.auth0_user_id === null) {
+        
+        return (
+
+          <a className="identify-user-button" onTouchTap={this.linkUser}>
+            <IconButton
+              className="identify-user"
+              tooltip={user_data !== undefined ? user_data.fullname : 'Link User'}
+              disabled={!(listItem.auth0_user_id === undefined || listItem.auth0_user_id === null)}
+            >
+              <LinkUserIcon color={user_data !== undefined ? green600 : grey600} />
+            </IconButton>
+          </a>
+
+        )
+
+      } else {
+        
+        return (
+
+          <IconButton className="identify-user" disabled={true} tooltip="User is Linked Already">
+            <LinkUserIcon />
+          </IconButton>
+
+        )
+
+      }
+
+    }
 
     const renderResetTextButton = () => {
       if (isPrerendered) {
@@ -145,7 +221,7 @@ class PendingItem extends Component {
 
     const renderApproveButton = () => {
 
-      if (!isTextBeingEdited) {
+      if (!isTextBeingEdited && !(listItem.auth0_user_id === undefined && user_data === undefined)) {
         return <RaisedButton
                 className="button approve"
                 label="Approve"
@@ -174,8 +250,11 @@ class PendingItem extends Component {
           </a>
         </div>
         <div className="detail-info">
+          <div className="identify-user-container">
+            {renderLinkUserButton()}
+          </div>
           <div className="reset-text-container">
-          {renderResetTextButton()}
+            {renderResetTextButton()}
           </div>
           <div className="delete-request-container">
             <a className="delete-request-button" onTouchTap={this.rejectItem}>
