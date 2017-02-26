@@ -94,6 +94,11 @@ module.exports = {
 		return execute('//' + config.HOSTNAME + '/api/piqtionary/refresh_keywords', {});
 
 	},
+	getAllUserData: function(params = null) {
+
+		return execute('//' + config.HOSTNAME + '/api/piqtionary/get_all_user_data', params);
+
+	},
 	hairpiqCreator: {
 		validate: function(params) {
 
