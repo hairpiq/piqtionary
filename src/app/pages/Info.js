@@ -31,8 +31,8 @@ class Info extends Component {
 
               <div className="content">
                 <h1>Company Info</h1>
-                <p>Hairpiq provides people who love hair but who also have trouble finding suitable hair care information with the most comprehensive high-quality and accurate information relevant to their specific needs.</p>
-                 <p>And we're able to do that because of Ava Vision.</p>
+                <p>Hairpiq makes taking care of your hair easier.</p>
+                <p>We provide high-quality and accurate information that is relevant to your specific needs, and we're able to do it through Ava Vision.</p>
                  <MobileTearSheet>
                   <div className="ava-vision-tear-sheet">
                     <h2>Hairpiq&reg; Ava Vision<ImageRemoveRedEye className="ava-vision-icon" color="#555555" /></h2>
