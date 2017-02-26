@@ -941,6 +941,36 @@ module.exports = function(app, db) {
 	});
 
 	/*
+		get all user's metadata
+	*/
+
+	app.post('/api/piqtionary/get_all_user_data', function(req, res, next) {
+
+		console.log('B - called: /api/piqtionary/get_all_user_data');
+
+		// get user data
+			// find docs in user_data collection
+
+		var resultArray = [];
+
+		var cursor = db.collection('user_data').find();
+
+		cursor.forEach(function(doc, err) {
+				
+			console.log('C - Retrieved document in user_data: ' + doc._id);
+			assert.equal(null, err);
+			resultArray.push(doc);
+
+		}, function() {
+							
+			res.setHeader('Content-Type', 'application/json');
+			res.send(JSON.stringify(resultArray));
+
+		});
+
+	});
+
+	/*
 		add hairpiq to user favorites
 	*/
 

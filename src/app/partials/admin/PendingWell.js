@@ -9,6 +9,7 @@ import CircularProgress from 'material-ui/CircularProgress';
 import {grey400} from 'material-ui/styles/colors';
 import Snackbar from 'material-ui/Snackbar';
 import LinearProgress from 'material-ui/LinearProgress';
+import LinkUserForm from './LinkUserForm';
 
 class PendingWell extends Component {
 
@@ -30,7 +31,9 @@ class PendingWell extends Component {
           snackbar: {
             open: false,
             message: ''
-          }
+          },
+          selected_auth0_user_id: '',
+          enable_submit: false
       };
 
       this.handleOpen = this.handleOpen.bind(this);
@@ -73,6 +76,37 @@ class PendingWell extends Component {
 
         title = 'APPROVE HAIRPIQ';
         message = 'Are you sure you want to approve this hairpiq? Doing so will send it to the Unpublished Section.';
+
+        break;
+
+      case 'LINK_USER':
+
+        title = 'LINK THIS HAIRPIQ TO USER';
+        message = (
+          
+          <LinkUserForm
+            user_data={obj.user_data}
+            setUserData={(user_data) => {
+
+              let _this = this;
+              let delay = setTimeout(function() {
+
+                obj.setUserData(user_data)
+
+                _this.handleClose()
+                _this.setState({
+                  snackbar: { 
+                    open: true,
+                    message: user_data.fullname + ' is now linked!'
+                  }
+                })
+
+              }, 500)
+
+            }}
+          />
+          
+        )
 
         break;
     }
@@ -249,12 +283,21 @@ class PendingWell extends Component {
         primary={true}
         onTouchTap={this.handleClose}
       />,
-      <FlatButton
-        label="Submit"
-        primary={true}
-        keyboardFocused={true}
-        onTouchTap={this.handleSubmit}
-      />,
+        <span>
+          
+          {this.state.dialog.action !== 'LINK_USER' ?
+          
+          <FlatButton
+            label="Submit"
+            primary={true}
+            keyboardFocused={true}
+            onTouchTap={this.handleSubmit}
+          />
+          
+          : null }
+
+        </span>
+        ,
     ];
 
     return (
@@ -285,8 +328,13 @@ class PendingWell extends Component {
             onRequestClose={this.handleClose}
             actionsContainerClassName="pending-request-dialog"
             overlayClassName="admin dialog-overlay">
+            
+            {this.state.dialog.action !== 'LINK_USER' ?
             <LinearProgress mode="indeterminate" className="progress-bar" />
+            : null }
+            
             <p>{this.state.dialog.message}</p>
+
           </Dialog>
         </div>
 
