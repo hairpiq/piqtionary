@@ -10,6 +10,8 @@ import {green600, grey100, grey600} from 'material-ui/styles/colors';
 import RaisedButton from 'material-ui/RaisedButton';
 import LazyLoad from 'react-lazyload';
 import SvgIcon from 'material-ui/SvgIcon';
+import Services from '../../services/';
+import {Card, CardHeader} from 'material-ui/Card';
 
 class PendingItem extends Component {
 
@@ -117,6 +119,20 @@ class PendingItem extends Component {
     
     this.resetText();
 
+    let params = {
+      auth0_user_id: this.props.listItem.auth0_user_id
+    }
+
+    let _this = this;
+
+    Services.getUserData(params).then(function(result) {
+
+      let user_data = result[0]
+
+      _this.setUserData(user_data)
+
+    });
+
   }
 
 	render() {
@@ -125,6 +141,9 @@ class PendingItem extends Component {
     const isTextBeingEdited = (this.state.stylename !== listItem.stylename || this.state.ig_username !== listItem.ig_username)
     const isPrerendered = (listItem.rendered_url === undefined || listItem.rendered_url.length === 0);
     const user_data = this.state.user_data
+
+    console.log('A')
+    console.log(user_data)
 
     const LinkUserIcon = (props) => {
 
@@ -241,58 +260,72 @@ class PendingItem extends Component {
 
 		return (
 
-      <Paper className="pending-request">
-        <div className="photo">
-          <a href={listItem.s3_url} target="_blank">
-            <LazyLoad height={200} offset={100} once>
-              <img src={listItem.s3_url + '?' + new Date().getTime().toString()} />
-            </LazyLoad>
-          </a>
-        </div>
-        <div className="detail-info">
-          <div className="identify-user-container">
-            {renderLinkUserButton()}
-          </div>
-          <div className="reset-text-container">
-            {renderResetTextButton()}
-          </div>
-          <div className="delete-request-container">
-            <a className="delete-request-button" onTouchTap={this.rejectItem}>
-              <IconButton className="delete-request" tooltip="Move to Trash.">
-                <ActionDelete color={grey600} />
-              </IconButton>
+      <Card>
+
+        {user_data !== undefined ?
+        
+        <CardHeader
+          title={user_data.fullname}
+          subtitle={user_data.username}
+          avatar={user_data.picture}
+        />
+
+        : null }
+        
+        <Paper className="pending-request">
+          <div className="photo">
+            <a href={listItem.s3_url} target="_blank">
+              <LazyLoad height={200} offset={100} once>
+                <img src={listItem.s3_url + '?' + new Date().getTime().toString()} />
+              </LazyLoad>
             </a>
           </div>
-          <div className="data-container">
-            <TextField
-              id={'stylename-' + this.props.listItem._id}
-              hintText="update here"
-              floatingLabelText="Style Name"
-              floatingLabelFixed={true}
-              fullWidth={true}
-              value={this.state.stylename}
-              defaultValue={this.state.stylename}
-              onChange={this.handleStylenameChange}
-              disabled={isPrerendered}
-              />
-            <TextField
-              id={'ig_username-' + this.props.listItem._id}
-              hintText="update here"
-              floatingLabelText="IG Username"
-              floatingLabelFixed={true}
-              fullWidth={true}
-              value={this.state.ig_username}
-              defaultValue={this.state.ig_username}
-              onChange={this.handleIGUsernameChange}
-              disabled={isPrerendered}
-              />
+          <div className="detail-info">
+            <div className="identify-user-container">
+              {renderLinkUserButton()}
+            </div>
+            <div className="reset-text-container">
+              {renderResetTextButton()}
+            </div>
+            <div className="delete-request-container">
+              <a className="delete-request-button" onTouchTap={this.rejectItem}>
+                <IconButton className="delete-request" tooltip="Move to Trash.">
+                  <ActionDelete color={grey600} />
+                </IconButton>
+              </a>
+            </div>
+            <div className="data-container">
+              <TextField
+                id={'stylename-' + this.props.listItem._id}
+                hintText="update here"
+                floatingLabelText="Style Name"
+                floatingLabelFixed={true}
+                fullWidth={true}
+                value={this.state.stylename}
+                defaultValue={this.state.stylename}
+                onChange={this.handleStylenameChange}
+                disabled={isPrerendered}
+                />
+              <TextField
+                id={'ig_username-' + this.props.listItem._id}
+                hintText="update here"
+                floatingLabelText="IG Username"
+                floatingLabelFixed={true}
+                fullWidth={true}
+                value={this.state.ig_username}
+                defaultValue={this.state.ig_username}
+                onChange={this.handleIGUsernameChange}
+                disabled={isPrerendered}
+                />
+            </div>
           </div>
-        </div>
-        <div className="toolbar">
-          {renderUpdateButton()}
-          {renderApproveButton()}
-        </div>
-      </Paper>
+          <div className="toolbar">
+            {renderUpdateButton()}
+            {renderApproveButton()}
+          </div>
+        </Paper>
+
+      </Card>
     )
 	}
 }
