@@ -142,9 +142,6 @@ class PendingItem extends Component {
     const isPrerendered = (listItem.rendered_url === undefined || listItem.rendered_url.length === 0);
     const user_data = this.state.user_data
 
-    console.log('A')
-    console.log(user_data)
-
     const LinkUserIcon = (props) => {
 
        return (
