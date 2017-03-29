@@ -887,9 +887,12 @@ module.exports = function(app, db) {
 			// data needed
 			// - username
 
-		var query = {
-			username: req.body.username
-		};
+		var query = {};
+
+		if (req.body.username !== undefined)
+			query.username = req.body.username
+		else if (req.body.auth0_user_id !== undefined)
+			query.auth0_user_id = req.body.auth0_user_id
 
 		var resultArray = [];
 
