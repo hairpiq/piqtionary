@@ -8,11 +8,17 @@ import ActionRestore from 'material-ui/svg-icons/action/restore';
 import NotificationMMS from 'material-ui/svg-icons/notification/mms';
 import {grey600} from 'material-ui/styles/colors';
 import LazyLoad from 'react-lazyload';
+import Services from '../../services/';
+import {Card, CardHeader} from 'material-ui/Card';
 
 class TrashedItem extends Component {
 
   constructor() {
     super();
+
+    this.state = {
+      user_data: undefined
+    }
 
     this.deleteItem = this.deleteItem.bind(this);
     this.restoreItem = this.restoreItem.bind(this);
@@ -35,9 +41,36 @@ class TrashedItem extends Component {
       });
   }
 
+  setUserData = (user_data) => {
+
+    this.setState({
+      user_data: user_data
+    })
+   
+  }
+
+  componentDidMount() {
+    
+    let params = {
+      auth0_user_id: this.props.listItem.auth0_user_id
+    }
+
+    let _this = this;
+
+    Services.getUserData(params).then(function(result) {
+
+      let user_data = result[0]
+
+      _this.setUserData(user_data)
+
+    });
+
+  }
+
 	render() {
 
     const listItem = this.props.listItem;
+    const user_data = this.state.user_data
 
     const renderRestoreIcon = () => {
       if (listItem.hasOwnProperty('pending_id'))
@@ -52,31 +85,46 @@ class TrashedItem extends Component {
 
 		return (
 
-      <Paper className="approved-hairpiq">
-        <div className="photo">
-          <a href={listItem.s3_url} target="_blank">
-          <LazyLoad height={200} offset={100} once>
-            <img src={getImageUrl()} />
-          </LazyLoad>
-          </a>
-        </div>
-        <div className="detail-info">
-          <div className="publish-hairpiq-container">
-            <a className="publish-hairpiq-button">
-              <IconButton className="publish-hairpiq" onTouchTap={this.restoreItem}>
-                {renderRestoreIcon()}
-              </IconButton>
+      <Card>
+
+        {user_data !== undefined ?
+        
+        <CardHeader
+          title={user_data.fullname}
+          subtitle={user_data.username}
+          avatar={user_data.picture}
+        />
+
+        : null }
+
+        <Paper className="approved-hairpiq">
+          <div className="photo">
+            <a href={listItem.s3_url} target="_blank">
+            <LazyLoad height={200} offset={100} once>
+              <img src={getImageUrl()} />
+            </LazyLoad>
             </a>
           </div>
-          <div className="delete-hairpiq-container">
-            <a className="delete-hairpiq-button" onTouchTap={this.deleteItem}>
-              <IconButton className="delete-hairpiq">
-                <ActionDeleteForever color={grey600} />
-              </IconButton>
-            </a>
+          <div className="detail-info">
+            <div className="publish-hairpiq-container">
+              <a className="publish-hairpiq-button">
+                <IconButton className="publish-hairpiq" onTouchTap={this.restoreItem}>
+                  {renderRestoreIcon()}
+                </IconButton>
+              </a>
+            </div>
+            <div className="delete-hairpiq-container">
+              <a className="delete-hairpiq-button" onTouchTap={this.deleteItem}>
+                <IconButton className="delete-hairpiq">
+                  <ActionDeleteForever color={grey600} />
+                </IconButton>
+              </a>
+            </div>
           </div>
-        </div>
-      </Paper>
+        </Paper>
+
+      </Card>
+
     )
 	}
 }
